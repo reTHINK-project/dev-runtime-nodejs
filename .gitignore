@@ -1,0 +1,16 @@
+# Dependencies folders
+node_modules
+vendor
+
+# Log files
+*.log
+
+# bundle files
+build.js
+build.js.map
+
+# Temporal files
+*.swp
+*.swo
+
+dist/
