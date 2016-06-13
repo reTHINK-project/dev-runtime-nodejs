@@ -78,12 +78,12 @@ let RethinkBrowser = {
             console.log('#1');
             registry.runtime
             .send({do:'Something'})
-              .on('message', (e)=> {
-                console.log('---------core.js replied:', e.data);
-                if (e.data === 'runtime:installed') {
-                  resolve(runtimeProxy);
-                }
-              })
+            .on('message', (e)=> {
+              console.log('---------core.js replied:', e.data);
+              if (e.data === 'runtime:installed') {
+                resolve(runtimeProxy);
+              }
+            })
             .on('error', function(error) {
               console.error('runtime core install failed:', error);
               registry.runtime.kill();
@@ -93,6 +93,7 @@ let RethinkBrowser = {
               console.log('runtime core exited.');
               registry.runtime.kill();
             });
+
             // app.create(registry);
           });
       },

@@ -23,8 +23,9 @@
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from '../dev-service-framework/dist/RuntimeCatalogue.js';
-console.log('Import from web worker');
+
+// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';//FIXME
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from './../service-framework/src/RuntimeCatalogue.js';
 
 // let SandboxWorker = require('./SandboxWorker');
 // let SandboxApp = require('./SandboxApp');
@@ -45,7 +46,7 @@ const RuntimeFactory = Object.create({
     },
     createRuntimeCatalogue(development) {
       if (!this.catalogue)
-          this.catalogue = development ? new RuntimeCatalogueLocal(this) : new RuntimeCatalogue(this);
+          this.catalogue = development || new RuntimeCatalogueLocal(this);
 
       return this.catalogue;
     }

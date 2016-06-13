@@ -41,46 +41,52 @@ import RuntimeFactory from './RuntimeFactory';
 //
 //   return hyperty;
 // }
-// let window = {};
-// let parameters = new URI(window.location).search(true);
-// let runtimeURL = parameters.runtime;
-// let development = parameters.development === 'true';
-// let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
-//
-// catalogue.getRuntimeDescriptor(runtimeURL)
-//     .then(function(descriptor) {
-//         let sourcePackageURL = descriptor.sourcePackageURL;
-//         if (sourcePackageURL === '/sourcePackage') {
-//           return descriptor.sourcePackage;
-//         }
-//
-//         return catalogue.getSourcePackageFromURL(sourcePackageURL);
-//       })
-//     .then(function(sourcePackage) {
-//         eval.apply(window, [sourcePackage.sourceCode]);
-//
-//         let runtime = new Runtime(RuntimeFactory, window.location.host);
-//         window.addEventListener('message', function(event) {
-//             if (event.data.to === 'core:loadHyperty') {
-//               let descriptor = event.data.body.descriptor;
-//               let hyperty = searchHyperty(runtime, descriptor);
-//
-//               if (hyperty) {
-//                 returnHyperty(event.source, {runtimeHypertyURL: hyperty.hypertyURL});
-//               }else {
-//                 runtime.loadHyperty(descriptor)
-//                     .then(returnHyperty.bind(null, event.source));
-//               }
-//             }else if (event.data.to === 'core:loadStub') {
-//               runtime.loadStub(event.data.body.domain);
-//             }
-//           }, false);
-//         parent.postMessage({to:'runtime:installed', body:{}}, '*');
-//       });
 module.exports = function(input, done) {
-  console.log('************* in core.js *********************');
 
+  console.log('************* in core.js *********************');
+  let parameters = 'http://www.google.com';// URL of the current browser page
+  // hyperty-catalogue://hybroker.rethink.ptinovacao.pt/.well-known/runtime/Runtime
+
+  let runtimeURL = 'https://localhost/.well-known/runtime/';///.well-known/runtime/MyRuntime
+  let development = parameters.development === 'true';
+  let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
+  console.log('#ici');
+  catalogue.getRuntimeDescriptor(runtimeURL)
+    .then(function(descriptor) {
+        done({data:'runtime:installed', body:{}}, '*');
+        let sourcePackageURL = descriptor.sourcePackageURL;
+        if (sourcePackageURL === '/sourcePackage') {
+          return descriptor.sourcePackage;
+        }
+
+        return catalogue.getSourcePackageFromURL(sourcePackageURL);
+      }).catch(function(error) {
+        console.error(error);
+        done({data:'runtime:installed', body:{}}, '*');
+      });
+
+  // .then(function(sourcePackage) {
   // done('Awesome thread script may run in browser and node.js!');
-  done({data:'runtime:installed', body:{}}, '*');
+
+  // eval.apply(window, [sourcePackage.sourceCode]);
+  //
+  // let runtime = new Runtime(RuntimeFactory, window.location.host);
+  // window.addEventListener('message', function(event) {
+  //     if (event.data.to === 'core:loadHyperty') {
+  //       let descriptor = event.data.body.descriptor;
+  //       let hyperty = searchHyperty(runtime, descriptor);
+  //
+  //       if (hyperty) {
+  //         returnHyperty(event.source, {runtimeHypertyURL: hyperty.hypertyURL});
+  //       }else {
+  //         runtime.loadHyperty(descriptor)
+  //             .then(returnHyperty.bind(null, event.source));
+  //       }
+  //     }else if (event.data.to === 'core:loadStub') {
+  //       runtime.loadStub(event.data.body.domain);
+  //     }
+  //   }, false);
+  // parent.postMessage({to:'runtime:installed', body:{}}, '*');
+  // });
 
 };

@@ -22,10 +22,12 @@
 **/
 const methods = {GET: 'get', POST: 'post', DELETE: 'delete', UPDATE: 'update'};
 
+import httpRequest from 'request';
+
 class Request {
 
   constructor() {
-    console.log('Browser Request');
+    console.log('node Request');
 
     let _this = this;
 
@@ -81,27 +83,51 @@ class Request {
         return;
       }
 
-      let xhr = new XMLHttpRequest();
+      // let xhr = new XMLHttpRequest();
+      // httpReq(url, function(error, response, body) {
+      //   if (!error && response.statusCode == 200) {
+      //     console.log('this is body :', body);
+      //   }
+      // });
+
+      httpRequest.get({
+        url: url
+      }, function(err, response, body) {
+        console.log('this is respone.statusCode :', response.statusCode);
+        console.log('this is response.headers', response.headers['content-type']);
+        console.log('this is response.body :', body);
+
+        if (response.statusCode === 200) {
+          console.log('got response', response, body);
+          resole(body);
+        } else {
+          console.log('rejecting promise because of response code: 200 != ', response.statusCode);
+          reject(err);
+        }
+      });
+
+      // xhr.open('GET', url, true);
+
+      // xhr.onreadystalet xhr = new XMLHttpRequest();
 
       // console.log(url);
 
-      xhr.open('GET', url, true);
+      // xhr.open('GET', url, true);
 
-      xhr.onreadystatechange = function(event) {
-        let xhr = event.currentTarget;
-        if (xhr.readyState === 4) {
-          // console.log("got response:", xhr);
-          if (xhr.status === 200) {
-            resolve(xhr.responseText);
-          } else {
-            // console.log("rejecting promise because of response code: 200 != ", xhr.status);
-            reject(xhr.responseText);
-          }
-        }
-      };
+      // xhr.onreadystatechange = function(event) {
+      //   let xhr = event.currentTarget;
+      //   if (xhr.readyState === 4) {
+      //     // console.log("got response:", xhr);
+      //     if (xhr.status === 200) {
+      //       resolve(xhr.responseText);
+      //     } else {
+      //       // console.log("rejecting promise because of response code: 200 != ", xhr.status);
+      //       reject(xhr.responseText);
+      //     }
+      //   }
+      // };
 
-      xhr.send();
-
+      //httpReq.post();
     });
 
   }

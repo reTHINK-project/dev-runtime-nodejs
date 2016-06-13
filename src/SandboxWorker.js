@@ -23,18 +23,33 @@
 import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 
+const threads = require('threads');
+const config  = threads.config;
+const spawn   = threads.spawn;
+
+// Set base paths to thread scripts
+config.set({
+  basepath: {
+    // browser: 'http://myserver.local/thread-scripts',
+    node: __dirname
+  }
+});
+
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
     super(script);
 
     this.type = SandboxType.NORMAL;
     if (!!Worker) {
-      this._worker = new Worker(script);
-      this._worker.addEventListener('message', function(e) {
-          this._onMessage(e.data);
+      // this._worker = new Worker(script);
+      this._worker = spawn(function(script) {
+        console.log('Sandbox worker created');
+      });
+      this._worker.on('message', function(e) {
+          this.on(e.data);
         }.bind(this));
-      this._worker.postMessage('');
-    }else {
+      this._worker.send('');
+    } else {
       throw new Error('Your environment does not support worker \n', e);
     }
   }

@@ -19,33 +19,10 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
-*/
+**/
 
-
-//global : Its a global namespace object
-// hince we use global instead of window
-
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-
-export default class SandboxApp extends Sandbox{
-  constructor() {
-    super();
-
-    this.type = SandboxType.NORMAL;
-    window.addEventListener('message', function(e) {
-        if (!!!this.origin)
-           this.origin = e.source;
-
-        if (e.data.to.startsWith('core:'))
-            return;
-
-        this._onMessage(e.data);
-      }.bind(this));
-  }
-
-  _onPostMessage(msg) {
-    this.origin.postMessage(msg, '*');
-  }
-}
+/**
+ * Created by amo on 16/11/2015.
+ */
+// Probably not going to be needed. Not clearly defined on the specification what this is.
+"use strict";
