@@ -55,14 +55,14 @@ let buildMsg = (hypertyComponent, msg) => {
 
 let runtimeProxy = {
   requireHyperty: (hypertyDescriptor)=> {
-    return new Promise((resolve, reject)=> {
-        let loaded = (e)=> {
-            if (e.data.to === 'runtime:loadedHyperty') {
-              resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
-            }
-          };
-        registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
-      });
+    // return new Promise((resolve, reject)=> {
+    //     let loaded = (e)=> {
+    //         if (e.data.to === 'runtime:loadedHyperty') {
+    //           resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
+    //         }
+    //       };
+    //     registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
+    //   });
   },
 
   requireProtostub: (domain)=> {
@@ -79,9 +79,10 @@ let RethinkBrowser = {
             registry.runtime
             .send({do:'Something'})
             .on('message', (e)=> {
-              console.log('---------core.js replied:', e.data);
+              // console.log('---------core.js replied:', e.data);
               if (e.data === 'runtime:installed') {
                 resolve(runtimeProxy);
+
               }
             })
             .on('error', function(error) {

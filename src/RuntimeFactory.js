@@ -25,7 +25,8 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 
 // import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';//FIXME
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from './../service-framework/src/RuntimeCatalogue.js';
+// import {RuntimeCatalogueLocal, RuntimeCatalogue} from './../service-framework/src/RuntimeCatalogue.js';
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/src/RuntimeCatalogue.js';
 
 // let SandboxWorker = require('./SandboxWorker');
 // let SandboxApp = require('./SandboxApp');

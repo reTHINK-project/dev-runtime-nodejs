@@ -1,6 +1,6 @@
 
 let rethink = require('./RuntimeUAStub');
-console.log('-------------rethink is', rethink);
+// console.log('-------------rethink is', rethink);
 // var Sandbox = require('runtime-core').sandbox;
 // var MiniBus = require('runtime-core').minibus;
 //
@@ -25,14 +25,11 @@ app.use(log4js.connectLogger(logger, {
 }));
 
 app.set('trust proxy', 1);
-logger.info(require('path').resolve(__dirname + '/.well-known/runtime'));
-
-// app.use(express.static(require('path').resolve(__dirname + './../.well-known/')));
-app.use(express.static(path.join(__dirname, '/.well-known/runtime')));
-app.listen(80);
+app.use(express.static(path.resolve(__dirname, '../public/')));
+app.listen(8080);
 
 let runtime = rethink.default.install('domain').then((runtime) => {
-  console.log('houra !', runtime);
+  // console.log('houra !', runtime);
 }).catch((e) => {
   console.error('aie !', e);
 });

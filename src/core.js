@@ -44,17 +44,19 @@ import RuntimeFactory from './RuntimeFactory';
 module.exports = function(input, done) {
 
   console.log('************* in core.js *********************');
-  let parameters = 'http://www.google.com';// URL of the current browser page
-  // hyperty-catalogue://hybroker.rethink.ptinovacao.pt/.well-known/runtime/Runtime
+  let parameters = 'http://localhost:8080/.well-known/runtime/Runtime';// URL of the current browser page
+  // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
 
-  let runtimeURL = 'https://localhost/.well-known/runtime/';///.well-known/runtime/MyRuntime
+  let runtimeURL = 'http://localhost:8080/.well-known/runtime/Runtime';///.well-known/runtime/MyRuntime
   let development = parameters.development === 'true';
   let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
-  console.log('#ici');
+
   catalogue.getRuntimeDescriptor(runtimeURL)
     .then(function(descriptor) {
         done({data:'runtime:installed', body:{}}, '*');
-        let sourcePackageURL = descriptor.sourcePackageURL;
+        let sourcePackageURL = descriptor.Runtime;
+        console.log(descriptor);
+        console.log(sourcePackageURL);
         if (sourcePackageURL === '/sourcePackage') {
           return descriptor.sourcePackage;
         }
