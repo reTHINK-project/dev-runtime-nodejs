@@ -21,16 +21,10 @@
 * limitations under the License.
 **/
 
-// global replaces window
-
 import app from './ContextApp';
 import URI from 'urijs';
 
 let registry = {};
-
-// let app = require('./ContextApp');
-// let URI = require('urijs');
-//import { create as createIframe } from './iframe';
 
 const threads = require('threads');
 const config  = threads.config;
@@ -54,35 +48,38 @@ let buildMsg = (hypertyComponent, msg) => {
       };
 
 let runtimeProxy = {
-  requireHyperty: (hypertyDescriptor)=> {
-    // return new Promise((resolve, reject)=> {
-    //     let loaded = (e)=> {
-    //         if (e.data.to === 'runtime:loadedHyperty') {
-    //           resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
-    //         }
-    //       };
-    //     registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
-    //   });
-  },
-
-  requireProtostub: (domain)=> {
-    registry.runtime.send({to:'core:loadStub', body:{domain: domain}}, '*');
-  }
+  // requireHyperty: (hypertyDescriptor)=> {
+  //   return new Promise((resolve, reject)=> {
+  //       let loaded = (e)=> {
+  //           if (e.data.to === 'runtime:loadedHyperty') {
+  //             console.log('runtime:loadedHyperty is OK');
+  //             resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
+  //           }
+  //         };
+  //       console.log('registry.runtime.send');
+  //       registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
+  //     });
+  // },
+  //
+  // requireProtostub: (domain)=> {
+  //   registry.runtime.send({to:'core:loadStub', body:{domain: domain}}, '*');
+  // }
 };
 
-let RethinkBrowser = {
+let RethinkNode = {
     install: function({domain, runtimeURL, development}={}) {
         return new Promise((resolve, reject)=> {
-            //let runtime = this.getRuntime(runtimeURL, domain, development);
+            let runtime = this.getRuntime(runtimeURL, domain, development);
             registry.runtime = spawn('core.js');
-            console.log('#1');
-            registry.runtime
-            .send({do:'Something'})
-            .on('message', (e)=> {
-              // console.log('---------core.js replied:', e.data);
-              if (e.data === 'runtime:installed') {
-                resolve(runtimeProxy);
 
+            registry.runtime
+            .send({do:'install runtime core'})
+            .on('message', (e)=> {
+              console.log('------------------- In parent Process  -------------------------');
+              console.log('\nmessage recieved from child process core.js, message is :', e);
+              if (e.data === 'runtime:installed') {
+                console.log('\nRuntime installed with success\n');
+                resolve(runtimeProxy);
               }
             })
             .on('error', function(error) {
@@ -94,7 +91,6 @@ let RethinkBrowser = {
               console.log('runtime core exited.');
               registry.runtime.kill();
             });
-
             // app.create(registry);
           });
       },
@@ -114,4 +110,4 @@ let RethinkBrowser = {
         };
     }
   };
-export default RethinkBrowser;
+export default RethinkNode;

@@ -27,7 +27,7 @@ import httpRequest from 'request';
 class Request {
 
   constructor() {
-    console.log('node Request');
+    console.log('Node http Request');
 
     let _this = this;
 
@@ -51,9 +51,7 @@ class Request {
   }
 
   _makeLocalRequest(method, url) {
-
-    // console.log(method, url);
-
+    console.log(method, url);
     return new Promise(function(resolve, reject) {
       // TODO: Check why the url have localhost and undefined like a protocol
       // check the RuntimeUA
@@ -67,74 +65,32 @@ class Request {
 
       let usedProtocol;
 
-      // let foundProtocol = false;
-      // for (let protocol in protocolmap) {
-      //   if (url.slice(0, protocol.length) === protocol) {
-      //     // console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
-      //     url = protocolmap[protocol] + url.slice(protocol.length, url.length);
-      //     usedProtocol = protocolmap[protocol];
-      //     foundProtocol = true;
-      //     break;
-      //   }
-      // }
-
-      // if (!foundProtocol) {
-      //   console.log('rul is ', url);
-      //   reject('Invalid protocol of url: ', url);
-      //   return;
-      // }
-
-      // let xhr = new XMLHttpRequest();
-      // httpReq(url, function(error, response, body) {
-      //   if (!error && response.statusCode == 200) {
-      //     console.log('this is body :', body);
-      //   }
-      // });
-
+      let foundProtocol = false;
+      for (let protocol in protocolmap) {
+        if (url.slice(0, protocol.length) === protocol) {
+          // console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
+          url = protocolmap[protocol] + url.slice(protocol.length, url.length);
+          usedProtocol = protocolmap[protocol];
+          foundProtocol = true;
+          break;
+        }
+      }
       httpRequest.get({
         url: url
       }, function(err, response, body) {
-        // console.log('this is respone.statusCode :', response.statusCode);
+        // console.log('http respone.statusCode :', response.statusCode);
         // console.log('this is response.headers', response.headers['content-type']);
         // console.log('this is response.body :', body);
 
         if (response.statusCode === 200) {
-          // console.log('got response', response.statusCode);
+          console.log('got http response', response.statusCode);
           resolve(body);
         } else {
-          // console.log('rejecting promise because of response code: 200 != ', response.statusCode);
+          console.log('rejecting promise because of response code: 200 != ', response.statusCode);
           reject(err);
         }
       });
-
-
-
-
-
-      // xhr.open('GET', url, true);
-
-      // xhr.onreadystalet xhr = new XMLHttpRequest();
-
-      // console.log(url);
-
-      // xhr.open('GET', url, true);
-
-      // xhr.onreadystatechange = function(event) {
-      //   let xhr = event.currentTarget;
-      //   if (xhr.readyState === 4) {
-      //     // console.log("got response:", xhr);
-      //     if (xhr.status === 200) {
-      //       resolve(xhr.responseText);
-      //     } else {
-      //       // console.log("rejecting promise because of response code: 200 != ", xhr.status);
-      //       reject(xhr.responseText);
-      //     }
-      //   }
-      // };
-
-      //httpReq.post();
     });
-
   }
 
 }

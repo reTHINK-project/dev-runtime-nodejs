@@ -10,6 +10,11 @@ let rethink = require('./RuntimeUAStub');
 let express = require('express');
 var path = require('path');
 let log4js = require('log4js');
+let domain = 'localhost';
+let logger = log4js.getLogger('server');
+let app = express();
+const hypertyURI = (domain, hyperty) => `hyperty-catalogue://${domain}/.well-known/hyperty/${hyperty}`;
+
 log4js.configure({
   appenders: [{ type: 'console' }],
   levels: {
@@ -17,19 +22,22 @@ log4js.configure({
     }
 });
 
-let logger = log4js.getLogger('server');
-let app = express();
-
 app.use(log4js.connectLogger(logger, {
   level: 'auto'
 }));
-
 app.set('trust proxy', 1);
 app.use(express.static(path.resolve(__dirname, '../public/')));
 app.listen(8080);
 
-let runtime = rethink.default.install('domain').then((runtime) => {
-  // console.log('houra !', runtime);
+let runtime = rethink.default.install({
+  domain: domain,
+  development: true
+}).then((runtime) => {
+  console.log('houra ! runtime loaded', runtime);
+  console.log('\nloading hyperty :', hypertyURI(domain, 'UserStatus'));
+  // runtime.requireHyperty(hypertyURI(domain, 'UserStatus')).then((userStatusHyperty) => {
+  //   console.log('userStatusHyperty', userStatusHyperty);
+  // });
 }).catch((e) => {
   console.error('aie !', e);
 });

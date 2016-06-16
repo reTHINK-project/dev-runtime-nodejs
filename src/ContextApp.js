@@ -22,31 +22,29 @@
 **/
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
-// import bridge from './ContextServiceProvider';
-
-// console.log('bridge is', bridge);
 
 function create(iframe) {
+  console.log('\n*****in create iframe******');
   window._miniBus = new MiniBus();
-  bridge._miniBus._onPostMessage = function(msg) {
+  window._miniBus._onPostMessage = function(msg) {
       iframe.contentWindow.postMessage(msg, '*');
     };
-  wo.addEventListener('message', function(event) {
+  window.addEventListener('message', function(event) {
       if (event.data.to.startsWith('runtime:loadedHyperty'))
           return;
 
-      bridge._miniBus._onMessage(event.data);
+      window._miniBus._onMessage(event.data);
     }, false);
 
-  bridge._registry = new SandboxRegistry(bridge._miniBus);
-  bridge._registry._create = function(url, sourceCode, config) {
-      eval.apply(bridge, [sourceCode]);
-      return activate(url, bridge._miniBus, config);
+  window._registry = new SandboxRegistry(window._miniBus);
+  window._registry._create = function(url, sourceCode, config) {
+      eval.apply(window, [sourceCode]);
+      return activate(url, window._miniBus, config);
     };
 };
 
 function getHyperty(hypertyDescriptor) {
-  return bridge._registry.components[hypertyDescriptor];
+  return window._registry.components[hypertyDescriptor];
 };
 
 export default { create, getHyperty };
