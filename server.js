@@ -26,8 +26,8 @@ app.use(log4js.connectLogger(logger, {
   level: 'auto'
 }));
 app.set('trust proxy', 1);
-app.use(express.static(path.resolve(__dirname, '../public/')));
-app.listen(8080);
+app.use(express.static(path.resolve(__dirname, '../static/')));
+app.listen(80);
 
 let runtime = rethink.default.install({
   domain: domain,

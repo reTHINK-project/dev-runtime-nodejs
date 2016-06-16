@@ -21,9 +21,9 @@
 * limitations under the License.
 **/
 import URI from 'urijs';
-
 //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
+let domain = 'localhost';
 
 function returnHyperty(source, hyperty) {
   done({data:'runtime:loadedHyperty', body: hyperty}, '*');
@@ -42,13 +42,14 @@ function searchHyperty(runtime, descriptor) {
 
   return hyperty;
 }
+
 module.exports = function(input, done) {
 
   console.log('\n------------------- In child thread core.js  --------------------');
-  let parameters = 'http://localhost:8080/.well-known/runtime/Runtime';
+  let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
   // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
 
-  let runtimeURL = 'http://localhost:8080/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+  let runtimeURL = 'http://' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
   let development = parameters.development === 'true';
   let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
@@ -76,7 +77,7 @@ module.exports = function(input, done) {
     //         runtime.loadHyperty(descriptorRef)
     //             .then(returnHyperty.bind(null, event.source));
     //       }
-    //     }else if (event.data.to === 'core:loadStub') {
+    //     } else if (event.data.to === 'core:loadStub') {
     //       runtime.loadStub(event.data.body.domain);
     //     }
     //   }, false);

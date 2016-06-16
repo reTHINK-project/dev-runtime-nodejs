@@ -23,7 +23,7 @@
 
 import app from './ContextApp';
 import URI from 'urijs';
-
+let domain = 'localhost';
 let registry = {};
 
 const threads = require('threads');
@@ -48,22 +48,22 @@ let buildMsg = (hypertyComponent, msg) => {
       };
 
 let runtimeProxy = {
-  // requireHyperty: (hypertyDescriptor)=> {
-  //   return new Promise((resolve, reject)=> {
-  //       let loaded = (e)=> {
-  //           if (e.data.to === 'runtime:loadedHyperty') {
-  //             console.log('runtime:loadedHyperty is OK');
-  //             resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
-  //           }
-  //         };
-  //       console.log('registry.runtime.send');
-  //       registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
-  //     });
-  // },
+  requireHyperty: (hypertyDescriptor)=> {
+    return new Promise((resolve, reject)=> {
+        // let loaded = (e)=> {
+        //         if (e.data.to === 'runtime:loadedHyperty') {
+        //           console.log('runtime:loadedHyperty is OK');
+        //           resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
+        //         }
+        //       };
+        //       console.log('registry.runtime.send');
+        //       registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
+      });
+  },
   //
-  // requireProtostub: (domain)=> {
-  //   registry.runtime.send({to:'core:loadStub', body:{domain: domain}}, '*');
-  // }
+  requireProtostub: (domain)=> {
+    registry.runtime.send({to:'core:loadStub', body:{domain: domain}}, '*');
+  }
 };
 
 let RethinkNode = {
@@ -97,10 +97,11 @@ let RethinkNode = {
 
     getRuntime(runtimeURL, domain, development) {
       if (!!development) {
-        runtimeURL = runtimeURL || 'hyperty-catalogue://catalogue.' + domain + '/.well-known/runtime/Runtime';//`https://${domain}/resources/descriptors/Runtimes.json`
+        runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';//`https://${domain}/resources/descriptors/Runtimes.json`
         domain = domain || new URI(runtimeURL).host();
+        console.log('runtimeURl is ', runtimeURL);
       }else {
-        runtimeURL = runtimeURL || `https://catalogue.${domain}/.well-known/runtime/default`;
+        runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';
         domain = domain || new URI(runtimeURL).host().replace('catalogue.', '');
       }
 
