@@ -64,6 +64,8 @@ module.exports = function(input, done) {
       })
 //TODO load hyperty
    .then(function(sourcePackage) {
+
+    // console.log(global);
     // eval.apply(window, [sourcePackage.sourceCode]);
     // let runtime = new Runtime(RuntimeFactory, window.location.host);
     // window.addEventListener('message', function(event) {

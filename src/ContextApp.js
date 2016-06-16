@@ -23,28 +23,33 @@
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 
-function create(iframe) {
-  console.log('\n*****in create iframe******');
-  window._miniBus = new MiniBus();
-  window._miniBus._onPostMessage = function(msg) {
-      iframe.contentWindow.postMessage(msg, '*');
+function create(myApp) {
+  console.log('\n***** in ContextApp ******');
+  // we replace window by global
+  process._miniBus = new MiniBus();
+  process._miniBus._onPostMessage = function(msg) {
+      // myApp.send(msg, '*');
+      // myApp.send({do:'installed hyperty'});
+      done(msg, '*');
     };
-  window.addEventListener('message', function(event) {
-      if (event.data.to.startsWith('runtime:loadedHyperty'))
-          return;
+  process.addListener('message', function(event) {
+    console.log('msg');
+    if (event.data.to.startsWith('runtime:loadedHyperty'))
+        return;
 
-      window._miniBus._onMessage(event.data);
-    }, false);
+    process._miniBus._onMessage(event.data);
+  }, false);
 
-  window._registry = new SandboxRegistry(window._miniBus);
-  window._registry._create = function(url, sourceCode, config) {
-      eval.apply(window, [sourceCode]);
-      return activate(url, window._miniBus, config);
+  process._registry = new SandboxRegistry(process._miniBus);
+  process._registry._create = function(url, sourceCode, config) {
+      eval.apply(process, [sourceCode]);
+      return activate(url, process._miniBus, config);
     };
 };
 
 function getHyperty(hypertyDescriptor) {
-  return window._registry.components[hypertyDescriptor];
+  console.log('#### in getHyperty');
+  return process._registry.components[hypertyDescriptor];
 };
 
 export default { create, getHyperty };
