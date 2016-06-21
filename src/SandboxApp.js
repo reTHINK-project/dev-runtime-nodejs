@@ -29,23 +29,31 @@
 import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 
+
+// const EventEmitter = require('events').EventEmitter;
+// // create an instance of the EventEmitter object
+// const eventEmitter = new EventEmitter();
+
 export default class SandboxApp extends Sandbox{
   constructor() {
+    console.log('########### in Sandbox App');
     super();
 
     this.type = SandboxType.NORMAL;
-    window.addEventListener('message', function(e) {
-        if (!!!this.origin)
-           this.origin = e.source;
-
-        if (e.data.to.startsWith('core:'))
-            return;
-
-        this._onMessage(e.data);
-      }.bind(this));
+    // window.on('message', (e) => {
+    //     console.log('SandboxApp recieved message');
+    //     if (!!!this.origin)
+    //        this.origin = e.source;
+    //
+    //     if (e.data.to.startsWith('core:'))
+    //         return;
+    //
+    //     this._onMessage(e.data);
+    //   });
   }
 
   _onPostMessage(msg) {
+    console.log('SandboxApp postMessage message');
     this.origin.postMessage(msg, '*');
   }
 }

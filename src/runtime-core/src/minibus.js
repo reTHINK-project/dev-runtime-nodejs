@@ -20,29 +20,5 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-
-export default class SandboxWorker extends Sandbox{
-  constructor(script) {
-    super(script);
-    console.log('#### in Sandbox Worker');
-    this.type = SandboxType.NORMAL;
-    // if (!!Worker) {
-    //   // this._worker = new Worker(script);
-    //   this._worker = spawn(function(script) {
-    //     console.log('Sandbox worker created');
-    //   });
-    //   this._worker.on('message', (e) => {
-    //     this.on(e.data);
-    //   });
-    //   this._worker.send('');
-    // } else {
-    //   throw new Error('Your environment does not support worker \n', e);
-    // }
-  }
-
-  _onPostMessage(msg) {
-    this._worker.postMessage(msg);
-  }
-}
+import MiniBus from './bus/MiniBus';
+export default MiniBus;

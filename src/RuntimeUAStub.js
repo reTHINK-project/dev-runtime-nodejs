@@ -25,20 +25,28 @@ import app from './ContextApp';
 import URI from 'urijs';
 let domain = 'localhost';
 let registry = {};
+
 let window4Node = {};
 
-const threads = require('threads');
-const config  = threads.config;
-const spawn   = threads.spawn;
+// const threads = require('threads');
+// const config  = threads.config;
+// const spawn   = threads.spawn;
 
 // Set base paths to thread scripts
-config.set({
-  basepath: {
-    // browser: 'http://myserver.local/thread-scripts',
-    node: __dirname
-  }
-});
-console.log(__dirname);
+// config.set({
+//   basepath: {
+//     // browser: 'http://myserver.local/thread-scripts',
+//     node: __dirname
+//   }
+// });
+// console.log(__dirname);
+let child = require('child_process');
+
+// chiko.on('message', function(m) {
+//   console.log('PARENT got message:', m);
+// });
+// chiko.send({ hello: 'world' });
+
 let buildMsg = (hypertyComponent, msg) => {
         return {
           runtimeHypertyURL: msg.body.runtimeHypertyURL,
@@ -49,54 +57,65 @@ let buildMsg = (hypertyComponent, msg) => {
       };
 
 let runtimeProxy = {
+
   requireHyperty: (hypertyDescriptor)=> {
-    return new Promise((resolve, reject)=> {
-        let loaded = (e)=> {
-                if (e.data.to === 'runtime:loadedHyperty') {
-                  console.log('runtime:loadedHyperty is OK');
-                  resolve(buildMsg(app.getHyperty(e.data.body.runtimeHypertyURL), e.data));
-                }
-              };
-        console.log('registry.runtime.send');
-        registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}}, '*');
-      });
-  },
+        return new Promise((resolve, reject)=> {
+              let loaded = (msg)=> {
+                      registry.runtime.on('message', function(msg) {
+                        console.log('------------------- In parent Process  -------------------------');
+                        console.log('message is :', msg);
+
+                        if (msg.data.to === 'runtime:loadedHyperty') {
+                          console.log('runtime:loadedHyperty is OK');
+                          resolve(buildMsg(app.getHyperty(msg.data.body.runtimeHypertyURL), msg.data));
+                        }
+                      });
+                    };
+              console.log('registry.runtime.send');
+              // registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
+            });
+      },
 
   requireProtostub: (domain)=> {
-    registry.runtime.send({to:'core:loadStub', body:{domain: domain}}, '*');
+    registry.runtime.send({to:'core:loadStub', body:{domain: domain}});
   }
 };
 
+//
 let RethinkNode = {
     install: function({domain, runtimeURL, development}={}) {
-        return new Promise((resolve, reject)=> {
-            let runtime = this.getRuntime(runtimeURL, domain, development);
-            registry.runtime = spawn('core.js');
-            registry.runtime
-            .send({do:'install runtime core', data:window4Node})
-            .on('message', (e)=> {
-              console.log('------------------- In parent Process  -------------------------');
-              console.log('\n------message recieved from child process core.js--');
-              console.log('message is :', e);
-              if (e.data === 'runtime:installed') {
-                console.log('\nRuntime installed with success\n');
-                resolve(runtimeProxy);
-              }
-            })
-            .on('error', function(error) {
-              console.error('runtime core install failed:', error);
-              registry.runtime.kill();
-              reject(error);
-            })
-            .on('exit', function() {
-              console.log('runtime core exited.');
-              registry.runtime.kill();
+
+          return new Promise((resolve, reject)=> {
+
+              let runtime = this.getRuntime(runtimeURL, domain, development);
+              // console.log(runtime);
+              registry.runtime = child.fork(__dirname + '/core.js');
+              registry.runtime
+              .send({do:'install runtime core', data:window4Node});
+              registry.runtime.on('message', function(e) {
+                console.log('------------------- In parent Process  -------------------------');
+                console.log('\n--> message recieved from child process core.js');
+                console.log('message is :', e);
+                if (e.data === 'runtime:installed') {
+                  console.log('\n Runtime installed with success\n');
+                  resolve(runtimeProxy);
+                }
+              });
+              registry.runtime.on('error', function(error) {
+                console.error('runtime core install failed:', error);
+                registry.runtime.kill();
+                reject(error);
+              });
+              registry.runtime.on('exit', function() {
+                console.log('runtime core exited.');
+                registry.runtime.kill();
+              });
+
+              // console.log(registry);
+              app.create(registry.runtime);
             });
-            // console.log(process);
-            console.log(registry);
-            app.create(registry.runtime);
-          });
-      },
+
+        },
 
     getRuntime(runtimeURL, domain, development) {
       if (!!development) {

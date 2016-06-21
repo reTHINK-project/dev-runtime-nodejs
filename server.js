@@ -1,6 +1,6 @@
 
 let rethink = require('./RuntimeUAStub');
-// console.log('-------------rethink is', rethink);
+console.log('-------------rethink is', rethink);
 // var Sandbox = require('runtime-core').sandbox;
 // var MiniBus = require('runtime-core').minibus;
 //
@@ -10,7 +10,7 @@ let rethink = require('./RuntimeUAStub');
 let express = require('express');
 var path = require('path');
 let log4js = require('log4js');
-let domain = 'localhost';
+let domain = 'localhost:8080';
 let logger = log4js.getLogger('server');
 let app = express();
 const hypertyURI = (domain, hyperty) => `hyperty-catalogue://${domain}/.well-known/hyperty/${hyperty}`;
@@ -27,14 +27,14 @@ app.use(log4js.connectLogger(logger, {
 }));
 app.set('trust proxy', 1);
 app.use(express.static(path.resolve(__dirname, '../static/')));
-app.listen(80);
+app.listen(8080);
 
 let runtime = rethink.default.install({
   domain: domain,
   development: true
 }).then((runtime) => {
-  console.log('houra ! runtime loaded', runtime);
-  console.log('\nloading hyperty :', hypertyURI(domain, 'UserStatus'));
+  console.log('houra ! runtime loaded : \n', runtime);
+  // console.log('\nloading hyperty :', hypertyURI(domain, 'UserStatus'));
   // runtime.requireHyperty(hypertyURI(domain, 'UserStatus')).then((userStatusHyperty) => {
   //   console.log('userStatusHyperty', userStatusHyperty);
   // });

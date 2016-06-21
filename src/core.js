@@ -19,14 +19,28 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
+
 **/
+'use strict';
+
 import URI from 'urijs';
-//FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
+// //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-let domain = 'localhost';
+import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
+//require the EventEmitter from the events module
+const EventEmitter = require('events').EventEmitter;
+const eventEmitter = new EventEmitter();
+let domain = 'localhost:8080';
+
+let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
+// runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
+
+let runtimeURL = 'http://' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+let development = parameters.development === 'true';
+let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
 function returnHyperty(source, hyperty) {
-  done({data:'runtime:loadedHyperty', body: hyperty}, '*');
+  done({to:'runtime:loadedHyperty', body: hyperty}, '*');
   // source.postMessage({to: 'runtime:loadedHyperty', body: hyperty}, '*');
 }
 
@@ -36,23 +50,14 @@ function searchHyperty(runtime, descriptor) {
   while (!hyperty && index < runtime.registry.hypertiesList.length) {
     if (runtime.registry.hypertiesList[index].descriptor === descriptor)
         hyperty = runtime.registry.hypertiesList[index];
-
     index++;
   }
 
   return hyperty;
 }
 
-module.exports = function(input, done) {
-
+process.on('message', function() {
   console.log('\n------------------- In child thread core.js  --------------------');
-  let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
-  // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
-
-  let runtimeURL = 'http://' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
-  let development = parameters.development === 'true';
-  let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
-
   catalogue.getRuntimeDescriptor(runtimeURL)
     .then(function(descriptor) {
         let descriptorRef = JSON.parse(descriptor);
@@ -62,27 +67,33 @@ module.exports = function(input, done) {
         }
         return catalogue.getSourcePackageFromURL(sourcePackageURL);
       })
-//TODO load hyperty
+  //TODO load hyperty
    .then(function(sourcePackage) {
+    try {
+      // console.log(sourcePackage.sourceCode);
+      // eval.apply(process._miniBus, [sourcePackage.sourceCode]);
+      let runtime = new Runtime(RuntimeFactory, domain);
+      // console.log(runtime);
+      eventEmitter.on('message', function(event) {
+        console.log('core.js ::: core:loadedHyperty');
+        if (event.data.to === 'core:loadHyperty') {
+          let descriptorRef = event.data.body.descriptorRef;
+          let hyperty = searchHyperty(runtime, descriptorRef);
+          if (hyperty) {
+            returnHyperty(event.source, {runtimeHypertyURL: hyperty.hypertyURL});
+          } else {
+            runtime.loadHyperty(descriptorRef)
+                .then(returnHyperty.bind(null, event.source));
+          }
+        } else if (event.data.to === 'core:loadStub') {
+          runtime.loadStub(event.data.body.domain);
+        }
+      }, false);
+      console.log('##sending to parent');
+      process.send({data:'runtime:installed', body:{}});
+    } catch (e) {
+      console.log('error is ', e);
+    }
 
-    // console.log(global);
-    // eval.apply(window, [sourcePackage.sourceCode]);
-    // let runtime = new Runtime(RuntimeFactory, window.location.host);
-    // window.addEventListener('message', function(event) {
-    //     if (event.data.to === 'core:loadHyperty') {
-    //       let descriptorRef = event.data.body.descriptorRef;
-    //       let hyperty = searchHyperty(runtime, descriptorRef);
-    //
-    //       if (hyperty) {
-    //         returnHyperty(event.source, {runtimeHypertyURL: hyperty.hypertyURL});
-    //       }else {
-    //         runtime.loadHyperty(descriptorRef)
-    //             .then(returnHyperty.bind(null, event.source));
-    //       }
-    //     } else if (event.data.to === 'core:loadStub') {
-    //       runtime.loadStub(event.data.body.domain);
-    //     }
-    //   }, false);
-    done({data:'runtime:installed', body:{}}, '*');
   });
-};
+});

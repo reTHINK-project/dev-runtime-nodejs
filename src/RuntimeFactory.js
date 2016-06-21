@@ -34,10 +34,12 @@ import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/src/R
 
 const RuntimeFactory = Object.create({
     createSandbox() {
+      console.log('#### in RuntimeFactory SandboxWorker');
       return new SandboxWorker('./context-service.js');
     },
 
     createAppSandbox() {
+      console.log('###### in RuntimeFactory SandboxApp');
       return new SandboxApp();
     },
 
