@@ -67,7 +67,7 @@ var RuntimeCatalogueLocal = function(_RuntimeCatalogue) {
         if (identity) {
           identity = identity.substring(identity.lastIndexOf('/') + 1);
         }
-
+        console.log('identity is ::', identity);
         // type + '://' + domain + '/resources/descriptors/Hyperties.json'
         // type + '://' + domain + '/resources/descriptors/Runtimes.json'
         // type + '://' + domain + '/resources/descriptors/IDPProxys.json'
@@ -111,9 +111,9 @@ var RuntimeCatalogueLocal = function(_RuntimeCatalogue) {
             _this[resource] = descriptor;
           }
 
-          // if (!_this[resource].hasOwnProperty(identity)) {
-          //   reject('The ' + identity + ' is not available on ' + resource);
-          // }
+          if (!_this[resource].hasOwnProperty(identity)) {
+            reject('The ' + identity + ' is not available on ' + resource);
+          }
 
           var result = _this[resource][identity];
 

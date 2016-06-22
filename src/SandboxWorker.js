@@ -29,14 +29,15 @@ export default class SandboxWorker extends Sandbox{
     super(script);
     console.log('#### in Sandbox Worker');
     this.type = SandboxType.NORMAL;
-    if (!!Worker) {
+    this._worker = child.fork(__dirname + '/ContextServiceProvider.js');
+
+    if (!!this._worker) {
       // this._worker = new Worker(script);
-      // registry.runtime = child.fork(__dirname + '/core.js');
-      this._worker = child.fork(function(script) {
-        console.log('Sandbox worker created');
-      });
+      console.log('Sandbox worker created');
       this._worker.on('message', function(e) {
-        this.on(e);
+        //TODO
+        //EventEmitter.emit('monEventCustom', e);
+        // this.on(e);
       });
       this._worker.send('');
     } else {

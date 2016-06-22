@@ -23,16 +23,16 @@
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 
-self._miniBus = new MiniBus();
-self._miniBus._onPostMessage = function(msg) {
-    self.postMessage(msg);
+process._miniBus = new MiniBus();
+process._miniBus.on = function(msg) {
+    process.emit(msg);
   };
-self.addEventListener('message', function(event) {
-    self._miniBus._onMessage(event.data);
+process.on('message', function(event) {
+    process._miniBus._onMessage(event.data);
   });
 
-self._registry = new SandboxRegistry(self._miniBus);
-self._registry._create = function(url, sourceCode, config) {
-    eval.apply(self, [sourceCode]);
-    return activate(url, self._miniBus, config);
+process._registry = new SandboxRegistry(process._miniBus);
+process._registry._create = function(url, sourceCode, config) {
+    // eval.apply(process, [sourceCode]);
+    return activate(url, process._miniBus, config);
   };

@@ -31,7 +31,7 @@ import MiniBus from 'runtime-core/dist/minibus';
 // listen on event exporte from another core module
 
 function create(myApp) {
-  console.log('\n***** in ContextApp ******');
+  console.log('\n****** In ContextApp ******');
   process._miniBus = new MiniBus();
   process._miniBus._onPostMessage = function(msg) {
       // myApp.send(msg, '*');

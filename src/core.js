@@ -28,8 +28,8 @@ import URI from 'urijs';
 import RuntimeFactory from './RuntimeFactory';
 import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 //require the EventEmitter from the events module
-const EventEmitter = require('events').EventEmitter;
-const eventEmitter = new EventEmitter();
+// const EventEmitter = require('events').EventEmitter;
+// const eventEmitter = new EventEmitter();
 let domain = 'localhost:8080';
 
 let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
@@ -62,7 +62,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
 
       let descriptorRef = JSON.parse(descriptor);
 
-      console.log('descriptorRef-------------------', descriptorRef);
+      // console.log('descriptorRef-------------------', descriptorRef);
       let sourcePackageURL = descriptorRef.Runtime.sourcePackageURL;
       if (sourcePackageURL === '/sourcePackage') {
         return descriptorRef.Runtime.sourcePackage;
@@ -92,7 +92,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
       }
     }, false);
     console.log('##sending to parent');
-    process.send({data:'runtime:installed', body:{}});
+    process.send({to:'runtime:installed', body:{}});
   } catch (e) {
     console.log('error is ', e);
   }
