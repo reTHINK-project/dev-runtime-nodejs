@@ -29,7 +29,6 @@ import MiniBus from 'runtime-core/dist/minibus';
 // const eventEmitter = new EventEmitter();
 
 // listen on event exporte from another core module
-var self = {};
 
 function create(myApp) {
   console.log('\n***** in ContextApp ******');
@@ -37,14 +36,14 @@ function create(myApp) {
   process._miniBus._onPostMessage = function(msg) {
       // myApp.send(msg, '*');
       myApp.send({do:'installed hyperty'});
-      console.log('process miniBus sebnd message');
+      console.log('process miniBus message sent');
       // eventEmitter.emit(msg);
 
     };
 
   process.on('message', function(event) {
     console.log('msg');
-    if (event.data.to.startsWith('runtime:loadedHyperty'))
+    if (event.to.startsWith('runtime:loadedHyperty'))
     console.log('\n received message: runtime:loadedHyperty');
     return;
 

@@ -40,16 +40,16 @@ export default class SandboxApp extends Sandbox{
     super();
 
     this.type = SandboxType.NORMAL;
-    // window.on('message', (e) => {
-    //     console.log('SandboxApp recieved message');
-    //     if (!!!this.origin)
-    //        this.origin = e.source;
-    //
-    //     if (e.data.to.startsWith('core:'))
-    //         return;
-    //
-    //     this._onMessage(e.data);
-    //   });
+    process.on('message', function(e) {
+        console.log('SandboxApp recieved message');
+        if (!!!this.origin)
+           this.origin = e.source;
+
+        if (e.to.startsWith('core:'))
+            return;
+
+        this._onMessage(e.data);
+      });
   }
 
   _onPostMessage(msg) {

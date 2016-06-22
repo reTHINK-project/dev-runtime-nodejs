@@ -60,20 +60,20 @@ let runtimeProxy = {
 
   requireHyperty: (hypertyDescriptor)=> {
         return new Promise((resolve, reject)=> {
-              let loaded = (msg)=> {
-                      registry.runtime.on('message', function(msg) {
-                        console.log('------------------- In parent Process  -------------------------');
-                        console.log('message is :', msg);
+          registry.runtime.on('message', function(msg) {
 
-                        if (msg.data.to === 'runtime:loadedHyperty') {
-                          console.log('runtime:loadedHyperty is OK');
-                          resolve(buildMsg(app.getHyperty(msg.data.body.runtimeHypertyURL), msg.data));
-                        }
-                      });
-                    };
-              console.log('registry.runtime.send');
-              // registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
-            });
+            console.log('------------------- Message from runtime core child  -------------------------');
+            console.log('message is :', msg);
+
+            if (msg.data.to === 'runtime:loadedHyperty') {
+              console.log('runtime:loadedHyperty is OK');
+              resolve(buildMsg(app.getHyperty(msg.data.body.runtimeHypertyURL), msg.data));
+            }
+
+          });
+          console.log('registry.runtime.send');
+          registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
+        });
       },
 
   requireProtostub: (domain)=> {
@@ -121,7 +121,7 @@ let RethinkNode = {
       if (!!development) {
         runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';//`https://${domain}/resources/descriptors/Runtimes.json`
         domain = domain || new URI(runtimeURL).host();
-        console.log('runtimeURL is ', runtimeURL);
+        // console.log('runtimeURL is ', runtimeURL);
       }else {
         runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';
         domain = domain || new URI(runtimeURL).host().replace('catalogue.', '');

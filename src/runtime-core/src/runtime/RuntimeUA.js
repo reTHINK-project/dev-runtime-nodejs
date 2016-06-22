@@ -63,7 +63,8 @@ class RuntimeUA {
     let _this = this;
 
     _this.runtimeFactory = runtimeFactory;
-    _this.runtimeCatalogue = runtimeFactory.createRuntimeCatalogue();
+    console.log('*****************Go there');
+    _this.runtimeCatalogue = runtimeFactory.createRuntimeCatalogueRemote();
 
     // TODO: post and return registry/hypertyRuntimeInstance to and from Back-end Service
     // the response is like: runtime://sp1/123
@@ -188,10 +189,11 @@ class RuntimeUA {
       // because at this moment it is incompatible with nodejs;
       // Probably we need to pass a factory like we do for sandboxes;
       console.info('------------------ Hyperty ------------------------');
-      console.info('Get hyperty descriptor for :', hypertyDescriptorURL);
+      // console.info('Get hyperty descriptor for :', hypertyDescriptorURL);
       return _this.runtimeCatalogue.getHypertyDescriptor(hypertyDescriptorURL).then(function(hypertyDescriptor) {
         // at this point, we have completed "step 2 and 3" as shown in https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md
-        console.info('1: return hyperty descriptor', hypertyDescriptor);
+        console.info('1: return hyperty descriptor');
+        // console.info('1: return hyperty descriptor', hypertyDescriptor);
 
         // hyperty contains the full path of the catalogue URL, e.g.
         // catalogue.rethink.eu/.well-known/..........

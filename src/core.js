@@ -39,9 +39,8 @@ let runtimeURL = 'http://' + domain + '/.well-known/runtime/Runtime';//.well-kno
 let development = parameters.development === 'true';
 let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
-function returnHyperty(source, hyperty) {
-  done({to:'runtime:loadedHyperty', body: hyperty}, '*');
-  // source.postMessage({to: 'runtime:loadedHyperty', body: hyperty}, '*');
+function returnHyperty(hyperty) {
+  process.send({to:'runtime:loadedHyperty', body: hyperty});
 }
 
 function searchHyperty(runtime, descriptor) {
@@ -56,44 +55,47 @@ function searchHyperty(runtime, descriptor) {
   return hyperty;
 }
 
-process.on('message', function() {
-  console.log('\n------------------- In child thread core.js  --------------------');
-  catalogue.getRuntimeDescriptor(runtimeURL)
-    .then(function(descriptor) {
-        let descriptorRef = JSON.parse(descriptor);
-        let sourcePackageURL = descriptorRef.Runtime.sourcePackageURL;
-        if (sourcePackageURL === '/sourcePackage') {
-          return descriptorRef.Runtime.sourcePackage;
-        }
-        return catalogue.getSourcePackageFromURL(sourcePackageURL);
-      })
-  //TODO load hyperty
-   .then(function(sourcePackage) {
-    try {
-      // console.log(sourcePackage.sourceCode);
-      // eval.apply(process._miniBus, [sourcePackage.sourceCode]);
-      let runtime = new Runtime(RuntimeFactory, domain);
-      // console.log(runtime);
-      eventEmitter.on('message', function(event) {
-        console.log('core.js ::: core:loadedHyperty');
-        if (event.data.to === 'core:loadHyperty') {
-          let descriptorRef = event.data.body.descriptorRef;
-          let hyperty = searchHyperty(runtime, descriptorRef);
-          if (hyperty) {
-            returnHyperty(event.source, {runtimeHypertyURL: hyperty.hypertyURL});
-          } else {
-            runtime.loadHyperty(descriptorRef)
-                .then(returnHyperty.bind(null, event.source));
-          }
-        } else if (event.data.to === 'core:loadStub') {
-          runtime.loadStub(event.data.body.domain);
-        }
-      }, false);
-      console.log('##sending to parent');
-      process.send({data:'runtime:installed', body:{}});
-    } catch (e) {
-      console.log('error is ', e);
-    }
+// process.on('message', function(msg) {
+console.log('\n------------------- In child thread core.js  --------------------');
+catalogue.getRuntimeDescriptor(runtimeURL)
+  .then(function(descriptor) {
 
-  });
+      let descriptorRef = JSON.parse(descriptor);
+
+      console.log('descriptorRef-------------------', descriptorRef);
+      let sourcePackageURL = descriptorRef.Runtime.sourcePackageURL;
+      if (sourcePackageURL === '/sourcePackage') {
+        return descriptorRef.Runtime.sourcePackage;
+      }
+      return catalogue.getSourcePackageFromURL(sourcePackageURL);
+    })
+//TODO load hyperty
+ .then(function(sourcePackage) {
+  try {
+    // console.log(sourcePackage.sourceCode);
+    // eval.apply(process._miniBus, [sourcePackage.sourceCode]);
+    let runtime = new Runtime(RuntimeFactory, domain);
+    // console.log(runtime);
+    process.on('message', function(msg) {
+      // console.log('core.js ::: core:loadedHyperty', msg);
+      if (msg.to === 'core:loadHyperty') {
+        let descriptor = msg.body.descriptor;
+        let hyperty = searchHyperty(runtime, descriptor);
+        if (hyperty) {
+          returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+        } else {
+          runtime.loadHyperty(descriptor)
+              .then(returnHyperty);
+        }
+      } else if (msg.to === 'core:loadStub') {
+        runtime.loadStub(msg.body.domain);
+      }
+    }, false);
+    console.log('##sending to parent');
+    process.send({data:'runtime:installed', body:{}});
+  } catch (e) {
+    console.log('error is ', e);
+  }
 });
+
+// });

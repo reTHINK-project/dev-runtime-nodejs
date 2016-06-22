@@ -52,6 +52,17 @@ const RuntimeFactory = Object.create({
           this.catalogue = development || new RuntimeCatalogueLocal(this);
 
       return this.catalogue;
+    },
+    createRuntimeCatalogueRemote() {
+      console.log('*HERE');
+      let _this = this;
+      let factory = {
+        createHttpRequest: function() {
+          return _this.createHttpRequest();
+        }
+      };
+
+      return new RuntimeCatalogueLocal(factory);
     }
 
   });

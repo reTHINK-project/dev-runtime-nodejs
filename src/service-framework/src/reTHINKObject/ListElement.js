@@ -20,31 +20,9 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-let child = require('child_process');
 
-export default class SandboxWorker extends Sandbox{
-  constructor(script) {
-    super(script);
-    console.log('#### in Sandbox Worker');
-    this.type = SandboxType.NORMAL;
-    if (!!Worker) {
-      // this._worker = new Worker(script);
-      // registry.runtime = child.fork(__dirname + '/core.js');
-      this._worker = child.fork(function(script) {
-        console.log('Sandbox worker created');
-      });
-      this._worker.on('message', function(e) {
-        this.on(e);
-      });
-      this._worker.send('');
-    } else {
-      throw new Error('Your environment does not support worker \n', e);
-    }
-  }
-
-  _onPostMessage(msg) {
-    this._worker.postMessage(msg);
-  }
-}
+/**
+ * Created by amo on 16/11/2015.
+ */
+// Probably not going to be needed. Not clearly defined on the specification what this is.
+"use strict";
