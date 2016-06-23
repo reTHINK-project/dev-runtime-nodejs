@@ -29,17 +29,19 @@ export default class SandboxWorker extends Sandbox{
     super(script);
     console.log('#### in Sandbox Worker');
     this.type = SandboxType.NORMAL;
-    this._worker = child.fork(__dirname + '/ContextServiceProvider.js');
+    this._worker = child.fork(__dirname + '/testSandbox.js');
 
     if (!!this._worker) {
       // this._worker = new Worker(script);
       console.log('Sandbox worker created');
-      this._worker.on('message', function(e) {
+      this._worker.on('message', (e) => {
+        // this.monEventEmiter.emit('customEvent', e);
         //TODO
         //EventEmitter.emit('monEventCustom', e);
         // this.on(e);
       });
       this._worker.send('');
+      eventEmitter.emit('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
@@ -47,5 +49,7 @@ export default class SandboxWorker extends Sandbox{
 
   _onPostMessage(msg) {
     this._worker.postMessage(msg);
+    // eventEmitter.emit('event', 'msg');
+
   }
 }

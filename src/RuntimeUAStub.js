@@ -41,6 +41,7 @@ let window4Node = {};
 // });
 // console.log(__dirname);
 let child = require('child_process');
+registry.runtime = child.fork(__dirname + '/core.js');
 
 // chiko.on('message', function(m) {
 //   console.log('PARENT got message:', m);
@@ -67,7 +68,7 @@ let runtimeProxy = {
 
             if (msg.to === 'runtime:loadedHyperty') {
               console.log('runtime:loadedHyperty is OK');
-              resolve(buildMsg(app.getHyperty(msg.data.body.runtimeHypertyURL), msg.data));
+              resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
             }
 
           });
@@ -89,7 +90,7 @@ let RethinkNode = {
 
               let runtime = this.getRuntime(runtimeURL, domain, development);
               // console.log(runtime);
-              registry.runtime = child.fork(__dirname + '/core.js');
+
               registry.runtime
               .send({do:'install runtime core', data:window4Node});
               registry.runtime.on('message', function(msg) {

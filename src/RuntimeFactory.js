@@ -24,47 +24,57 @@ import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';//FIXME
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from './RuntimeCatalogue.js';//FIXME
 // import {RuntimeCatalogueLocal, RuntimeCatalogue} from './../service-framework/src/RuntimeCatalogue.js';
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/src/RuntimeCatalogue.js';
+// import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/src/RuntimeCatalogue.js';
 
 // let SandboxWorker = require('./SandboxWorker');
 // let SandboxApp = require('./SandboxApp');
 // let Request = require('./Request');
 
 const RuntimeFactory = Object.create({
-    createSandbox() {
-      console.log('#### in RuntimeFactory SandboxWorker');
-      return new SandboxWorker('./context-service.js');
-    },
+  //
+  // eventEmitter() {
+  //   if ((this.eventEmitter === 'undefined') || (this.eventEmitter === null))
+  //   {
+  //     this.eventEmitter = new require('events').EventEmitter();
+  //   }
+  //   return this.eventEmitter;
+  // },
 
-    createAppSandbox() {
-      console.log('###### in RuntimeFactory SandboxApp');
-      return new SandboxApp();
-    },
+  createSandbox() {
+    console.log('#### in RuntimeFactory SandboxWorker');
+    return new SandboxWorker('./ContextServiceProvider.js');
+  },
 
-    createHttpRequest() {
-      let request = new Request();
-      return request;
-    },
-    createRuntimeCatalogue(development) {
-      if (!this.catalogue)
-          this.catalogue = development || new RuntimeCatalogueLocal(this);
+  createAppSandbox() {
+    console.log('###### in RuntimeFactory SandboxApp');
+    return new SandboxApp();
+  },
 
-      return this.catalogue;
-    },
-    createRuntimeCatalogueRemote() {
-      console.log('*HERE');
-      let _this = this;
-      let factory = {
-        createHttpRequest: function() {
-          return _this.createHttpRequest();
-        }
-      };
+  createHttpRequest() {
+    let request = new Request();
+    return request;
+  },
+  createRuntimeCatalogue(development) {
+    if (!this.catalogue)
+        this.catalogue = development || new RuntimeCatalogueLocal(this);
+    // this.catalogue = development ? new RuntimeCatalogueLocal(this) : new RuntimeCatalogue(this);
 
-      return new RuntimeCatalogueLocal(factory);
-    }
+    return this.catalogue;
+  },
+  createRuntimeCatalogueRemote() {
+    console.log('*HERE');
+    let _this = this;
+    let factory = {
+      createHttpRequest: function() {
+        return _this.createHttpRequest();
+      }
+    };
 
-  });
+    return new RuntimeCatalogueLocal(factory);
+  }
+
+});
 
 export default RuntimeFactory;

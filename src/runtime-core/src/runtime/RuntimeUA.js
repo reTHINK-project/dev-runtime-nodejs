@@ -206,17 +206,17 @@ class RuntimeUA {
         _hypertyDescriptor = JSON.parse(hypertyDescriptor);
 
         // let descriptorRef = JSON.parse(hypertyDescriptor);
-        console.log('hypertyDescriptorURL is :::', hypertyDescriptorURL, typeof identity);
+        console.log('hypertyDescriptorURL is :::', hypertyDescriptorURL,  identity);
         // console.log('\n hypertyDescriptor is ::', hypertyDescriptor.identity.sourcePackageURL);
         // console.log('\n hypertyDescriptor is ::', descriptorRef.identity.sourcePackageURL);
 
-        let sourcePackageURL = _hypertyDescriptor.UserStatus.sourcePackageURL;
+        let sourcePackageURL = _hypertyDescriptor[identity].sourcePackageURL;
 
-        console.log('sourcePackageURL is :', _hypertyDescriptor.UserStatus.sourcePackageURL);
+        console.log('sourcePackageURL is :',  typeof _hypertyDescriptor, sourcePackageURL);
 
         if (sourcePackageURL === '/sourcePackage') {
           // console.log('hypertyDescriptor.identity.sourcePackage is : ', _hypertyDescriptor.UserStatus.sourcePackage);
-          return _hypertyDescriptor.UserStatus.sourcePackage;
+          return _hypertyDescriptor[identity].sourcePackage;
         }
 
         // Get the hyperty source code
@@ -306,17 +306,17 @@ class RuntimeUA {
 
         // Extend original hyperty configuration;
         let configuration = {};
-        if (!emptyObject(_hypertyDescriptor.UserStatus.configuration)) {
+        if (!emptyObject(_hypertyDescriptor[identity].configuration)) {
           try {
-            configuration = Object.assign({}, JSON.parse(_hypertyDescriptor.UserStatus.configuration));
+            configuration = Object.assign({}, JSON.parse(_hypertyDescriptor[identity].configuration));
           } catch (e) {
-            configuration = _hypertyDescriptor.UserStatus.configuration;
+            configuration = _hypertyDescriptor[identity].configuration;
           }
         }
         configuration.runtimeURL = _this.runtimeURL;
 
         // We will deploy the component - step 17 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
-        return _hypertySandbox.deployComponent(_hypertySourcePackage.UserStatus.sourceCode, _hypertyURL, configuration);
+        return _hypertySandbox.deployComponent(_hypertyDescriptor[identity].sourceCode, _hypertyURL, configuration);
       })
       .then(function(deployComponentStatus) {
         console.info('7: Deploy component status for hyperty: ', deployComponentStatus);

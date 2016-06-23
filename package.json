@@ -4,7 +4,7 @@
   "description": "browser runtime development",
   "main": "src/rethink.js",
   "scripts": {
-    "start": "mkdir -p dist/ && babel --presets es2015 src/ --out-dir dist/ && babel --presets es2015 server.js -o dist/server.js && node dist/server.js",
+    "start": "mkdir -p dist/ && babel --presets es2015 src/ ./node_modules/service-framework/src/RuntimeCatalogue.js --out-dir dist/ && babel --presets es2015 server.js -o dist/server.js && node dist/server.js",
     "test": "karma start",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install"
   },
@@ -70,7 +70,7 @@
     "object.observe": "^0.2.6",
     "request": "^2.72.0",
     "runtime-core": "github:rethink-project/dev-runtime-core#master",
-    "service-framework": "git+https://github.com/reTHINK-project/dev-service-framework.git#develop",
+    "service-framework": "git+https://github.com/reTHINK-project/dev-service-framework.git#master",
     "threads": "^0.5.4",
     "tv4": "^1.2.7",
     "urijs": "^1.17.1"
