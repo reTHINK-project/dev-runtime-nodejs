@@ -28,7 +28,6 @@ import Registry from '../registry/Registry';
 import IdentityModule from '../identity/IdentityModule';
 import PolicyEngine from '../policy/PolicyEngine';
 import MessageBus from '../bus/MessageBus';
-
 // import GraphConnector from '../graphconnector/GraphConnector';
 
 import SyncherManager from '../syncher/SyncherManager';
@@ -64,8 +63,7 @@ class RuntimeUA {
     let _this = this;
 
     _this.runtimeFactory = runtimeFactory;
-    console.log('*****************Go there');
-    _this.runtimeCatalogue = runtimeFactory.createRuntimeCatalogueRemote();
+    _this.runtimeCatalogue = runtimeFactory.createRuntimeCatalogue();
 
     // TODO: post and return registry/hypertyRuntimeInstance to and from Back-end Service
     // the response is like: runtime://sp1/123
@@ -190,33 +188,19 @@ class RuntimeUA {
       // because at this moment it is incompatible with nodejs;
       // Probably we need to pass a factory like we do for sandboxes;
       console.info('------------------ Hyperty ------------------------');
-      // console.info('Get hyperty descriptor for :', hypertyDescriptorURL);
+      console.info('Get hyperty descriptor for :', hypertyDescriptorURL);
       return _this.runtimeCatalogue.getHypertyDescriptor(hypertyDescriptorURL).then(function(hypertyDescriptor) {
         // at this point, we have completed "step 2 and 3" as shown in https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md
-        console.info('1: return hyperty descriptor');
-        // console.info('1: return hyperty descriptor', hypertyDescriptor);
+        console.info('1: return hyperty descriptor', hypertyDescriptor);
 
         // hyperty contains the full path of the catalogue URL, e.g.
         // catalogue.rethink.eu/.well-known/..........
-        let dividedURL = divideURL(hypertyDescriptorURL);
-        let identity = dividedURL.identity;
-        if (identity) {
-          identity = identity.substring(identity.lastIndexOf('/') + 1);
-        }
-        _hypertyDescriptor = JSON.parse(hypertyDescriptor);
+        _hypertyDescriptor = hypertyDescriptor;
 
-        // let descriptorRef = JSON.parse(hypertyDescriptor);
-        console.log('hypertyDescriptorURL is :::', hypertyDescriptorURL,  identity);
-        // console.log('\n hypertyDescriptor is ::', hypertyDescriptor.identity.sourcePackageURL);
-        // console.log('\n hypertyDescriptor is ::', descriptorRef.identity.sourcePackageURL);
-
-        let sourcePackageURL = _hypertyDescriptor[identity].sourcePackageURL;
-
-        console.log('sourcePackageURL is :',  typeof _hypertyDescriptor, sourcePackageURL);
+        let sourcePackageURL = hypertyDescriptor.sourcePackageURL;
 
         if (sourcePackageURL === '/sourcePackage') {
-          // console.log('hypertyDescriptor.identity.sourcePackage is : ', _hypertyDescriptor.UserStatus.sourcePackage);
-          return _hypertyDescriptor[identity].sourcePackage;
+          return hypertyDescriptor.sourcePackage;
         }
 
         // Get the hyperty source code
@@ -242,7 +226,7 @@ class RuntimeUA {
       })
       .then(function(policyResult) {
         console.info('3: return policy engine result: ', policyResult);
-        // console.log('_hypertySourcePackage', _hypertySourcePackage);
+
         // we have completed step 6 to 9 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
         //
         // Steps 6 -- 9
@@ -271,7 +255,7 @@ class RuntimeUA {
         // this will return the sandbox or one promise to getSandbox;
         return sandbox;
       }).then(function(sandbox) {
-        console.info('4: return the sandbox : \n', sandbox);
+        console.info('4: return the sandbox', sandbox);
 
         // Return the sandbox indepentely if it running in the same sandbox or not
         // we have completed step 14 here.
@@ -299,24 +283,24 @@ class RuntimeUA {
         return _this.registry.registerHyperty(sandbox, hypertyDescriptorURL, _hypertyDescriptor);
       })
       .then(function(hypertyURL) {
-        // console.info('6: Hyperty url, after register hyperty', hypertyURL);
-        console.info('6: Hyperty url, after register hyperty');
+        console.info('6: Hyperty url, after register hyperty', hypertyURL);
+
         // we have completed step 16 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
         _hypertyURL = hypertyURL;
 
         // Extend original hyperty configuration;
         let configuration = {};
-        if (!emptyObject(_hypertyDescriptor[identity].configuration)) {
+        if (!emptyObject(_hypertyDescriptor.configuration)) {
           try {
-            configuration = Object.assign({}, JSON.parse(_hypertyDescriptor[identity].configuration));
+            configuration = Object.assign({}, JSON.parse(_hypertyDescriptor.configuration));
           } catch (e) {
-            configuration = _hypertyDescriptor[identity].configuration;
+            configuration = _hypertyDescriptor.configuration;
           }
         }
         configuration.runtimeURL = _this.runtimeURL;
 
         // We will deploy the component - step 17 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
-        return _hypertySandbox.deployComponent(_hypertyDescriptor[identity].sourceCode, _hypertyURL, configuration);
+        return _hypertySandbox.deployComponent(_hypertySourcePackage.sourceCode, _hypertyURL, configuration);
       })
       .then(function(deployComponentStatus) {
         console.info('7: Deploy component status for hyperty: ', deployComponentStatus);
