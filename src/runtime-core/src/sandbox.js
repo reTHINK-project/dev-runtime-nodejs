@@ -19,40 +19,9 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
-*/
+**/
+import Sandbox from './sandbox/Sandbox';
+import {SandboxType} from './sandbox/Sandbox';
+import SandboxRegistry from './sandbox/SandboxRegistry';
 
-
-//global : Its a global namespace object
-// hince we use global instead of window
-
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-
-export default class SandboxApp extends Sandbox{
-  constructor() {
-
-    console.log('########### Sandbox App');
-    super();
-    this.type = SandboxType.NORMAL;
-
-    // this.eventEmitter = eventEmitter;
-
-    process.on('message', (e) => {
-        if (!!!this)
-        this.origin = process;
-        console.log('message  is ::', e);
-
-        if (e.to.startsWith('core:'))
-          return;
-
-        this._onMessage(e);
-      });
-  }
-
-  _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message');
-    this.origin.send(msg, '*');
-
-  }
-}
+export {Sandbox, SandboxType, SandboxRegistry};

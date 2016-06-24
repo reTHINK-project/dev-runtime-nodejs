@@ -19,40 +19,41 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
+**/
+/**
+*   @author: Gil Dias (gil.dias@tecnico.ulisboa.pt)
+*   Registry Data Model includes all Objects to be handled by the Registry functionality including
 */
+class RegistryDataModel {
 
+  constructor(id, url, descriptor, startingTime, lastModified, status, stubs, stubsConfiguration) {
+    let _this = this;
 
-//global : Its a global namespace object
-// hince we use global instead of window
-
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-
-export default class SandboxApp extends Sandbox{
-  constructor() {
-
-    console.log('########### Sandbox App');
-    super();
-    this.type = SandboxType.NORMAL;
-
-    // this.eventEmitter = eventEmitter;
-
-    process.on('message', (e) => {
-        if (!!!this)
-        this.origin = process;
-        console.log('message  is ::', e);
-
-        if (e.to.startsWith('core:'))
-          return;
-
-        this._onMessage(e);
-      });
+    _this._id = id;
+    _this._url = url;
+    _this._descriptor = descriptor;
+    _this._startingTime = startingTime;
+    _this._lastModified = lastModified;
+    _this._status = status;
+    _this._stubs = stubs;
+    _this._stubsConfiguration = stubsConfiguration;
   }
 
-  _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message');
-    this.origin.send(msg, '*');
-
+  get id() {
+    let _this = this;
+    return _this._id;
   }
+
+  get url() {
+    let _this = this;
+    return _this._url;
+  }
+
+  get descriptor() {
+    let _this = this;
+    return _this._descriptor;
+  }
+
 }
+
+export default RegistryDataModel;

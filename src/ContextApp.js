@@ -23,26 +23,36 @@
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 
+// require the EventEmitter from the events module
+// const EventEmitter = require('events').EventEmitter;
+// // create an instance of the EventEmitter object
+// const eventEmitter = new EventEmitter();
+
+// listen on event exporte from another core module
+
 function create(myApp) {
-  console.log('\n***** in ContextApp ******');
-  // we replace window by global
+  console.log('\n****** I ContextApp ******');
   process._miniBus = new MiniBus();
   process._miniBus._onPostMessage = function(msg) {
       // myApp.send(msg, '*');
-      // myApp.send({do:'installed hyperty'});
-      done(msg, '*');
+      myApp.send({do:'installed hyperty'});
+      console.log('process miniBus message sent');
+      // eventEmitter.emit(msg);
+
     };
-  process.addListener('message', function(event) {
+
+  process.on('message', function(event) {
     console.log('msg');
-    if (event.data.to.startsWith('runtime:loadedHyperty'))
-        return;
+    if (event.to.startsWith('runtime:loadedHyperty'))
+    console.log('\n received message: runtime:loadedHyperty');
+    return;
 
-    process._miniBus._onMessage(event.data);
+    process._miniBus._onMessage(event);
   }, false);
-
+  // //
   process._registry = new SandboxRegistry(process._miniBus);
   process._registry._create = function(url, sourceCode, config) {
-      eval.apply(process, [sourceCode]);
+      eval.apply(process._registry, [sourceCode]);
       return activate(url, process._miniBus, config);
     };
 };

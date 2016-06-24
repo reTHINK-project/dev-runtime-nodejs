@@ -58,7 +58,7 @@ class Request {
       let protocolmap = {
         'localhost://': 'https://',
         'undefined://': 'https://',
-        'hyperty-catalogue://': 'https://',
+        'hyperty-catalogue://': 'http://',
         'https://': 'https://',
         'http://': 'http://'
       };
@@ -83,7 +83,7 @@ class Request {
         // console.log('this is response.body :', body);
 
         if (response.statusCode === 200) {
-          console.log('got http response', response.statusCode);
+          console.log('got http response ::', response.statusCode);
           resolve(body);
         } else {
           console.log('rejecting promise because of response code: 200 != ', response.statusCode);

@@ -19,40 +19,33 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
-*/
+**/
+import localStorage from 'universal-localstorage'
 
+const persistenceManager = {
+    set: (key, version, value) => {
+        localStorage.setItem(key, JSON.stringify({'version': version, 'value': value}))
+    },
 
-//global : Its a global namespace object
-// hince we use global instead of window
+    get: (key) => {
+        try {
+            return JSON.parse(localStorage.getItem(key)).value
+        } catch (e) {
+            // return undefined
+        }
+    },
 
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
+    getVersion: (key) => {
+        try {
+            return JSON.parse(localStorage.getItem(key)).version
+        } catch (e) {
+            // return undefined
+        }
+    },
 
-export default class SandboxApp extends Sandbox{
-  constructor() {
+    delete: (key) => {
+        localStorage.removeItem(key)
+    }
+};
 
-    console.log('########### Sandbox App');
-    super();
-    this.type = SandboxType.NORMAL;
-
-    // this.eventEmitter = eventEmitter;
-
-    process.on('message', (e) => {
-        if (!!!this)
-        this.origin = process;
-        console.log('message  is ::', e);
-
-        if (e.to.startsWith('core:'))
-          return;
-
-        this._onMessage(e);
-      });
-  }
-
-  _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message');
-    this.origin.send(msg, '*');
-
-  }
-}
+export default persistenceManager

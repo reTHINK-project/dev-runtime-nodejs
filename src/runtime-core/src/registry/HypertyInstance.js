@@ -19,40 +19,39 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
+**/
+import RegistryDataModel from './RegistryDataModel';
+
+/**
+*   @author: Gil Dias (gil.dias@tecnico.ulisboa.pt)
+*   HypertyInstance Data Model used to model instances of Hyperties running in devices and servers.
 */
+class HypertyInstance extends RegistryDataModel {
 
-
-//global : Its a global namespace object
-// hince we use global instead of window
-
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-
-export default class SandboxApp extends Sandbox{
-  constructor() {
-
-    console.log('########### Sandbox App');
-    super();
-    this.type = SandboxType.NORMAL;
-
-    // this.eventEmitter = eventEmitter;
-
-    process.on('message', (e) => {
-        if (!!!this)
-        this.origin = process;
-        console.log('message  is ::', e);
-
-        if (e.to.startsWith('core:'))
-          return;
-
-        this._onMessage(e);
-      });
+  constructor(id, url, descriptor, hypertyURL, user, guid, runtime, context) {
+    super(id, url, descriptor);
+    let _this = this;
+    _this._hypertyURL = hypertyURL;
+    _this._user = user;
+    _this._guid = guid;
+    _this._runtime = runtime;
+    _this._context = context;
   }
 
-  _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message');
-    this.origin.send(msg, '*');
+  set user(identity) {
+    let _this = this;
+    _this.user = identity;
+  }
 
+  get user() {
+    let _this = this;
+    return _this._user;
+  }
+
+  get hypertyURL() {
+    let _this = this;
+    return _this._hypertyURL;
   }
 }
+
+export default HypertyInstance;

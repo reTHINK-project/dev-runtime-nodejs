@@ -19,40 +19,36 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
-*/
+**/
+/**
+ * EventEmitter
+ * All classes which extends this, can have addEventListener and trigger events;
+ */
+class EventEmitter {
 
-
-//global : Its a global namespace object
-// hince we use global instead of window
-
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
-
-export default class SandboxApp extends Sandbox{
-  constructor() {
-
-    console.log('########### Sandbox App');
-    super();
-    this.type = SandboxType.NORMAL;
-
-    // this.eventEmitter = eventEmitter;
-
-    process.on('message', (e) => {
-        if (!!!this)
-        this.origin = process;
-        console.log('message  is ::', e);
-
-        if (e.to.startsWith('core:'))
-          return;
-
-        this._onMessage(e);
-      });
+  /**
+   * addEventListener listen for an eventType
+   * @param  {string}         eventType - listening for this type of event
+   * @param  {Function}       cb        - callback function will be executed when the event it is invoked
+   */
+  addEventListener(eventType, cb) {
+    let _this = this;
+    _this[eventType] = cb;
   }
 
-  _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message');
-    this.origin.send(msg, '*');
+  /**
+   * Invoke the eventType
+   * @param  {string} eventType - event will be invoked
+   * @param  {object} params - parameters will be passed to the addEventListener
+   */
+  trigger(eventType, params) {
+    let _this = this;
 
+    if (_this[eventType]) {
+      _this[eventType](params);
+    }
   }
+
 }
+
+export default EventEmitter;

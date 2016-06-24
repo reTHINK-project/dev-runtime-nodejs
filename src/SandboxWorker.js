@@ -22,33 +22,26 @@
 **/
 import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
-
-const threads = require('threads');
-const config  = threads.config;
-const spawn   = threads.spawn;
-
-// Set base paths to thread scripts
-config.set({
-  basepath: {
-    // browser: 'http://myserver.local/thread-scripts',
-    node: __dirname
-  }
-});
+let child = require('child_process');
 
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
     super(script);
-
+    console.log('#### in Sandbox Worker');
     this.type = SandboxType.NORMAL;
-    if (!!Worker) {
+    this._worker = child.fork(__dirname + '/testSandbox.js');
+
+    if (!!this._worker) {
       // this._worker = new Worker(script);
-      this._worker = spawn(function(script) {
-        console.log('Sandbox worker created');
+      console.log('Sandbox worker created');
+      this._worker.on('message', (e) => {
+        // this.monEventEmiter.emit('customEvent', e);
+        //TODO
+        //EventEmitter.emit('monEventCustom', e);
+        // this.on(e);
       });
-      this._worker.on('message', function(e) {
-          this.on(e.data);
-        }.bind(this));
       this._worker.send('');
+      eventEmitter.emit('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
@@ -56,5 +49,7 @@ export default class SandboxWorker extends Sandbox{
 
   _onPostMessage(msg) {
     this._worker.postMessage(msg);
+    // eventEmitter.emit('event', 'msg');
+
   }
 }
