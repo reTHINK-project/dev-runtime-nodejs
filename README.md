@@ -13,7 +13,7 @@ git clone https://github.com/reTHINK-project/dev-runtime-nodejs.git
 cd dev-runtime-nodejs
 ```
 
-Afterwards, run the following :
+Afterwards, run the following (as root) :
 
 ```
 # npm install
