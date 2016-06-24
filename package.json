@@ -4,7 +4,7 @@
   "description": "browser runtime development",
   "main": "src/rethink.js",
   "scripts": {
-    "start": "mkdir -p dist/ && babel --presets es2015 src/ --out-dir dist/ && babel --presets es2015 server.js -o dist/server.js && node dist/server.js",
+    "start": "mkdir -p dist/ && babel --presets es2015 src/ --out-dir dist/ && babel --presets es2015 ./node_modules/service-framework/src/ --out-dir dist/service-framework/ && babel --presets es2015 ./node_modules/runtime-core/src/ --out-dir dist/runtime-core/ && babel --presets es2015 server.js -o dist/server.js && node dist/server.js",
     "test": "karma start",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install"
   },

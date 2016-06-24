@@ -26,7 +26,7 @@
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
+import Runtime from './runtime-core/runtime/RuntimeUA.js';
 //require the EventEmitter from the events module
 // const EventEmitter = require('events').EventEmitter;
 // const eventEmitter = new EventEmitter();
