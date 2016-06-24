@@ -4,7 +4,8 @@
   "description": "browser runtime development",
   "main": "src/rethink.js",
   "scripts": {
-    "start": "mkdir -p dist/ && babel --presets es2015 src/ --out-dir dist/ && babel --presets es2015 ./node_modules/service-framework/src/ --out-dir dist/service-framework/ && babel --presets es2015 ./node_modules/runtime-core/src/ --out-dir dist/runtime-core/ && babel --presets es2015 server.js -o dist/server.js && node dist/server.js",
+    "start": "mkdir -p dist/ && babel --presets es2015 src/ --out-dir dist/ && babel --presets es2015 server.js -o dist/server.js && node dist/server.js",
+    "transpile-dep": "babel --presets es2015 ./node_modules/service-framework/src/ --out-dir dist/service-framework/ && babel --presets es2015 ./node_modules/runtime-core/src/ --out-dir dist/runtime-core/",
     "test": "karma start",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install"
   },
@@ -30,7 +31,6 @@
   "homepage": "https://rethink-project.eu/",
   "devDependencies": {
     "babel-plugin-transform-object-assign": "^6.5.0",
-
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
@@ -63,8 +63,8 @@
     "babel-cli": "^6.10.1",
     "babel-polyfill": "^6.6.1",
     "babel-preset-es2015": "^6.6.0",
-    "babel-polyfill": "^6.6.1",
     "cluster": "^0.7.7",
+    "eval": "^0.1.1",
     "express": "^4.13.4",
     "indexeddbshim": "^2.2.1",
     "install": "^0.8.1",

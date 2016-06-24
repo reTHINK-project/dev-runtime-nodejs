@@ -25,7 +25,7 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';//FIXME
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 
 // let SandboxWorker = require('./SandboxWorker');
 // let SandboxApp = require('./SandboxApp');
@@ -45,7 +45,7 @@ var RuntimeFactory = Object.create({
       return request;
     },
 
-    atob(b64){
+    atob(b64) {
       return atob(b64);
     },
 

@@ -26,11 +26,14 @@
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-import Runtime from './runtime-core/runtime/RuntimeUA.js';
+// import Runtime from './runtime-core/runtime/RuntimeUA.js';
 //require the EventEmitter from the events module
 // const EventEmitter = require('events').EventEmitter;
 // const eventEmitter = new EventEmitter();
 let domain = 'localhost';
+
+// let _eval = require('eval');
+import _eval from 'eval';
 
 let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
@@ -73,9 +76,10 @@ catalogue.getRuntimeDescriptor(runtimeURL)
  .then(function(sourcePackage) {
   try {
     // console.log(sourcePackage.sourceCode);
-    // eval.apply(process._miniBus, [sourcePackage.sourceCode]);
+    _eval.apply(process._miniBus, [sourcePackage.sourceCode]);
+
     let runtime = new Runtime(RuntimeFactory, domain);
-    // console.log(runtime);
+
     process.on('message', function(msg) {
       // console.log('core.js ::: core:loadedHyperty', msg);
       if (msg.to === 'core:loadHyperty') {
