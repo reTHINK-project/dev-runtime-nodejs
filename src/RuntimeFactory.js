@@ -23,16 +23,15 @@
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
+import atob from 'atob';
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';//FIXME
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from './../service-framework/src/RuntimeCatalogue.js';
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/src/RuntimeCatalogue.js';
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';//FIXME
 
 // let SandboxWorker = require('./SandboxWorker');
 // let SandboxApp = require('./SandboxApp');
 // let Request = require('./Request');
 
-const RuntimeFactory = Object.create({
+var RuntimeFactory = Object.create({
     createSandbox() {
       return new SandboxWorker('./context-service.js');
     },
@@ -45,6 +44,11 @@ const RuntimeFactory = Object.create({
       let request = new Request();
       return request;
     },
+
+    atob(b64){
+      return atob(b64);
+    },
+
     createRuntimeCatalogue(development) {
       if (!this.catalogue)
           this.catalogue = development || new RuntimeCatalogueLocal(this);

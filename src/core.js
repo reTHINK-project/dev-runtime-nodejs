@@ -55,10 +55,10 @@ module.exports = function(input, done) {
 
   catalogue.getRuntimeDescriptor(runtimeURL)
     .then(function(descriptor) {
-        let descriptorRef = JSON.parse(descriptor);
-        let sourcePackageURL = descriptorRef.Runtime.sourcePackageURL;
+        let descriptorRef = descriptor;
+        let sourcePackageURL = descriptorRef.sourcePackageURL;
         if (sourcePackageURL === '/sourcePackage') {
-          return descriptorRef.Runtime.sourcePackage;
+          return descriptorRef.sourcePackage;
         }
         return catalogue.getSourcePackageFromURL(sourcePackageURL);
       })
@@ -84,5 +84,7 @@ module.exports = function(input, done) {
     //     }
     //   }, false);
     done({data:'runtime:installed', body:{}}, '*');
-  });
+  }).catch(function(reason) {
+    console.log('Reason:', reason);
+  })
 };

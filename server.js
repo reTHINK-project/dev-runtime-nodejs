@@ -35,9 +35,11 @@ let runtime = rethink.default.install({
 }).then((runtime) => {
   console.log('houra ! runtime loaded', runtime);
   console.log('\nloading hyperty :', hypertyURI(domain, 'UserStatus'));
-  // runtime.requireHyperty(hypertyURI(domain, 'UserStatus')).then((userStatusHyperty) => {
-  //   console.log('userStatusHyperty', userStatusHyperty);
-  // });
+  runtime.requireHyperty(hypertyURI(domain, 'UserStatus')).then((userStatusHyperty) => {
+    console.log('userStatusHyperty', userStatusHyperty);
+  }).catch((reason) => {
+    console.log("Error:", reason)
+  });
 }).catch((e) => {
   console.error('aie !', e);
 });
