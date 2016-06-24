@@ -60,6 +60,7 @@
   "dependencies": {
     "array.observe": "0.0.1",
     "babel-cli": "^6.2.4",
+    "babel-preset-es2015": "^6.6.0",
     "babel-polyfill": "^6.6.1",
     "cluster": "^0.7.7",
     "express": "^4.13.4",
