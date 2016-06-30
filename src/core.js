@@ -82,7 +82,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
  .then(function(sourcePackage) {
   'use strict';
   try {
-    // console.log(sourcePackage.sourceCode);
+    console.log(sourcePackage.sourceCode);
     // _eval.apply(sourcePackage.sourceCode);
     vm.runInThisContext(sourcePackage.sourceCode);
 
