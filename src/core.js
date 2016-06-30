@@ -85,6 +85,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
     // console.log(sourcePackage.sourceCode);
     // _eval.apply(sourcePackage.sourceCode);
     vm.runInThisContext(sourcePackage.sourceCode);
+
     // console.log('UserStatus', UserStatus);
 
     // let runtime = new Runtime(RuntimeFactory, domain);
