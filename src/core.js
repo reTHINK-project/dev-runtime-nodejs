@@ -26,7 +26,12 @@
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-import Runtime from './runtime/RuntimeUA.js';
+// import Runtime from 'runtime-core/src/runtime/RuntimeUA.js';
+
+// import Runtime from './runtime-core/runtime/RuntimeUA.js';
+
+// import UserStatus from './user-status/UserStatus.hy.js';
+
 //require the EventEmitter from the events module
 // const EventEmitter = require('events').EventEmitter;
 // const eventEmitter = new EventEmitter();
@@ -75,26 +80,27 @@ catalogue.getRuntimeDescriptor(runtimeURL)
 //TODO load hyperty
  .then(function(sourcePackage) {
   try {
-    // console.log(sourcePackage.sourceCode);
-    //_eval.apply(process._miniBus, [sourcePackage.sourceCode]);
+    console.log(sourcePackage.sourceCode);
+    _eval.apply(sourcePackage.sourceCode);
+    // console.log('UserStatus', UserStatus);
 
-    let runtime = new Runtime(RuntimeFactory, domain);
+    // let runtime = new Runtime(RuntimeFactory, domain);
 
-    process.on('message', function(msg) {
-      // console.log('core.js ::: core:loadedHyperty', msg);
-      if (msg.to === 'core:loadHyperty') {
-        let descriptor = msg.body.descriptor;
-        let hyperty = searchHyperty(runtime, descriptor);
-        if (hyperty) {
-          returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
-        } else {
-          runtime.loadHyperty(descriptor)
-              .then(returnHyperty);
-        }
-      } else if (msg.to === 'core:loadStub') {
-        runtime.loadStub(msg.body.domain);
-      }
-    }, false);
+    // process.on('message', function(msg) {
+    //   // console.log('core.js ::: core:loadedHyperty', msg);
+    //   if (msg.to === 'core:loadHyperty') {
+    //     let descriptor = msg.body.descriptor;
+    //     let hyperty = searchHyperty(runtime, descriptor);
+    //     if (hyperty) {
+    //       returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+    //     } else {
+    //       runtime.loadHyperty(descriptor)
+    //           .then(returnHyperty);
+    //     }
+    //   } else if (msg.to === 'core:loadStub') {
+    //     runtime.loadStub(msg.body.domain);
+    //   }
+    // }, false);
     console.log('##sending to parent');
     process.send({to:'runtime:installed', body:{}});
   } catch (e) {

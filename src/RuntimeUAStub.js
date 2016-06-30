@@ -64,7 +64,7 @@ let runtimeProxy = {
           registry.runtime.on('message', function(msg) {
 
             console.log('------------------- Message from runtime core child  -------------------------');
-            console.log('message is :', msg);
+            // console.log('message is :', msg);
 
             if (msg.to === 'runtime:loadedHyperty') {
               console.log('runtime:loadedHyperty is OK');
@@ -96,7 +96,7 @@ let RethinkNode = {
               registry.runtime.on('message', function(msg) {
                 console.log('------------------- In parent Process  -------------------------');
                 console.log('\n--> message recieved from child process core.js');
-                console.log('message is :', msg);
+                // console.log('message is :', msg);
                 if (msg.to === 'runtime:installed') {
                   console.log('\n Runtime installed with success\n');
                   resolve(runtimeProxy);
