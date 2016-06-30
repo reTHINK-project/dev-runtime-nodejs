@@ -26,6 +26,7 @@
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
+import vm from 'vm';
 // import Runtime from 'runtime-core/src/runtime/RuntimeUA.js';
 
 // import Runtime from './runtime-core/runtime/RuntimeUA.js';
@@ -79,9 +80,11 @@ catalogue.getRuntimeDescriptor(runtimeURL)
     })
 //TODO load hyperty
  .then(function(sourcePackage) {
+  'use strict';
   try {
-    console.log(sourcePackage.sourceCode);
-    _eval.apply(sourcePackage.sourceCode);
+    // console.log(sourcePackage.sourceCode);
+    // _eval.apply(sourcePackage.sourceCode);
+    vm.runInThisContext(sourcePackage.sourceCode);
     // console.log('UserStatus', UserStatus);
 
     // let runtime = new Runtime(RuntimeFactory, domain);
