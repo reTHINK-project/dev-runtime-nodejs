@@ -27,8 +27,9 @@ import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
 import vm from 'vm';
-// import Runtime from 'runtime-core/src/runtime/RuntimeUA.js';
 
+// import Runtime from 'runtime-core/src/runtime/RuntimeUA.js';
+//
 // import Runtime from './runtime-core/runtime/RuntimeUA.js';
 
 // import UserStatus from './user-status/UserStatus.hy.js';
@@ -39,7 +40,7 @@ import vm from 'vm';
 let domain = 'localhost';
 
 // let _eval = require('eval');
-import _eval from 'eval';
+// import _eval from 'eval';
 
 let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
@@ -82,14 +83,14 @@ catalogue.getRuntimeDescriptor(runtimeURL)
  .then(function(sourcePackage) {
   'use strict';
   try {
-    console.log(sourcePackage.sourceCode);
-    // _eval.apply(sourcePackage.sourceCode);
+    // console.log(sourcePackage.sourceCode);
+    // // _eval.apply(sourcePackage.sourceCode);
     vm.runInThisContext(sourcePackage.sourceCode);
 
     // console.log('UserStatus', UserStatus);
 
     // let runtime = new Runtime(RuntimeFactory, domain);
-
+    //
     // process.on('message', function(msg) {
     //   // console.log('core.js ::: core:loadedHyperty', msg);
     //   if (msg.to === 'core:loadHyperty') {
