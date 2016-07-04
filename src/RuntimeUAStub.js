@@ -104,12 +104,12 @@ let RethinkNode = {
               });
               registry.runtime.on('error', function(error) {
                 console.error('runtime core install failed:', error);
-                registry.runtime.kill();
+                // registry.runtime.kill();
                 reject(error);
               });
               registry.runtime.on('exit', function() {
                 console.log('runtime core exited.');
-                registry.runtime.kill();
+                // registry.runtime.kill();
               });
 
               // console.log(registry);
