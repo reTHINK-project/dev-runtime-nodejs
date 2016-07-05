@@ -84,27 +84,29 @@ catalogue.getRuntimeDescriptor(runtimeURL)
 
   try {
     // console.log(sourcePackage.sourceCode);
-    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    let result = require(sourcePackage.sourceCode);
+
 
     // let result = eval.call(null, [sourcePackage.sourceCode]);
-    let runtime =  new RuntimeUA(RuntimeFactory, domain);
 
-    fs.writeFile('test.js', RuntimeUA);
-    console.log(RuntimeUA);
+    fs.writeFile('test.js', result);
+    // console.log(result);
+
+    let runtime = new result(RuntimeFactory, domain);
 
     process.on('message', function(msg) {
-      // console.log('core.js ::: core:loadedHyperty', msg);
+      console.log('core.js ::: core:loadedHyperty', msg);
       if (msg.to === 'core:loadHyperty') {
-        //   let descriptor = msg.body.descriptor;
-        //   let hyperty = searchHyperty(runtime, descriptor);
-        //   if (hyperty) {
-        //     returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
-        //   } else {
-        //     runtime.loadHyperty(descriptor)
-        //         .then(returnHyperty);
-      //   }
+        let descriptor = msg.body.descriptor;
+        let hyperty = searchHyperty(runtime, descriptor);
+        if (hyperty) {
+          returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+        } else {
+          runtime.loadHyperty(descriptor)
+              .then(returnHyperty);
+        }
       } else if (msg.to === 'core:loadStub') {
-        // runtime.loadStub(msg.body.domain);
+        runtime.loadStub(msg.body.domain);
       }
     }, false);
     console.log('##sending to parent');
