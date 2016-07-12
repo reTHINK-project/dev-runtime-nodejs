@@ -27,14 +27,15 @@ let fs = require('fs');
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
+import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 import _eval from 'eval';
 
-let domain = 'localhost';
+let domain = 'apizee.jam';
 
-let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
+let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
 
-let runtimeURL = 'http://' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';
 let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
@@ -73,7 +74,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
 
   try {
 
-    let Runtime = _eval(sourcePackage.sourceCode, true);
+    // let Runtime = _eval(sourcePackage.sourceCode, true);
 
     // fs.writeFile('test.js', Runtime);
 
@@ -91,6 +92,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
               .then(returnHyperty);
         }
       } else if (msg.to === 'core:loadStub') {
+        console.log('domain is """""""""""""""""""""""""""""', msg.body.domain);
         runtime.loadStub(msg.body.domain);
       }
     }, false);

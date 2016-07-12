@@ -10,10 +10,10 @@ let rethink = require('./RuntimeUAStub');
 let express = require('express');
 var path = require('path');
 let log4js = require('log4js');
-let domain = 'localhost';
+let domain = 'apizee.jam';
 let logger = log4js.getLogger('server');
 let app = express();
-const hypertyURI = (domain, hyperty) => `hyperty-catalogue://${domain}/.well-known/hyperty/${hyperty}`;
+const hypertyURI = (domain, hyperty) => `http://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 
 log4js.configure({
   appenders: [{ type: 'console' }],
@@ -38,7 +38,7 @@ let runtime = rethink.default.install({
   runtime.requireHyperty(hypertyURI(domain, 'UserStatus')).then((userStatusHyperty) => {
     console.log('userStatusHyperty', userStatusHyperty);
   }).catch((reason) => {
-    console.log("Error:", reason)
+    console.log('Error:', reason);
   });
 }).catch((e) => {
   console.error('aie !', e);

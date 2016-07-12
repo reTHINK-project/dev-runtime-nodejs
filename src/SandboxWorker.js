@@ -41,14 +41,14 @@ export default class SandboxWorker extends Sandbox{
         // this.on(e);
       });
       this._worker.send('');
-      eventEmitter.emit('');
+
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
   }
 
   _onPostMessage(msg) {
-    this._worker.postMessage(msg);
+    this._worker.emit(msg);
     // eventEmitter.emit('event', 'msg');
 
   }
