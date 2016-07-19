@@ -31,17 +31,17 @@ import MiniBus from 'runtime-core/dist/minibus';
 
 export default class SandboxApp extends Sandbox{
   constructor() {
-
-    console.log('########### Sandbox App');
     super();
+    console.log('---------------------- Sandbox App -----------------------');
+
     this.type = SandboxType.NORMAL;
 
     // this.eventEmitter = eventEmitter;
 
-    process.on('message', (e) => {
+    process.on('message', function(e) {
         if (!!!this)
         this.origin = process;
-        console.log('message  is ::', e);
+        console.log('SandboxApp message  is ::', e);
 
         if (e.to.startsWith('core:'))
           return;

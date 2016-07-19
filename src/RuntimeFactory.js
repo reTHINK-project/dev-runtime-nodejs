@@ -35,7 +35,7 @@ import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/Runti
 
 var RuntimeFactory = Object.create({
     createSandbox() {
-      return new SandboxWorker('./ContextServiceProvider.js');
+      return new SandboxWorker(__dirname + './ContextServiceProvider.js');
     },
 
     createAppSandbox() {
