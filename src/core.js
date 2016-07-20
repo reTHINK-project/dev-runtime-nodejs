@@ -30,7 +30,7 @@ import RuntimeFactory from './RuntimeFactory';
 import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 import _eval from 'eval';
 
-let domain = 'apizee.jam';
+let domain = 'rethink.ptinovacao.pt';
 
 let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'

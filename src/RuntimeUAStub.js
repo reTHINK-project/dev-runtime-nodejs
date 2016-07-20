@@ -23,7 +23,7 @@
 
 import app from './ContextApp';
 import URI from 'urijs';
-let domain = 'localhost';
+let domain = 'rethink.ptinovacao.pt';
 let registry = {};
 
 let window4Node = {};
