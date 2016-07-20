@@ -30,7 +30,7 @@ import RuntimeFactory from './RuntimeFactory';
 import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 import _eval from 'eval';
 
-let domain = 'rethink.ptinovacao.pt';
+let domain = 'hybroker.rethink.ptinovacao.pt';
 
 let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
@@ -92,7 +92,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
               .then(returnHyperty);
         }
       } else if (msg.to === 'core:loadStub') {
-        console.log('domain is """""""""""""""""""""""""""""', msg.body.domain);
+        console.log('domain is """"""""""""""""""""""""""""" :', msg.body.domain);
         runtime.loadStub(msg.body.domain);
       }
     }, false);

@@ -45,7 +45,7 @@ var fs = require('fs');
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
 
-var domain = 'rethink.ptinovacao.pt';
+var domain = 'hybroker.rethink.ptinovacao.pt';
 
 var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
@@ -105,7 +105,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
             runtime.loadHyperty(descriptor).then(returnHyperty);
           }
         } else if (msg.to === 'core:loadStub') {
-          console.log('domain is """""""""""""""""""""""""""""', msg.body.domain);
+          console.log('domain is """"""""""""""""""""""""""""" :', msg.body.domain);
           runtime.loadStub(msg.body.domain);
         }
       }, false);
