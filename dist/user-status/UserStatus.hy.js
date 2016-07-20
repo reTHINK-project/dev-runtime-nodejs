@@ -68,7 +68,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 * @author Apizee [dev@apizee.com]
 * @version 0.1.0
 */
-
 var UserStatus = function (_EventEmitter) {
   _inherits(UserStatus, _EventEmitter);
 

@@ -72,6 +72,4 @@ var RuntimeFactory = Object.create({
 });
 
 // import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
-
-
 exports.default = RuntimeFactory;

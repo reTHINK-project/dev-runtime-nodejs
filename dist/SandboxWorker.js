@@ -43,7 +43,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var child = require('child_process');
-// let worker = {};
 
 var SandboxWorker = function (_Sandbox) {
   _inherits(SandboxWorker, _Sandbox);
@@ -56,21 +55,13 @@ var SandboxWorker = function (_Sandbox) {
     console.log('----------------------- in Sandbox Worker ----------------------------');
     _this.type = _sandbox.SandboxType.NORMAL;
     _this._worker = child.fork(__dirname + '/ContextServiceProvider.js');
-    console.info('\n* Sandbox worker created *');
+    console.info('\n ************* Sandbox worker created *******************');
     if (!!_this._worker) {
       _this._worker.on('message', function (e) {
-        console.log('\nReceived message inside SandboxWorker : ', e);
-
-        // console.log('SandboxWorker is :', Sandbox);
-        // _onMessage(e);
-        this.send({ e: e });
-
-        //   //TODO
-        //   //EventEmitter.emit('monEventCustom', e);
-        //   // this.on(e);
+        console.log('\n Received event inside SandboxWorker : ');
+        this.send({});
       });
-
-      // this._worker.send({'message'});
+      // this._worker.send('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
@@ -80,8 +71,7 @@ var SandboxWorker = function (_Sandbox) {
   _createClass(SandboxWorker, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      this._worker.send({ msg: msg });
-
+      this._worker.send(msg);
       // eventEmitter.emit('event', 'msg');
     }
   }]);

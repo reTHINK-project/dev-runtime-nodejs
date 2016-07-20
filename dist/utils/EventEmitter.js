@@ -35,7 +35,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * EventEmitter
  * All classes which extends this, can have addEventListener and trigger events;
  */
-
 var EventEmitter = function () {
   function EventEmitter() {
     _classCallCheck(this, EventEmitter);

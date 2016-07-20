@@ -30,8 +30,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-
-
 var _miniBus = new _minibus2.default();
 
 process.on('message', function (msg) {

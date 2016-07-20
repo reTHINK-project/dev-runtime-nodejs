@@ -44,6 +44,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var fs = require('fs');
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
+
 var domain = 'rethink.ptinovacao.pt';
 
 var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
