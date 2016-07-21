@@ -31,23 +31,22 @@ export default class SandboxWorker extends Sandbox{
     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     this.type = SandboxType.NORMAL;
     let self = this;
+
     this._worker = child.fork(script);
     console.log('----->  this._worker ::\n'.red,   this._worker);
     if (!!this._worker) {
       // console.log();
 
-      this._worker.on('message', function(msg) {
-        console.log('\n Received message by Sandbox Worker is:\n'.red, msg);
-        self._onMessage(msg);
-        // console.log('message is :', msg);
-      });
+      this._worker.on('message', function(e) {
+              console.log('\n----------------- Sandbox worker created -------------------------'.red);
+              console.log('\n Received message by Sandbox Worker is:\n'.red, e);
+              self._onMessage(e.data);
 
-      console.log('\n----------------- Sandbox worker created -------------------------'.red);
+              // console.log('message is :', msg);
+            });
 
-      // this._worker.send();
       this._worker.send({});
 
-      // eventEmitter.emit('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
@@ -55,8 +54,6 @@ export default class SandboxWorker extends Sandbox{
 
   _onPostMessage(msg) {
     this._worker.send({msg});
-
-    // eventEmitter.emit('event', 'msg');
 
   }
 }

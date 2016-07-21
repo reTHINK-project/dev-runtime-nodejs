@@ -56,23 +56,21 @@ var SandboxWorker = function (_Sandbox) {
     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     _this.type = _sandbox.SandboxType.NORMAL;
     var self = _this;
+
     _this._worker = child.fork(script);
     console.log('----->  this._worker ::\n'.red, _this._worker);
     if (!!_this._worker) {
       // console.log();
 
-      _this._worker.on('message', function (msg) {
-        console.log('\n Received message by Sandbox Worker is:\n'.red, msg);
-        self._onMessage(msg);
+      _this._worker.on('message', function (e) {
+        console.log('\n----------------- Sandbox worker created -------------------------'.red);
+        console.log('\n Received message by Sandbox Worker is:\n'.red, e);
+        self._onMessage(e.data);
+
         // console.log('message is :', msg);
       });
 
-      console.log('\n----------------- Sandbox worker created -------------------------'.red);
-
-      // this._worker.send();
       _this._worker.send({});
-
-      // eventEmitter.emit('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
@@ -83,8 +81,6 @@ var SandboxWorker = function (_Sandbox) {
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
       this._worker.send({ msg: msg });
-
-      // eventEmitter.emit('event', 'msg');
     }
   }]);
 

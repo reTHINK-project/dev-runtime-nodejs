@@ -440,7 +440,7 @@ var RuntimeUA = function() {
             // we need to get ProtoStub Source code from descriptor - step 6 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
             return _this.runtimeCatalogue.getSourcePackageFromURL(sourcePackageURL);
           }).catch(errorReason).then(function(stubSourcePackage) {
-            console.info('3. return the ProtoStub Source Code : \n', stubSourcePackage);
+            console.info('\n3. return the ProtoStub Source Code : \n'.green, stubSourcePackage);
 
             // we have completed step 7 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
@@ -454,14 +454,14 @@ var RuntimeUA = function() {
             return _this.registry.getSandbox(domain);
           }).then(function(stubSandbox) {
 
-            console.info('4. if the sandbox is registered then return the sandbox: \n ', stubSandbox);
+            console.info('\n4. if the sandbox is registered then return the sandbox: \n '.green, stubSandbox);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
             _stubSandbox = stubSandbox;
             return stubSandbox;
           }).catch(function(reason) {
-            console.info('5. Sandbox was not found, creating a new one ', reason);
+            console.info('\n5. Sandbox was not found, creating a new one '.green, reason);
 
             // check if the sandbox is registed for this stub descriptor url;
             // Make Steps xxx --- xxx
@@ -473,7 +473,7 @@ var RuntimeUA = function() {
 
             return sandbox;
           }).then(function(sandbox) {
-            console.info('6. return the sandbox instance and register', sandbox, 'to domain ', domain);
+            console.info('\n 6. return the sandbox instance and register :'.green, sandbox, 'to domain '.green, domain);
 
             _stubSandbox = sandbox;
 

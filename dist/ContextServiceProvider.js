@@ -47,9 +47,15 @@ process.on('message', function (msg) {
     this.send({ msg: msg });
 });
 
-process.on('event', function (event) {
-    console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event.data);
-    _miniBus._onMessage(event.data);
+// _miniBus._onPostMessage = function(msg) {
+//   console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+//   _miniBus.postMessage(msg);
+//   this.send({msg});
+// };
+
+process.on('message', function (event) {
+    console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
+    _miniBus._onMessage(event);
 });
 
 var _registry = new _sandbox.SandboxRegistry(_miniBus);
