@@ -52,7 +52,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var RuntimeFactory = Object.create({
   createSandbox: function createSandbox() {
-    return new _SandboxWorker2.default(__dirname + './ContextServiceProvider.js');
+    return new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js');
   },
   createAppSandbox: function createAppSandbox() {
     return new _SandboxApp2.default();

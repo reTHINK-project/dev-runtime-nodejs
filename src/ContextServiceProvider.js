@@ -22,23 +22,28 @@
 **/
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
+import _eval from 'eval';
 
 let _miniBus = new MiniBus();
 
 process.on('message', function(msg) {
     console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n ', msg);
+
     _miniBus.postMessage(msg);
     this.send(msg);
   });
 
 process.on('message', function(event) {
-    console.log('---------------------------- Received 2 nd event is :--------------------------------------------------------\n', event);
-    _miniBus._onMessage(event.data);
+    console.log('---------------------------- Received 2nd event is :--------------------------------------------------------\n', event);
+    _miniBus._onMessage(event);
   });
 
 let _registry = new SandboxRegistry(_miniBus);
-console.log(' *** SandboxRegistry created ***');
+console.log(' ************ SandboxRegistry created ******************');
+
 _registry._create = function(url, sourceCode, config) {
+    _eval([sourceCode], true);
+
     // eval.apply(_miniBus, [sourceCode]);
     return activate(url, _miniBus, config);
   };

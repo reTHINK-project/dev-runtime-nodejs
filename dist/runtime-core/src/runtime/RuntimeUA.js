@@ -507,6 +507,7 @@ var RuntimeUA = function() {
             console.log('_stubSandbox::', _stubSandbox);
 
 
+
             // Deploy Component step xxx
             return _stubSandbox.deployComponent(_stubSourcePackage.sourceCode, runtimeProtoStubURL, configuration);
           }).then(function(deployComponentStatus) {
