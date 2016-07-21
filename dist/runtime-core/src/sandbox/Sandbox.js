@@ -93,9 +93,9 @@ var Sandbox = function(_MiniBus) {
     value: function deployComponent(componentSourceCode, componentURL, configuration) {
       console.log('------------------------------- deployComponent ------------------------------------');
       var _this = this;
-      console.log('componentSourceCode : ', componentSourceCode);
-      console.log('componentURL : ', componentURL);
-      console.log('configuration : ', configuration);
+      // console.log('componentSourceCode : ', componentSourceCode);
+      // console.log('componentURL : ', componentURL);
+      // console.log('configuration : ', configuration);
 
       // let messageFactory = _this.messageFactory;
 

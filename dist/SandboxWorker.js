@@ -43,6 +43,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var child = require('child_process');
+var colors = require('colors');
 
 var SandboxWorker = function (_Sandbox) {
   _inherits(SandboxWorker, _Sandbox);
@@ -52,78 +53,42 @@ var SandboxWorker = function (_Sandbox) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxWorker).call(this, script));
 
-    console.log('-------------------------------------------- in Sandbox Worker ----------------------------------');
+    console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     _this.type = _sandbox.SandboxType.NORMAL;
-    _this._worker = child.fork(__dirname + '/ContextServiceProvider.js');
-    console.log('-----  this._worker ::\n', _this._worker);
+    var self = _this;
+    _this._worker = child.fork(script);
+    console.log('----->  this._worker ::\n'.red, _this._worker);
+    if (!!_this._worker) {
+      // console.log();
 
-    // console.log();
+      _this._worker.on('message', function (msg) {
+        console.log('\n Received message by Sandbox Worker is:\n'.red, msg);
+        self._onMessage(msg);
+        // console.log('message is :', msg);
+      });
 
-    _this._worker.on('message', function (msg) {
-      console.log('Received messages by SandBox worker :', msg);
-      // console.log('message is :', msg);
-    });
+      console.log('\n----------------- Sandbox worker created -------------------------'.red);
 
-    console.log('----------------- Sandbox worker created -------------------------');
+      // this._worker.send();
+      _this._worker.send({});
 
-    // this._worker.send();
-    _this._worker.send({});
-
-    // eventEmitter.emit('');
-    // } else {
-    //   throw new Error('Your environment does not support worker \n', e);
-    // }
+      // eventEmitter.emit('');
+    } else {
+      throw new Error('Your environment does not support worker \n', e);
+    }
     return _this;
   }
 
   _createClass(SandboxWorker, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      this._worker.send(msg);
+      this._worker.send({ msg: msg });
+
       // eventEmitter.emit('event', 'msg');
     }
   }]);
 
   return SandboxWorker;
 }(_sandbox.Sandbox);
-
-// import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-// import MiniBus from 'runtime-core/dist/minibus';
-// let child = require('child_process');
-//
-// export default class SandboxWorker extends Sandbox{
-//   constructor(script) {
-//     super(script);
-//     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------');
-//     this.type = SandboxType.NORMAL;
-//     let _worker = child.fork(__dirname + '/ContextServiceProvider.js');
-//     console.log(' \n _worker is ------------------::', _worker);
-//     console.log('\n  this::--------------',   this);
-//
-//     if (!!_worker) {
-//       _worker.on('message', function(e) {
-//           console.log('Received messages by SandBox worker :', e);
-//           // console.log('message is :', msg);
-//           this._onMessage(e.data);
-//
-//         });
-//
-//       console.log('-----------------Sandbox worker created -------------------------');
-//
-//       _worker.send({});
-//
-//     // eventEmitter.emit('');
-//     } else {
-//       throw new Error('Your environment does not support worker \n', e);
-//     }
-//   }
-//
-//   _onPostMessage(msg) {
-//     _worker.send({msg});
-//     // eventEmitter.emit('event', 'msg');
-//
-//   }
-// }
-
 
 exports.default = SandboxWorker;

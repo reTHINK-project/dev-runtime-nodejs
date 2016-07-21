@@ -23,26 +23,30 @@
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
+var colors = require('colors');
 
 let _miniBus = new MiniBus();
 
 process.on('message', function(msg) {
-    console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n ', msg);
+    console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
 
     _miniBus.postMessage(msg);
-    this.send(msg);
+    console.log(' _miniBus.postMessage(msg); Post is Done :\n '.green, _miniBus);
+    console.log('--> message sent from ContextServiceProvider  to SandboxWorker'.green);
+    this.send({msg});
   });
 
-process.on('message', function(event) {
-    console.log('---------------------------- Received 2nd event is :--------------------------------------------------------\n', event);
-    _miniBus._onMessage(event);
+process.on('event', function(event) {
+    console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event.data);
+    _miniBus._onMessage(event.data);
   });
 
 let _registry = new SandboxRegistry(_miniBus);
-console.log(' ************ SandboxRegistry created ******************');
+console.log(' ************ SandboxRegistry created is : \n'.green, _registry);
 
 _registry._create = function(url, sourceCode, config) {
     _eval([sourceCode], true);
+    console.log('------------------ _registry._create -----------------------'.green);
 
     // eval.apply(_miniBus, [sourceCode]);
     return activate(url, _miniBus, config);

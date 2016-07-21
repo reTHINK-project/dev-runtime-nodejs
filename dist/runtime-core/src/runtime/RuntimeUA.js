@@ -440,7 +440,7 @@ var RuntimeUA = function() {
             // we need to get ProtoStub Source code from descriptor - step 6 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
             return _this.runtimeCatalogue.getSourcePackageFromURL(sourcePackageURL);
           }).catch(errorReason).then(function(stubSourcePackage) {
-            console.info('3. return the ProtoStub Source Code:stubSourcePackage ', stubSourcePackage);
+            console.info('3. return the ProtoStub Source Code : \n', stubSourcePackage);
 
             // we have completed step 7 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
@@ -454,7 +454,7 @@ var RuntimeUA = function() {
             return _this.registry.getSandbox(domain);
           }).then(function(stubSandbox) {
 
-            console.info('4. if the sandbox is registered then return the sandbox: stubSandbox ', stubSandbox);
+            console.info('4. if the sandbox is registered then return the sandbox: \n ', stubSandbox);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
@@ -486,7 +486,7 @@ var RuntimeUA = function() {
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
             _runtimeProtoStubURL = runtimeProtoStubURL;
-            console.log('_stubDescriptor.configuration', _stubDescriptor.configuration);
+            console.log('_stubDescriptor.configuration : '.green, _stubDescriptor.configuration);
 
             // Extend original hyperty configuration;
             var configuration = {};
@@ -499,19 +499,19 @@ var RuntimeUA = function() {
             }
 
             configuration.runtimeURL = _this.runtimeURL;
-            console.log('Done');
+
 
             // console.log('  configuration.runtimeURL :', configuration.runtimeURL);
             // console.log('  _stubSourcePackage.sourceCode :', _stubSourcePackage.sourceCode);
             // console.log('configuration:', configuration);
-            console.log('_stubSandbox::', _stubSandbox);
+
 
 
 
             // Deploy Component step xxx
             return _stubSandbox.deployComponent(_stubSourcePackage.sourceCode, runtimeProtoStubURL, configuration);
           }).then(function(deployComponentStatus) {
-            console.info('8: return deploy component for sandbox status: ', deployComponentStatus);
+            console.info('8: return deploy component for sandbox status: '.green, deployComponentStatus);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
