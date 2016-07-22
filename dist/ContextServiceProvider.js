@@ -55,10 +55,10 @@ process.on('message', function (msg) {
 //   this.send({msg});
 // };
 
-process.on('message', function (event) {
-    console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
-    miniBus._onMessage(event);
-});
+// process.on('message', function(event) {
+//     console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
+//     miniBus._onMessage(event);
+//   });
 
 var registry = new _sandbox.SandboxRegistry(miniBus);
 console.log(' ************ SandboxRegistry created is : \n'.green, registry);
@@ -67,6 +67,6 @@ registry._create = function (url, sourceCode, config) {
     (0, _eval3.default)([sourceCode], true);
     console.log('------------------ registry._create -----------------------'.green);
 
-    // eval.apply(_miniBus, [sourceCode]);
+    eval.apply(miniBus, [sourceCode]);
     return activate(url, miniBus, config);
 };

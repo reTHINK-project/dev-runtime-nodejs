@@ -60,12 +60,10 @@ var SandboxWorker = function (_Sandbox) {
     _this.worker = child.fork(script);
     console.log('----->  this._worker ::\n'.red, _this.worker);
     if (!!_this.worker) {
-      console.log('fffffffffffffffffff');
 
       _this.worker.on('message', function (e) {
         console.log('\n Received message by Sandbox Worker is:\n'.red, e);
         self._onMessage(e);
-        // console.log('message is :', msg);
       });
       _this.worker.send({});
     } else {
