@@ -45,7 +45,7 @@ var fs = require('fs');
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
 
-var domain = 'hybroker.rethink.ptinovacao.pt';
+var domain = 'hybroker.rethink.ptinovacao.pt:8080';
 
 var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'

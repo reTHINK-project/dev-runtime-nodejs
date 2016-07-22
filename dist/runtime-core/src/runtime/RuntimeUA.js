@@ -394,17 +394,17 @@ var RuntimeUA = function() {
         var _stubSourcePackage = void 0;
 
         var errorReason = function errorReason(reason) {
-          console.error('Something failed on the deploy of protocolstub: ', reason);
+          console.error('\nSomething failed on the deploy of protocolstub: '.red, reason);
           reject(reason);
         };
 
         // Discover Protocol Stub
-        console.info('------------------- ProtoStub ---------------------------\n');
+        console.info('------------------- ProtoStub ---------------------------\n'.green);
         console.info('Discover or Create a new ProtoStub for domain: ', domain);
         _this.registry.discoverProtostub(domain).then(function(runtimeProtoStubURL) {
           runtimeProtoStubURL = hybroker.rethink.ptinovacao.pt;
           // Is registed?
-          console.info('1. Proto Stub Discovered: ', runtimeProtoStubURL);
+          console.info('1. Proto Stub Discovered: '.green, runtimeProtoStubURL);
 
           // we have completed step 2 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
@@ -415,18 +415,18 @@ var RuntimeUA = function() {
           };
 
           resolve(stub);
-          console.info('------------------- END ---------------------------\n');
+          console.info('------------------- END ---------------------------\n'.green);
         }).catch(function(reason) {
 
           // is not registed?
-          console.info('1. Proto Stub not found:', reason);
+          console.info('1. Proto Stub not found:'.red, reason);
 
           // we have completed step 3 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
           // we need to get ProtoStub descriptor step 4 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
           _this.runtimeCatalogue.getStubDescriptor(protostubURL).then(function(stubDescriptor) {
 
-            console.info('2. return the ProtoStub descriptor:stubDescriptor', stubDescriptor);
+            console.info('2. return the ProtoStub descriptor:'.green, stubDescriptor);
 
             // we have completed step 5 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
             _stubDescriptor = stubDescriptor;
@@ -517,6 +517,7 @@ var RuntimeUA = function() {
 
             // Add the message bus listener
             _this.messageBus.addListener(_runtimeProtoStubURL, function(msg) {
+              console.log('_this.messageBus.addListener postMessage :\n'.rainbow, msg);
               _stubSandbox.postMessage(msg);
             });
 
