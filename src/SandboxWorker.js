@@ -38,14 +38,11 @@ export default class SandboxWorker extends Sandbox{
       // console.log();
 
       this._worker.on('message', function(e) {
-              console.log('\n----------------- Sandbox worker created -------------------------'.red);
               console.log('\n Received message by Sandbox Worker is:\n'.red, e);
               self._onMessage(e.data);
 
               // console.log('message is :', msg);
             });
-
-      this._worker.send({});
 
     } else {
       throw new Error('Your environment does not support worker \n', e);
@@ -53,6 +50,7 @@ export default class SandboxWorker extends Sandbox{
   }
 
   _onPostMessage(msg) {
+      console.log('\n Sended message by Sandbox Worker is:\n'.red, e);
     this._worker.send({msg});
 
   }

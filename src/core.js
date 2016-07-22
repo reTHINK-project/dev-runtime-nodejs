@@ -30,7 +30,7 @@ import RuntimeFactory from './RuntimeFactory';
 import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 import _eval from 'eval';
 
-let domain = 'hybroker.rethink.ptinovacao.pt';
+let domain = 'hybroker.rethink.ptinovacao.pt:8080';
 
 let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
