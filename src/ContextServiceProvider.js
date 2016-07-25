@@ -59,6 +59,6 @@ process.registry._create = function(url, sourceCode, config) {
     // _eval([sourceCode], true);
     console.log('------------------ registry._create -----------------------'.green);
     // _eval(miniBus, [sourceCode]);
-    // _eval(sourceCode, true);
+    _eval(sourceCode, true);
     // return activate(url, miniBus, config);
   };

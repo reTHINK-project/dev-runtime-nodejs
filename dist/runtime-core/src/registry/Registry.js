@@ -1,10 +1,16 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function() {
+  function defineProperties(target, props) { for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor);
+    } } return function(Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor;
+  };
+}();
 
 var _EventEmitter2 = require('../utils/EventEmitter');
 
@@ -28,11 +34,15 @@ var _utils = require('../utils/utils.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) {
+  if (!self) { throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called'); } return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
+}
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+} /**
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 PT Inovação e Sistemas SA
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 INESC-ID
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 QUOBIS NETWORKS SL
@@ -62,7 +72,7 @@ import Discovery from './Discovery';*/
 /**
 * Runtime Registry Interface
 */
-var Registry = function (_EventEmitter) {
+var Registry = function(_EventEmitter) {
   _inherits(Registry, _EventEmitter);
 
   /**
@@ -122,7 +132,6 @@ var Registry = function (_EventEmitter) {
   * @param {MessageBus}           messageBus
   */
 
-
   _createClass(Registry, [{
     key: '_getIdentityAssociated',
     value: function _getIdentityAssociated(type, hypertyURL) {
@@ -174,9 +183,9 @@ var Registry = function (_EventEmitter) {
         type: 'read', from: _this.registryURL, to: 'domain://registry.' + activeDomain + '/', body: { resource: url, search: 'dataObjectPerURL' }
       };
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
-        _this._messageBus.postMessage(msg, function (reply) {
+        _this._messageBus.postMessage(msg, function(reply) {
 
           var dataObject = reply.body.value;
 
@@ -264,7 +273,7 @@ var Registry = function (_EventEmitter) {
 
       var dataObject = _this.dataObjectList[dataObjectURL];
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         if (dataObject) {
           resolve(dataObject.reporter);
         } else {
@@ -348,7 +357,7 @@ var Registry = function (_EventEmitter) {
 
       var unregisterResults = [];
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         for (var index in _this.hypertiesList) {
           var hyperty = _this.hypertiesList[index];
@@ -356,10 +365,10 @@ var Registry = function (_EventEmitter) {
           unregisterResults.push(result);
         }
 
-        Promise.all(unregisterResults).then(function () {
+        Promise.all(unregisterResults).then(function() {
 
           resolve('successfully unregistered all hyperties');
-        }, function (error) {
+        }, function(error) {
           reject(error);
         });
       });
@@ -382,7 +391,7 @@ var Registry = function (_EventEmitter) {
         to: 'domain://registry.' + _this._domain + '/',
         body: { value: { user: user, hypertyURL: hypertyInstance } } };
 
-      _this._messageBus.postMessage(message, function (reply) {
+      _this._messageBus.postMessage(message, function(reply) {
         console.log('unregister hyperty Reply', reply);
       });
     }
@@ -401,7 +410,7 @@ var Registry = function (_EventEmitter) {
         to: 'domain://registry.' + _this._domain + '/',
         body: { value: { name: name } } };
 
-      _this._messageBus.postMessage(message, function (reply) {
+      _this._messageBus.postMessage(message, function(reply) {
         console.log('unregister dataObject Reply', reply);
       });
     }
@@ -419,7 +428,7 @@ var Registry = function (_EventEmitter) {
         to: 'domain://registry.' + _this._domain + '/',
         body: { resource: resource, value: value } };
 
-      _this._messageBus.post.postMessage(message, function (reply) {
+      _this._messageBus.post.postMessage(message, function(reply) {
         console.log('Updated hyperty reply', reply);
       });
     }
@@ -474,7 +483,7 @@ var Registry = function (_EventEmitter) {
     value: function registerDataObject(identifier, dataObjectschema, dataObjectUrl, dataObjectReporter, authorise) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         //message to register the new hyperty, within the domain registry
         var messageValue = { name: identifier, schema: dataObjectschema, url: dataObjectUrl, expires: _this.expiresTime, reporter: dataObjectReporter, preAuth: authorise, subscribers: [] };
@@ -483,7 +492,7 @@ var Registry = function (_EventEmitter) {
 
         var message = _this.messageFactory.createCreateMessageRequest(_this.registryURL, 'domain://registry.' + _this.registryDomain + '/', messageValue, 'policy');
 
-        _this._messageBus.postMessage(message, function (reply) {
+        _this._messageBus.postMessage(message, function(reply) {
           console.log('===> registerDataObject Reply: ', reply);
           if (reply.body.code === 200) {
             resolve('ok');
@@ -514,9 +523,9 @@ var Registry = function (_EventEmitter) {
         domainUrl = domainUrl.replace('catalogue.', '');
       }
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
-        _this.idModule.getIdentityAssertion().then(function (result) {
+        _this.idModule.getIdentityAssertion().then(function(result) {
           var userProfile = result.userProfile;
           var identityURL = userProfile.userURL;
 
@@ -524,19 +533,21 @@ var Registry = function (_EventEmitter) {
             reject('MessageBus not found on registerStub');
           } else {
             //call check if the protostub exist
-            _this.resolve('hyperty-runtime://' + domainUrl).then(function () {
+            _this.resolve('hyperty-runtime://' + domainUrl).then(function() {
 
               _this.registryDomain = domainUrl;
+
 
               // TODO: should be implemented with addresses poll
               // In this case we will request and return only one
               // address
               var numberOfAddresses = 1;
-              _this.addressAllocation.create(domainUrl, numberOfAddresses).then(function (adderessList) {
+              _this.addressAllocation.create(domainUrl, numberOfAddresses).then(function(adderessList) {
+                console.log('adderessList'.green, adderessList);
 
-                adderessList.forEach(function (address) {
+                adderessList.forEach(function(address) {
 
-                  _this._messageBus.addListener(address + '/status', function (msg) {
+                  _this._messageBus.addListener(address + '/status', function(msg) {
                     console.log('Message addListener for : ', address + '/status -> ' + msg);
                   });
                 });
@@ -574,7 +585,7 @@ var Registry = function (_EventEmitter) {
                 }
 
                 // as soon as the previous array is completed, this will wait for the resolve of all promises in the array
-                Promise.all(dataSchemasArray).then(function (dataSchemas) {
+                Promise.all(dataSchemasArray).then(function(dataSchemas) {
 
                   var filteredDataSchemas = [];
                   for (var _index in dataSchemas) {
@@ -587,7 +598,7 @@ var Registry = function (_EventEmitter) {
 
                   var message = _this.messageFactory.createCreateMessageRequest(_this.registryURL, 'domain://registry.' + _this.registryDomain + '/', messageValue, 'policy');
 
-                  _this._messageBus.postMessage(message, function (reply) {
+                  _this._messageBus.postMessage(message, function(reply) {
                     console.log('===> RegisterHyperty Reply: ', reply);
 
                     if (reply.body.code === 200) {
@@ -599,11 +610,11 @@ var Registry = function (_EventEmitter) {
 
                   //timer to keep the registration alive
                   // the time is defined by a little less than half of the expires time defined
-                  var keepAliveTimer = setInterval(function () {
+                  var keepAliveTimer = setInterval(function() {
 
                     var message = _this.messageFactory.createCreateMessageRequest(_this.registryURL, 'domain://registry.' + _this.registryDomain + '/', messageValue, 'policy');
 
-                    _this._messageBus.postMessage(message, function (reply) {
+                    _this._messageBus.postMessage(message, function(reply) {
                       console.log('===> KeepAlive Reply: ', reply);
                     });
                   }, _this.expiresTime / 1.1 / 2 * 1000);
@@ -611,13 +622,13 @@ var Registry = function (_EventEmitter) {
                   console.log('Hyperty Schemas', filteredDataSchemas);
                   console.log('Hyperty resources', resources);
                 });
-              }).catch(function (reason) {
+              }).catch(function(reason) {
                 console.log('Address Reason: ', reason);
                 reject(reason);
               });
             });
           }
-        }, function (err) {
+        }, function(err) {
           reject('Failed to obtain an identity');
         });
       });
@@ -633,7 +644,7 @@ var Registry = function (_EventEmitter) {
     value: function unregisterHyperty(url) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         var found = false;
         var index = 0;
@@ -669,7 +680,7 @@ var Registry = function (_EventEmitter) {
       if (!url) throw new Error('Parameter url needed');
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         var request = _this.protostubsList[url];
 
@@ -694,7 +705,7 @@ var Registry = function (_EventEmitter) {
       var _this = this;
       var runtimeProtoStubURL = void 0;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         //check if messageBus is registered in registry or not
         if (_this._messageBus === undefined) {
@@ -718,7 +729,7 @@ var Registry = function (_EventEmitter) {
 
         resolve(runtimeProtoStubURL);
 
-        _this._messageBus.addListener(runtimeProtoStubURL + '/status', function (msg) {
+        _this._messageBus.addListener(runtimeProtoStubURL + '/status', function(msg) {
           if (msg.resource === msg.to + '/status') {
             console.log('RuntimeProtostubURL/status message: ', msg.body.value);
           }
@@ -737,7 +748,7 @@ var Registry = function (_EventEmitter) {
       var _this = this;
       var runtimeProtoStubURL = void 0;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         var data = _this.protostubsList[hypertyRuntimeURL];
 
@@ -763,7 +774,7 @@ var Registry = function (_EventEmitter) {
       var _this = this;
       var idpProxyStubURL = void 0;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         //check if messageBus is registered in registry or not
         if (_this._messageBus === undefined) {
@@ -782,7 +793,7 @@ var Registry = function (_EventEmitter) {
 
         resolve(idpProxyStubURL);
 
-        _this._messageBus.addListener(idpProxyStubURL + '/status', function (msg) {
+        _this._messageBus.addListener(idpProxyStubURL + '/status', function(msg) {
           if (msg.resource === msg.to + '/status') {
             console.log('idpProxyStubURL/status message: ', msg.body.value);
           }
@@ -802,7 +813,7 @@ var Registry = function (_EventEmitter) {
       if (!url) throw new Error('Parameter url needed');
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         var request = _this.idpProxyList[url];
 
@@ -826,7 +837,7 @@ var Registry = function (_EventEmitter) {
     value: function registerPEP(postMessage, hyperty) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         //TODO check what parameter in the postMessage the pep is.
         _this.pepList[hyperty] = postMessage;
         resolve('PEP registered with success');
@@ -843,7 +854,7 @@ var Registry = function (_EventEmitter) {
     value: function unregisterPEP(HypertyRuntimeURL) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         var result = _this.pepList[HypertyRuntimeURL];
 
@@ -879,7 +890,7 @@ var Registry = function (_EventEmitter) {
       console.log('getSandbox: ', url);
 
       var _this = this;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         var request = void 0;
 
@@ -935,7 +946,7 @@ var Registry = function (_EventEmitter) {
         domainUrl = _this._domain;
       }
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
         if (!domainUrl.indexOf('msg-node.') || !domainUrl.indexOf('registry.')) {
           domainUrl = domainUrl.substring(domainUrl.indexOf('.') + 1);
@@ -948,13 +959,13 @@ var Registry = function (_EventEmitter) {
           request = _this.protostubsList[domainUrl];
         }
 
-        _this.addEventListener('runtime:stubLoaded', function (domainUrl) {
+        _this.addEventListener('runtime:stubLoaded', function(domainUrl) {
           request = _this.protostubsList[domainUrl];
           console.info('Resolved Protostub: ', request);
           resolve(request);
         });
 
-        _this.addEventListener('runtime:idpProxyLoaded', function (domainUrl) {
+        _this.addEventListener('runtime:idpProxyLoaded', function(domainUrl) {
           request = _this.idpProxyList[domainUrl];
           console.info('Resolved IDPProxy: ', request);
           resolve(request);
@@ -988,7 +999,7 @@ var Registry = function (_EventEmitter) {
       var _this = this;
       _this._messageBus = messageBus;
 
-      _this._messageBus.addListener(_this.registryURL, function (msg) {
+      _this._messageBus.addListener(_this.registryURL, function(msg) {
 
         var userUrl = _this._getIdentityAssociated(msg.body.resource, msg.body.criteria);
 
