@@ -47,7 +47,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * The class returned from the Syncher create call.
  * To be used as a reporter point, changes will be submited to DataObjectObserver instances.
  */
-
 var DataObjectReporter = function (_DataObject) {
   _inherits(DataObjectReporter, _DataObject);
 
@@ -63,7 +62,6 @@ var DataObjectReporter = function (_DataObject) {
    * @ignore
    * Should not be used directly by Hyperties. It's called by the Syncher.create method
    */
-
   function DataObjectReporter(syncher, url, schema, initialStatus, initialData, childrens) {
     _classCallCheck(this, DataObjectReporter);
 

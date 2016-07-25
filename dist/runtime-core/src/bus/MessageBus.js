@@ -49,7 +49,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 * Message BUS Interface is an extension of the Bus
 * It doesn't support the default '*' listener, instead it uses the registry.resolve(..)
 */
-
 var MessageBus = function (_Bus) {
   _inherits(MessageBus, _Bus);
 

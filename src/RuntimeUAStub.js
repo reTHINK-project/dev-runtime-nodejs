@@ -43,11 +43,6 @@ let window4Node = {};
 let child = require('child_process');
 registry.runtime = child.fork(__dirname + '/core.js');
 
-// chiko.on('message', function(m) {
-//   console.log('PARENT got message:', m);
-// });
-// chiko.send({ hello: 'world' });
-
 let buildMsg = (hypertyComponent, msg) => {
         return {
           runtimeHypertyURL: msg.body.runtimeHypertyURL,
@@ -63,7 +58,7 @@ let runtimeProxy = {
         return new Promise((resolve, reject)=> {
           registry.runtime.on('message', function(msg) {
 
-            console.log('------------------- Message from runtime core child  -------------------------');
+            console.log('------------------- Message from runtime core child  -------------------------'.green);
             // console.log('message is :', msg);
 
             if (msg.to === 'runtime:loadedHyperty') {
@@ -72,7 +67,7 @@ let runtimeProxy = {
             }
 
           });
-          console.log('registry.runtime.send');
+          console.log('registry.runtime.send'.green);
           registry.runtime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
         });
       },
@@ -94,7 +89,7 @@ let RethinkNode = {
               registry.runtime
               .send({do:'install runtime core', data:window4Node});
               registry.runtime.on('message', function(msg) {
-                console.log('------------------- In parent Process  -------------------------');
+                console.log('------------------- In parent Process  -------------------------'.green);
                 console.log('\n--> message recieved from child process core.js');
                 // console.log('message is :', msg);
                 if (msg.to === 'runtime:installed') {
@@ -104,12 +99,12 @@ let RethinkNode = {
               });
               registry.runtime.on('error', function(error) {
                 console.error('runtime core install failed:', error);
-                // registry.runtime.kill();
+                registry.runtime.kill();
                 reject(error);
               });
               registry.runtime.on('exit', function() {
                 console.log('runtime core exited.');
-                // registry.runtime.kill();
+                registry.runtime.kill();
               });
 
               // console.log(registry);

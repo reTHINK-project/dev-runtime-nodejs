@@ -1,16 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
-  });
+});
 
-var _createClass = function() {
-  function defineProperties(target, props) { for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor);
-    } } return function(Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor;
-  };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _utils = require('../utils/utils');
 
@@ -24,18 +18,19 @@ var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var RuntimeCatalogue = function() {
+var RuntimeCatalogue = function () {
     function RuntimeCatalogue(runtimeFactory) {
-      _classCallCheck(this, RuntimeCatalogue);
+        _classCallCheck(this, RuntimeCatalogue);
 
-      if (!runtimeFactory) throw Error('The catalogue needs the runtimeFactory');
+        if (!runtimeFactory) throw Error('The catalogue needs the runtimeFactory');
 
-      var _this = this;
-      _this._factory = new _CatalogueDataObjectFactory2.default(false, undefined);
-      _this.httpRequest = runtimeFactory.createHttpRequest();
-      _this.atob = runtimeFactory.atob ? runtimeFactory.atob : atob;
+        var _this = this;
+        _this._factory = new _CatalogueDataObjectFactory2.default(false, undefined);
+        _this.httpRequest = runtimeFactory.createHttpRequest();
+        console.log(runtimeFactory.atob);
+        _this.atob = runtimeFactory.atob ? runtimeFactory.atob : atob;
     }
 
     /**
@@ -45,49 +40,50 @@ var RuntimeCatalogue = function() {
      * @returns {Promise}
      */
 
+
     _createClass(RuntimeCatalogue, [{
         key: 'getDescriptor',
         value: function getDescriptor(descriptorURL, createFunc) {
             var _this = this;
             // console.log("getDescriptor", descriptorURL);
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
 
-                _this.httpRequest.get(descriptorURL + '/version').then(function(result) {
+                _this.httpRequest.get(descriptorURL + "/version").then(function (result) {
                     if (_PersistenceManager2.default.getVersion(descriptorURL) >= result) {
-                      // return saved version
-                      console.log('returning saved version:', _PersistenceManager2.default.get(descriptorURL));
-                      resolve(createFunc(_this, _PersistenceManager2.default.get(descriptorURL)));
+                        // return saved version
+                        console.log("returning saved version:", _PersistenceManager2.default.get(descriptorURL));
+                        resolve(createFunc(_this, _PersistenceManager2.default.get(descriptorURL)));
                     } else {
-                      // request the json
-                      _this.httpRequest.get(descriptorURL).then(function(result) {
-                          result = JSON.parse(result);
+                        // request the json
+                        _this.httpRequest.get(descriptorURL).then(function (result) {
+                            result = JSON.parse(result);
 
-                          if (result['ERROR']) {
-                            // TODO handle error properly
-                            reject(result);
-                          } else {
-                            // FIXME hotfix for unparsed arrays (e.g. hypertyType), will be fixed in Catalogue 1.1.0
-                            for (var key in result) {
-                                try {
-                                    result[key] = JSON.parse(result[key]);
-                                } catch (e) {
-                                    // do nothing
+                            if (result["ERROR"]) {
+                                // TODO handle error properly
+                                reject(result);
+                            } else {
+                                // FIXME hotfix for unparsed arrays (e.g. hypertyType), will be fixed in Catalogue 1.1.0
+                                for (var key in result) {
+                                    try {
+                                        result[key] = JSON.parse(result[key]);
+                                    } catch (e) {
+                                        // do nothing
+                                    }
                                 }
+                                // console.log("creating descriptor based on: ", result);
+                                var descriptor = createFunc(_this, result);
+                                _PersistenceManager2.default.set(descriptorURL, descriptor.version, result);
+                                // console.log("created descriptor object:", hyperty);
+                                resolve(descriptor);
                             }
-                            // console.log("creating descriptor based on: ", result);
-                            var descriptor = createFunc(_this, result);
-                            _PersistenceManager2.default.set(descriptorURL, descriptor.version, result);
-                            // console.log("created descriptor object:", hyperty);
-                            resolve(descriptor);
-                          }
                         });
                     }
-                  }).catch(function(reason) {
+                }).catch(function (reason) {
                     reject(reason);
-                  });
-              });
-          }
+                });
+            });
+        }
 
         /**
          * Get HypertyDescriptor
@@ -95,12 +91,12 @@ var RuntimeCatalogue = function() {
          * @returns {Promise}
          */
 
-      }, {
+    }, {
         key: 'getHypertyDescriptor',
         value: function getHypertyDescriptor(hypertyURL) {
             var _this = this;
             return _this.getDescriptor(hypertyURL, _this._createHyperty);
-          }
+        }
 
         /**
          * Get StubDescriptor
@@ -108,7 +104,7 @@ var RuntimeCatalogue = function() {
          * @returns {Promise}
          */
 
-      }, {
+    }, {
         key: 'getStubDescriptor',
         value: function getStubDescriptor(stubURL) {
             var _this = this;
@@ -119,20 +115,20 @@ var RuntimeCatalogue = function() {
             var protostub = dividedURL.identity;
 
             if (!protostub) {
-              protostub = 'default';
+                protostub = 'default';
             } else {
-              protostub = protostub.substring(protostub.lastIndexOf('/') + 1);
+                protostub = protostub.substring(protostub.lastIndexOf('/') + 1);
             }
 
             var prefix = 'catalogue.';
             if (stubURL.includes('catalogue')) {
-              prefix = '';
+                prefix = '';
             }
 
             stubURL = type + '://' + prefix + domain + '/.well-known/protocolstub/' + protostub;
 
             return _this.getDescriptor(stubURL, _this._createStub);
-          }
+        }
 
         /**
          * Get RuntimeDescriptor
@@ -140,12 +136,12 @@ var RuntimeCatalogue = function() {
          * @returns {Promise}
          */
 
-      }, {
+    }, {
         key: 'getRuntimeDescriptor',
         value: function getRuntimeDescriptor(runtimeURL) {
             var _this = this;
             return _this.getDescriptor(runtimeURL, _this._createRuntimeDescriptor);
-          }
+        }
 
         /**
          * Get DataSchemaDescriptor
@@ -153,12 +149,12 @@ var RuntimeCatalogue = function() {
          * @returns {Promise}
          */
 
-      }, {
+    }, {
         key: 'getDataSchemaDescriptor',
         value: function getDataSchemaDescriptor(dataSchemaURL) {
             var _this = this;
             return _this.getDescriptor(dataSchemaURL, _this._createDataSchema);
-          }
+        }
 
         /**
          * Get IDPProxyDescriptor
@@ -166,12 +162,12 @@ var RuntimeCatalogue = function() {
          * @returns {Promise}
          */
 
-      }, {
+    }, {
         key: 'getIdpProxyDescriptor',
         value: function getIdpProxyDescriptor(idpProxyURL) {
             var _this = this;
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
 
                 var dividedURL = (0, _utils.divideURL)(idpProxyURL);
                 var type = dividedURL.type;
@@ -182,27 +178,27 @@ var RuntimeCatalogue = function() {
                 var originDomain = originDividedURL.domain;
 
                 if (!domain) {
-                  domain = idpProxyURL;
+                    domain = idpProxyURL;
                 }
 
                 if (domain === originDomain || !idpproxy) {
-                  idpproxy = 'default';
+                    idpproxy = 'default';
                 } else {
-                  idpproxy = idpproxy.substring(idpproxy.lastIndexOf('/') + 1);
+                    idpproxy = idpproxy.substring(idpproxy.lastIndexOf('/') + 1);
                 }
 
                 var prefix = 'catalogue.';
                 if (idpProxyURL.includes('catalogue')) {
-                  prefix = '';
+                    prefix = '';
                 }
 
                 idpProxyURL = type + '://' + domain + '/.well-known/idp-proxy/' + idpproxy;
 
-                return _this.getDescriptor(idpProxyURL, _this._createIdpProxy).then(function(result) {
+                return _this.getDescriptor(idpProxyURL, _this._createIdpProxy).then(function (result) {
 
                     console.log('result: ', result);
                     resolve(result);
-                  }).catch(function() {
+                }).catch(function () {
 
                     idpproxy = domain;
                     domain = originDomain;
@@ -211,13 +207,13 @@ var RuntimeCatalogue = function() {
                     idpProxyURL = type + '://' + prefix + domain + '/.well-known/idp-proxy/' + idpproxy;
 
                     return _this.getDescriptor(idpProxyURL, _this._createIdpProxy);
-                  }).then(function(result) {
+                }).then(function (result) {
                     resolve(result);
-                  }).catch(function(reason) {
+                }).catch(function (reason) {
                     reject(reason);
-                  });
-              });
-          }
+                });
+            });
+        }
 
         /**
          * Create HypertyDescriptor based on raw object that contains its attributes
@@ -291,10 +287,11 @@ var RuntimeCatalogue = function() {
             try {
                 rawRuntime["hypertyCapabilities"] = JSON.parse(rawRuntime["hypertyCapabilities"]);
                 rawRuntime["protocolCapabilities"] = JSON.parse(rawRuntime["protocolCapabilities"]);
-            } catch (e) {
-                // already json object
-            }
-            console.log("creating runtime descriptor based on: ", rawRuntime);
+            } catch (e) {}
+            // already json object
+
+            // console.log("creating runtime descriptor based on: ", rawRuntime);
+
 
             // create the descriptor
             var runtime = _this._factory.createHypertyRuntimeDescriptorObject(rawRuntime["cguid"], rawRuntime["version"], rawRuntime["objectName"], rawRuntime["description"], rawRuntime["language"], rawRuntime["sourcePackageURL"], rawRuntime["type"] || rawRuntime["runtimeType"], rawRuntime["hypertyCapabilities"], rawRuntime["protocolCapabilities"]);
@@ -352,13 +349,13 @@ var RuntimeCatalogue = function() {
             } else {
                 console.log('4. getSourcePackageFromURL: ', rawSchema.sourcePackageURL);
 
-                return new Promise(function(resolve, reject) {
+                return new Promise(function (resolve, reject) {
 
-                    _this.getSourcePackageFromURL(rawSchema.sourcePackageURL).then(function(sourcePackage) {
+                    _this.getSourcePackageFromURL(rawSchema.sourcePackageURL).then(function (sourcePackage) {
                         console.log('5. result of getSourcePackageFromURL', sourcePackage);
                         dataSchema.sourcePackage = sourcePackage;
                         resolve(dataSchema);
-                    }).catch(function(reason) {
+                    }).catch(function (reason) {
                         console.log('Error getting the sourcePackageURL ', reason);
                         reject(reason);
                     });
@@ -400,9 +397,9 @@ var RuntimeCatalogue = function() {
         value: function _createSourcePackage(_this, sp) {
             try {
                 sp = JSON.parse(sp);
-            } catch (e) {
-                console.log("parsing sourcePackage failed. already parsed? -> sp");
-            }
+            } catch (e) {}
+            // console.log("parsing sourcePackage failed. already parsed? -> ", sp);
+
 
             // check encoding
             if (sp["encoding"] === "base64") {
@@ -434,8 +431,8 @@ var RuntimeCatalogue = function() {
             console.warn("ATTENTION: This function may fail if the sourceCode of the the sourcePackage is very large!");
             console.warn("-------------------------------------------------------------------------------------------");
 
-            return new Promise(function(resolve, reject) {
-                _this.httpRequest.get(sourcePackageURL).then(function(result) {
+            return new Promise(function (resolve, reject) {
+                _this.httpRequest.get(sourcePackageURL).then(function (result) {
                     //console.log("got raw sourcePackage:", result);
                     if (result["ERROR"]) {
                         // TODO handle error properly
@@ -445,7 +442,7 @@ var RuntimeCatalogue = function() {
                         var sourcePackage = _this._createSourcePackage(_this, result);
                         resolve(sourcePackage);
                     }
-                }).catch(function(reason) {
+                }).catch(function (reason) {
                     reject(reason);
                 });
             });
@@ -461,7 +458,7 @@ var RuntimeCatalogue = function() {
         key: 'getSourceCodeFromDescriptor',
         value: function getSourceCodeFromDescriptor(descriptor) {
             var _this = this;
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 if (descriptor.sourcePackage) {
                     //console.log("descriptor has sourcePackage");
                     //console.log("returning sourceCode:", descriptor.sourcePackage.sourceCode);
@@ -471,7 +468,7 @@ var RuntimeCatalogue = function() {
                         console.log("returning cached version from persistence manager");
                         resolve(_PersistenceManager2.default.get(descriptor.sourcePackageURL + "/sourceCode"));
                     } else {
-                        _this.httpRequest.get(descriptor.sourcePackageURL + "/sourceCode").then(function(sourceCode) {
+                        _this.httpRequest.get(descriptor.sourcePackageURL + "/sourceCode").then(function (sourceCode) {
                             if (sourceCode["ERROR"]) {
                                 // TODO handle error properly
                                 reject(sourceCode);

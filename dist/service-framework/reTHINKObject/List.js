@@ -36,7 +36,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * ReTHINK List
  */
 // Probably not going to be needed. We could use the Array or Set Objects from JavaScript
-
 var List = function (_Array) {
   _inherits(List, _Array);
 

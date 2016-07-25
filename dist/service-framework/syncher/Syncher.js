@@ -48,7 +48,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * The Syncher is a singleton class per Hyperty/URL and it is the owner of all created Data Sync Objects according to the Reporter - Observer pattern.
  * Main functionality is to create reporters and to subscribe to existing ones.
  */
-
 var Syncher = function () {
   /* private
   _owner: URL
@@ -67,7 +66,6 @@ var Syncher = function () {
    * @param {MiniBus} bus - An instance of the MiniBus provided in the sandbox. When an object (Reporter or Observed) is created, the SyncherManager will add a listener in the MiniBus to receive/send Messages of that object.
    * @param {JSON} config - Configuration data. The only required field for now is the runtimeURL.
    */
-
   function Syncher(owner, bus, config) {
     _classCallCheck(this, Syncher);
 

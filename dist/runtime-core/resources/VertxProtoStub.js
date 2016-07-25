@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function (f) {
-  if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined') {
+  if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && typeof module !== "undefined") {
     module.exports = f();
-  } else if (typeof define === 'function' && define.amd) {
+  } else if (typeof define === "function" && define.amd) {
     define([], f);
   } else {
-    var g;if (typeof window !== 'undefined') {
+    var g;if (typeof window !== "undefined") {
       g = window;
-    } else if (typeof global !== 'undefined') {
+    } else if (typeof global !== "undefined") {
       g = global;
-    } else if (typeof self !== 'undefined') {
+    } else if (typeof self !== "undefined") {
       g = self;
     } else {
       g = this;

@@ -12,7 +12,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * The Identity Data Model is used to model the reTHINK User entity. The Identity data model is handled by Identity Management functionality.
 *
 */
-
 var Identity = function () {
   function Identity(guid, type) {
     _classCallCheck(this, Identity);

@@ -35,7 +35,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Core HypertyDiscovery interface
 * Class to allow applications to search for hyperties using the message bus
 */
-
 var HypertyDiscovery = function () {
 
   /**
@@ -44,7 +43,6 @@ var HypertyDiscovery = function () {
   * @param  {MessageBus}          msgbus                msgbus
   * @param  {RuntimeURL}          runtimeURL            runtimeURL
   */
-
   function HypertyDiscovery(hypertyURL, msgBus) {
     _classCallCheck(this, HypertyDiscovery);
 

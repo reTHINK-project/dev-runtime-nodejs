@@ -83,7 +83,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @property {MessageBus} messageBus - Message Bus is used like a router to redirect the messages from one component to other(s)
  * @property {GraphConnector} graphConnector - Graph Connector handling GUID and contacts
  */
-
 var RuntimeUA = function() {
 
   /**
@@ -91,7 +90,6 @@ var RuntimeUA = function() {
    * @param {runtimeFactory} runtimeFactory - Specific implementation for the environment where the core runtime will run;
    * @param {domain} domainURL - specify the domain base for the runtime;
    */
-
   function RuntimeUA(runtimeFactory, domain) {
     _classCallCheck(this, RuntimeUA);
 
@@ -233,11 +231,11 @@ var RuntimeUA = function() {
         // TODO: the request Module should be changed,
         // because at this moment it is incompatible with nodejs;
         // Probably we need to pass a factory like we do for sandboxes;
-        console.info('------------------ Hyperty ------------------------');
+        console.info('------------------ Hyperty ------------------------'.green);
         console.info('Get hyperty descriptor for :', hypertyDescriptorURL);
         return _this.runtimeCatalogue.getHypertyDescriptor(hypertyDescriptorURL).then(function(hypertyDescriptor) {
           // at this point, we have completed "step 2 and 3" as shown in https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md
-          console.info('1: return hyperty descriptor : hypertyDescriptor');
+          console.info('1: return hyperty descriptor'.blue);
 
           // hyperty contains the full path of the catalogue URL, e.g.
           // catalogue.rethink.eu/.well-known/..........
@@ -252,7 +250,7 @@ var RuntimeUA = function() {
           // Get the hyperty source code
           return _this.runtimeCatalogue.getSourcePackageFromURL(sourcePackageURL);
         }).then(function(sourcePackage) {
-          console.info('2: return hyperty source code');
+          console.info('2: return hyperty source code: sourcePackage'.blue);
 
           // at this point, we have completed "step 4 and 5" as shown in https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md
 
@@ -269,7 +267,7 @@ var RuntimeUA = function() {
 
           return policy;
         }).then(function(policyResult) {
-          console.info('3: return policy engine result: ', policyResult);
+          console.info('3: return policy engine result: '.blue, policyResult);
 
           // we have completed step 6 to 9 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
           //
@@ -299,13 +297,13 @@ var RuntimeUA = function() {
           // this will return the sandbox or one promise to getSandbox;
           return sandbox;
         }).then(function(sandbox) {
-          console.info('4: return the sandbox', sandbox);
+          console.info('4: return the sandbox: sandbox\n'.blue, sandbox);
 
           // Return the sandbox indepentely if it running in the same sandbox or not
           // we have completed step 14 here.
           return sandbox;
         }, function(reason) {
-          console.error('4.1: Try to register a new sandbox ', reason);
+          console.error('4.1: Try to register a new sandbox '.red, reason);
 
           // check if the sandbox is registed for this hyperty descriptor url;
           // Make Steps xxx --- xxx
@@ -318,14 +316,14 @@ var RuntimeUA = function() {
 
           return sandbox;
         }).then(function(sandbox) {
-          console.info('5: return sandbox and register');
+          console.info('5: return sandbox and register : \n'.blue, sandbox);
 
           _hypertySandbox = sandbox;
 
           // Register hyperty
           return _this.registry.registerHyperty(sandbox, hypertyDescriptorURL, _hypertyDescriptor);
         }).then(function(hypertyURL) {
-          console.info('6: Hyperty url, after register hyperty', hypertyURL);
+          console.info('6: Hyperty url, after register hyperty'.blue, hypertyURL);
 
           // we have completed step 16 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
           _hypertyURL = hypertyURL;
@@ -344,7 +342,7 @@ var RuntimeUA = function() {
           // We will deploy the component - step 17 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
           return _hypertySandbox.deployComponent(_hypertySourcePackage.sourceCode, _hypertyURL, configuration);
         }).then(function(deployComponentStatus) {
-          console.info('7: Deploy component status for hyperty: ', deployComponentStatus);
+          console.info('7: Deploy component status for hyperty: '.blue, deployComponentStatus);
 
           // we have completed step 19 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
 
@@ -394,15 +392,14 @@ var RuntimeUA = function() {
         var _stubSourcePackage = void 0;
 
         var errorReason = function errorReason(reason) {
-          console.error('\nSomething failed on the deploy of protocolstub: '.red, reason);
+          console.error('Something failed on the deploy of protocolstub: ', reason);
           reject(reason);
         };
 
         // Discover Protocol Stub
         console.info('------------------- ProtoStub ---------------------------\n'.green);
-        console.info('Discover or Create a new ProtoStub for domain: ', domain);
+        console.info('Discover or Create a new ProtoStub for domain: '.green, domain);
         _this.registry.discoverProtostub(domain).then(function(runtimeProtoStubURL) {
-          runtimeProtoStubURL = hybroker.rethink.ptinovacao.pt;
           // Is registed?
           console.info('1. Proto Stub Discovered: '.green, runtimeProtoStubURL);
 
@@ -415,7 +412,7 @@ var RuntimeUA = function() {
           };
 
           resolve(stub);
-          console.info('------------------- END ---------------------------\n'.green);
+          console.info('------------------- END ---------------------------\n'.red);
         }).catch(function(reason) {
 
           // is not registed?
@@ -440,7 +437,7 @@ var RuntimeUA = function() {
             // we need to get ProtoStub Source code from descriptor - step 6 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
             return _this.runtimeCatalogue.getSourcePackageFromURL(sourcePackageURL);
           }).catch(errorReason).then(function(stubSourcePackage) {
-            console.info('\n3. return the ProtoStub Source Code : \n'.green, stubSourcePackage);
+            console.info('3. return the ProtoStub Source Code: stubSourcePackage'.green);
 
             // we have completed step 7 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
@@ -454,26 +451,27 @@ var RuntimeUA = function() {
             return _this.registry.getSandbox(domain);
           }).then(function(stubSandbox) {
 
-            console.info('\n4. if the sandbox is registered then return the sandbox: \n '.green, stubSandbox);
+            console.info('4. if the sandbox is registered then return the sandbox : stubSandbox'.green);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
             _stubSandbox = stubSandbox;
             return stubSandbox;
           }).catch(function(reason) {
-            console.info('\n5. Sandbox was not found, creating a new one '.green, reason);
+            console.info('5. Sandbox was not found, creating a new one '.red, reason);
 
             // check if the sandbox is registed for this stub descriptor url;
             // Make Steps xxx --- xxx
             // Instantiate the Sandbox
             var sandbox = _this.runtimeFactory.createSandbox();
             sandbox.addListener('*', function(msg) {
+              console.log('In RuntimeUA sandbox Received message'.blue);
               _this.messageBus.postMessage(msg);
             });
 
             return sandbox;
           }).then(function(sandbox) {
-            console.info('\n 6. return the sandbox instance and register :'.green, sandbox, 'to domain '.green, domain);
+            console.info('6. return the sandbox instance and register'.green, sandbox, 'to domain '.green, domain);
 
             _stubSandbox = sandbox;
 
@@ -481,12 +479,11 @@ var RuntimeUA = function() {
             return _this.registry.registerStub(_stubSandbox, domain);
           }).then(function(runtimeProtoStubURL) {
 
-            console.info('7. return the runtime protostub url: ', runtimeProtoStubURL);
+            console.info('7. return the runtime protostub url: '.green, runtimeProtoStubURL);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
             _runtimeProtoStubURL = runtimeProtoStubURL;
-            console.log('_stubDescriptor.configuration : '.green, _stubDescriptor.configuration);
 
             // Extend original hyperty configuration;
             var configuration = {};
@@ -500,24 +497,15 @@ var RuntimeUA = function() {
 
             configuration.runtimeURL = _this.runtimeURL;
 
-
-            // console.log('  configuration.runtimeURL :', configuration.runtimeURL);
-            // console.log('  _stubSourcePackage.sourceCode :', _stubSourcePackage.sourceCode);
-            // console.log('configuration:', configuration);
-
-
-
-
             // Deploy Component step xxx
             return _stubSandbox.deployComponent(_stubSourcePackage.sourceCode, runtimeProtoStubURL, configuration);
           }).then(function(deployComponentStatus) {
-            console.info('8: return deploy component for sandbox status: '.green, deployComponentStatus);
+            console.info('8: return deploy component for sandbox status: '.blue, deployComponentStatus);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
             // Add the message bus listener
             _this.messageBus.addListener(_runtimeProtoStubURL, function(msg) {
-              console.log('_this.messageBus.addListener postMessage :\n'.rainbow, msg);
               _stubSandbox.postMessage(msg);
             });
 
@@ -530,7 +518,7 @@ var RuntimeUA = function() {
             };
 
             resolve(stub);
-            console.info('------------------- END ---------------------------\n');
+            console.info('------------------- END ---------------------------\n'.red);
           }).catch(errorReason);
         });
       });
@@ -665,7 +653,7 @@ var RuntimeUA = function() {
             configuration.runtimeURL = _this.runtimeURL;
 
             // Deploy Component step xxx
-            return _proxySandbox.deployComponent(_proxySourcePackage.sourceCode, runtimeIdpProxyURL, configuration);
+            // return _proxySandbox.deployComponent(_proxySourcePackage.sourceCode, runtimeIdpProxyURL, configuration);
           }).then(function(deployComponentStatus) {
             console.info('8: return deploy component for sandbox status: ', deployComponentStatus);
 
@@ -687,6 +675,29 @@ var RuntimeUA = function() {
             resolve(idpProxy);
             console.info('------------------- END ---------------------------\n');
           }).catch(errorReason);
+        });
+      });
+    }
+
+    /**
+     * Used to close all the runtime; Unregister all hyperties;
+     * @return {Promise<Boolean>} result of the close method, with true or false to the operation success;
+     */
+
+  }, {
+    key: 'close',
+    value: function close() {
+      var _this = this;
+
+      console.info('Unregister all hyperties');
+      return new Promise(function(resolve, reject) {
+
+        _this.registry.unregisterAllHyperties().then(function(result) {
+          console.info('All the hyperties are unregisted with Success:', result);
+          resolve(true);
+        }).catch(function(reason) {
+          console.error('Failed to unregister the hyperties', reason);
+          reject(false);
         });
       });
     }

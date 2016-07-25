@@ -12,7 +12,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Class with the cryptographic functions for the authentication protocol
 *
 */
-
 var Crypto = function () {
   function Crypto() {
     _classCallCheck(this, Crypto);

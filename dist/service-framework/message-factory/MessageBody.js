@@ -54,7 +54,6 @@ var MessageBody = exports.MessageBody = function () {
      * @param {Identity.Identity} assertedIdentity - AssertedIdentity is compliant with User Identity Data Model
      *
      */
-
     function MessageBody(idToken, accessToken, resource, schema, assertedIdentity) {
         _classCallCheck(this, MessageBody);
 
@@ -104,7 +103,6 @@ var CreateMessageBody = exports.CreateMessageBody = function (_MessageBody) {
      * @param {URL.HypertyCatalogueURL} schema - URL of the Data object schema stored in the Catalogue
      * @param {Identity.Identity} assertedIdentity - AssertedIdentity is compliant with User Identity Data Model
      */
-
     function CreateMessageBody(value, policy, idToken, accessToken, resource, schema, assertedIdentity) {
         _classCallCheck(this, CreateMessageBody);
 
@@ -141,7 +139,6 @@ var ReadMessageBody = exports.ReadMessageBody = function (_MessageBody2) {
      * @param {String} criteria -Defines the criteria to be used for search purposes. Syntax used to define the criteria
      * is set in the criteriaSyntax.
      */
-
     function ReadMessageBody(idToken, accessToken, resource, schema, assertedIdentity, attribute, criteriaSyntax, criteria) {
         _classCallCheck(this, ReadMessageBody);
 
@@ -175,7 +172,6 @@ var DeleteMessageBody = exports.DeleteMessageBody = function (_MessageBody3) {
      * @param {Identity.Identity} assertedIdentity - AssertedIdentity is compliant with User Identity Data Model
      * @param {String} attribute - Identifies the attribute in the Object to be deleted (optional)
      */
-
     function DeleteMessageBody(idToken, accessToken, resource, schema, assertedIdentity, attribute) {
         _classCallCheck(this, DeleteMessageBody);
 
@@ -214,7 +210,6 @@ var UpdateMessageBody = exports.UpdateMessageBody = function (_MessageBody4) {
      * @param {String} attribute - Identifies the attribute in the Object to be updated (optional)
      * @param {String} value - Contains the updated value object in JSON format.
      */
-
     function UpdateMessageBody(idToken, accessToken, resource, schema, assertedIdentity, attribute, value) {
         _classCallCheck(this, UpdateMessageBody);
 
@@ -258,7 +253,6 @@ var ForwardMessageBody = exports.ForwardMessageBody = function (_MessageBody5) {
      * @param {Identity.Identity} assertedIdentity - AssertedIdentity is compliant with User Identity Data Model
      * @param {Message} message - Message to be forwarded
      */
-
     function ForwardMessageBody(idToken, accessToken, resource, schema, assertedIdentity, message) {
         _classCallCheck(this, ForwardMessageBody);
 
@@ -288,7 +282,6 @@ var ResponseMessageBody = exports.ResponseMessageBody = function (_MessageBody6)
      * @param code - A response code compliant with HTTP response codes (RFC7231)
      * @param value - Contains a data value in JSON format. Applicable to Responses to READ MessageType.
      */
-
     function ResponseMessageBody(idToken, accessToken, resource, code, value) {
         _classCallCheck(this, ResponseMessageBody);
 
@@ -325,7 +318,6 @@ var ExecuteMessageBody = exports.ExecuteMessageBody = function (_MessageBody7) {
      * @param {Identity.Identity} assertedIdentity - AssertedIdentity is compliant with User Identity Data Model
      * @param {Message} message - Message to be forwarded
      */
-
     function ExecuteMessageBody(idToken, accessToken, resource, schema, assertedIdentity, method, params) {
         _classCallCheck(this, ExecuteMessageBody);
 

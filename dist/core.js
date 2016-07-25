@@ -70,7 +70,7 @@ function searchHyperty(runtime, descriptor) {
 }
 
 // process.on('message', function(msg) {
-console.log('\n------------------- In child thread core.js  --------------------');
+console.log('\n------------------- In child thread core.js  --------------------'.green);
 catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
 
   var descriptorRef = descriptor;
@@ -102,6 +102,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
           if (hyperty) {
             returnHyperty({ runtimeHypertyURL: hyperty.hypertyURL });
           } else {
+
             runtime.loadHyperty(descriptor).then(returnHyperty);
           }
         } else if (msg.to === 'core:loadStub') {
@@ -109,7 +110,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
           runtime.loadStub(msg.body.domain);
         }
       }, false);
-      console.log('##sending to parent');
+      console.log('## sending to parent');
       process.send({ to: 'runtime:installed', body: {} });
     })();
   } catch (e) {

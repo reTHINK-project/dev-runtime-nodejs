@@ -35,7 +35,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * ProtoStub Interface
  */
-
 var ProtoStub = function () {
 
   /**
@@ -44,7 +43,6 @@ var ProtoStub = function () {
    * @param  {Message.Message}                           busPostMessage     configuration
    * @param  {ProtoStubDescriptor.ConfigurationDataList} configuration      configuration
    */
-
   function ProtoStub(runtimeProtoStubURL, bus, config) {
     _classCallCheck(this, ProtoStub);
 

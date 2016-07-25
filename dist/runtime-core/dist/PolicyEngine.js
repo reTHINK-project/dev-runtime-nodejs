@@ -25,1195 +25,842 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 * limitations under the License.
 **/
 
-// Distribution file for PolicyEngine.js
+// Distribution file for PolicyEngine.js 
 // version: 0.5.1
-// Last build: Wed Jul 13 2016 18:18:42 GMT+0100 (WEST)
+// Last build: Mon Jul 25 2016 09:11:47 GMT+0100 (WEST)
 
-(function (f) {
-  if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && typeof module !== "undefined") {
-    module.exports = f();
-  } else if (typeof define === "function" && define.amd) {
-    define([], f);
-  } else {
-    var g;if (typeof window !== "undefined") {
-      g = window;
-    } else if (typeof global !== "undefined") {
-      g = global;
-    } else if (typeof self !== "undefined") {
-      g = self;
-    } else {
-      g = this;
-    }g.PolicyEngine = f();
+!function (e) {
+  if ("object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "undefined" != typeof module) module.exports = e();else if ("function" == typeof define && define.amd) define([], e);else {
+    var t;t = "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this, t.PolicyEngine = e();
   }
-})(function () {
-  var define, module, exports;return function e(t, n, r) {
-    function s(o, u) {
-      if (!n[o]) {
-        if (!t[o]) {
-          var a = typeof require == "function" && require;if (!u && a) return a(o, !0);if (i) return i(o, !0);var f = new Error("Cannot find module '" + o + "'");throw f.code = "MODULE_NOT_FOUND", f;
-        }var l = n[o] = { exports: {} };t[o][0].call(l.exports, function (e) {
-          var n = t[o][1][e];return s(n ? n : e);
-        }, l, l.exports, e, t, n, r);
-      }return n[o].exports;
-    }var i = typeof require == "function" && require;for (var o = 0; o < r.length; o++) {
-      s(r[o]);
-    }return s;
-  }({ 1: [function (require, module, exports) {
-      module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-    }, { "core-js/library/fn/object/define-property": 6 }], 2: [function (require, module, exports) {
-      module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
-    }, { "core-js/library/fn/symbol": 7 }], 3: [function (require, module, exports) {
+}(function () {
+  return function e(t, r, n) {
+    function o(u, s) {
+      if (!r[u]) {
+        if (!t[u]) {
+          var c = "function" == typeof require && require;if (!s && c) return c(u, !0);if (i) return i(u, !0);var a = new Error("Cannot find module '" + u + "'");throw a.code = "MODULE_NOT_FOUND", a;
+        }var f = r[u] = { exports: {} };t[u][0].call(f.exports, function (e) {
+          var r = t[u][1][e];return o(r ? r : e);
+        }, f, f.exports, e, t, r, n);
+      }return r[u].exports;
+    }for (var i = "function" == typeof require && require, u = 0; u < n.length; u++) {
+      o(n[u]);
+    }return o;
+  }({ 1: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/object/define-property"), __esModule: !0 };
+    }, { "core-js/library/fn/object/define-property": 7 }], 2: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/symbol"), __esModule: !0 };
+    }, { "core-js/library/fn/symbol": 8 }], 3: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/symbol/iterator"), __esModule: !0 };
+    }, { "core-js/library/fn/symbol/iterator": 9 }], 4: [function (e, t, r) {
       "use strict";
-
-      exports.__esModule = true;
-
-      exports.default = function (instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
+      r.__esModule = !0, r["default"] = function (e, t) {
+        if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
       };
-    }, {}], 4: [function (require, module, exports) {
+    }, {}], 5: [function (e, t, r) {
       "use strict";
-
-      exports.__esModule = true;
-
-      var _defineProperty = require("../core-js/object/define-property");
-
-      var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      exports.default = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];
-            descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true;
-            if ("value" in descriptor) descriptor.writable = true;
-            (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+      function n(e) {
+        return e && e.__esModule ? e : { "default": e };
+      }r.__esModule = !0;var o = e("../core-js/object/define-property"),
+          i = n(o);r["default"] = function () {
+        function e(e, t) {
+          for (var r = 0; r < t.length; r++) {
+            var n = t[r];n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), (0, i["default"])(e, n.key, n);
           }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);
-          if (staticProps) defineProperties(Constructor, staticProps);
-          return Constructor;
+        }return function (t, r, n) {
+          return r && e(t.prototype, r), n && e(t, n), t;
         };
       }();
-    }, { "../core-js/object/define-property": 1 }], 5: [function (require, module, exports) {
+    }, { "../core-js/object/define-property": 1 }], 6: [function (e, t, r) {
       "use strict";
-
-      var _Symbol = require("babel-runtime/core-js/symbol")["default"];
-
-      exports["default"] = function (obj) {
-        return obj && obj.constructor === _Symbol ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
+      function n(e) {
+        return e && e.__esModule ? e : { "default": e };
+      }r.__esModule = !0;var o = e("../core-js/symbol/iterator"),
+          i = n(o),
+          u = e("../core-js/symbol"),
+          s = n(u),
+          c = "function" == typeof s["default"] && "symbol" == _typeof(i["default"]) ? function (e) {
+        return typeof e === "undefined" ? "undefined" : _typeof(e);
+      } : function (e) {
+        return e && "function" == typeof s["default"] && e.constructor === s["default"] ? "symbol" : typeof e === "undefined" ? "undefined" : _typeof(e);
+      };r["default"] = "function" == typeof s["default"] && "symbol" === c(i["default"]) ? function (e) {
+        return "undefined" == typeof e ? "undefined" : c(e);
+      } : function (e) {
+        return e && "function" == typeof s["default"] && e.constructor === s["default"] ? "symbol" : "undefined" == typeof e ? "undefined" : c(e);
       };
-
-      exports.__esModule = true;
-    }, { "babel-runtime/core-js/symbol": 2 }], 6: [function (require, module, exports) {
-      var $ = require('../../modules/$');
-      module.exports = function defineProperty(it, key, desc) {
-        return $.setDesc(it, key, desc);
+    }, { "../core-js/symbol": 2, "../core-js/symbol/iterator": 3 }], 7: [function (e, t, r) {
+      e("../../modules/es6.object.define-property");var n = e("../../modules/_core").Object;t.exports = function (e, t, r) {
+        return n.defineProperty(e, t, r);
       };
-    }, { "../../modules/$": 25 }], 7: [function (require, module, exports) {
-      require('../../modules/es6.symbol');
-      require('../../modules/es6.object.to-string');
-      module.exports = require('../../modules/$.core').Symbol;
-    }, { "../../modules/$.core": 11, "../../modules/es6.object.to-string": 35, "../../modules/es6.symbol": 36 }], 8: [function (require, module, exports) {
-      module.exports = function (it) {
-        if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-        return it;
+    }, { "../../modules/_core": 15, "../../modules/es6.object.define-property": 67 }], 8: [function (e, t, r) {
+      e("../../modules/es6.symbol"), e("../../modules/es6.object.to-string"), e("../../modules/es7.symbol.async-iterator"), e("../../modules/es7.symbol.observable"), t.exports = e("../../modules/_core").Symbol;
+    }, { "../../modules/_core": 15, "../../modules/es6.object.to-string": 68, "../../modules/es6.symbol": 70, "../../modules/es7.symbol.async-iterator": 71, "../../modules/es7.symbol.observable": 72 }], 9: [function (e, t, r) {
+      e("../../modules/es6.string.iterator"), e("../../modules/web.dom.iterable"), t.exports = e("../../modules/_wks-ext").f("iterator");
+    }, { "../../modules/_wks-ext": 64, "../../modules/es6.string.iterator": 69, "../../modules/web.dom.iterable": 73 }], 10: [function (e, t, r) {
+      t.exports = function (e) {
+        if ("function" != typeof e) throw TypeError(e + " is not a function!");return e;
       };
-    }, {}], 9: [function (require, module, exports) {
-      var isObject = require('./$.is-object');
-      module.exports = function (it) {
-        if (!isObject(it)) throw TypeError(it + ' is not an object!');
-        return it;
+    }, {}], 11: [function (e, t, r) {
+      t.exports = function () {};
+    }, {}], 12: [function (e, t, r) {
+      var n = e("./_is-object");t.exports = function (e) {
+        if (!n(e)) throw TypeError(e + " is not an object!");return e;
       };
-    }, { "./$.is-object": 24 }], 10: [function (require, module, exports) {
-      var toString = {}.toString;
-
-      module.exports = function (it) {
-        return toString.call(it).slice(8, -1);
-      };
-    }, {}], 11: [function (require, module, exports) {
-      var core = module.exports = { version: '1.2.6' };
-      if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-    }, {}], 12: [function (require, module, exports) {
-      // optional / simple context binding
-      var aFunction = require('./$.a-function');
-      module.exports = function (fn, that, length) {
-        aFunction(fn);
-        if (that === undefined) return fn;
-        switch (length) {
-          case 1:
-            return function (a) {
-              return fn.call(that, a);
-            };
-          case 2:
-            return function (a, b) {
-              return fn.call(that, a, b);
-            };
-          case 3:
-            return function (a, b, c) {
-              return fn.call(that, a, b, c);
-            };
-        }
-        return function () /* ...args */{
-          return fn.apply(that, arguments);
+    }, { "./_is-object": 31 }], 13: [function (e, t, r) {
+      var n = e("./_to-iobject"),
+          o = e("./_to-length"),
+          i = e("./_to-index");t.exports = function (e) {
+        return function (t, r, u) {
+          var s,
+              c = n(t),
+              a = o(c.length),
+              f = i(u, a);if (e && r != r) {
+            for (; a > f;) {
+              if (s = c[f++], s != s) return !0;
+            }
+          } else for (; a > f; f++) {
+            if ((e || f in c) && c[f] === r) return e || f || 0;
+          }return !e && -1;
         };
       };
-    }, { "./$.a-function": 8 }], 13: [function (require, module, exports) {
-      // 7.2.1 RequireObjectCoercible(argument)
-      module.exports = function (it) {
-        if (it == undefined) throw TypeError("Can't call method on  " + it);
-        return it;
+    }, { "./_to-index": 56, "./_to-iobject": 58, "./_to-length": 59 }], 14: [function (e, t, r) {
+      var n = {}.toString;t.exports = function (e) {
+        return n.call(e).slice(8, -1);
       };
-    }, {}], 14: [function (require, module, exports) {
-      // Thank's IE8 for his funny defineProperty
-      module.exports = !require('./$.fails')(function () {
-        return Object.defineProperty({}, 'a', { get: function get() {
+    }, {}], 15: [function (e, t, r) {
+      var n = t.exports = { version: "2.4.0" };"number" == typeof __e && (__e = n);
+    }, {}], 16: [function (e, t, r) {
+      var n = e("./_a-function");t.exports = function (e, t, r) {
+        if (n(e), void 0 === t) return e;switch (r) {case 1:
+            return function (r) {
+              return e.call(t, r);
+            };case 2:
+            return function (r, n) {
+              return e.call(t, r, n);
+            };case 3:
+            return function (r, n, o) {
+              return e.call(t, r, n, o);
+            };}return function () {
+          return e.apply(t, arguments);
+        };
+      };
+    }, { "./_a-function": 10 }], 17: [function (e, t, r) {
+      t.exports = function (e) {
+        if (void 0 == e) throw TypeError("Can't call method on  " + e);return e;
+      };
+    }, {}], 18: [function (e, t, r) {
+      t.exports = !e("./_fails")(function () {
+        return 7 != Object.defineProperty({}, "a", { get: function get() {
             return 7;
-          } }).a != 7;
+          } }).a;
       });
-    }, { "./$.fails": 17 }], 15: [function (require, module, exports) {
-      // all enumerable object keys, includes symbols
-      var $ = require('./$');
-      module.exports = function (it) {
-        var keys = $.getKeys(it),
-            getSymbols = $.getSymbols;
-        if (getSymbols) {
-          var symbols = getSymbols(it),
-              isEnum = $.isEnum,
-              i = 0,
-              key;
-          while (symbols.length > i) {
-            if (isEnum.call(it, key = symbols[i++])) keys.push(key);
-          }
-        }
-        return keys;
+    }, { "./_fails": 23 }], 19: [function (e, t, r) {
+      var n = e("./_is-object"),
+          o = e("./_global").document,
+          i = n(o) && n(o.createElement);t.exports = function (e) {
+        return i ? o.createElement(e) : {};
       };
-    }, { "./$": 25 }], 16: [function (require, module, exports) {
-      var global = require('./$.global'),
-          core = require('./$.core'),
-          ctx = require('./$.ctx'),
-          PROTOTYPE = 'prototype';
-
-      var $export = function $export(type, name, source) {
-        var IS_FORCED = type & $export.F,
-            IS_GLOBAL = type & $export.G,
-            IS_STATIC = type & $export.S,
-            IS_PROTO = type & $export.P,
-            IS_BIND = type & $export.B,
-            IS_WRAP = type & $export.W,
-            exports = IS_GLOBAL ? core : core[name] || (core[name] = {}),
-            target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE],
-            key,
-            own,
-            out;
-        if (IS_GLOBAL) source = name;
-        for (key in source) {
-          // contains in native
-          own = !IS_FORCED && target && key in target;
-          if (own && key in exports) continue;
-          // export native or passed
-          out = own ? target[key] : source[key];
-          // prevent global pollution for namespaces
-          exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-          // bind timers to global for call from export context
-          : IS_BIND && own ? ctx(out, global)
-          // wrap global constructors for prevent change them in library
-          : IS_WRAP && target[key] == out ? function (C) {
-            var F = function F(param) {
-              return this instanceof C ? new C(param) : C(param);
-            };
-            F[PROTOTYPE] = C[PROTOTYPE];
-            return F;
-            // make static versions for prototype methods
-          }(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-          if (IS_PROTO) (exports[PROTOTYPE] || (exports[PROTOTYPE] = {}))[key] = out;
-        }
+    }, { "./_global": 24, "./_is-object": 31 }], 20: [function (e, t, r) {
+      t.exports = "constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",");
+    }, {}], 21: [function (e, t, r) {
+      var n = e("./_object-keys"),
+          o = e("./_object-gops"),
+          i = e("./_object-pie");t.exports = function (e) {
+        var t = n(e),
+            r = o.f;if (r) for (var u, s = r(e), c = i.f, a = 0; s.length > a;) {
+          c.call(e, u = s[a++]) && t.push(u);
+        }return t;
       };
-      // type bitmap
-      $export.F = 1; // forced
-      $export.G = 2; // global
-      $export.S = 4; // static
-      $export.P = 8; // proto
-      $export.B = 16; // bind
-      $export.W = 32; // wrap
-      module.exports = $export;
-    }, { "./$.core": 11, "./$.ctx": 12, "./$.global": 19 }], 17: [function (require, module, exports) {
-      module.exports = function (exec) {
+    }, { "./_object-gops": 45, "./_object-keys": 48, "./_object-pie": 49 }], 22: [function (e, t, r) {
+      var n = e("./_global"),
+          o = e("./_core"),
+          i = e("./_ctx"),
+          u = e("./_hide"),
+          s = "prototype",
+          c = function c(e, t, r) {
+        var a,
+            f,
+            l,
+            p = e & c.F,
+            d = e & c.G,
+            _ = e & c.S,
+            b = e & c.P,
+            y = e & c.B,
+            v = e & c.W,
+            h = d ? o : o[t] || (o[t] = {}),
+            m = h[s],
+            j = d ? n : _ ? n[t] : (n[t] || {})[s];d && (r = t);for (a in r) {
+          f = !p && j && void 0 !== j[a], f && a in h || (l = f ? j[a] : r[a], h[a] = d && "function" != typeof j[a] ? r[a] : y && f ? i(l, n) : v && j[a] == l ? function (e) {
+            var t = function t(_t, r, n) {
+              if (this instanceof e) {
+                switch (arguments.length) {case 0:
+                    return new e();case 1:
+                    return new e(_t);case 2:
+                    return new e(_t, r);}return new e(_t, r, n);
+              }return e.apply(this, arguments);
+            };return t[s] = e[s], t;
+          }(l) : b && "function" == typeof l ? i(Function.call, l) : l, b && ((h.virtual || (h.virtual = {}))[a] = l, e & c.R && m && !m[a] && u(m, a, l)));
+        }
+      };c.F = 1, c.G = 2, c.S = 4, c.P = 8, c.B = 16, c.W = 32, c.U = 64, c.R = 128, t.exports = c;
+    }, { "./_core": 15, "./_ctx": 16, "./_global": 24, "./_hide": 26 }], 23: [function (e, t, r) {
+      t.exports = function (e) {
         try {
-          return !!exec();
-        } catch (e) {
-          return true;
+          return !!e();
+        } catch (t) {
+          return !0;
         }
       };
-    }, {}], 18: [function (require, module, exports) {
-      // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-      var toIObject = require('./$.to-iobject'),
-          getNames = require('./$').getNames,
-          toString = {}.toString;
-
-      var windowNames = (typeof window === "undefined" ? "undefined" : _typeof(window)) == 'object' && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [];
-
-      var getWindowNames = function getWindowNames(it) {
-        try {
-          return getNames(it);
-        } catch (e) {
-          return windowNames.slice();
-        }
+    }, {}], 24: [function (e, t, r) {
+      var n = t.exports = "undefined" != typeof window && window.Math == Math ? window : "undefined" != typeof self && self.Math == Math ? self : Function("return this")();"number" == typeof __g && (__g = n);
+    }, {}], 25: [function (e, t, r) {
+      var n = {}.hasOwnProperty;t.exports = function (e, t) {
+        return n.call(e, t);
       };
-
-      module.exports.get = function getOwnPropertyNames(it) {
-        if (windowNames && toString.call(it) == '[object Window]') return getWindowNames(it);
-        return getNames(toIObject(it));
+    }, {}], 26: [function (e, t, r) {
+      var n = e("./_object-dp"),
+          o = e("./_property-desc");t.exports = e("./_descriptors") ? function (e, t, r) {
+        return n.f(e, t, o(1, r));
+      } : function (e, t, r) {
+        return e[t] = r, e;
       };
-    }, { "./$": 25, "./$.to-iobject": 32 }], 19: [function (require, module, exports) {
-      // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-      var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-      if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-    }, {}], 20: [function (require, module, exports) {
-      var hasOwnProperty = {}.hasOwnProperty;
-      module.exports = function (it, key) {
-        return hasOwnProperty.call(it, key);
-      };
-    }, {}], 21: [function (require, module, exports) {
-      var $ = require('./$'),
-          createDesc = require('./$.property-desc');
-      module.exports = require('./$.descriptors') ? function (object, key, value) {
-        return $.setDesc(object, key, createDesc(1, value));
-      } : function (object, key, value) {
-        object[key] = value;
-        return object;
-      };
-    }, { "./$": 25, "./$.descriptors": 14, "./$.property-desc": 28 }], 22: [function (require, module, exports) {
-      // fallback for non-array-like ES3 and non-enumerable old V8 strings
-      var cof = require('./$.cof');
-      module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-        return cof(it) == 'String' ? it.split('') : Object(it);
-      };
-    }, { "./$.cof": 10 }], 23: [function (require, module, exports) {
-      // 7.2.2 IsArray(argument)
-      var cof = require('./$.cof');
-      module.exports = Array.isArray || function (arg) {
-        return cof(arg) == 'Array';
-      };
-    }, { "./$.cof": 10 }], 24: [function (require, module, exports) {
-      module.exports = function (it) {
-        return (typeof it === "undefined" ? "undefined" : _typeof(it)) === 'object' ? it !== null : typeof it === 'function';
-      };
-    }, {}], 25: [function (require, module, exports) {
-      var $Object = Object;
-      module.exports = {
-        create: $Object.create,
-        getProto: $Object.getPrototypeOf,
-        isEnum: {}.propertyIsEnumerable,
-        getDesc: $Object.getOwnPropertyDescriptor,
-        setDesc: $Object.defineProperty,
-        setDescs: $Object.defineProperties,
-        getKeys: $Object.keys,
-        getNames: $Object.getOwnPropertyNames,
-        getSymbols: $Object.getOwnPropertySymbols,
-        each: [].forEach
-      };
-    }, {}], 26: [function (require, module, exports) {
-      var $ = require('./$'),
-          toIObject = require('./$.to-iobject');
-      module.exports = function (object, el) {
-        var O = toIObject(object),
-            keys = $.getKeys(O),
-            length = keys.length,
-            index = 0,
-            key;
-        while (length > index) {
-          if (O[key = keys[index++]] === el) return key;
-        }
-      };
-    }, { "./$": 25, "./$.to-iobject": 32 }], 27: [function (require, module, exports) {
-      module.exports = true;
-    }, {}], 28: [function (require, module, exports) {
-      module.exports = function (bitmap, value) {
-        return {
-          enumerable: !(bitmap & 1),
-          configurable: !(bitmap & 2),
-          writable: !(bitmap & 4),
-          value: value
-        };
-      };
-    }, {}], 29: [function (require, module, exports) {
-      module.exports = require('./$.hide');
-    }, { "./$.hide": 21 }], 30: [function (require, module, exports) {
-      var def = require('./$').setDesc,
-          has = require('./$.has'),
-          TAG = require('./$.wks')('toStringTag');
-
-      module.exports = function (it, tag, stat) {
-        if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-      };
-    }, { "./$": 25, "./$.has": 20, "./$.wks": 34 }], 31: [function (require, module, exports) {
-      var global = require('./$.global'),
-          SHARED = '__core-js_shared__',
-          store = global[SHARED] || (global[SHARED] = {});
-      module.exports = function (key) {
-        return store[key] || (store[key] = {});
-      };
-    }, { "./$.global": 19 }], 32: [function (require, module, exports) {
-      // to indexed object, toObject with fallback for non-array-like ES3 strings
-      var IObject = require('./$.iobject'),
-          defined = require('./$.defined');
-      module.exports = function (it) {
-        return IObject(defined(it));
-      };
-    }, { "./$.defined": 13, "./$.iobject": 22 }], 33: [function (require, module, exports) {
-      var id = 0,
-          px = Math.random();
-      module.exports = function (key) {
-        return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-      };
-    }, {}], 34: [function (require, module, exports) {
-      var store = require('./$.shared')('wks'),
-          uid = require('./$.uid'),
-          _Symbol2 = require('./$.global').Symbol;
-      module.exports = function (name) {
-        return store[name] || (store[name] = _Symbol2 && _Symbol2[name] || (_Symbol2 || uid)('Symbol.' + name));
-      };
-    }, { "./$.global": 19, "./$.shared": 31, "./$.uid": 33 }], 35: [function (require, module, exports) {}, {}], 36: [function (require, module, exports) {
-      'use strict';
-      // ECMAScript 6 symbols shim
-
-      var $ = require('./$'),
-          global = require('./$.global'),
-          has = require('./$.has'),
-          DESCRIPTORS = require('./$.descriptors'),
-          $export = require('./$.export'),
-          redefine = require('./$.redefine'),
-          $fails = require('./$.fails'),
-          shared = require('./$.shared'),
-          setToStringTag = require('./$.set-to-string-tag'),
-          uid = require('./$.uid'),
-          wks = require('./$.wks'),
-          keyOf = require('./$.keyof'),
-          $names = require('./$.get-names'),
-          enumKeys = require('./$.enum-keys'),
-          isArray = require('./$.is-array'),
-          anObject = require('./$.an-object'),
-          toIObject = require('./$.to-iobject'),
-          createDesc = require('./$.property-desc'),
-          getDesc = $.getDesc,
-          setDesc = $.setDesc,
-          _create = $.create,
-          getNames = $names.get,
-          $Symbol = global.Symbol,
-          $JSON = global.JSON,
-          _stringify = $JSON && $JSON.stringify,
-          setter = false,
-          HIDDEN = wks('_hidden'),
-          isEnum = $.isEnum,
-          SymbolRegistry = shared('symbol-registry'),
-          AllSymbols = shared('symbols'),
-          useNative = typeof $Symbol == 'function',
-          ObjectProto = Object.prototype;
-
-      // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-      var setSymbolDesc = DESCRIPTORS && $fails(function () {
-        return _create(setDesc({}, 'a', {
-          get: function get() {
-            return setDesc(this, 'a', { value: 7 }).a;
-          }
-        })).a != 7;
-      }) ? function (it, key, D) {
-        var protoDesc = getDesc(ObjectProto, key);
-        if (protoDesc) delete ObjectProto[key];
-        setDesc(it, key, D);
-        if (protoDesc && it !== ObjectProto) setDesc(ObjectProto, key, protoDesc);
-      } : setDesc;
-
-      var wrap = function wrap(tag) {
-        var sym = AllSymbols[tag] = _create($Symbol.prototype);
-        sym._k = tag;
-        DESCRIPTORS && setter && setSymbolDesc(ObjectProto, tag, {
-          configurable: true,
-          set: function set(value) {
-            if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
-            setSymbolDesc(this, tag, createDesc(1, value));
-          }
-        });
-        return sym;
-      };
-
-      var isSymbol = function isSymbol(it) {
-        return (typeof it === "undefined" ? "undefined" : _typeof(it)) == 'symbol';
-      };
-
-      var $defineProperty = function defineProperty(it, key, D) {
-        if (D && has(AllSymbols, key)) {
-          if (!D.enumerable) {
-            if (!has(it, HIDDEN)) setDesc(it, HIDDEN, createDesc(1, {}));
-            it[HIDDEN][key] = true;
-          } else {
-            if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-            D = _create(D, { enumerable: createDesc(0, false) });
-          }return setSymbolDesc(it, key, D);
-        }return setDesc(it, key, D);
-      };
-      var $defineProperties = function defineProperties(it, P) {
-        anObject(it);
-        var keys = enumKeys(P = toIObject(P)),
-            i = 0,
-            l = keys.length,
-            key;
-        while (l > i) {
-          $defineProperty(it, key = keys[i++], P[key]);
-        }return it;
-      };
-      var $create = function create(it, P) {
-        return P === undefined ? _create(it) : $defineProperties(_create(it), P);
-      };
-      var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-        var E = isEnum.call(this, key);
-        return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
-      };
-      var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-        var D = getDesc(it = toIObject(it), key);
-        if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
-        return D;
-      };
-      var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-        var names = getNames(toIObject(it)),
-            result = [],
-            i = 0,
-            key;
-        while (names.length > i) {
-          if (!has(AllSymbols, key = names[i++]) && key != HIDDEN) result.push(key);
-        }return result;
-      };
-      var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-        var names = getNames(toIObject(it)),
-            result = [],
-            i = 0,
-            key;
-        while (names.length > i) {
-          if (has(AllSymbols, key = names[i++])) result.push(AllSymbols[key]);
-        }return result;
-      };
-      var $stringify = function stringify(it) {
-        if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-        var args = [it],
-            i = 1,
-            $$ = arguments,
-            replacer,
-            $replacer;
-        while ($$.length > i) {
-          args.push($$[i++]);
-        }replacer = args[1];
-        if (typeof replacer == 'function') $replacer = replacer;
-        if ($replacer || !isArray(replacer)) replacer = function replacer(key, value) {
-          if ($replacer) value = $replacer.call(this, key, value);
-          if (!isSymbol(value)) return value;
-        };
-        args[1] = replacer;
-        return _stringify.apply($JSON, args);
-      };
-      var buggyJSON = $fails(function () {
-        var S = $Symbol();
-        // MS Edge converts symbol values to JSON as {}
-        // WebKit converts symbol values to JSON as null
-        // V8 throws on boxed symbols
-        return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+    }, { "./_descriptors": 18, "./_object-dp": 40, "./_property-desc": 50 }], 27: [function (e, t, r) {
+      t.exports = e("./_global").document && document.documentElement;
+    }, { "./_global": 24 }], 28: [function (e, t, r) {
+      t.exports = !e("./_descriptors") && !e("./_fails")(function () {
+        return 7 != Object.defineProperty(e("./_dom-create")("div"), "a", { get: function get() {
+            return 7;
+          } }).a;
       });
-
-      // 19.4.1.1 Symbol([description])
-      if (!useNative) {
-        $Symbol = function _Symbol3() {
-          if (isSymbol(this)) throw TypeError('Symbol is not a constructor');
-          return wrap(uid(arguments.length > 0 ? arguments[0] : undefined));
-        };
-        redefine($Symbol.prototype, 'toString', function toString() {
-          return this._k;
-        });
-
-        isSymbol = function isSymbol(it) {
-          return it instanceof $Symbol;
-        };
-
-        $.create = $create;
-        $.isEnum = $propertyIsEnumerable;
-        $.getDesc = $getOwnPropertyDescriptor;
-        $.setDesc = $defineProperty;
-        $.setDescs = $defineProperties;
-        $.getNames = $names.get = $getOwnPropertyNames;
-        $.getSymbols = $getOwnPropertySymbols;
-
-        if (DESCRIPTORS && !require('./$.library')) {
-          redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
-        }
-      }
-
-      var symbolStatics = {
-        // 19.4.2.1 Symbol.for(key)
-        'for': function _for(key) {
-          return has(SymbolRegistry, key += '') ? SymbolRegistry[key] : SymbolRegistry[key] = $Symbol(key);
-        },
-        // 19.4.2.5 Symbol.keyFor(sym)
-        keyFor: function keyFor(key) {
-          return keyOf(SymbolRegistry, key);
-        },
-        useSetter: function useSetter() {
-          setter = true;
-        },
-        useSimple: function useSimple() {
-          setter = false;
-        }
+    }, { "./_descriptors": 18, "./_dom-create": 19, "./_fails": 23 }], 29: [function (e, t, r) {
+      var n = e("./_cof");t.exports = Object("z").propertyIsEnumerable(0) ? Object : function (e) {
+        return "String" == n(e) ? e.split("") : Object(e);
       };
-      // 19.4.2.2 Symbol.hasInstance
-      // 19.4.2.3 Symbol.isConcatSpreadable
-      // 19.4.2.4 Symbol.iterator
-      // 19.4.2.6 Symbol.match
-      // 19.4.2.8 Symbol.replace
-      // 19.4.2.9 Symbol.search
-      // 19.4.2.10 Symbol.species
-      // 19.4.2.11 Symbol.split
-      // 19.4.2.12 Symbol.toPrimitive
-      // 19.4.2.13 Symbol.toStringTag
-      // 19.4.2.14 Symbol.unscopables
-      $.each.call(('hasInstance,isConcatSpreadable,iterator,match,replace,search,' + 'species,split,toPrimitive,toStringTag,unscopables').split(','), function (it) {
-        var sym = wks(it);
-        symbolStatics[it] = useNative ? sym : wrap(sym);
-      });
-
-      setter = true;
-
-      $export($export.G + $export.W, { Symbol: $Symbol });
-
-      $export($export.S, 'Symbol', symbolStatics);
-
-      $export($export.S + $export.F * !useNative, 'Object', {
-        // 19.1.2.2 Object.create(O [, Properties])
-        create: $create,
-        // 19.1.2.4 Object.defineProperty(O, P, Attributes)
-        defineProperty: $defineProperty,
-        // 19.1.2.3 Object.defineProperties(O, Properties)
-        defineProperties: $defineProperties,
-        // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-        getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
-        // 19.1.2.7 Object.getOwnPropertyNames(O)
-        getOwnPropertyNames: $getOwnPropertyNames,
-        // 19.1.2.8 Object.getOwnPropertySymbols(O)
-        getOwnPropertySymbols: $getOwnPropertySymbols
-      });
-
-      // 24.3.2 JSON.stringify(value [, replacer [, space]])
-      $JSON && $export($export.S + $export.F * (!useNative || buggyJSON), 'JSON', { stringify: $stringify });
-
-      // 19.4.3.5 Symbol.prototype[@@toStringTag]
-      setToStringTag($Symbol, 'Symbol');
-      // 20.2.1.9 Math[@@toStringTag]
-      setToStringTag(Math, 'Math', true);
-      // 24.3.3 JSON[@@toStringTag]
-      setToStringTag(global.JSON, 'JSON', true);
-    }, { "./$": 25, "./$.an-object": 9, "./$.descriptors": 14, "./$.enum-keys": 15, "./$.export": 16, "./$.fails": 17, "./$.get-names": 18, "./$.global": 19, "./$.has": 20, "./$.is-array": 23, "./$.keyof": 26, "./$.library": 27, "./$.property-desc": 28, "./$.redefine": 29, "./$.set-to-string-tag": 30, "./$.shared": 31, "./$.to-iobject": 32, "./$.uid": 33, "./$.wks": 34 }], 37: [function (require, module, exports) {
-      'use strict';
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-      var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-      var _createClass2 = require('babel-runtime/helpers/createClass');
-
-      var _createClass3 = _interopRequireDefault(_createClass2);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      var Operators = function () {
-        function Operators() {
-          (0, _classCallCheck3.default)(this, Operators);
-
-          var _this = this;
-          _this.operators = _this.setOperators();
-        }
-
-        (0, _createClass3.default)(Operators, [{
-          key: 'setOperators',
-          value: function setOperators() {
-            var _this = this;
-            var operators = {
-              between: function between(params) {
-                return _this.isBetween(params[0][0], params[0][1], params[1]);
-              },
-              in: function _in(params) {
-                return params[0].indexOf(params[1]) > -1;
-              },
-              equals: function equals(params) {
-                return params[0][0] === '*' || params[0][0] === params[1];
-              },
-
-              or: function or(params) {
-                return params[0] || params[1];
-              },
-              and: function and(params) {
-                return params[0] && params[1];
-              },
-              not: function not(params) {
-                return !params[0];
-              }
-            };
-            return operators;
-          }
-
-          /**
-          * Verifies if the current time is between the given start and end times.
-          * @param {Number}     start
-          * @param {Number}     end
-          * @return {Boolean}   boolean
-          */
-
-        }, {
-          key: 'isBetween',
-          value: function isBetween(start, end, now) {
-            start = parseInt(start);
-            end = parseInt(end);
-
-            if (end < start) {
-              now = now < start ? now += 2400 : now;
-              end += 2400;
-            }
-
-            return now > start && now < end;
-          }
-        }]);
-        return Operators;
-      }();
-
-      exports.default = Operators;
-      module.exports = exports['default'];
-    }, { "babel-runtime/helpers/classCallCheck": 3, "babel-runtime/helpers/createClass": 4 }], 38: [function (require, module, exports) {
-      'use strict';
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _typeof2 = require('babel-runtime/helpers/typeof');
-
-      var _typeof3 = _interopRequireDefault(_typeof2);
-
-      var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-      var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-      var _createClass2 = require('babel-runtime/helpers/createClass');
-
-      var _createClass3 = _interopRequireDefault(_createClass2);
-
-      var _Operators = require('./Operators');
-
-      var _Operators2 = _interopRequireDefault(_Operators);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      /**
-      * The Policy Decision Point (PDP) decides if a message is to be authorised by checking a set of
-      * policies. The resource to be verified is specified in the first word of the 'condition' field of
-      * a Policy object. The implementation that verifies if the message is compliant with a policy is
-      * specified in a hashtable to allow dynamic definition of the implementation, providing
-      * extensibility to the Policy Engine functionalities.
-      */
-
-      var PDP = function () {
-
-        /**
-        * This method is invoked by the Policy Engine and instantiates the Policy Decision Point. It
-        * initialises or loads from the Persistence Manager the object 'myGroups' to store the user's
-        * groups.
-        * @param  {Registry}    muchruntimeRegistry
-        */
-
-        function PDP(context) {
-          (0, _classCallCheck3.default)(this, PDP);
-
-          var _this = this;
-          _this.context = context;
-          _this.operators = new _Operators2.default(context);
-        }
-
-        /**
-        * Verifies if the given message is compliant with the given policies. If one of the policies
-        * evaluates to 'false', then the message is not authorised. Returns the final authorisation
-        * decision and a set of actions that policies may require.
-        * @param {Message}  message
-        * @param {URL}      hypertyToVerify
-        * @param {Array}    policies
-        * @return {Array}   [authDecision, actions]
-        */
-
-        (0, _createClass3.default)(PDP, [{
-          key: 'evaluate',
-          value: function evaluate(message, policies) {
-            var _this = this;
-            var results = [true];
-            var actions = [];
-            for (var i in policies) {
-              var policy = policies[i];
-              var condition = policy.condition;
-              var verifiesCondition = false;
-              if ((typeof condition === 'undefined' ? 'undefined' : (0, _typeof3.default)(condition)) === 'object') {
-                verifiesCondition = _this.verifiesAdvancedCondition(condition[0], condition[1], condition[2], policy.scope, message);
-              } else {
-                verifiesCondition = _this.verifiesSimpleCondition(condition, policy.scope, message);
-              }
-
-              if (verifiesCondition) {
-                results.push(policy.authorise);
-              }
-              if (policy.actions !== []) {
-                for (var _i in policy.actions) {
-                  var newAction = {
-                    method: policy.actions[_i].method,
-                    params: message
-                  };
-                  actions.push(newAction);
-                }
-              }
-            }
-
-            var authDecision = results.indexOf(false) === -1;
-            return [authDecision, actions];
-          }
-        }, {
-          key: 'verifiesSimpleCondition',
-          value: function verifiesSimpleCondition(condition, scope, message) {
-            var _this = this;
-            var splitCondition = condition.split(' ');
-            var variable = splitCondition[0];
-            var operator = splitCondition[1];
-
-            var params = void 0;
-            if (operator === 'in') {
-              _this.context.group = { scope: scope, group: splitCondition[2], destination: message.to };
-              params = _this.context.group;
-            } else {
-              params = splitCondition.slice(2);
-            }
-            _this.context[variable] = { message: message };
-            var value = _this.context[variable];
-            return _this.operators.operators[operator]([params, value]);
-          }
-        }, {
-          key: 'verifiesAdvancedCondition',
-          value: function verifiesAdvancedCondition(operator, left, right, scope, message) {
-            var _this = this;
-            while ((typeof left === 'undefined' ? 'undefined' : (0, _typeof3.default)(left)) === 'object') {
-              left = _this.verifiesAdvancedCondition(left[0], left[1], left[2], scope, message);
-            }
-            if (right !== undefined) {
-              while ((typeof right === 'undefined' ? 'undefined' : (0, _typeof3.default)(right)) === 'object') {
-                right = _this.verifiesAdvancedCondition(right[0], right[1], right[2], scope, message);
-              }
-            }
-
-            var resultLeft = typeof left === 'boolean' ? left : _this.verifiesSimpleCondition(left, scope, message);
-
-            var resultRight = void 0;
-            if (right !== undefined) {
-              resultRight = typeof right === 'boolean' ? right : _this.verifiesSimpleCondition(right, scope, message);
-            }
-
-            return _this.operators.operators[operator]([resultLeft, resultRight]);
-          }
-        }]);
-        return PDP;
-      }();
-
-      exports.default = PDP;
-      module.exports = exports['default'];
-    }, { "./Operators": 37, "babel-runtime/helpers/classCallCheck": 3, "babel-runtime/helpers/createClass": 4, "babel-runtime/helpers/typeof": 5 }], 39: [function (require, module, exports) {
+    }, { "./_cof": 14 }], 30: [function (e, t, r) {
+      var n = e("./_cof");t.exports = Array.isArray || function (e) {
+        return "Array" == n(e);
+      };
+    }, { "./_cof": 14 }], 31: [function (e, t, r) {
+      t.exports = function (e) {
+        return "object" == (typeof e === "undefined" ? "undefined" : _typeof(e)) ? null !== e : "function" == typeof e;
+      };
+    }, {}], 32: [function (e, t, r) {
       "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-      var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-      var _createClass2 = require("babel-runtime/helpers/createClass");
-
-      var _createClass3 = _interopRequireDefault(_createClass2);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
-      }
-
-      var PEP = function () {
-        function PEP(context) {
-          (0, _classCallCheck3.default)(this, PEP);
-
-          var _this = this;
-          _this.context = context;
+      var n = e("./_object-create"),
+          o = e("./_property-desc"),
+          i = e("./_set-to-string-tag"),
+          u = {};e("./_hide")(u, e("./_wks")("iterator"), function () {
+        return this;
+      }), t.exports = function (e, t, r) {
+        e.prototype = n(u, { next: o(1, r) }), i(e, t + " Iterator");
+      };
+    }, { "./_hide": 26, "./_object-create": 39, "./_property-desc": 50, "./_set-to-string-tag": 52, "./_wks": 65 }], 33: [function (e, t, r) {
+      "use strict";
+      var n = e("./_library"),
+          o = e("./_export"),
+          i = e("./_redefine"),
+          u = e("./_hide"),
+          s = e("./_has"),
+          c = e("./_iterators"),
+          a = e("./_iter-create"),
+          f = e("./_set-to-string-tag"),
+          l = e("./_object-gpo"),
+          p = e("./_wks")("iterator"),
+          d = !([].keys && "next" in [].keys()),
+          _ = "@@iterator",
+          b = "keys",
+          y = "values",
+          v = function v() {
+        return this;
+      };t.exports = function (e, t, r, h, m, j, g) {
+        a(r, t, h);var x,
+            k,
+            w,
+            O = function O(e) {
+          if (!d && e in E) return E[e];switch (e) {case b:
+              return function () {
+                return new r(this, e);
+              };case y:
+              return function () {
+                return new r(this, e);
+              };}return function () {
+            return new r(this, e);
+          };
+        },
+            S = t + " Iterator",
+            P = m == y,
+            C = !1,
+            E = e.prototype,
+            M = E[p] || E[_] || m && E[m],
+            A = M || O(m),
+            T = m ? P ? O("entries") : A : void 0,
+            F = "Array" == t ? E.entries || M : M;if (F && (w = l(F.call(new e())), w !== Object.prototype && (f(w, S, !0), n || s(w, p) || u(w, p, v))), P && M && M.name !== y && (C = !0, A = function A() {
+          return M.call(this);
+        }), n && !g || !d && !C && E[p] || u(E, p, A), c[t] = A, c[S] = v, m) if (x = { values: P ? A : O(y), keys: j ? A : O(b), entries: T }, g) for (k in x) {
+          k in E || i(E, k, x[k]);
+        } else o(o.P + o.F * (d || C), t, x);return x;
+      };
+    }, { "./_export": 22, "./_has": 25, "./_hide": 26, "./_iter-create": 32, "./_iterators": 35, "./_library": 37, "./_object-gpo": 46, "./_redefine": 51, "./_set-to-string-tag": 52, "./_wks": 65 }], 34: [function (e, t, r) {
+      t.exports = function (e, t) {
+        return { value: t, done: !!e };
+      };
+    }, {}], 35: [function (e, t, r) {
+      t.exports = {};
+    }, {}], 36: [function (e, t, r) {
+      var n = e("./_object-keys"),
+          o = e("./_to-iobject");t.exports = function (e, t) {
+        for (var r, i = o(e), u = n(i), s = u.length, c = 0; s > c;) {
+          if (i[r = u[c++]] === t) return r;
         }
-
-        (0, _createClass3.default)(PEP, [{
-          key: "enforce",
-          value: function enforce(result) {
-            var _this = this;
-            var authDecision = result[0];
-            var actions = result[1];
-
-            for (var i in actions) {
-              _this.context[actions[i].method](actions[i].params, authDecision);
-            }
+      };
+    }, { "./_object-keys": 48, "./_to-iobject": 58 }], 37: [function (e, t, r) {
+      t.exports = !0;
+    }, {}], 38: [function (e, t, r) {
+      var n = e("./_uid")("meta"),
+          o = e("./_is-object"),
+          i = e("./_has"),
+          u = e("./_object-dp").f,
+          s = 0,
+          c = Object.isExtensible || function () {
+        return !0;
+      },
+          a = !e("./_fails")(function () {
+        return c(Object.preventExtensions({}));
+      }),
+          f = function f(e) {
+        u(e, n, { value: { i: "O" + ++s, w: {} } });
+      },
+          l = function l(e, t) {
+        if (!o(e)) return "symbol" == (typeof e === "undefined" ? "undefined" : _typeof(e)) ? e : ("string" == typeof e ? "S" : "P") + e;if (!i(e, n)) {
+          if (!c(e)) return "F";if (!t) return "E";f(e);
+        }return e[n].i;
+      },
+          p = function p(e, t) {
+        if (!i(e, n)) {
+          if (!c(e)) return !0;if (!t) return !1;f(e);
+        }return e[n].w;
+      },
+          d = function d(e) {
+        return a && _.NEED && c(e) && !i(e, n) && f(e), e;
+      },
+          _ = t.exports = { KEY: n, NEED: !1, fastKey: l, getWeak: p, onFreeze: d };
+    }, { "./_fails": 23, "./_has": 25, "./_is-object": 31, "./_object-dp": 40, "./_uid": 62 }], 39: [function (e, t, r) {
+      var n = e("./_an-object"),
+          o = e("./_object-dps"),
+          i = e("./_enum-bug-keys"),
+          u = e("./_shared-key")("IE_PROTO"),
+          s = function s() {},
+          c = "prototype",
+          _a = function a() {
+        var t,
+            r = e("./_dom-create")("iframe"),
+            n = i.length,
+            o = ">";for (r.style.display = "none", e("./_html").appendChild(r), r.src = "javascript:", t = r.contentWindow.document, t.open(), t.write("<script>document.F=Object</script" + o), t.close(), _a = t.F; n--;) {
+          delete _a[c][i[n]];
+        }return _a();
+      };t.exports = Object.create || function (e, t) {
+        var r;return null !== e ? (s[c] = n(e), r = new s(), s[c] = null, r[u] = e) : r = _a(), void 0 === t ? r : o(r, t);
+      };
+    }, { "./_an-object": 12, "./_dom-create": 19, "./_enum-bug-keys": 20, "./_html": 27, "./_object-dps": 41, "./_shared-key": 53 }], 40: [function (e, t, r) {
+      var n = e("./_an-object"),
+          o = e("./_ie8-dom-define"),
+          i = e("./_to-primitive"),
+          u = Object.defineProperty;r.f = e("./_descriptors") ? Object.defineProperty : function (e, t, r) {
+        if (n(e), t = i(t, !0), n(r), o) try {
+          return u(e, t, r);
+        } catch (s) {}if ("get" in r || "set" in r) throw TypeError("Accessors not supported!");return "value" in r && (e[t] = r.value), e;
+      };
+    }, { "./_an-object": 12, "./_descriptors": 18, "./_ie8-dom-define": 28, "./_to-primitive": 61 }], 41: [function (e, t, r) {
+      var n = e("./_object-dp"),
+          o = e("./_an-object"),
+          i = e("./_object-keys");t.exports = e("./_descriptors") ? Object.defineProperties : function (e, t) {
+        o(e);for (var r, u = i(t), s = u.length, c = 0; s > c;) {
+          n.f(e, r = u[c++], t[r]);
+        }return e;
+      };
+    }, { "./_an-object": 12, "./_descriptors": 18, "./_object-dp": 40, "./_object-keys": 48 }], 42: [function (e, t, r) {
+      var n = e("./_object-pie"),
+          o = e("./_property-desc"),
+          i = e("./_to-iobject"),
+          u = e("./_to-primitive"),
+          s = e("./_has"),
+          c = e("./_ie8-dom-define"),
+          a = Object.getOwnPropertyDescriptor;r.f = e("./_descriptors") ? a : function (e, t) {
+        if (e = i(e), t = u(t, !0), c) try {
+          return a(e, t);
+        } catch (r) {}if (s(e, t)) return o(!n.f.call(e, t), e[t]);
+      };
+    }, { "./_descriptors": 18, "./_has": 25, "./_ie8-dom-define": 28, "./_object-pie": 49, "./_property-desc": 50, "./_to-iobject": 58, "./_to-primitive": 61 }], 43: [function (e, t, r) {
+      var n = e("./_to-iobject"),
+          o = e("./_object-gopn").f,
+          i = {}.toString,
+          u = "object" == (typeof window === "undefined" ? "undefined" : _typeof(window)) && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [],
+          s = function s(e) {
+        try {
+          return o(e);
+        } catch (t) {
+          return u.slice();
+        }
+      };t.exports.f = function (e) {
+        return u && "[object Window]" == i.call(e) ? s(e) : o(n(e));
+      };
+    }, { "./_object-gopn": 44, "./_to-iobject": 58 }], 44: [function (e, t, r) {
+      var n = e("./_object-keys-internal"),
+          o = e("./_enum-bug-keys").concat("length", "prototype");r.f = Object.getOwnPropertyNames || function (e) {
+        return n(e, o);
+      };
+    }, { "./_enum-bug-keys": 20, "./_object-keys-internal": 47 }], 45: [function (e, t, r) {
+      r.f = Object.getOwnPropertySymbols;
+    }, {}], 46: [function (e, t, r) {
+      var n = e("./_has"),
+          o = e("./_to-object"),
+          i = e("./_shared-key")("IE_PROTO"),
+          u = Object.prototype;t.exports = Object.getPrototypeOf || function (e) {
+        return e = o(e), n(e, i) ? e[i] : "function" == typeof e.constructor && e instanceof e.constructor ? e.constructor.prototype : e instanceof Object ? u : null;
+      };
+    }, { "./_has": 25, "./_shared-key": 53, "./_to-object": 60 }], 47: [function (e, t, r) {
+      var n = e("./_has"),
+          o = e("./_to-iobject"),
+          i = e("./_array-includes")(!1),
+          u = e("./_shared-key")("IE_PROTO");t.exports = function (e, t) {
+        var r,
+            s = o(e),
+            c = 0,
+            a = [];for (r in s) {
+          r != u && n(s, r) && a.push(r);
+        }for (; t.length > c;) {
+          n(s, r = t[c++]) && (~i(a, r) || a.push(r));
+        }return a;
+      };
+    }, { "./_array-includes": 13, "./_has": 25, "./_shared-key": 53, "./_to-iobject": 58 }], 48: [function (e, t, r) {
+      var n = e("./_object-keys-internal"),
+          o = e("./_enum-bug-keys");t.exports = Object.keys || function (e) {
+        return n(e, o);
+      };
+    }, { "./_enum-bug-keys": 20, "./_object-keys-internal": 47 }], 49: [function (e, t, r) {
+      r.f = {}.propertyIsEnumerable;
+    }, {}], 50: [function (e, t, r) {
+      t.exports = function (e, t) {
+        return { enumerable: !(1 & e), configurable: !(2 & e), writable: !(4 & e), value: t };
+      };
+    }, {}], 51: [function (e, t, r) {
+      t.exports = e("./_hide");
+    }, { "./_hide": 26 }], 52: [function (e, t, r) {
+      var n = e("./_object-dp").f,
+          o = e("./_has"),
+          i = e("./_wks")("toStringTag");t.exports = function (e, t, r) {
+        e && !o(e = r ? e : e.prototype, i) && n(e, i, { configurable: !0, value: t });
+      };
+    }, { "./_has": 25, "./_object-dp": 40, "./_wks": 65 }], 53: [function (e, t, r) {
+      var n = e("./_shared")("keys"),
+          o = e("./_uid");t.exports = function (e) {
+        return n[e] || (n[e] = o(e));
+      };
+    }, { "./_shared": 54, "./_uid": 62 }], 54: [function (e, t, r) {
+      var n = e("./_global"),
+          o = "__core-js_shared__",
+          i = n[o] || (n[o] = {});t.exports = function (e) {
+        return i[e] || (i[e] = {});
+      };
+    }, { "./_global": 24 }], 55: [function (e, t, r) {
+      var n = e("./_to-integer"),
+          o = e("./_defined");t.exports = function (e) {
+        return function (t, r) {
+          var i,
+              u,
+              s = String(o(t)),
+              c = n(r),
+              a = s.length;return c < 0 || c >= a ? e ? "" : void 0 : (i = s.charCodeAt(c), i < 55296 || i > 56319 || c + 1 === a || (u = s.charCodeAt(c + 1)) < 56320 || u > 57343 ? e ? s.charAt(c) : i : e ? s.slice(c, c + 2) : (i - 55296 << 10) + (u - 56320) + 65536);
+        };
+      };
+    }, { "./_defined": 17, "./_to-integer": 57 }], 56: [function (e, t, r) {
+      var n = e("./_to-integer"),
+          o = Math.max,
+          i = Math.min;t.exports = function (e, t) {
+        return e = n(e), e < 0 ? o(e + t, 0) : i(e, t);
+      };
+    }, { "./_to-integer": 57 }], 57: [function (e, t, r) {
+      var n = Math.ceil,
+          o = Math.floor;t.exports = function (e) {
+        return isNaN(e = +e) ? 0 : (e > 0 ? o : n)(e);
+      };
+    }, {}], 58: [function (e, t, r) {
+      var n = e("./_iobject"),
+          o = e("./_defined");t.exports = function (e) {
+        return n(o(e));
+      };
+    }, { "./_defined": 17, "./_iobject": 29 }], 59: [function (e, t, r) {
+      var n = e("./_to-integer"),
+          o = Math.min;t.exports = function (e) {
+        return e > 0 ? o(n(e), 9007199254740991) : 0;
+      };
+    }, { "./_to-integer": 57 }], 60: [function (e, t, r) {
+      var n = e("./_defined");t.exports = function (e) {
+        return Object(n(e));
+      };
+    }, { "./_defined": 17 }], 61: [function (e, t, r) {
+      var n = e("./_is-object");t.exports = function (e, t) {
+        if (!n(e)) return e;var r, o;if (t && "function" == typeof (r = e.toString) && !n(o = r.call(e))) return o;if ("function" == typeof (r = e.valueOf) && !n(o = r.call(e))) return o;if (!t && "function" == typeof (r = e.toString) && !n(o = r.call(e))) return o;throw TypeError("Can't convert object to primitive value");
+      };
+    }, { "./_is-object": 31 }], 62: [function (e, t, r) {
+      var n = 0,
+          o = Math.random();t.exports = function (e) {
+        return "Symbol(".concat(void 0 === e ? "" : e, ")_", (++n + o).toString(36));
+      };
+    }, {}], 63: [function (e, t, r) {
+      var n = e("./_global"),
+          o = e("./_core"),
+          i = e("./_library"),
+          u = e("./_wks-ext"),
+          s = e("./_object-dp").f;t.exports = function (e) {
+        var t = o.Symbol || (o.Symbol = i ? {} : n.Symbol || {});"_" == e.charAt(0) || e in t || s(t, e, { value: u.f(e) });
+      };
+    }, { "./_core": 15, "./_global": 24, "./_library": 37, "./_object-dp": 40, "./_wks-ext": 64 }], 64: [function (e, t, r) {
+      r.f = e("./_wks");
+    }, { "./_wks": 65 }], 65: [function (e, t, r) {
+      var n = e("./_shared")("wks"),
+          o = e("./_uid"),
+          i = e("./_global").Symbol,
+          u = "function" == typeof i,
+          s = t.exports = function (e) {
+        return n[e] || (n[e] = u && i[e] || (u ? i : o)("Symbol." + e));
+      };s.store = n;
+    }, { "./_global": 24, "./_shared": 54, "./_uid": 62 }], 66: [function (e, t, r) {
+      "use strict";
+      var n = e("./_add-to-unscopables"),
+          o = e("./_iter-step"),
+          i = e("./_iterators"),
+          u = e("./_to-iobject");t.exports = e("./_iter-define")(Array, "Array", function (e, t) {
+        this._t = u(e), this._i = 0, this._k = t;
+      }, function () {
+        var e = this._t,
+            t = this._k,
+            r = this._i++;return !e || r >= e.length ? (this._t = void 0, o(1)) : "keys" == t ? o(0, r) : "values" == t ? o(0, e[r]) : o(0, [r, e[r]]);
+      }, "values"), i.Arguments = i.Array, n("keys"), n("values"), n("entries");
+    }, { "./_add-to-unscopables": 11, "./_iter-define": 33, "./_iter-step": 34, "./_iterators": 35, "./_to-iobject": 58 }], 67: [function (e, t, r) {
+      var n = e("./_export");n(n.S + n.F * !e("./_descriptors"), "Object", { defineProperty: e("./_object-dp").f });
+    }, { "./_descriptors": 18, "./_export": 22, "./_object-dp": 40 }], 68: [function (e, t, r) {}, {}], 69: [function (e, t, r) {
+      "use strict";
+      var n = e("./_string-at")(!0);e("./_iter-define")(String, "String", function (e) {
+        this._t = String(e), this._i = 0;
+      }, function () {
+        var e,
+            t = this._t,
+            r = this._i;return r >= t.length ? { value: void 0, done: !0 } : (e = n(t, r), this._i += e.length, { value: e, done: !1 });
+      });
+    }, { "./_iter-define": 33, "./_string-at": 55 }], 70: [function (e, t, r) {
+      "use strict";
+      var n = e("./_global"),
+          o = e("./_has"),
+          i = e("./_descriptors"),
+          u = e("./_export"),
+          s = e("./_redefine"),
+          c = e("./_meta").KEY,
+          a = e("./_fails"),
+          f = e("./_shared"),
+          l = e("./_set-to-string-tag"),
+          p = e("./_uid"),
+          d = e("./_wks"),
+          _ = e("./_wks-ext"),
+          b = e("./_wks-define"),
+          y = e("./_keyof"),
+          v = e("./_enum-keys"),
+          h = e("./_is-array"),
+          m = e("./_an-object"),
+          j = e("./_to-iobject"),
+          g = e("./_to-primitive"),
+          x = e("./_property-desc"),
+          k = e("./_object-create"),
+          w = e("./_object-gopn-ext"),
+          O = e("./_object-gopd"),
+          S = e("./_object-dp"),
+          P = e("./_object-keys"),
+          C = O.f,
+          E = S.f,
+          M = w.f,
+          _A = n.Symbol,
+          T = n.JSON,
+          F = T && T.stringify,
+          N = "prototype",
+          I = d("_hidden"),
+          L = d("toPrimitive"),
+          D = {}.propertyIsEnumerable,
+          q = f("symbol-registry"),
+          G = f("symbols"),
+          R = f("op-symbols"),
+          W = Object[N],
+          B = "function" == typeof _A,
+          J = n.QObject,
+          K = !J || !J[N] || !J[N].findChild,
+          U = i && a(function () {
+        return 7 != k(E({}, "a", { get: function get() {
+            return E(this, "a", { value: 7 }).a;
+          } })).a;
+      }) ? function (e, t, r) {
+        var n = C(W, t);n && delete W[t], E(e, t, r), n && e !== W && E(W, t, n);
+      } : E,
+          z = function z(e) {
+        var t = G[e] = k(_A[N]);return t._k = e, t;
+      },
+          Y = B && "symbol" == _typeof(_A.iterator) ? function (e) {
+        return "symbol" == (typeof e === "undefined" ? "undefined" : _typeof(e));
+      } : function (e) {
+        return e instanceof _A;
+      },
+          Q = function Q(e, t, r) {
+        return e === W && Q(R, t, r), m(e), t = g(t, !0), m(r), o(G, t) ? (r.enumerable ? (o(e, I) && e[I][t] && (e[I][t] = !1), r = k(r, { enumerable: x(0, !1) })) : (o(e, I) || E(e, I, x(1, {})), e[I][t] = !0), U(e, t, r)) : E(e, t, r);
+      },
+          H = function H(e, t) {
+        m(e);for (var r, n = v(t = j(t)), o = 0, i = n.length; i > o;) {
+          Q(e, r = n[o++], t[r]);
+        }return e;
+      },
+          V = function V(e, t) {
+        return void 0 === t ? k(e) : H(k(e), t);
+      },
+          X = function X(e) {
+        var t = D.call(this, e = g(e, !0));return !(this === W && o(G, e) && !o(R, e)) && (!(t || !o(this, e) || !o(G, e) || o(this, I) && this[I][e]) || t);
+      },
+          Z = function Z(e, t) {
+        if (e = j(e), t = g(t, !0), e !== W || !o(G, t) || o(R, t)) {
+          var r = C(e, t);return !r || !o(G, t) || o(e, I) && e[I][t] || (r.enumerable = !0), r;
+        }
+      },
+          $ = function $(e) {
+        for (var t, r = M(j(e)), n = [], i = 0; r.length > i;) {
+          o(G, t = r[i++]) || t == I || t == c || n.push(t);
+        }return n;
+      },
+          ee = function ee(e) {
+        for (var t, r = e === W, n = M(r ? R : j(e)), i = [], u = 0; n.length > u;) {
+          !o(G, t = n[u++]) || r && !o(W, t) || i.push(G[t]);
+        }return i;
+      };B || (_A = function A() {
+        if (this instanceof _A) throw TypeError("Symbol is not a constructor!");var e = p(arguments.length > 0 ? arguments[0] : void 0),
+            t = function t(r) {
+          this === W && t.call(R, r), o(this, I) && o(this[I], e) && (this[I][e] = !1), U(this, e, x(1, r));
+        };return i && K && U(W, e, { configurable: !0, set: t }), z(e);
+      }, s(_A[N], "toString", function () {
+        return this._k;
+      }), O.f = Z, S.f = Q, e("./_object-gopn").f = w.f = $, e("./_object-pie").f = X, e("./_object-gops").f = ee, i && !e("./_library") && s(W, "propertyIsEnumerable", X, !0), _.f = function (e) {
+        return z(d(e));
+      }), u(u.G + u.W + u.F * !B, { Symbol: _A });for (var te = "hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","), re = 0; te.length > re;) {
+        d(te[re++]);
+      }for (var te = P(d.store), re = 0; te.length > re;) {
+        b(te[re++]);
+      }u(u.S + u.F * !B, "Symbol", { "for": function _for(e) {
+          return o(q, e += "") ? q[e] : q[e] = _A(e);
+        }, keyFor: function keyFor(e) {
+          if (Y(e)) return y(q, e);throw TypeError(e + " is not a symbol!");
+        }, useSetter: function useSetter() {
+          K = !0;
+        }, useSimple: function useSimple() {
+          K = !1;
+        } }), u(u.S + u.F * !B, "Object", { create: V, defineProperty: Q, defineProperties: H, getOwnPropertyDescriptor: Z, getOwnPropertyNames: $, getOwnPropertySymbols: ee }), T && u(u.S + u.F * (!B || a(function () {
+        var e = _A();return "[null]" != F([e]) || "{}" != F({ a: e }) || "{}" != F(Object(e));
+      })), "JSON", { stringify: function stringify(e) {
+          if (void 0 !== e && !Y(e)) {
+            for (var t, r, n = [e], o = 1; arguments.length > o;) {
+              n.push(arguments[o++]);
+            }return t = n[1], "function" == typeof t && (r = t), !r && h(t) || (t = function t(e, _t2) {
+              if (r && (_t2 = r.call(this, e, _t2)), !Y(_t2)) return _t2;
+            }), n[1] = t, F.apply(T, n);
           }
-
-          /*sendAutomaticMessage() {}
-           forwardToID() {}
-           forwardToHyperty() {}*/
-
-        }]);
-        return PEP;
-      }();
-
-      exports.default = PEP;
-      module.exports = exports['default'];
-    }, { "babel-runtime/helpers/classCallCheck": 3, "babel-runtime/helpers/createClass": 4 }], 40: [function (require, module, exports) {
-      'use strict';
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
-      var _typeof2 = require('babel-runtime/helpers/typeof');
-
-      var _typeof3 = _interopRequireDefault(_typeof2);
-
-      var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-      var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-      var _createClass2 = require('babel-runtime/helpers/createClass');
-
-      var _createClass3 = _interopRequireDefault(_createClass2);
-
-      var _PEP = require('./PEP');
-
-      var _PEP2 = _interopRequireDefault(_PEP);
-
-      var _PDP = require('./PDP');
-
-      var _PDP2 = _interopRequireDefault(_PDP);
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj };
+        } }), _A[N][L] || e("./_hide")(_A[N], L, _A[N].valueOf), l(_A, "Symbol"), l(Math, "Math", !0), l(n.JSON, "JSON", !0);
+    }, { "./_an-object": 12, "./_descriptors": 18, "./_enum-keys": 21, "./_export": 22, "./_fails": 23, "./_global": 24, "./_has": 25, "./_hide": 26, "./_is-array": 30, "./_keyof": 36, "./_library": 37, "./_meta": 38, "./_object-create": 39, "./_object-dp": 40, "./_object-gopd": 42, "./_object-gopn": 44, "./_object-gopn-ext": 43, "./_object-gops": 45, "./_object-keys": 48, "./_object-pie": 49, "./_property-desc": 50, "./_redefine": 51, "./_set-to-string-tag": 52, "./_shared": 54, "./_to-iobject": 58, "./_to-primitive": 61, "./_uid": 62, "./_wks": 65, "./_wks-define": 63, "./_wks-ext": 64 }], 71: [function (e, t, r) {
+      e("./_wks-define")("asyncIterator");
+    }, { "./_wks-define": 63 }], 72: [function (e, t, r) {
+      e("./_wks-define")("observable");
+    }, { "./_wks-define": 63 }], 73: [function (e, t, r) {
+      e("./es6.array.iterator");for (var n = e("./_global"), o = e("./_hide"), i = e("./_iterators"), u = e("./_wks")("toStringTag"), s = ["NodeList", "DOMTokenList", "MediaList", "StyleSheetList", "CSSRuleList"], c = 0; c < 5; c++) {
+        var a = s[c],
+            f = n[a],
+            l = f && f.prototype;l && !l[u] && o(l, u, a), i[a] = i.Array;
       }
-
-      /**
-      * The Policy Engine intercepts all the messages sent through the Message Bus and applies the
-      * policies defined by the service provider and the user.
-      */
-      //jshint browser:true, jquery: true
-
-      //import persistenceManager from 'service-framework/dist/PersistenceManager';
-
-      var PolicyEngine = function () {
-
-        /**
-        * This method is invoked by the RuntimeUA and instantiates the Policy Engine. A Policy Decision
-        * Point (PDP) and a Policy Enforcement Point (PEP) are initialised for the evaluation of policies
-        * and the enforcement of additional actions, respectively.
-        * @param  {IdentityModule}    identityModule
-        * @param  {Registry}          runtimeRegistry
-        */
-
-        function PolicyEngine(context) {
-          (0, _classCallCheck3.default)(this, PolicyEngine);
-
-          var _this = this;
-          _this.context = context;
-          _this.context.pdp = new _PDP2.default(context);
-          _this.context.pep = new _PEP2.default(context);
-        }
-
-        /**
-        * Associates the given policies with a scope. The possible scopes are 'global', 'hyperty' and
-        * 'user'.
-        * @param  {Policy[]}  policies
-        * @param  {String}    scope
-        */
-
-        (0, _createClass3.default)(PolicyEngine, [{
-          key: 'addPolicies',
-          value: function addPolicies(newPolicies) {
-            var _this = this;
-
-            var myPolicies = _this.context.policies;
-            if (myPolicies === undefined) {
-              myPolicies = {};
-            }
-
-            for (var i in newPolicies) {
-              var newPolicy = newPolicies[i];
-              var scope = newPolicy.scope;
-              if (myPolicies[scope] === undefined) {
-                myPolicies[scope] = [];
+    }, { "./_global": 24, "./_hide": 26, "./_iterators": 35, "./_wks": 65, "./es6.array.iterator": 66 }], 74: [function (e, t, r) {
+      "use strict";
+      function n(e) {
+        return e && e.__esModule ? e : { "default": e };
+      }Object.defineProperty(r, "__esModule", { value: !0 });var o = e("babel-runtime/helpers/classCallCheck"),
+          i = n(o),
+          u = e("babel-runtime/helpers/createClass"),
+          s = n(u),
+          c = function () {
+        function e() {
+          (0, i["default"])(this, e);var t = this;t.operators = t.setOperators();
+        }return (0, s["default"])(e, [{ key: "setOperators", value: function value() {
+            var e = this,
+                t = { between: function between(t) {
+                return e.isBetween(t[0][0], t[0][1], t[1]);
+              }, "in": function _in(e) {
+                return e[0].indexOf(e[1]) > -1;
+              }, equals: function equals(e) {
+                return "*" === e[0][0] || e[0][0] === e[1];
+              }, or: function or(e) {
+                return e[0] || e[1];
+              }, and: function and(e) {
+                return e[0] && e[1];
+              }, not: function not(e) {
+                return !e[0];
+              } };return t;
+          } }, { key: "isBetween", value: function value(e, t, r) {
+            return e = parseInt(e), t = parseInt(t), t < e && (r = r < e ? r += 2400 : r, t += 2400), r > e && r < t;
+          } }]), e;
+      }();r["default"] = c, t.exports = r["default"];
+    }, { "babel-runtime/helpers/classCallCheck": 4, "babel-runtime/helpers/createClass": 5 }], 75: [function (e, t, r) {
+      "use strict";
+      function n(e) {
+        return e && e.__esModule ? e : { "default": e };
+      }Object.defineProperty(r, "__esModule", { value: !0 });var o = e("babel-runtime/helpers/typeof"),
+          i = n(o),
+          u = e("babel-runtime/helpers/classCallCheck"),
+          s = n(u),
+          c = e("babel-runtime/helpers/createClass"),
+          a = n(c),
+          f = e("./Operators"),
+          l = n(f),
+          p = function () {
+        function e(t) {
+          (0, s["default"])(this, e);var r = this;r.context = t, r.operators = new l["default"](t);
+        }return (0, a["default"])(e, [{ key: "evaluate", value: function value(e, t) {
+            var r = this,
+                n = [!0],
+                o = [];for (var u in t) {
+              var s = t[u],
+                  c = s.condition,
+                  a = !1;if (a = "object" === ("undefined" == typeof c ? "undefined" : (0, i["default"])(c)) ? r.verifiesAdvancedCondition(c[0], c[1], c[2], s.scope, e) : r.verifiesSimpleCondition(c, s.scope, e), a && n.push(s.authorise), s.actions !== []) for (var f in s.actions) {
+                var l = { method: s.actions[f].method, params: e };o.push(l);
               }
-              for (var j in myPolicies[scope]) {
-                var existingPolicy = myPolicies[scope][j];
-                if (existingPolicy.condition === newPolicy.condition) {
-                  _this.removePolicies(newPolicies[i].condition);
-                  break;
+            }var p = n.indexOf(!1) === -1;return [p, o];
+          } }, { key: "verifiesSimpleCondition", value: function value(e, t, r) {
+            var n = this,
+                o = e.split(" "),
+                i = o[0],
+                u = o[1],
+                s = void 0;"in" === u ? (n.context.group = { scope: t, group: o[2], destination: r.to }, s = n.context.group) : s = o.slice(2), n.context[i] = { message: r };var c = n.context[i];return n.operators.operators[u]([s, c]);
+          } }, { key: "verifiesAdvancedCondition", value: function value(e, t, r, n, o) {
+            for (var u = this; "object" === ("undefined" == typeof t ? "undefined" : (0, i["default"])(t));) {
+              t = u.verifiesAdvancedCondition(t[0], t[1], t[2], n, o);
+            }if (void 0 !== r) for (; "object" === ("undefined" == typeof r ? "undefined" : (0, i["default"])(r));) {
+              r = u.verifiesAdvancedCondition(r[0], r[1], r[2], n, o);
+            }var s = "boolean" == typeof t ? t : u.verifiesSimpleCondition(t, n, o),
+                c = void 0;return void 0 !== r && (c = "boolean" == typeof r ? r : u.verifiesSimpleCondition(r, n, o)), u.operators.operators[e]([s, c]);
+          } }]), e;
+      }();r["default"] = p, t.exports = r["default"];
+    }, { "./Operators": 74, "babel-runtime/helpers/classCallCheck": 4, "babel-runtime/helpers/createClass": 5, "babel-runtime/helpers/typeof": 6 }], 76: [function (e, t, r) {
+      "use strict";
+      function n(e) {
+        return e && e.__esModule ? e : { "default": e };
+      }Object.defineProperty(r, "__esModule", { value: !0 });var o = e("babel-runtime/helpers/classCallCheck"),
+          i = n(o),
+          u = e("babel-runtime/helpers/createClass"),
+          s = n(u),
+          c = function () {
+        function e(t) {
+          (0, i["default"])(this, e);var r = this;r.context = t;
+        }return (0, s["default"])(e, [{ key: "enforce", value: function value(e) {
+            var t = this,
+                r = e[0],
+                n = e[1];for (var o in n) {
+              t.context[n[o].method](n[o].params, r);
+            }
+          } }]), e;
+      }();r["default"] = c, t.exports = r["default"];
+    }, { "babel-runtime/helpers/classCallCheck": 4, "babel-runtime/helpers/createClass": 5 }], 77: [function (e, t, r) {
+      "use strict";
+      function n(e) {
+        return e && e.__esModule ? e : { "default": e };
+      }Object.defineProperty(r, "__esModule", { value: !0 });var o = e("babel-runtime/helpers/typeof"),
+          i = n(o),
+          u = e("babel-runtime/helpers/classCallCheck"),
+          s = n(u),
+          c = e("babel-runtime/helpers/createClass"),
+          a = n(c),
+          f = e("./PEP"),
+          l = n(f),
+          p = e("./PDP"),
+          d = n(p),
+          _ = function () {
+        function e(t) {
+          (0, s["default"])(this, e);var r = this;r.context = t, r.context.pdp = new d["default"](t), r.context.pep = new l["default"](t);
+        }return (0, a["default"])(e, [{ key: "addPolicies", value: function value(e) {
+            var t = this,
+                r = t.context.policies;void 0 === r && (r = {});for (var n in e) {
+              var o = e[n],
+                  i = o.scope;void 0 === r[i] && (r[i] = []);for (var u in r[i]) {
+                var s = r[i][u];if (s.condition === o.condition) {
+                  t.removePolicies(e[n].condition);break;
                 }
-              }
-              myPolicies[scope].push(newPolicies[i]);
-            }
-
-            _this.context.policies = myPolicies;
-          }
-
-          /**
-          * Removes the policy with the given ID from the given scope. If policyID is '*', removes all policies associated with the given scope.
-          * @param  {String}  policyID
-          * @param  {String}  scope
-          */
-
-        }, {
-          key: 'removePolicies',
-          value: function removePolicies(scope, condition) {
-            var _this = this;
-            var myPolicies = _this.context.policies;
-
-            if (scope !== '*') {
-
-              if (scope in myPolicies) {
-                if (condition !== '*') {
-                  var policies = myPolicies[scope];
-                  var typeOfCondition = typeof condition === 'undefined' ? 'undefined' : (0, _typeof3.default)(condition);
-                  for (var i in policies) {
-                    var typeOfPolicyCondition = (0, _typeof3.default)(policies[i].condition);
-                    if (typeOfCondition === typeOfPolicyCondition) {
-                      if (typeOfCondition === 'string') {
-                        if (policies[i].condition === condition) {
-                          policies.splice(i, 1);
-                          break;
-                        }
-                      } else {
-                        //typeof condition = object (advanced policy)
-                        if (_this.areEqualArrays(policies[i].condition, condition)) {
-                          policies.splice(i, 1);
-                        }
+              }r[i].push(e[n]);
+            }t.context.policies = r;
+          } }, { key: "removePolicies", value: function value(e, t) {
+            var r = this,
+                n = r.context.policies;if ("*" !== e) {
+              if (e in n) {
+                if ("*" !== t) {
+                  var o = n[e],
+                      u = "undefined" == typeof t ? "undefined" : (0, i["default"])(t);for (var s in o) {
+                    var c = (0, i["default"])(o[s].condition);if (u === c) if ("string" === u) {
+                      if (o[s].condition === t) {
+                        o.splice(s, 1);break;
                       }
-                    }
+                    } else r.areEqualArrays(o[s].condition, t) && o.splice(s, 1);
                   }
-                } else {
-                  delete myPolicies[scope];
-                }
-
-                _this.context.policies = myPolicies;
+                } else delete n[e];r.context.policies = n;
               }
-            } else {
-              _this.context.policies = {};
-            }
-          }
-        }, {
-          key: 'areEqualArrays',
-          value: function areEqualArrays(array1, array2) {
-            if (array1.length !== array2.length) {
-              return false;
-            }
-
-            var numElements = array1.length;
-            for (var i = 0; i < numElements; i++) {
-              if (array1[i] instanceof Array && array2[i] instanceof Array) {
-                if (!array1[i].equals(array2[i])) {
-                  return false;
-                }
-              } else if (array1[i] !== array2[i]) {
-                return false;
-              }
-            }
-            return true;
-          }
-
-          /**
-          * This method is executed when a message is intercepted in the Message Bus. The first step is the
-          * assignment of the identity associated with the message. The second step is the evaluation of the
-          * applicable policies in order to obtain an authorisation decision: if a policy evaluates to
-          * false, then the message is unauthorised. The third step is the enforcement of the actions that
-          * policies may require. Finally, the message is stamped as authorised or not and is returned to
-          * the Message Bus, where it will be forwarded or blocked.
-          * @param  {Message}  message
-          */
-
-        }, {
-          key: 'authorise',
-          value: function authorise(message) {
-            var _this = this;
-            return _this.context.authorise(message);
-          }
-        }, {
-          key: 'getGroupsNames',
-          value: function getGroupsNames(scope) {
-            var _this = this;
-            var myGroups = _this.context.groups;
-            var groupsNames = [];
-            if (myGroups[scope] !== {}) {
-              for (var groupName in myGroups[scope]) {
-                groupsNames.push(groupName);
+            } else r.context.policies = {};
+          } }, { key: "areEqualArrays", value: function value(e, t) {
+            if (e.length !== t.length) return !1;for (var r = e.length, n = 0; n < r; n++) {
+              if (e[n] instanceof Array && t[n] instanceof Array) {
+                if (!e[n].equals(t[n])) return !1;
+              } else if (e[n] !== t[n]) return !1;
+            }return !0;
+          } }, { key: "authorise", value: function value(e) {
+            var t = this;return t.context.authorise(e);
+          } }, { key: "getGroupsNames", value: function value(e) {
+            var t = this,
+                r = t.context.groups,
+                n = [];if (r[e] !== {}) for (var o in r[e]) {
+              n.push(o);
+            }return n;
+          } }, { key: "getList", value: function value(e, t) {
+            var r = this,
+                n = r.context.groups,
+                o = [];return void 0 !== n[e] && void 0 !== n[e][t] && (o = n[e][t]), o;
+          } }, { key: "createList", value: function value(e, t, r) {
+            var n = this,
+                o = n.context.groups;void 0 === o[e] && (o[e] = {}), o[e][r] = [];var i = { authorise: !1, condition: t + " in " + r, scope: e, actions: [] };return n.addPolicies([i]), o;
+          } }, { key: "deleteGroup", value: function value(e, t) {
+            var r = this,
+                n = r.context.groups;delete n[e][t];var o = r.context.policies,
+                i = o[e];for (var u in i) {
+              var s = i[u].condition.split(" ");s.shift();var c = s.join(" ");if (c === t) {
+                delete i[u];break;
               }
             }
-            return groupsNames;
-          }
-
-          /**
-          * Retrieves the group with the given group name from the PDP.
-          * @param  {String}  groupName
-          * @return {Array}   group
-          */
-
-        }, {
-          key: 'getList',
-          value: function getList(scope, groupName) {
-            var _this = this;
-            var myGroups = _this.context.groups;
-            var members = [];
-            if (myGroups[scope] !== undefined && myGroups[scope][groupName] !== undefined) {
-              members = myGroups[scope][groupName];
-            }
-            return members;
-          }
-
-          /**
-          * Creates a group with the given name.
-          * @param  {String}  groupName
-          */
-
-        }, {
-          key: 'createList',
-          value: function createList(scope, type, groupName) {
-            var _this = this;
-
-            var myGroups = _this.context.groups;
-            if (myGroups[scope] === undefined) {
-              myGroups[scope] = {};
-            }
-            myGroups[scope][groupName] = [];
-
-            var policy = {
-              authorise: false,
-              condition: type + ' in ' + groupName,
-              scope: scope,
-              actions: []
-            };
-            _this.addPolicies([policy]);
-
-            return myGroups;
-          }
-        }, {
-          key: 'deleteGroup',
-          value: function deleteGroup(scope, groupName) {
-            var _this = this;
-
-            var myGroups = _this.context.groups;
-            delete myGroups[scope][groupName];
-
-            var myPolicies = _this.context.policies;
-
-            var policies = myPolicies[scope];
-            for (var i in policies) {
-              var condition = policies[i].condition.split(' ');
-              condition.shift();
-              var groupInPolicy = condition.join(' ');
-              if (groupInPolicy === groupName) {
-                delete policies[i];
-                break;
+          } }, { key: "addToList", value: function value(e, t, r, n) {
+            var o = this,
+                i = o.context.groups;void 0 === i[e] && (i[e] = {}), void 0 === i[e][r] && (i = o.createList(e, t, r)), i[e][r].indexOf(n) === -1 && i[e][r].push(n);
+          } }, { key: "removeFromGroup", value: function value(e, t, r) {
+            var n = this,
+                o = n.context.groups,
+                i = o[e][t];for (var u in i) {
+              if (i[u] === r) {
+                i.splice(u, 1);break;
               }
             }
-          }
-
-          /**
-          * Adds the given user email to the group with the given name.
-          * @param  {String}  userEmail
-          * @param  {String}  groupName
-          */
-
-        }, {
-          key: 'addToList',
-          value: function addToList(scope, type, groupName, userEmail) {
-            var _this = this;
-
-            var myGroups = _this.context.groups;
-            if (myGroups[scope] === undefined) {
-              myGroups[scope] = {};
+          } }, { key: "getTimeslots", value: function value() {
+            var e = this,
+                t = e.context.policies.user,
+                r = [];for (var n in t) {
+              "time" === t[n].condition.split(" ")[0] && r.push(t[n].condition);
+            }return r;
+          } }, { key: "getTimeslotById", value: function value(e) {
+            var t = this,
+                r = t.context.policies.user;for (var n in r) {
+              if (r[n].condition === e) return r[n];
             }
-            if (myGroups[scope][groupName] === undefined) {
-              myGroups = _this.createList(scope, type, groupName);
-            }
-            if (myGroups[scope][groupName].indexOf(userEmail) === -1) {
-              myGroups[scope][groupName].push(userEmail);
-            }
-          }
-
-          /**
-          * Removes the given user email from the group with the given name.
-          * @param  {String}  userEmail
-          * @param  {String}  groupName
-          */
-
-        }, {
-          key: 'removeFromGroup',
-          value: function removeFromGroup(scope, groupName, userEmail) {
-            var _this = this;
-
-            var myGroups = _this.context.groups;
-            var group = myGroups[scope][groupName];
-
-            for (var i in group) {
-              if (group[i] === userEmail) {
-                group.splice(i, 1);
-                break;
-              }
-            }
-          }
-        }, {
-          key: 'getTimeslots',
-          value: function getTimeslots() {
-            var _this = this;
-            var policies = _this.context.policies.user;
-            var timeRestrictions = [];
-            for (var i in policies) {
-              if (policies[i].condition.split(' ')[0] === 'time') {
-                timeRestrictions.push(policies[i].condition);
-              }
-            }
-            return timeRestrictions;
-          }
-        }, {
-          key: 'getTimeslotById',
-          value: function getTimeslotById(condition) {
-            var _this = this;
-            var policies = _this.context.policies.user;
-            for (var i in policies) {
-              if (policies[i].condition === condition) {
-                return policies[i];
-              }
-            }
-          }
-        }]);
-        return PolicyEngine;
-      }();
-
-      exports.default = PolicyEngine;
-      module.exports = exports['default'];
-    }, { "./PDP": 38, "./PEP": 39, "babel-runtime/helpers/classCallCheck": 3, "babel-runtime/helpers/createClass": 4, "babel-runtime/helpers/typeof": 5 }] }, {}, [40])(40);
+          } }]), e;
+      }();r["default"] = _, t.exports = r["default"];
+    }, { "./PDP": 75, "./PEP": 76, "babel-runtime/helpers/classCallCheck": 4, "babel-runtime/helpers/createClass": 5, "babel-runtime/helpers/typeof": 6 }] }, {}, [77])(77);
 });
+//# sourceMappingURL=PolicyEngine.js.map

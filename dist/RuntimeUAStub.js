@@ -57,11 +57,6 @@ var window4Node = {};
 var child = require('child_process');
 registry.runtime = child.fork(__dirname + '/core.js');
 
-// chiko.on('message', function(m) {
-//   console.log('PARENT got message:', m);
-// });
-// chiko.send({ hello: 'world' });
-
 var buildMsg = function buildMsg(hypertyComponent, msg) {
   return {
     runtimeHypertyURL: msg.body.runtimeHypertyURL,
@@ -77,7 +72,7 @@ var runtimeProxy = {
     return new Promise(function (resolve, reject) {
       registry.runtime.on('message', function (msg) {
 
-        console.log('------------------- Message from runtime core child  -------------------------');
+        console.log('------------------- Message from runtime core child  -------------------------'.green);
         // console.log('message is :', msg);
 
         if (msg.to === 'runtime:loadedHyperty') {
@@ -85,7 +80,7 @@ var runtimeProxy = {
           resolve(buildMsg(_ContextApp2.default.getHyperty(msg.body.runtimeHypertyURL), msg));
         }
       });
-      console.log('registry.runtime.send');
+      console.log('registry.runtime.send'.green);
       registry.runtime.send({ to: 'core:loadHyperty', body: { descriptor: hypertyDescriptor } });
     });
   },
@@ -114,7 +109,7 @@ var RethinkNode = {
 
       registry.runtime.send({ do: 'install runtime core', data: window4Node });
       registry.runtime.on('message', function (msg) {
-        console.log('------------------- In parent Process  -------------------------');
+        console.log('------------------- In parent Process  -------------------------'.green);
         console.log('\n--> message recieved from child process core.js');
         // console.log('message is :', msg);
         if (msg.to === 'runtime:installed') {

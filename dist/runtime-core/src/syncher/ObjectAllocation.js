@@ -30,7 +30,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-
 var ObjectAllocation = function () {
   /* private
   _url: URL
@@ -42,7 +41,6 @@ var ObjectAllocation = function () {
    * @param  {URL.URL}      url - url from who is sending the message
    * @param  {MiniBus}      bus - MiniBus used for address allocation
    */
-
   function ObjectAllocation(url, bus) {
     _classCallCheck(this, ObjectAllocation);
 

@@ -67,7 +67,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Implements a Bloom filter.
 * @author Jason Davies; adapted and extended by beierle@tu-berlin.de
 */
-
 var BloomFilter = function () {
 
   //var typedArrays = typeof ArrayBuffer !== 'undefined';
@@ -77,7 +76,6 @@ var BloomFilter = function () {
   // each element is a 32-bit integer.  Otherwise, *m* should specify the
   // number of bits.  Note that *m* is rounded up to the nearest multiple of
   // 32.  *k* specifies the number of hashing functions.
-
   function BloomFilter(m, k) {
     _classCallCheck(this, BloomFilter);
 

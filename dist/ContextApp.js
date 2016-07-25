@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _sandbox = require('runtime-core/dist/sandbox');
+var _sandbox = require('./runtime-core/dist/sandbox');
 
-var _minibus = require('runtime-core/dist/minibus');
+var _minibus = require('./runtime-core/dist/minibus');
 
 var _minibus2 = _interopRequireDefault(_minibus);
 
@@ -42,9 +42,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * limitations under the License.
 **/
 function create(myApp) {
-  console.log('\n****** I ContextApp ******');
-  process._miniBus = new _minibus2.default();
-  process._miniBus._onPostMessage = function (msg) {
+  console.log('\n****** In ContextApp ******');
+  process.miniBus = new _minibus2.default();
+  process.miniBus._onPostMessage = function (msg) {
     // myApp.send(msg, '*');
     myApp.send({ do: 'installed hyperty' });
     console.log('process miniBus message sent');
@@ -56,19 +56,19 @@ function create(myApp) {
     if (event.to.startsWith('runtime:loadedHyperty')) console.log('\n received message: runtime:loadedHyperty');
     return;
 
-    process._miniBus._onMessage(event);
+    // process.miniBus._onMessage(event);
   }, false);
   // //
-  process._registry = new _sandbox.SandboxRegistry(process._miniBus);
-  process._registry._create = function (url, sourceCode, config) {
-    eval.apply(process._registry, [sourceCode]);
-    return activate(url, process._miniBus, config);
+  process.registry = new _sandbox.SandboxRegistry(process.miniBus);
+  process.registry._create = function (url, sourceCode, config) {
+    eval.apply(process.registry, [sourceCode]);
+    return activate(url, process.miniBus, config);
   };
 };
 
 function getHyperty(hypertyDescriptor) {
   console.log('#### in getHyperty');
-  return process._registry.components[hypertyDescriptor];
+  return process.registry.components[hypertyDescriptor];
 };
 
 exports.default = { create: create, getHyperty: getHyperty };

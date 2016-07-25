@@ -37,7 +37,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Components that need a message system should receive this class as a dependency or extend it.
 * Extensions should implement the following private methods: _onPostMessage and _registerExternalListener
 */
-
 var Bus = function () {
   /* private
   _msgId: number;

@@ -76,7 +76,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * The Graph Connector contains the contact list/address book.
 * @author beierle@tu-berlin.de
 */
-
 var GraphConnector = function () {
 
   // TODO: import / export methods
@@ -86,7 +85,6 @@ var GraphConnector = function () {
    * @param {string}   HypertyRuntimeURL    The Hyperty Runtime URL.
    * @param {messageBus}    MessageBus      The Message Bus.
    */
-
   function GraphConnector(hypertyRuntimeURL, messageBus) {
     _classCallCheck(this, GraphConnector);
 

@@ -44,7 +44,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 *   @author: Gil Dias (gil.dias@tecnico.ulisboa.pt)
 *   HypertyInstance Data Model used to model instances of Hyperties running in devices and servers.
 */
-
 var HypertyInstance = function (_RegistryDataModel) {
   _inherits(HypertyInstance, _RegistryDataModel);
 

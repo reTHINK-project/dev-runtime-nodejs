@@ -11,7 +11,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
 * Identity Provider Proxy Protocol Stub
 */
-
 var IdpProxyStub = function () {
 
   /**
@@ -22,7 +21,6 @@ var IdpProxyStub = function () {
   * @param  {domain}          Domain
   * @param  {idpProxy}    identity Provider Proxy javascript file
   */
-
   function IdpProxyStub(messageBus, domain, idpProxy) {
     _classCallCheck(this, IdpProxyStub);
 

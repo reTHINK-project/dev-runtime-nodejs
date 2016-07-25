@@ -26,7 +26,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * The Policy Engine intercepts all the messages sent through the Message Bus and applies the
 * policies defined by the service provider and the user.
 */
-
 var PolicyEngine = function () {
 
   /**
@@ -36,7 +35,6 @@ var PolicyEngine = function () {
   * @param  {IdentityModule}    identityModule
   * @param  {Registry}          runtimeRegistry
   */
-
   function PolicyEngine(context) {
     _classCallCheck(this, PolicyEngine);
 

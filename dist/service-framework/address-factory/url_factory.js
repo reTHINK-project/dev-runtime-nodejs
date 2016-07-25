@@ -67,7 +67,6 @@ var URLDataObject = function () {
     * @param port - human-understandable name of the catalogue object e.g. "My Awesome Hyperty"
     * @param path - description of the source package
     */
-
    function URLDataObject(scheme, host, port, path, parameters) {
       _classCallCheck(this, URLDataObject);
 

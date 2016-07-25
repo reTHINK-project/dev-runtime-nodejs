@@ -96,7 +96,6 @@ var MicrosoftProxyStub = function () {
   * @param  {Message.Message}                           busPostMessage     configuration
   * @param  {ProtoStubDescriptor.ConfigurationDataList} configuration      configuration
   */
-
   function MicrosoftProxyStub(runtimeProtoStubURL, bus, config) {
     _classCallCheck(this, MicrosoftProxyStub);
 

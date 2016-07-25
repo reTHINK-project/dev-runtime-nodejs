@@ -1,17 +1,11 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SandboxType = undefined;
 
-var _createClass = function() {
-  function defineProperties(target, props) { for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor);
-    } } return function(Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor;
-  };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SandboxRegistry = require('../sandbox/SandboxRegistry');
 
@@ -23,15 +17,11 @@ var _MiniBus3 = _interopRequireDefault(_MiniBus2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) {
-  if (!self) { throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called'); } return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-} /**
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 PT Inovação e Sistemas SA
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 INESC-ID
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 QUOBIS NETWORKS SL
@@ -64,7 +54,7 @@ var SandboxType = exports.SandboxType = { APP: 'app', NORMAL: 'normal' };
  * Base class to implement external sandbox component
  */
 
-var Sandbox = function(_MiniBus) {
+var Sandbox = function (_MiniBus) {
   _inherits(Sandbox, _MiniBus);
 
   function Sandbox() {
@@ -88,18 +78,16 @@ var Sandbox = function(_MiniBus) {
    * @return {Promise<string>} return deployed if successful, or any other string with an error
    */
 
+
   _createClass(Sandbox, [{
     key: 'deployComponent',
     value: function deployComponent(componentSourceCode, componentURL, configuration) {
-      console.log('------------------------------- deployComponent ------------------------------------');
+
       var _this = this;
-      // console.log('componentSourceCode : ', componentSourceCode);
-      // console.log('componentURL : ', componentURL);
-      // console.log('configuration : ', configuration);
 
       // let messageFactory = _this.messageFactory;
 
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         //FLOW-OUT: deploy message for the internal SandboxRegistry -> _onDeploy
         var deployMessage = {
           type: 'create', from: _SandboxRegistry2.default.ExternalDeployAddress, to: _SandboxRegistry2.default.InternalDeployAddress,
@@ -107,7 +95,7 @@ var Sandbox = function(_MiniBus) {
         };
 
         //send message into the sandbox internals and wait for reply
-        _this.postMessage(deployMessage, function(reply) {
+        _this.postMessage(deployMessage, function (reply) {
           if (reply.body.code === 200) {
             //is this response complaint with the spec?
             resolve('deployed');
@@ -129,7 +117,7 @@ var Sandbox = function(_MiniBus) {
     value: function removeComponent(componentURL) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         //FLOW-OUT: un-deploy message for the internal SandboxRegistry -> _onRemove
         var removeMessage = {
           type: 'delete', from: _SandboxRegistry2.default.ExternalDeployAddress, to: _SandboxRegistry2.default.InternalDeployAddress,
@@ -137,7 +125,7 @@ var Sandbox = function(_MiniBus) {
         };
 
         //send message into the sandbox internals and wait for reply
-        _this.postMessage(removeMessage, function(reply) {
+        _this.postMessage(removeMessage, function (reply) {
           if (reply.body.code === 200) {
             //is this response complaint with the spec?
             resolve('undeployed');

@@ -26,8 +26,8 @@
 //global : Its a global namespace object
 // hince we use global instead of window
 
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
+import { Sandbox, SandboxType } from './runtime-core/dist/sandbox';
+import MiniBus from './runtime-core/dist/minibus';
 
 export default class SandboxApp extends Sandbox{
   constructor() {
@@ -35,23 +35,25 @@ export default class SandboxApp extends Sandbox{
     console.log('---------------------- Sandbox App -----------------------');
 
     this.type = SandboxType.NORMAL;
+    let _this = this;
 
     // this.eventEmitter = eventEmitter;
 
     process.on('message', function(e) {
-        if (!!!this)
-        this.origin = process;
-        console.log('SandboxApp message  is ::', e);
+        if (!!!this.origin)
+        this.origin = e.source;
+
+        console.log('SandboxApp Received message  is :\n'.green, e);
 
         if (e.to.startsWith('core:'))
           return;
 
-        this._onMessage(e);
+        _this._onMessage(e);
       });
   }
 
   _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message');
+    console.log('SandboxApp postMessage message'.green);
     this.origin.send(msg, '*');
 
   }

@@ -35,7 +35,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Core Discovery interface
 * Class to allow applications to search for hyperties and DataObjects using the message bus
 */
-
 var Discovery = function () {
 
   /**
@@ -44,7 +43,6 @@ var Discovery = function () {
   * @param  {MessageBus}          msgbus                msgbus
   * @param  {RuntimeURL}          runtimeURL            runtimeURL
   */
-
   function Discovery(hypertyURL, msgBus) {
     _classCallCheck(this, Discovery);
 

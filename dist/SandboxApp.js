@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _sandbox = require('runtime-core/dist/sandbox');
+var _sandbox = require('./runtime-core/dist/sandbox');
 
-var _minibus = require('runtime-core/dist/minibus');
+var _minibus = require('./runtime-core/dist/minibus');
 
 var _minibus2 = _interopRequireDefault(_minibus);
 
@@ -51,29 +51,31 @@ var SandboxApp = function (_Sandbox) {
   function SandboxApp() {
     _classCallCheck(this, SandboxApp);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
 
     console.log('---------------------- Sandbox App -----------------------');
 
-    _this.type = _sandbox.SandboxType.NORMAL;
+    _this2.type = _sandbox.SandboxType.NORMAL;
+    var _this = _this2;
 
     // this.eventEmitter = eventEmitter;
 
     process.on('message', function (e) {
-      if (!!!this) this.origin = process;
-      console.log('SandboxApp message  is ::', e);
+      if (!!!this.origin) this.origin = e.source;
+
+      console.log('SandboxApp Received message  is :\n'.green, e);
 
       if (e.to.startsWith('core:')) return;
 
-      this._onMessage(e);
+      _this._onMessage(e);
     });
-    return _this;
+    return _this2;
   }
 
   _createClass(SandboxApp, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      console.log('SandboxApp postMessage message');
+      console.log('SandboxApp postMessage message'.green);
       this.origin.send(msg, '*');
     }
   }]);

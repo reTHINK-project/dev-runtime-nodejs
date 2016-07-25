@@ -23,7 +23,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * specified in a hashtable to allow dynamic definition of the implementation, providing
 * extensibility to the Policy Engine functionalities.
 */
-
 var PDP = function () {
 
   /**
@@ -32,7 +31,6 @@ var PDP = function () {
   * groups.
   * @param  {Registry}    muchruntimeRegistry
   */
-
   function PDP(context) {
     _classCallCheck(this, PDP);
 

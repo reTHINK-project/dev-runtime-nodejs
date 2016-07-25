@@ -42,7 +42,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Since there is no DataObjectObserver before the ubscription confirmation, there should be some other object collecting the updates.
  * Provisional data is applied to the DataObjectObserver after confirmation. Or discarded if there is no confirmation.
  */
-
 var DataProvisional = function () {
   /* private
   _childrenListeners: [MsgListener]

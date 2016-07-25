@@ -34,7 +34,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 *   @author: Gil Dias (gil.dias@tecnico.ulisboa.pt)
 *   Registry Data Model includes all Objects to be handled by the Registry functionality including
 */
-
 var RegistryDataModel = function () {
   function RegistryDataModel(id, url, descriptorURL, startingTime, lastModified, status, stubs, stubsConfiguration) {
     _classCallCheck(this, RegistryDataModel);

@@ -73,7 +73,6 @@ var CatalogueDataObjectFactory = function (_RethinkObject) {
      * @param {boolean} validation
      * @param {URL.URL } schema - link to the schema
      */
-
     function CatalogueDataObjectFactory(validation, schema) {
         _classCallCheck(this, CatalogueDataObjectFactory);
 

@@ -62,7 +62,6 @@ import Discovery from './Discovery';*/
 /**
 * Runtime Registry Interface
 */
-
 var Registry = function (_EventEmitter) {
   _inherits(Registry, _EventEmitter);
 
@@ -74,7 +73,6 @@ var Registry = function (_EventEmitter) {
   * @param  {runtimeCatalogue}    runtimeCatalogue      runtimeCatalogue
   * @param  {DomainURL}           remoteRegistry        remoteRegistry
   */
-
   function Registry(runtimeURL, appSandbox, identityModule, runtimeCatalogue, remoteRegistry) {
     _classCallCheck(this, Registry);
 
@@ -591,6 +589,12 @@ var Registry = function (_EventEmitter) {
 
                   _this._messageBus.postMessage(message, function (reply) {
                     console.log('===> RegisterHyperty Reply: ', reply);
+
+                    if (reply.body.code === 200) {
+                      resolve(adderessList[0]);
+                    } else {
+                      reject('Failed to register an Hyperty');
+                    }
                   });
 
                   //timer to keep the registration alive
@@ -606,8 +610,6 @@ var Registry = function (_EventEmitter) {
 
                   console.log('Hyperty Schemas', filteredDataSchemas);
                   console.log('Hyperty resources', resources);
-
-                  resolve(adderessList[0]);
                 });
               }).catch(function (reason) {
                 console.log('Address Reason: ', reason);

@@ -39,7 +39,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * The class returned from the DataObject addChildren call or from onAddChildren if remotely created.
  * Children object synchronization is a a fast forward mechanism, no need for direct subscriptions, it uses the already authorized subscription from the parent DataObject.
  */
-
 var DataObjectChild /* implements SyncStatus */ = function () {
   /* private
    ----event handlers----
@@ -50,7 +49,6 @@ var DataObjectChild /* implements SyncStatus */ = function () {
    * @ignore
    * Should not be used directly by Hyperties. It's called by the DataObject.addChildren
    */
-
   function DataObjectChild(parent, childId, initialData, owner, msgId) {
     _classCallCheck(this, DataObjectChild);
 

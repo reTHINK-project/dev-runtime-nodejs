@@ -20,40 +20,45 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
+import { Sandbox, SandboxRegistry } from './runtime-core/dist/sandbox';
+import MiniBus from './runtime-core/dist/minibus';
 import _eval from 'eval';
+let EventEmitter = require('events').EventEmitter;
+let emitter = new EventEmitter();
 var colors = require('colors');
 
-let _miniBus = new MiniBus();
+process.miniBus = new MiniBus();
+
+process.miniBus._onPostMessage = function(msg) {
+  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+  // process.miniBus.postMessage(msg);
+  process.send(msg);
+};
 
 process.on('message', function(msg) {
     console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
 
-    _miniBus.postMessage(msg);
-    console.log(' _miniBus.postMessage(msg); Post is Done :\n '.green, _miniBus);
+    // miniBus.postMessage(msg);
+    process.miniBus._onMessage(msg);
+    console.log('miniBus.postMessage(msg): Post is Done :\n '.green, process.miniBus);
     console.log('--> message sent from ContextServiceProvider  to SandboxWorker'.green);
-    this.send({msg});
+    // this.send(msg);
   });
 
-// _miniBus._onPostMessage = function(msg) {
-//   console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
-//   _miniBus.postMessage(msg);
-//   this.send({msg});
-// };
 
-process.on('message', function(event) {
-    console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
-    _miniBus._onMessage(event);
-  });
 
-let _registry = new SandboxRegistry(_miniBus);
-console.log(' ************ SandboxRegistry created is : \n'.green, _registry);
+// process.on('message', function(event) {
+//     console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
+//     miniBus._onMessage(event);
+//   });
 
-_registry._create = function(url, sourceCode, config) {
-    _eval([sourceCode], true);
-    console.log('------------------ _registry._create -----------------------'.green);
+process.registry = new SandboxRegistry(process.miniBus);
+console.log(' ************ SandboxRegistry created is : \n'.green, process.registry);
 
-    // eval.apply(_miniBus, [sourceCode]);
-    return activate(url, _miniBus, config);
+process.registry._create = function(url, sourceCode, config) {
+    // _eval([sourceCode], true);
+    console.log('------------------ registry._create -----------------------'.green);
+    // _eval(miniBus, [sourceCode]);
+    // _eval(sourceCode, true);
+    // return activate(url, miniBus, config);
   };

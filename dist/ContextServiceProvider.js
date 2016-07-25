@@ -1,8 +1,8 @@
 'use strict';
 
-var _sandbox = require('runtime-core/dist/sandbox');
+var _sandbox = require('./runtime-core/dist/sandbox');
 
-var _minibus = require('runtime-core/dist/minibus');
+var _minibus = require('./runtime-core/dist/minibus');
 
 var _minibus2 = _interopRequireDefault(_minibus);
 
@@ -38,35 +38,36 @@ var EventEmitter = require('events').EventEmitter; /**
 var emitter = new EventEmitter();
 var colors = require('colors');
 
-var miniBus = new _minibus2.default();
+process.miniBus = new _minibus2.default();
+
+process.miniBus._onPostMessage = function (msg) {
+  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+  // process.miniBus.postMessage(msg);
+  process.send(msg);
+};
 
 process.on('message', function (msg) {
-    console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
 
-    miniBus.postMessage(msg);
-    console.log(' _miniBus.postMessage(msg); Post is Done :\n '.green, miniBus);
-    console.log('--> message sent from ContextServiceProvider  to SandboxWorker'.green);
-    this.send(msg);
+  // miniBus.postMessage(msg);
+  process.miniBus._onMessage(msg);
+  console.log('miniBus.postMessage(msg): Post is Done :\n '.green, process.miniBus);
+  console.log('--> message sent from ContextServiceProvider  to SandboxWorker'.green);
+  // this.send(msg);
 });
-
-// _miniBus._onPostMessage = function(msg) {
-//   console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
-//   _miniBus.postMessage(msg);
-//   this.send({msg});
-// };
 
 // process.on('message', function(event) {
 //     console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
 //     miniBus._onMessage(event);
 //   });
 
-var registry = new _sandbox.SandboxRegistry(miniBus);
-console.log(' ************ SandboxRegistry created is : \n'.green, registry);
+process.registry = new _sandbox.SandboxRegistry(process.miniBus);
+console.log(' ************ SandboxRegistry created is : \n'.green, process.registry);
 
-registry._create = function (url, sourceCode, config) {
-    (0, _eval3.default)([sourceCode], true);
-    console.log('------------------ registry._create -----------------------'.green);
-
-    eval.apply(miniBus, [sourceCode]);
-    return activate(url, miniBus, config);
+process.registry._create = function (url, sourceCode, config) {
+  // _eval([sourceCode], true);
+  console.log('------------------ registry._create -----------------------'.green);
+  // _eval(miniBus, [sourceCode]);
+  // _eval(sourceCode, true);
+  // return activate(url, miniBus, config);
 };

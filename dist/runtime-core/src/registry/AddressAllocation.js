@@ -35,7 +35,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * Class will ask to the message node for addresses
  */
-
 var AddressAllocation = function () {
   /* private
   _url: URL
@@ -47,7 +46,6 @@ var AddressAllocation = function () {
    * @param  {URL.URL}      url - url from who is sending the message
    * @param  {MiniBus}      bus - MiniBus used for address allocation
    */
-
   function AddressAllocation(url, bus) {
     _classCallCheck(this, AddressAllocation);
 

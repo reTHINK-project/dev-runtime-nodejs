@@ -45,7 +45,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 * Message BUS Interface is an extension of the Bus
 * It is used mainly in the internal sandbox routing.
 */
-
 var MiniBus = function (_Bus) {
   _inherits(MiniBus, _Bus);
 

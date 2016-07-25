@@ -34,13 +34,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Represents the user's information for the global registry.
 * @author beierle@tu-berlin.de
 */
-
 var GlobalRegistryRecord = function () {
 
   /**
    * Constructs a new empty object.
    */
-
   function GlobalRegistryRecord() {
     _classCallCheck(this, GlobalRegistryRecord);
 

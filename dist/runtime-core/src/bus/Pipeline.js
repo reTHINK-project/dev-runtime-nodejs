@@ -36,7 +36,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Sequencial processor of methods. Similar to how Sequential Promise's work, but better fit for message processing.
 * Normal use for this, is to intercept all messages with configured handlers, and act accordingly.
 */
-
 var Pipeline = function () {
   /* public
     handlers: ((PipeContext) => void)[]

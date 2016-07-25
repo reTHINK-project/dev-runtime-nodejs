@@ -36,7 +36,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Core IdentityManager interface
 * Class to allow applications to search for Identities registered in runtime-core
 */
-
 var IdentityManager = function () {
 
   /**
@@ -46,7 +45,6 @@ var IdentityManager = function () {
   * @param  {String}          runtimeURL            runtimeURL
   * @param  {MessageBus}          msgbus                msgbus
   */
-
   function IdentityManager(hypertyURL, runtimeURL, msgBus) {
     _classCallCheck(this, IdentityManager);
 
@@ -91,10 +89,10 @@ var IdentityManager = function () {
 
           var userURL = reply.body.resource;
 
-          if (userURL && reply.body.code === 200) {
+          if (userURL) {
             resolve(userURL);
           } else {
-            reject('code: ' + reply.body.code + ' No user was not found');
+            reject('No user was not found');
           }
         });
       });

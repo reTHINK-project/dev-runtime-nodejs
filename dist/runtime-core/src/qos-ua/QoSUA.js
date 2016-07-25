@@ -29,7 +29,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * QoS User Agent Interface
  */
-
 var QoSUA = function () {
   function QoSUA() {
     _classCallCheck(this, QoSUA);

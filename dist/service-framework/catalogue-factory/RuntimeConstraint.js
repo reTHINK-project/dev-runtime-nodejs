@@ -34,7 +34,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * Created by amo on 14/11/2015.
  */
-
 var RuntimeConstraint = function () {
     function RuntimeConstraint(constraint, runtimeHypertyCapabilityType) {
         _classCallCheck(this, RuntimeConstraint);

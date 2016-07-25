@@ -14,7 +14,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 *  class to facilitate the operations with the openID connect, through several Identity Providers
 *
 */
-
 var OpenIdLib = function () {
   function OpenIdLib(identityProvider, clientID) {
     _classCallCheck(this, OpenIdLib);

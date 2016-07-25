@@ -1,16 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function() {
-  function defineProperties(target, props) { for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor);
-    } } return function(Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor;
-  };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _CommonCtx2 = require('./CommonCtx');
 
@@ -20,17 +14,13 @@ var _utils = require('../../utils/utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) {
-  if (!self) { throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called'); } return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var RuntimeCoreCtx = function(_CommonCtx) {
+var RuntimeCoreCtx = function (_CommonCtx) {
   _inherits(RuntimeCoreCtx, _CommonCtx);
 
   function RuntimeCoreCtx(idModule, runtimeRegistry) {
@@ -126,7 +116,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function authorise(message) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         console.log('--- Policy Engine ---');
         console.log(message);
         message.body = message.body || {};
@@ -137,7 +127,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
         if (isToVerify) {
           if (isIncomingMessage) {
             if (isToCypher) {
-              _this.decrypt(message).then(function(message) {
+              _this.decrypt(message).then(function (message) {
                 result = _this.applyPolicies(message);
                 var messageAccepted = result.policiesResult[0];
                 message = result.message;
@@ -146,7 +136,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
                 } else {
                   reject('Message blocked');
                 }
-              }, function(error) {
+              }, function (error) {
                 reject(error);
               });
             } else {
@@ -162,16 +152,16 @@ var RuntimeCoreCtx = function(_CommonCtx) {
           } else {
             var isToSetID = _this._isToSetID(message);
             if (isToSetID) {
-              _this.getIdentity(message).then(function(identity) {
+              _this.getIdentity(message).then(function (identity) {
                 message.body.identity = identity;
                 result = _this.applyPolicies(message);
                 var messageAccepted = result.policiesResult[0];
                 message = result.message;
                 if (messageAccepted) {
                   if (isToCypher) {
-                    _this.encrypt(message).then(function(message) {
+                    _this.encrypt(message).then(function (message) {
                       resolve(message);
-                    }, function(error) {
+                    }, function (error) {
                       reject(error);
                     });
                   } else {
@@ -180,7 +170,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
                 } else {
                   reject('Message blocked');
                 }
-              }, function(error) {
+              }, function (error) {
                 reject(error);
               });
             } else {
@@ -235,13 +225,16 @@ var RuntimeCoreCtx = function(_CommonCtx) {
         return _this.idModule.getIdentityOfHyperty(message.body.source);
       }
 
-      var from = _this._getURL(message.from);
-      return _this.idModule.getIdentityOfHyperty(_this._getURL(from));
+      if ((0, _utils.divideURL)(message.from).type === 'hyperty') {
+        return _this.idModule.getIdentityOfHyperty(message.from);
+      } else {
+        return _this.idModule.getIdentityOfHyperty(_this._getURL(message.from));
+      }
     }
   }, {
     key: 'isToVerify',
     value: function isToVerify(message) {
-      var schemasToIgnore = ['domain-idp', 'runtime', 'domain'];
+      var schemasToIgnore = ['domain-idp', 'hyperty-runtime', 'runtime', 'domain'];
       var splitFrom = message.from.split('://');
       var fromSchema = splitFrom[0];
       var splitTo = message.to.split('://');
@@ -270,10 +263,10 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function decrypt(message) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
-        _this.idModule.decryptMessage(message).then(function(msg) {
+      return new Promise(function (resolve, reject) {
+        _this.idModule.decryptMessage(message).then(function (msg) {
           resolve(msg);
-        }, function(error) {
+        }, function (error) {
           reject(error);
         });
       });
@@ -283,10 +276,10 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function encrypt(message) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
-        _this.idModule.encryptMessage(message).then(function(msg) {
+      return new Promise(function (resolve, reject) {
+        _this.idModule.encryptMessage(message).then(function (msg) {
           resolve(msg);
-        }, function(error) {
+        }, function (error) {
           reject(error);
         });
       });
@@ -299,12 +292,16 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function registerSubscriber(message, authDecision) {
       var _this = this;
       var to = message.to.split('/');
-      var isDataObjectSubscription = to[4] === 'subscription';
+      var subsIndex = to.indexOf('subscription');
+      var isDataObjectSubscription = subsIndex !== -1;
 
       if (authDecision && isDataObjectSubscription) {
-        var dataObjectURL = message.to.split('/');
-        dataObjectURL.pop();
-        dataObjectURL = dataObjectURL[0] + '//' + dataObjectURL[2] + '/' + dataObjectURL[3];
+        to.pop();
+        var dataObjectURL = to[0] + '//' + to[2] + '/' + to[3];
+        if (to[subsIndex - 1] !== undefined) {
+          dataObjectURL += '/' + to[subsIndex - 1];
+        }
+        console.log('registering ' + dataObjectURL);
         _this.runtimeRegistry.registerSubscriber(dataObjectURL, message.body.subscriber);
       }
     }
@@ -313,12 +310,16 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function doMutualAuthentication(message, authDecision) {
       var _this = this;
       var to = message.to.split('/');
-      var isDataObjectSubscription = to[4] === 'subscription';
+      var subsIndex = to.indexOf('subscription');
+      var isDataObjectSubscription = subsIndex !== -1;
 
       if (authDecision && isDataObjectSubscription) {
-        var dataObjectURL = message.to.split('/');
-        dataObjectURL.pop();
-        dataObjectURL = dataObjectURL[0] + '//' + dataObjectURL[2] + '/' + dataObjectURL[3];
+        to.pop();
+        var dataObjectURL = to[0] + '//' + to[2] + '/' + to[3];
+        if (to.length > 4) {
+          dataObjectURL = to[0] + '//' + to[2] + '/' + to[3] + '/' + to[4];
+        }
+        console.log('doing mutual authentication ' + dataObjectURL);
         _this.idModule.doMutualAuthentication(dataObjectURL, message.body.subscriber);
       }
     }

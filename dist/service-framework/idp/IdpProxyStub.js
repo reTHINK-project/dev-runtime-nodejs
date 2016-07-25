@@ -106,33 +106,23 @@ var IdpProxy = {
   * @return {Promise}      Returns a promise with the identity assertion validation result
   */
   validateAssertion: function validateAssertion(assertion, origin) {
-
-    //TODO check the values with the hash received
     return new Promise(function (resolve, reject) {
+      var i = googleInfo;
 
       var decodedContent = atob(assertion);
       var content = JSON.parse(decodedContent);
+      sendHTTPRequest('GET', i.tokenInfo + content.tokenID).then(function (result) {
 
-      var idTokenSplited = content.tokenID.split('.');
-
-      var idToken = JSON.parse(atob(idTokenSplited[1]));
-
-      resolve({ identity: idToken.email, contents: idToken });
-    });
-    /*return new Promise(function(resolve,reject) {
-      let i = googleInfo;
-       let decodedContent = atob(assertion);
-      let content = JSON.parse(decodedContent);
-      sendHTTPRequest('GET', i.tokenInfo + content.tokenID).then(function(result) {
-         if (JSON.stringify(result) === JSON.stringify(content.tokenIDJSON)) {
-          resolve({identity: content.tokenIDJSON.email, contents: content.tokenIDJSON});
+        if (JSON.stringify(result) === JSON.stringify(content.tokenIDJSON)) {
+          resolve({ identity: content.tokenIDJSON.email, contents: content.tokenIDJSON });
         } else {
           reject('invalid');
         }
-      }, function(err) {
-         reject(err);
+      }, function (err) {
+
+        reject(err);
       });
-    });*/
+    });
   },
 
   /**
@@ -226,7 +216,6 @@ var IdpProxyProtoStub = function () {
   * @param  {Message.Message}                           busPostMessage     configuration
   * @param  {ProtoStubDescriptor.ConfigurationDataList} configuration      configuration
   */
-
   function IdpProxyProtoStub(runtimeProtoStubURL, bus, config) {
     _classCallCheck(this, IdpProxyProtoStub);
 

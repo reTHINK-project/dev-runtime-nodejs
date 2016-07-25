@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _sandbox = require('runtime-core/dist/sandbox');
+var _sandbox = require('./runtime-core/dist/sandbox');
 
-var _minibus = require('runtime-core/dist/minibus');
+var _minibus = require('./runtime-core/dist/minibus');
 
 var _minibus2 = _interopRequireDefault(_minibus);
 
@@ -51,31 +51,33 @@ var SandboxWorker = function (_Sandbox) {
   function SandboxWorker(script) {
     _classCallCheck(this, SandboxWorker);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxWorker).call(this, script));
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxWorker).call(this, script));
 
     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
-    _this.type = _sandbox.SandboxType.NORMAL;
-    var self = _this;
+    _this2.type = _sandbox.SandboxType.NORMAL;
+    var _this = _this2;
 
-    _this.worker = child.fork(script);
-    console.log('----->  this._worker ::\n'.red, _this.worker);
-    if (!!_this.worker) {
-
-      _this.worker.on('message', function (e) {
+    _this2.worker = child.fork(script);
+    console.log('----->  In Sandbox created :\n');
+    if (!!_this2.worker) {
+      // console.log();
+      _this2.worker.on('message', function (e) {
         console.log('\n Received message by Sandbox Worker is:\n'.red, e);
-        self._onMessage(e);
+        _this._onMessage(e);
+
+        // console.log('message is :', msg);
       });
-      _this.worker.send({});
+      _this2.worker.send('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
-    return _this;
+    return _this2;
   }
 
   _createClass(SandboxWorker, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      console.log('\n Sended message by Sandbox Worker is:\n'.red, msg);
+      // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
       this.worker.send(msg);
     }
   }]);

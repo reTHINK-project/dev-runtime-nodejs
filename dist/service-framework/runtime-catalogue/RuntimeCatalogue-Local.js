@@ -86,7 +86,6 @@ var RuntimeCatalogueLocal = function(_RuntimeCatalogue) {
           resource = 'ProtoStubs';
           // resourceURL = type + '://' + domain + '/resources/descriptors/ProtoStubs.json';
           resourceURL = 'https://raw.githubusercontent.com/reTHINK-project/dev-hyperty-toolkit/develop/resources/descriptors/ProtoStubs.json';
-          // https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/protocolstub/default/
         }
 
         if (descriptorURL.includes('runtime')) {

@@ -102,7 +102,6 @@ var RuntimeHypertyCapability = exports.RuntimeHypertyCapability = function () {
      * @param {boolean} isSensorSupported
      * @param {boolean} isORTCSupported
      */
-
     function RuntimeHypertyCapability(isWebRTCSupported, isMicSupported, isCameraSupported, isSensorSupported, isORTCSupported) {
         _classCallCheck(this, RuntimeHypertyCapability);
 
@@ -164,7 +163,6 @@ var RuntimeProtocolCapability = exports.RuntimeProtocolCapability = function () 
      * @param {boolean} isCoap
      * @param {boolean} isDataChannel
      */
-
     function RuntimeProtocolCapability(isHttp, isHttps, isWS, isWSS, isCoap, isDataChannel) {
         _classCallCheck(this, RuntimeProtocolCapability);
 

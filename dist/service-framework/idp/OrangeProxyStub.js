@@ -160,7 +160,7 @@ var idp = {
     return new Promise(function (resolve, reject) {
       return getProxyKey().then(function (Key) {
         return crypto.subtle.importKey('jwk', Key, { name: 'RSASSA-PKCS1-v1_5', hash: { name: "SHA-256" } }, true, ['verify']).then(function (JWK) {
-          return(
+          return (
             //crypto.verify(algo, key, signature, text2verify);
             crypto.subtle.verify('RSASSA-PKCS1-v1_5', JWK, str2ab(atob(signature)), //ArrayBuffer of the signature,
             str2ab(header + "." + payload)) //ArrayBuffer of the data
@@ -204,7 +204,6 @@ var RethinkOidcProtoStub = function () {
   * @param  {Message.Message}                           busPostMessage     configuration
   * @param  {ProtoStubDescriptor.ConfigurationDataList} configuration      configuration
   */
-
   function RethinkOidcProtoStub(runtimeProtoStubURL, bus, config) {
     _classCallCheck(this, RethinkOidcProtoStub);
 

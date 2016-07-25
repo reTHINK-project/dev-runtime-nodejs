@@ -65,7 +65,6 @@ var DataObjectObserver = function (_DataObject) {
    * @ignore
    * Should not be used directly by Hyperties. It's called by the Syncher.subscribe method
    */
-
   function DataObjectObserver(syncher, url, schema, initialStatus, initialData, childrens, initialVersion) {
     _classCallCheck(this, DataObjectObserver);
 

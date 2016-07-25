@@ -45,7 +45,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Main extension class for observers and reporters, with common properties and methods.
  * Children management is common for observers and reporters.
  */
-
 var DataObject = function () {
   /* private
   _version: number
@@ -65,7 +64,6 @@ var DataObject = function () {
    * @ignore
    * Should not be used directly by Hyperties. It's called by the Syncher create or subscribe method's
    */
-
   function DataObject(syncher, url, schema, initialStatus, initialData, childrens) {
     _classCallCheck(this, DataObject);
 

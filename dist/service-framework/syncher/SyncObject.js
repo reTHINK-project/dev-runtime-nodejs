@@ -37,7 +37,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Main class that maintains a JSON object, and observes changes in this object, recursively.
  * Internal objects and arrays are also observed.
  */
-
 var SyncObject = function () {
   /* private
     _data: any;

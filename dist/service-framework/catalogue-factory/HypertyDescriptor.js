@@ -62,7 +62,6 @@ var HypertyDescriptor = function (_CatalogueDataObject) {
      * @param {URL.HypertyCatalogueURLList} dataObjectUrls - It defines the Data Object Schemas supported by the Hyperty
      * through a list of Catalogue URLs from where these schemas can be reached
      */
-
     function HypertyDescriptor(guid, catalogueType, version, objectName, description, language, sourcePackageURL, hypertyType, dataObjectUrls) {
         _classCallCheck(this, HypertyDescriptor);
 

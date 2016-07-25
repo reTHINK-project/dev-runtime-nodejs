@@ -20,8 +20,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-import MiniBus from 'runtime-core/dist/minibus';
+import { Sandbox, SandboxType } from './runtime-core/dist/sandbox';
+import MiniBus from './runtime-core/dist/minibus';
 let child = require('child_process');
 var colors = require('colors');
 
@@ -30,28 +30,27 @@ export default class SandboxWorker extends Sandbox{
     super(script);
     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     this.type = SandboxType.NORMAL;
-    let self = this;
+    let _this = this;
 
-    this._worker = child.fork(script);
-    console.log('----->  this._worker ::\n'.red,   this._worker);
-    if (!!this._worker) {
+    this.worker = child.fork(script);
+    console.log('----->  In Sandbox created :\n');
+    if (!!this.worker) {
       // console.log();
-
-      this._worker.on('message', function(e) {
+      this.worker.on('message', function(e) {
               console.log('\n Received message by Sandbox Worker is:\n'.red, e);
-              self._onMessage(e.data);
+              _this._onMessage(e);
 
               // console.log('message is :', msg);
             });
-
+      this.worker.send('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
   }
 
   _onPostMessage(msg) {
-      console.log('\n Sended message by Sandbox Worker is:\n'.red, e);
-    this._worker.send({msg});
+    // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
+    this.worker.send(msg);
 
   }
 }

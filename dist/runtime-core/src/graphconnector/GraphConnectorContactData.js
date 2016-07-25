@@ -34,7 +34,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * Represents information about a contact.
 * @author beierle@tu-berlin.de
 */
-
 var GraphConnectorContactData = function () {
 
   /**
@@ -43,7 +42,6 @@ var GraphConnectorContactData = function () {
    * @param  {String}   firstName   The first name of the new contact.
    * @param  {String}   lastName    The last name of the new contact.
    */
-
   function GraphConnectorContactData(guid, firstName, lastName) {
     _classCallCheck(this, GraphConnectorContactData);
 

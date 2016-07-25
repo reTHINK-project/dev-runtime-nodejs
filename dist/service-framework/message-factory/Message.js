@@ -53,7 +53,6 @@ var Message = exports.Message = function () {
      * contain JWT tokens for Access Control for Identity Assertion purposes that are inserted by the Identity Module
      * before the message is routed to proto stubs
      */
-
     function Message(id, from, toList, type, body) {
         _classCallCheck(this, Message);
 

@@ -35,7 +35,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @author alice.cheambe[at]fokus.fraunhofer.de
  * The CatalogueDataObject class is the representation of the reTHINK Catalogue Data Model
  */
-
 var CatalogueDataObject = function () {
     /**
      * Creates the Catalogue Data Object
@@ -50,7 +49,6 @@ var CatalogueDataObject = function () {
      * @param sourcePackageURL - A string containing the URL from where the source code package of the corresponding
      * catalogue object, e.g. deployable packages containing executable code for Hyperties or ProtoStubs, can be downloaded
      */
-
     function CatalogueDataObject(guid, type, version, objectName, description, language, sourcePackageURL) {
         _classCallCheck(this, CatalogueDataObject);
 

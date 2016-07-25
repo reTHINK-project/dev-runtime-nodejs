@@ -62,7 +62,6 @@ var MessageFactory = function (_RethinkObject) {
      * @param {boolean} validation
      * @param {URL.URL } schema - link to the reTHINK Message Data Schema
      */
-
     function MessageFactory(validation, schema) {
         _classCallCheck(this, MessageFactory);
 

@@ -48,13 +48,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 * and is passed as return value of the loginWithRP function. The methods generateAssertion and validateAssertion have not yet been developed.
 *
 */
-
 var IdentityModule = function () {
 
   /**
   * This is the constructor to initialise the Identity Module it does not require any input.
   */
-
   function IdentityModule(runtimeURL) {
     _classCallCheck(this, IdentityModule);
 
@@ -486,6 +484,7 @@ var IdentityModule = function () {
       var _this = this;
 
       console.log('encrypt message ');
+      console.log('message.to', message.to);
 
       return new Promise(function (resolve, reject) {
         var isHandShakeType = message.type === 'handshake';
@@ -496,8 +495,12 @@ var IdentityModule = function () {
           return resolve(message);
         }
 
+        //TODO remove this logic and move it to a util function
         var splitedToURL = message.to.split('/');
         var dataObjectURL = splitedToURL[0] + '//' + splitedToURL[2] + '/' + splitedToURL[3];
+        if (splitedToURL.length > 6) {
+          dataObjectURL = splitedToURL[0] + '//' + splitedToURL[2] + '/' + splitedToURL[3] + '/' + splitedToURL[4];
+        }
 
         var isToDataObject = (0, _utils.isDataObjectURL)(dataObjectURL);
         var isFromHyperty = (0, _utils.divideURL)(message.from).type === 'hyperty';
@@ -552,7 +555,6 @@ var IdentityModule = function () {
           //if no key exists, create a new one if is the reporter of dataObject
           if (!dataObjectKey) {
             var isHypertyReporter = _this.registry.getReporterURLSynchonous(dataObjectURL);
-
             // if the hyperty is the reporter of the dataObject then generates a session key
             if (isHypertyReporter && isHypertyReporter === message.from) {
 
@@ -588,7 +590,7 @@ var IdentityModule = function () {
 
             // start the generation of a new session Key
           } else {
-            reject('wrong message to decrypt');
+            reject('wrong message to encrypt');
           }
         }
       });
@@ -609,8 +611,13 @@ var IdentityModule = function () {
           return resolve(message);
         }
 
+        //TODO remove this logic and move it to a util function
+
         var splitedToURL = message.to.split('/');
         var dataObjectURL = splitedToURL[0] + '//' + splitedToURL[2] + '/' + splitedToURL[3];
+        if (splitedToURL.length > 6) {
+          dataObjectURL = splitedToURL[0] + '//' + splitedToURL[2] + '/' + splitedToURL[3] + '/' + splitedToURL[4];
+        }
 
         var isToDataObject = (0, _utils.isDataObjectURL)(dataObjectURL);
         var isFromHyperty = (0, _utils.divideURL)(message.from).type === 'hyperty';
@@ -1102,7 +1109,10 @@ var IdentityModule = function () {
               }).then(function (hashResult) {
                 console.log('hashResult ', hashResult);
                 var callback = chatKeys.callback;
-                callback('handShakeEnd');
+
+                if (callback) {
+                  callback('handShakeEnd');
+                }
                 resolve('handShakeEnd');
               });
 
@@ -1176,8 +1186,13 @@ var IdentityModule = function () {
 
       return new Promise(function (resolve, reject) {
 
+        //TODO remove this logic and move it to a util function
+
         var splitedURL = dataObjectURL.split('/');
         var finalURL = splitedURL[0] + '//' + splitedURL[2] + '/' + splitedURL[3];
+        if (splitedURL.length > 6) {
+          finalURL = splitedURL[0] + '//' + splitedURL[2] + '/' + splitedURL[3] + '/' + splitedURL[4];
+        }
 
         // check if is the creator of the hyperty
         var reporterURL = _this.registry.getReporterURLSynchonous(finalURL);
