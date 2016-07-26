@@ -42,7 +42,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * limitations under the License.
 **/
 function create(myApp) {
-  console.log('\n****** In ContextApp ******');
+  console.log('\n****** In ContextApp ******'.green);
   process.miniBus = new _minibus2.default();
   process.miniBus._onPostMessage = function (msg) {
     // myApp.send(msg, '*');

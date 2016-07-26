@@ -45,13 +45,6 @@ process.on('message', function(msg) {
     // this.send(msg);
   });
 
-
-
-// process.on('message', function(event) {
-//     console.log('---------------------------- ContextServiceProvider : Received 2nd event   is :--------------------------------------------------------\n'.green, event);
-//     miniBus._onMessage(event);
-//   });
-
 process.registry = new SandboxRegistry(process.miniBus);
 console.log(' ************ SandboxRegistry created is : \n'.green, process.registry);
 
@@ -59,6 +52,7 @@ process.registry._create = function(url, sourceCode, config) {
     // _eval([sourceCode], true);
     console.log('------------------ registry._create -----------------------'.green);
     // _eval(miniBus, [sourceCode]);
-    _eval(sourceCode, true);
+    eval.apply(process.miniBus, [sourceCode]);
+    // _eval(sourceCode, true);
     // return activate(url, miniBus, config);
   };
