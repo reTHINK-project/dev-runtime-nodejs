@@ -250,7 +250,7 @@ var RuntimeUA = function() {
           // Get the hyperty source code
           return _this.runtimeCatalogue.getSourcePackageFromURL(sourcePackageURL);
         }).then(function(sourcePackage) {
-          console.info('2: return hyperty source code: sourcePackage'.blue);
+          console.info('2: return hyperty source code'.blue);
 
           // at this point, we have completed "step 4 and 5" as shown in https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md
 
@@ -297,7 +297,7 @@ var RuntimeUA = function() {
           // this will return the sandbox or one promise to getSandbox;
           return sandbox;
         }).then(function(sandbox) {
-          console.info('4: return the sandbox: sandbox\n'.blue, sandbox);
+          console.info('4: return the sandbox'.blue, sandbox);
 
           // Return the sandbox indepentely if it running in the same sandbox or not
           // we have completed step 14 here.
@@ -316,14 +316,14 @@ var RuntimeUA = function() {
 
           return sandbox;
         }).then(function(sandbox) {
-          console.info('5: return sandbox and register : \n'.blue, sandbox);
+          console.info('5: return sandbox and register'.blue);
 
           _hypertySandbox = sandbox;
 
           // Register hyperty
           return _this.registry.registerHyperty(sandbox, hypertyDescriptorURL, _hypertyDescriptor);
         }).then(function(hypertyURL) {
-          console.info('6: Hyperty url, after register hyperty'.blue, hypertyURL);
+          console.info('6: Hyperty url, after register hyperty :'.blue, hypertyURL);
 
           // we have completed step 16 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
           _hypertyURL = hypertyURL;
@@ -338,6 +338,7 @@ var RuntimeUA = function() {
             }
           }
           configuration.runtimeURL = _this.runtimeURL;
+          console.log(_hypertySandbox);
 
           // We will deploy the component - step 17 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
           return _hypertySandbox.deployComponent(_hypertySourcePackage.sourceCode, _hypertyURL, configuration);
@@ -348,6 +349,7 @@ var RuntimeUA = function() {
 
           // Add the message bus listener to the appSandbox or hypertSandbox;
           _this.messageBus.addListener(_hypertyURL, function(msg) {
+
             _hypertySandbox.postMessage(msg);
           });
 
@@ -360,7 +362,7 @@ var RuntimeUA = function() {
           resolve(hyperty);
 
           // we have completed step 21 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
-          console.log('------------------ END ------------------------');
+          console.log('------------------ END ------------------------'.red);
         }).catch(errorReason);
       });
     }
@@ -392,7 +394,7 @@ var RuntimeUA = function() {
         var _stubSourcePackage = void 0;
 
         var errorReason = function errorReason(reason) {
-          console.error('Something failed on the deploy of protocolstub: ', reason);
+          console.error('Something failed on the deploy of protocolstub: '.red, reason);
           reject(reason);
         };
 
@@ -423,7 +425,7 @@ var RuntimeUA = function() {
           // we need to get ProtoStub descriptor step 4 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
           _this.runtimeCatalogue.getStubDescriptor(protostubURL).then(function(stubDescriptor) {
 
-            console.info('2. return the ProtoStub descriptor:'.green, stubDescriptor);
+            console.info('2. return the ProtoStub descriptor:stubDescriptor'.green);
 
             // we have completed step 5 https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
             _stubDescriptor = stubDescriptor;
@@ -451,7 +453,7 @@ var RuntimeUA = function() {
             return _this.registry.getSandbox(domain);
           }).then(function(stubSandbox) {
 
-            console.info('4. if the sandbox is registered then return the sandbox : stubSandbox'.green);
+            console.info('4. if the sandbox is registered then return the sandbox '.green, stubSandbox);
 
             // we have completed step xxx https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-protostub.md
 
@@ -465,7 +467,6 @@ var RuntimeUA = function() {
             // Instantiate the Sandbox
             var sandbox = _this.runtimeFactory.createSandbox();
             sandbox.addListener('*', function(msg) {
-              console.log('In RuntimeUA sandbox Received message'.blue);
               _this.messageBus.postMessage(msg);
             });
 
@@ -653,7 +654,7 @@ var RuntimeUA = function() {
             configuration.runtimeURL = _this.runtimeURL;
 
             // Deploy Component step xxx
-            // return _proxySandbox.deployComponent(_proxySourcePackage.sourceCode, runtimeIdpProxyURL, configuration);
+            return _proxySandbox.deployComponent(_proxySourcePackage.sourceCode, runtimeIdpProxyURL, configuration);
           }).then(function(deployComponentStatus) {
             console.info('8: return deploy component for sandbox status: ', deployComponentStatus);
 

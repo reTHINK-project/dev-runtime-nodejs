@@ -1,16 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function() {
-  function defineProperties(target, props) { for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor);
-    } } return function(Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor;
-  };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _CommonCtx2 = require('./CommonCtx');
 
@@ -20,17 +14,13 @@ var _utils = require('../../utils/utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) {
-  if (!self) { throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called'); } return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var RuntimeCoreCtx = function(_CommonCtx) {
+var RuntimeCoreCtx = function (_CommonCtx) {
   _inherits(RuntimeCoreCtx, _CommonCtx);
 
   function RuntimeCoreCtx(idModule, runtimeRegistry) {
@@ -126,7 +116,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function authorise(message) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         console.log('--- Policy Engine ---');
         console.log(message);
         message.body = message.body || {};
@@ -137,7 +127,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
         if (isToVerify) {
           if (isIncomingMessage) {
             if (isToCypher) {
-              _this.decrypt(message).then(function(message) {
+              _this.decrypt(message).then(function (message) {
                 result = _this.applyPolicies(message);
                 var messageAccepted = result.policiesResult[0];
                 message = result.message;
@@ -146,7 +136,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
                 } else {
                   reject('Message blocked');
                 }
-              }, function(error) {
+              }, function (error) {
                 reject(error);
               });
             } else {
@@ -162,16 +152,16 @@ var RuntimeCoreCtx = function(_CommonCtx) {
           } else {
             var isToSetID = _this._isToSetID(message);
             if (isToSetID) {
-              _this.getIdentity(message).then(function(identity) {
+              _this.getIdentity(message).then(function (identity) {
                 message.body.identity = identity;
                 result = _this.applyPolicies(message);
                 var messageAccepted = result.policiesResult[0];
                 message = result.message;
                 if (messageAccepted) {
                   if (isToCypher) {
-                    _this.encrypt(message).then(function(message) {
+                    _this.encrypt(message).then(function (message) {
                       resolve(message);
-                    }, function(error) {
+                    }, function (error) {
                       reject(error);
                     });
                   } else {
@@ -180,7 +170,7 @@ var RuntimeCoreCtx = function(_CommonCtx) {
                 } else {
                   reject('Message blocked');
                 }
-              }, function(error) {
+              }, function (error) {
                 reject(error);
               });
             } else {
@@ -273,10 +263,10 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function decrypt(message) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
-        _this.idModule.decryptMessage(message).then(function(msg) {
+      return new Promise(function (resolve, reject) {
+        _this.idModule.decryptMessage(message).then(function (msg) {
           resolve(msg);
-        }, function(error) {
+        }, function (error) {
           reject(error);
         });
       });
@@ -286,10 +276,10 @@ var RuntimeCoreCtx = function(_CommonCtx) {
     value: function encrypt(message) {
       var _this = this;
 
-      return new Promise(function(resolve, reject) {
-        _this.idModule.encryptMessage(message).then(function(msg) {
+      return new Promise(function (resolve, reject) {
+        _this.idModule.encryptMessage(message).then(function (msg) {
           resolve(msg);
-        }, function(error) {
+        }, function (error) {
           reject(error);
         });
       });

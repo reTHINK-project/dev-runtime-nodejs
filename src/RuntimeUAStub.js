@@ -63,6 +63,7 @@ let runtimeProxy = {
 
             if (msg.to === 'runtime:loadedHyperty') {
               console.log('runtime:loadedHyperty is OK');
+              // console.log('buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg)'.red, buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
               resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
             }
 
@@ -90,10 +91,10 @@ let RethinkNode = {
               .send({do:'install runtime core', data:window4Node});
               registry.runtime.on('message', function(msg) {
                 console.log('------------------- In parent Process  -------------------------'.green);
-                console.log('\n--> message recieved from child process core.js');
+                console.log('\n--> message recieved from child process core.js'.green);
                 // console.log('message is :', msg);
                 if (msg.to === 'runtime:installed') {
-                  console.log('\n Runtime installed with success\n');
+                  console.log('\n Runtime installed with success\n'.blue);
                   resolve(runtimeProxy);
                 }
               });

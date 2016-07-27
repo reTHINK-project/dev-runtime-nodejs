@@ -62,7 +62,7 @@ var SandboxWorker = function (_Sandbox) {
     if (!!_this2.worker) {
       // console.log();
       _this2.worker.on('message', function (e) {
-        console.log('\n Received message by Sandbox Worker is:\n'.red, e);
+        // console.log('\n Received message by Sandbox Worker is:\n'.red, e);
         _this._onMessage(e);
 
         // console.log('message is :', msg);
@@ -77,7 +77,7 @@ var SandboxWorker = function (_Sandbox) {
   _createClass(SandboxWorker, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
+      // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
       this.worker.send(msg);
     }
   }]);

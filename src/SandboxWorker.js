@@ -37,7 +37,7 @@ export default class SandboxWorker extends Sandbox{
     if (!!this.worker) {
       // console.log();
       this.worker.on('message', function(e) {
-              console.log('\n Received message by Sandbox Worker is:\n'.red, e);
+              // console.log('\n Received message by Sandbox Worker is:\n'.red, e);
               _this._onMessage(e);
 
               // console.log('message is :', msg);
@@ -49,7 +49,7 @@ export default class SandboxWorker extends Sandbox{
   }
 
   _onPostMessage(msg) {
-    console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
+    // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
     this.worker.send(msg);
 
   }

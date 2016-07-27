@@ -27,32 +27,33 @@ let EventEmitter = require('events').EventEmitter;
 let emitter = new EventEmitter();
 var colors = require('colors');
 
-process.miniBus = new MiniBus();
+process._miniBus = new MiniBus();
 
-process.miniBus._onPostMessage = function(msg) {
-  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+process._miniBus._onPostMessage = function(msg) {
+  // console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
   // process.miniBus.postMessage(msg);
   process.send(msg);
 };
 
 process.on('message', function(msg) {
-    console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+    // console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
 
     // miniBus.postMessage(msg);
-    process.miniBus._onMessage(msg);
-    console.log('miniBus.postMessage(msg): Post is Done :\n '.green, process.miniBus);
-    console.log('--> message sent from ContextServiceProvider  to SandboxWorker'.green);
+    console.log('miniBus.postMessage(msg): Post is Done :\n '.green, msg);
+    process._miniBus._onMessage(msg);
+
+    // console.log('--> message sent from ContextServiceProvider '.green, msg);
     // this.send(msg);
   });
 
-process.registry = new SandboxRegistry(process.miniBus);
-console.log(' ************ SandboxRegistry created is : \n'.green, process.registry);
+process._registry = new SandboxRegistry(process._miniBus);
+console.log(' ************ SandboxRegistry created is : \n'.green, process._registry);
 
-process.registry._create = function(url, sourceCode, config) {
-    // _eval([sourceCode], true);
+process._registry._create = function(url, sourceCode, config) {
     console.log('------------------ registry._create -----------------------'.green);
     // _eval(miniBus, [sourceCode]);
-    eval.apply(process.miniBus, [sourceCode]);
-    // _eval(sourceCode, true);
-    // return activate(url, miniBus, config);
+    // eval.apply(process.miniBus, [sourceCode]);
+    let activate = _eval(sourceCode, true);
+    console.log(activate.default);
+    return activate.default(url, process._miniBus, config);
   };

@@ -1,18 +1,12 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function() {
-  function defineProperties(target, props) { for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor);
-    } } return function(Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor;
-  };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -48,7 +42,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Internal component registry of all sandboxes.
  * Process internal request's for component deploy.
  */
-var SandboxRegistry = function() {
+var SandboxRegistry = function () {
   /* private
   _components: <url: instance>
   */
@@ -65,7 +59,7 @@ var SandboxRegistry = function() {
     // let messageFactory = new MessageFactory();
     // _this.messageFactory = messageFactory;
 
-    bus.addListener(SandboxRegistry.InternalDeployAddress, function(msg) {
+    bus.addListener(SandboxRegistry.InternalDeployAddress, function (msg) {
       //console.log('SandboxRegistry-RCV: ', msg);
       // let responseMsg = {
       //   id: msg.id, type: 'response', from: SandboxRegistry.InternalDeployAddress, to: SandboxRegistry.ExternalDeployAddress
@@ -174,10 +168,10 @@ var SandboxRegistry = function() {
     key: '_create',
     value: function _create(url, sourceCode, config) {
       //implementation specific
-      /* example code:*/
-      eval(sourceCode);
-      return activate(url, _this._bus, config);
-      /**/
+      /* example code:
+        eval(sourceCode);
+        return activate(url, _this._bus, config);
+      */
     }
   }, {
     key: 'components',

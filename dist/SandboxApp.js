@@ -45,6 +45,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //global : Its a global namespace object
 // hince we use global instead of window
 
+// import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
+// import MiniBus from 'runtime-core/dist/minibus';
+var child = require('child_process');
+
 var SandboxApp = function (_Sandbox) {
   _inherits(SandboxApp, _Sandbox);
 
@@ -53,17 +57,17 @@ var SandboxApp = function (_Sandbox) {
 
     var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
 
-    console.log('---------------------- Sandbox App -----------------------');
+    console.log('---------------------- Sandbox App -----------------------'.grren);
 
     _this2.type = _sandbox.SandboxType.NORMAL;
     var _this = _this2;
+    _this2.worker = child.fork('./dist/ContextApp.js');
+    _this2.worker.on('message', function (e) {
+      if (!!!this.worker)
 
-    // this.eventEmitter = eventEmitter;
+        // console.log(process);
 
-    process.on('message', function (e) {
-      if (!!!this.origin) this.origin = e.source;
-
-      console.log('SandboxApp Received message  is :\n'.green, e);
+        console.log('SandboxApp Received message  is :\n'.green, e);
 
       if (e.to.startsWith('core:')) return;
 
@@ -75,8 +79,11 @@ var SandboxApp = function (_Sandbox) {
   _createClass(SandboxApp, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      console.log('SandboxApp postMessage message'.green);
-      this.origin.send(msg, '*');
+      // console.log('this.origin'.red, _this.origin);
+      // console.log('SandboxApp postMessage message: msg'.green, msg.data);
+      console.log('there'.red);
+      this.postMessage(msg);
+      this.worker.send(msg);
     }
   }]);
 

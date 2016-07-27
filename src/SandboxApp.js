@@ -28,20 +28,22 @@
 
 import { Sandbox, SandboxType } from './runtime-core/dist/sandbox';
 import MiniBus from './runtime-core/dist/minibus';
+// import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
+// import MiniBus from 'runtime-core/dist/minibus';
+let child = require('child_process');
 
 export default class SandboxApp extends Sandbox{
   constructor() {
     super();
-    console.log('---------------------- Sandbox App -----------------------');
+    console.log('---------------------- Sandbox App -----------------------'.grren);
 
     this.type = SandboxType.NORMAL;
     let _this = this;
+    this.worker = child.fork('./dist/ContextApp.js');
+    this.worker.on('message', function(e) {
+        if (!!!this.worker)
 
-    // this.eventEmitter = eventEmitter;
-
-    process.on('message', function(e) {
-        if (!!!this.origin)
-        this.origin = e.source;
+        // console.log(process);
 
         console.log('SandboxApp Received message  is :\n'.green, e);
 
@@ -53,8 +55,11 @@ export default class SandboxApp extends Sandbox{
   }
 
   _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message'.green);
-    this.origin.send(msg, '*');
+    // console.log('this.origin'.red, _this.origin);
+    // console.log('SandboxApp postMessage message: msg'.green, msg.data);
+    console.log('there'.red);
+    this.postMessage(msg);
+    this.worker.send(msg);
 
   }
 }
