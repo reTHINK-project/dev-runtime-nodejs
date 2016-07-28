@@ -84,7 +84,7 @@ var RuntimeCatalogueLocal = function(_RuntimeCatalogue) {
 
         if (descriptorURL.includes('protocolstub') || descriptorURL.includes('ProtoStubs')) {
           resource = 'ProtoStubs';
-          resourceURL = type + '://' + domain + '/resources/descriptors/ProtoStubs.json';
+          // resourceURL = type + '://' + domain + '/resources/descriptors/ProtoStubs.json';
           resourceURL = 'http://localhost/resources/descriptors/ProtoStubs.json';
           // resourceURL = 'https://raw.githubusercontent.com/reTHINK-project/dev-hyperty-toolkit/develop/resources/descriptors/ProtoStubs.json';
         }
