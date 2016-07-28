@@ -34,6 +34,7 @@ let domain = 'hybroker.rethink.ptinovacao.pt:8080';
 
 let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
+console.log('Process in core is', process);
 
 let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';

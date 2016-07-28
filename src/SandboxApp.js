@@ -39,27 +39,27 @@ export default class SandboxApp extends Sandbox{
 
     this.type = SandboxType.NORMAL;
     let _this = this;
-    this.worker = child.fork('./dist/ContextApp.js');
-    this.worker.on('message', function(e) {
-        if (!!!this.worker)
+    // this.worker = child.fork('./dist/ContextApp.js');
+    process.on('message', function(e) {
+          if (!!!this)
 
-        // console.log(process);
+          // console.log(process);
 
-        console.log('SandboxApp Received message  is :\n'.green, e);
+          console.log('SandboxApp Received message  is :\n'.green, e);
 
-        if (e.to.startsWith('core:'))
-          return;
+          if (e.to.startsWith('core:'))
+            return;
 
-        _this._onMessage(e);
-      });
+          _this._onMessage(e);
+        });
   }
 
   _onPostMessage(msg) {
     // console.log('this.origin'.red, _this.origin);
     // console.log('SandboxApp postMessage message: msg'.green, msg.data);
     console.log('there'.red);
-    this.postMessage(msg);
-    this.worker.send(msg);
+    // this.postMessage(msg);
+    // this.worker.send(msg);
 
   }
 }

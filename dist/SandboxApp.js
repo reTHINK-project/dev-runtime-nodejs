@@ -61,9 +61,9 @@ var SandboxApp = function (_Sandbox) {
 
     _this2.type = _sandbox.SandboxType.NORMAL;
     var _this = _this2;
-    _this2.worker = child.fork('./dist/ContextApp.js');
-    _this2.worker.on('message', function (e) {
-      if (!!!this.worker)
+    // this.worker = child.fork('./dist/ContextApp.js');
+    process.on('message', function (e) {
+      if (!!!this)
 
         // console.log(process);
 
@@ -82,8 +82,8 @@ var SandboxApp = function (_Sandbox) {
       // console.log('this.origin'.red, _this.origin);
       // console.log('SandboxApp postMessage message: msg'.green, msg.data);
       console.log('there'.red);
-      this.postMessage(msg);
-      this.worker.send(msg);
+      // this.postMessage(msg);
+      // this.worker.send(msg);
     }
   }]);
 
