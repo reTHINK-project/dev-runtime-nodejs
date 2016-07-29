@@ -20,7 +20,7 @@ function create(myApp) {
   console.log('\n****** In ContextApp ******'.green);
   process._miniBus = new _minibus2.default();
   process._miniBus._onPostMessage = function (msg) {
-    console.log('process miniBus message sent');
+    console.log('--> process miniBus message sent'.blue, msg);
     myApp.send(msg);
   };
 
@@ -34,7 +34,7 @@ function create(myApp) {
   process._registry = new _sandbox.SandboxRegistry(process._miniBus);
   process._registry._create = function (url, sourceCode, config) {
     var activate = (0, _eval3.default)(sourceCode, true);
-    console.log('activate-->');
+    console.log('activate-->'.red);
     return activate(url, process._miniBus, config);
   };
 } /**

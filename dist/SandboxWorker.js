@@ -62,7 +62,6 @@ var SandboxWorker = function (_Sandbox) {
     if (!!_this2.worker) {
       // console.log();
       _this2.worker.on('message', function (e) {
-        // console.log('\n Received message by Sandbox Worker is:\n'.red, e);
         _this._onMessage(e);
       });
       _this2.worker.send('');

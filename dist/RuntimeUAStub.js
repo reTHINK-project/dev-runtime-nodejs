@@ -38,8 +38,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 **/
 
 var domain = 'rethink.ptinovacao.pt';
-//import app from './App';
-
 var coreRuntime = {};
 
 var colors = require('colors');

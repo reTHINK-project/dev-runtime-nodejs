@@ -37,7 +37,6 @@ export default class SandboxWorker extends Sandbox{
     if (!!this.worker) {
       // console.log();
       this.worker.on('message', function(e) {
-              // console.log('\n Received message by Sandbox Worker is:\n'.red, e);
               _this._onMessage(e);
 
             });

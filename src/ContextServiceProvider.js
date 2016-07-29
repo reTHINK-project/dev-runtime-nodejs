@@ -23,8 +23,6 @@
 import { Sandbox, SandboxRegistry } from './runtime-core/dist/sandbox';
 import MiniBus from './runtime-core/dist/minibus';
 import _eval from 'eval';
-let EventEmitter = require('events').EventEmitter;
-let emitter = new EventEmitter();
 var colors = require('colors');
 
 process._miniBus = new MiniBus();

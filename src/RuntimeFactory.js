@@ -26,12 +26,8 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/RuntimeCatalogue.js';
-
-// let SandboxWorker = require('./SandboxWorker');
-// let SandboxApp = require('./SandboxApp');
-// let Request = require('./Request');
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
+// import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/RuntimeCatalogue.js';
 
 var RuntimeFactory = Object.create({
     createSandbox() {

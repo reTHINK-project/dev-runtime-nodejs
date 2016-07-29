@@ -46,10 +46,7 @@ var fs = require('fs');
 
 
 var domain = 'hybroker.rethink.ptinovacao.pt:8080';
-
 var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-// runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
-
 var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';
 var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue(development);
@@ -65,47 +62,39 @@ function searchHyperty(runtime, descriptor) {
     if (runtime.registry.hypertiesList[index].descriptor === descriptor) hyperty = runtime.registry.hypertiesList[index];
     index++;
   }
-
   return hyperty;
 }
 
 console.log('\n------------------- In child thread core.js  --------------------'.green);
 catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
-
   var descriptorRef = descriptor;
   var sourcePackageURL = descriptorRef.sourcePackageURL;
   if (sourcePackageURL === '/sourcePackage') {
     return descriptorRef.sourcePackage;
   }
   return catalogue.getSourcePackageFromURL(sourcePackageURL);
-})
-//TODO load hyperty
-.then(function (sourcePackage) {
-
+}).then(function (sourcePackage) {
   try {
     (function () {
-
       // let Runtime = _eval(sourcePackage.sourceCode, true);
-
       var runtime = new _RuntimeUA2.default(_RuntimeFactory2.default, domain);
 
       process.on('message', function (msg) {
-        console.log('core.js ::: core:loadedHyperty', msg);
+        console.log('Message Received on runtime-core'.blue, msg);
         if (msg.to === 'core:loadHyperty') {
           var descriptor = msg.body.descriptor;
           var hyperty = searchHyperty(runtime, descriptor);
           if (hyperty) {
             returnHyperty({ runtimeHypertyURL: hyperty.hypertyURL });
           } else {
-
             runtime.loadHyperty(descriptor).then(returnHyperty);
           }
         } else if (msg.to === 'core:loadStub') {
-          console.log('domain is """"""""""""""""""""""""""""" :', msg.body.domain);
+          console.log('domain is :'.green, msg.body.domain);
           runtime.loadStub(msg.body.domain);
         }
       }, false);
-      console.log(' --> sending to Main Process'.blue);
+      console.log('--> sending to Main process');
       process.send({ to: 'runtime:installed', body: {} });
     })();
   } catch (e) {
