@@ -33,37 +33,24 @@ import MiniBus from './runtime-core/dist/minibus';
 let child = require('child_process');
 
 export default class SandboxApp extends Sandbox{
-  constructor(script) {
-    super(script);
-    console.log('---------------------- Sandbox App -----------------------'.grren);
+  constructor() {
+    super();
+    console.log('---------------------- Sandbox App -----------------------'.green);
 
     this.type = SandboxType.NORMAL;
-    let _this = this;
-    this.worker = child.fork(script);
-    if (!!this.worker) {
-      this.worker.on('message', function(e) {
-
-
-        // console.log(process);
-
+    let _that = this
+    process.on('message', function(e)  {
         console.log('SandboxApp Received message  is :\n'.green, e);
 
         if (e.to.startsWith('core:'))
           return;
 
-        _this._onMessage(e);
+        _that._onMessage(e);
       });
-    }  else {
-      throw new Error('Your environment does not support worker \n', e);
-    }
   }
 
   _onPostMessage(msg) {
-    // console.log('this.origin'.red, _this.origin);
     console.log('SandboxApp postMessage message: msg'.green);
-
-    // this.postMessage(msg);
-    this.worker.send(msg);
-
+    process.send(msg);
   }
 }

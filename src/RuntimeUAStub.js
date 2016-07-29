@@ -21,8 +21,8 @@
 * limitations under the License.
 **/
 
-// import app from './ContextApp';
-import app from './App';
+import app from './ContextApp';
+//import app from './App';
 import URI from 'urijs';
 let domain = 'rethink.ptinovacao.pt';
 let registry = {};
@@ -60,14 +60,13 @@ let runtimeProxy = {
   requireHyperty: (hypertyDescriptor)=> {
         return new Promise((resolve, reject)=> {
           registry.runtime.on('message', function(msg) {
-
             console.log('------------------- Message from runtime core child  -------------------------'.green);
             console.log('message is :'.red, msg);
 
             if (msg.to === 'runtime:loadedHyperty') {
               // console.log('runtime:loadedHyperty is OK');
               console.log(' msg: '.red, msg);
-              // resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
+              resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
             }
 
           });
@@ -112,7 +111,7 @@ let RethinkNode = {
               });
 
               // console.log(registry);
-              // app.create(registry.runtime);
+              app.create(registry.runtime);
             });
 
         },

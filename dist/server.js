@@ -30,7 +30,7 @@ app.use(log4js.connectLogger(logger, {
 }));
 app.set('trust proxy', 1);
 app.use(express.static(path.resolve(__dirname, '../static/')));
-app.listen(80);
+app.listen(8080);
 
 var runtime = rethink.default.install({
   domain: domain,
@@ -38,8 +38,17 @@ var runtime = rethink.default.install({
 }).then(function (runtime) {
   console.log('houra ! runtime loaded', runtime);
   console.log('\n loading hyperty :', hypertyURI(domain, 'UserStatus'));
-  runtime.requireHyperty(hypertyURI(domain, 'UserStatus')).then(function (userStatusHyperty) {
-    console.log('userStatusHyperty', userStatusHyperty);
+  var helloObserver = undefined;
+  runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver')).then(function (userStatusHyperty) {
+    console.log('userStatusHyperty ->'.green, userStatusHyperty);
+    helloObserver = userStatusHyperty;
+    runtime.requireHyperty(hypertyURI(domain, 'HelloWorldReporter')).then(function (helloWorldReporter) {
+      console.log('helloWorldReporter'.green, helloWorldReporter);
+      console.log('helloObserver'.green, helloObserver);
+      helloWorldReporter.instance.hello(helloObserver.runtimeHypertyURL).then(function (helloObject) {
+        console.log('helloURL', helloObject);
+      });
+    });
   }).catch(function (reason) {
     console.log('Error:', reason);
   });

@@ -52,41 +52,30 @@ var child = require('child_process');
 var SandboxApp = function (_Sandbox) {
   _inherits(SandboxApp, _Sandbox);
 
-  function SandboxApp(script) {
+  function SandboxApp() {
     _classCallCheck(this, SandboxApp);
 
-    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this, script));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
 
-    console.log('---------------------- Sandbox App -----------------------'.grren);
+    console.log('---------------------- Sandbox App -----------------------'.green);
 
-    _this2.type = _sandbox.SandboxType.NORMAL;
-    var _this = _this2;
-    _this2.worker = child.fork(script);
-    if (!!_this2.worker) {
-      _this2.worker.on('message', function (e) {
+    _this.type = _sandbox.SandboxType.NORMAL;
+    var _that = _this;
+    process.on('message', function (e) {
+      console.log('SandboxApp Received message  is :\n'.green, e);
 
-        // console.log(process);
+      if (e.to.startsWith('core:')) return;
 
-        console.log('SandboxApp Received message  is :\n'.green, e);
-
-        if (e.to.startsWith('core:')) return;
-
-        _this._onMessage(e);
-      });
-    } else {
-      throw new Error('Your environment does not support worker \n', e);
-    }
-    return _this2;
+      _that._onMessage(e);
+    });
+    return _this;
   }
 
   _createClass(SandboxApp, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      // console.log('this.origin'.red, _this.origin);
       console.log('SandboxApp postMessage message: msg'.green);
-
-      // this.postMessage(msg);
-      this.worker.send(msg);
+      process.send(msg);
     }
   }]);
 

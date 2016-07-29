@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _App = require('./App');
+var _ContextApp = require('./ContextApp');
 
-var _App2 = _interopRequireDefault(_App);
+var _ContextApp2 = _interopRequireDefault(_ContextApp);
 
 var _urijs = require('urijs');
 
@@ -37,8 +37,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * limitations under the License.
 **/
 
-// import app from './ContextApp';
 var domain = 'rethink.ptinovacao.pt';
+//import app from './App';
+
 var registry = {};
 
 var window4Node = {};
@@ -74,14 +75,13 @@ var runtimeProxy = {
   requireHyperty: function requireHyperty(hypertyDescriptor) {
     return new Promise(function (resolve, reject) {
       registry.runtime.on('message', function (msg) {
-
         console.log('------------------- Message from runtime core child  -------------------------'.green);
         console.log('message is :'.red, msg);
 
         if (msg.to === 'runtime:loadedHyperty') {
           // console.log('runtime:loadedHyperty is OK');
           console.log(' msg: '.red, msg);
-          // resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
+          resolve(buildMsg(_ContextApp2.default.getHyperty(msg.body.runtimeHypertyURL), msg));
         }
       });
       console.log('registry.runtime.send'.green);
@@ -132,7 +132,7 @@ var RethinkNode = {
       });
 
       // console.log(registry);
-      // app.create(registry.runtime);
+      _ContextApp2.default.create(registry.runtime);
     });
   },
 
