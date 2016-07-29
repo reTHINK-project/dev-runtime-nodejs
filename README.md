@@ -6,7 +6,7 @@ This repository  aims to execute the reTHINK runtime core in Node.js.
 
 The execution of the core runtime takes place in an subprocess(child process) which isolates it from the main process (the process node where the App javascript code is being executed first).
 ### Architecture Overview
-![runtime-nodejs](Architecture-runtime-nodejs.png)
+![runtime-nodejs](Runtime-NodeJS.png)
         
 ##### Quick Start
 First you need to clone this repository:
