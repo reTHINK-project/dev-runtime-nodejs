@@ -55,7 +55,7 @@ var RuntimeFactory = Object.create({
     return new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js');
   },
   createAppSandbox: function createAppSandbox() {
-    return new _SandboxApp2.default();
+    return new _SandboxApp2.default(__dirname + '/ContextApp.js');
   },
   createHttpRequest: function createHttpRequest() {
     var request = new _Request2.default();

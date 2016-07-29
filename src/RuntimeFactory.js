@@ -39,7 +39,7 @@ var RuntimeFactory = Object.create({
     },
 
     createAppSandbox() {
-      return new SandboxApp();
+      return new SandboxApp(__dirname + '/ContextApp.js');
     },
 
     createHttpRequest() {

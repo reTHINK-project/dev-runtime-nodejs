@@ -49,7 +49,6 @@ var domain = 'hybroker.rethink.ptinovacao.pt:8080';
 
 var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 // runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
-console.log('Process in core is', process);
 
 var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';

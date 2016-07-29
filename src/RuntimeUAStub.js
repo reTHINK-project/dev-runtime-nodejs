@@ -21,12 +21,14 @@
 * limitations under the License.
 **/
 
-import app from './ContextApp';
+// import app from './ContextApp';
+import app from './App';
 import URI from 'urijs';
 let domain = 'rethink.ptinovacao.pt';
 let registry = {};
 
 let window4Node = {};
+let colors = require('colors');
 
 // const threads = require('threads');
 // const config  = threads.config;
@@ -44,6 +46,7 @@ let child = require('child_process');
 registry.runtime = child.fork(__dirname + '/core.js');
 
 let buildMsg = (hypertyComponent, msg) => {
+        console.log('hypertyComponent'.green, hypertyComponent);
         return {
           runtimeHypertyURL: msg.body.runtimeHypertyURL,
           status: msg.body.status,
@@ -59,12 +62,12 @@ let runtimeProxy = {
           registry.runtime.on('message', function(msg) {
 
             console.log('------------------- Message from runtime core child  -------------------------'.green);
-            // console.log('message is :', msg);
+            console.log('message is :'.red, msg);
 
             if (msg.to === 'runtime:loadedHyperty') {
-              console.log('runtime:loadedHyperty is OK');
-              // console.log('buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg)'.red, buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
-              resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
+              // console.log('runtime:loadedHyperty is OK');
+              console.log(' msg: '.red, msg);
+              // resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
             }
 
           });
@@ -109,7 +112,7 @@ let RethinkNode = {
               });
 
               // console.log(registry);
-              app.create(registry.runtime);
+              // app.create(registry.runtime);
             });
 
         },

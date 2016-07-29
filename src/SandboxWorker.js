@@ -23,7 +23,7 @@
 import { Sandbox, SandboxType } from './runtime-core/dist/sandbox';
 import MiniBus from './runtime-core/dist/minibus';
 let child = require('child_process');
-var colors = require('colors');
+let colors = require('colors');
 
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
@@ -40,7 +40,6 @@ export default class SandboxWorker extends Sandbox{
               // console.log('\n Received message by Sandbox Worker is:\n'.red, e);
               _this._onMessage(e);
 
-              // console.log('message is :', msg);
             });
       this.worker.send('');
     } else {

@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ContextApp = require('./ContextApp');
+var _App = require('./App');
 
-var _ContextApp2 = _interopRequireDefault(_ContextApp);
+var _App2 = _interopRequireDefault(_App);
 
 var _urijs = require('urijs');
 
@@ -37,10 +37,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * limitations under the License.
 **/
 
+// import app from './ContextApp';
 var domain = 'rethink.ptinovacao.pt';
 var registry = {};
 
 var window4Node = {};
+var colors = require('colors');
 
 // const threads = require('threads');
 // const config  = threads.config;
@@ -58,6 +60,7 @@ var child = require('child_process');
 registry.runtime = child.fork(__dirname + '/core.js');
 
 var buildMsg = function buildMsg(hypertyComponent, msg) {
+  console.log('hypertyComponent'.green, hypertyComponent);
   return {
     runtimeHypertyURL: msg.body.runtimeHypertyURL,
     status: msg.body.status,
@@ -73,12 +76,12 @@ var runtimeProxy = {
       registry.runtime.on('message', function (msg) {
 
         console.log('------------------- Message from runtime core child  -------------------------'.green);
-        // console.log('message is :', msg);
+        console.log('message is :'.red, msg);
 
         if (msg.to === 'runtime:loadedHyperty') {
-          console.log('runtime:loadedHyperty is OK');
-          // console.log('buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg)'.red, buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
-          resolve(buildMsg(_ContextApp2.default.getHyperty(msg.body.runtimeHypertyURL), msg));
+          // console.log('runtime:loadedHyperty is OK');
+          console.log(' msg: '.red, msg);
+          // resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
         }
       });
       console.log('registry.runtime.send'.green);
@@ -129,7 +132,7 @@ var RethinkNode = {
       });
 
       // console.log(registry);
-      _ContextApp2.default.create(registry.runtime);
+      // app.create(registry.runtime);
     });
   },
 

@@ -338,7 +338,7 @@ var RuntimeUA = function() {
             }
           }
           configuration.runtimeURL = _this.runtimeURL;
-          console.log(_hypertySandbox);
+
 
           // We will deploy the component - step 17 of https://github.com/reTHINK-project/core-framework/blob/master/docs/specs/runtime/dynamic-view/basics/deploy-hyperty.md right now.
           return _hypertySandbox.deployComponent(_hypertySourcePackage.sourceCode, _hypertyURL, configuration);
@@ -349,6 +349,7 @@ var RuntimeUA = function() {
 
           // Add the message bus listener to the appSandbox or hypertSandbox;
           _this.messageBus.addListener(_hypertyURL, function(msg) {
+            console.log('RuntimeUA posting on messageBus message is : '.red, msg);
 
             _hypertySandbox.postMessage(msg);
           });
