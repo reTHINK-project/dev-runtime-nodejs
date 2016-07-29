@@ -69,13 +69,10 @@ function searchHyperty(runtime, descriptor) {
   return hyperty;
 }
 
-// process.on('message', function(msg) {
 console.log('\n------------------- In child thread core.js  --------------------'.green);
 catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
 
   var descriptorRef = descriptor;
-
-  // console.log('descriptorRef-------------------', descriptorRef);
   var sourcePackageURL = descriptorRef.sourcePackageURL;
   if (sourcePackageURL === '/sourcePackage') {
     return descriptorRef.sourcePackage;
@@ -89,8 +86,6 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
     (function () {
 
       // let Runtime = _eval(sourcePackage.sourceCode, true);
-
-      // fs.writeFile('test.js', Runtime);
 
       var runtime = new _RuntimeUA2.default(_RuntimeFactory2.default, domain);
 
@@ -110,7 +105,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
           runtime.loadStub(msg.body.domain);
         }
       }, false);
-      console.log('## sending to parent');
+      console.log(' --> sending to Main Process'.blue);
       process.send({ to: 'runtime:installed', body: {} });
     })();
   } catch (e) {

@@ -55,14 +55,11 @@ function searchHyperty(runtime, descriptor) {
   return hyperty;
 }
 
-// process.on('message', function(msg) {
 console.log('\n------------------- In child thread core.js  --------------------'.green);
 catalogue.getRuntimeDescriptor(runtimeURL)
   .then(function(descriptor) {
 
       let descriptorRef = descriptor;
-
-      // console.log('descriptorRef-------------------', descriptorRef);
       let sourcePackageURL = descriptorRef.sourcePackageURL;
       if (sourcePackageURL === '/sourcePackage') {
         return descriptorRef.sourcePackage;
@@ -75,8 +72,6 @@ catalogue.getRuntimeDescriptor(runtimeURL)
   try {
 
     // let Runtime = _eval(sourcePackage.sourceCode, true);
-
-    // fs.writeFile('test.js', Runtime);
 
     let runtime =  new Runtime(RuntimeFactory, domain);
 
@@ -97,7 +92,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
         runtime.loadStub(msg.body.domain);
       }
     }, false);
-    console.log('## sending to parent');
+    console.log(' --> sending to Main Process'.blue);
     process.send({to:'runtime:installed', body:{}});
   } catch (e) {
     console.log('error is ', e);

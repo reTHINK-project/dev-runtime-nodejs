@@ -40,25 +40,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var domain = 'rethink.ptinovacao.pt';
 //import app from './App';
 
-var registry = {};
+var coreRuntime = {};
 
-var window4Node = {};
 var colors = require('colors');
 
-// const threads = require('threads');
-// const config  = threads.config;
-// const spawn   = threads.spawn;
-
-// Set base paths to thread scripts
-// config.set({
-//   basepath: {
-//     // browser: 'http://myserver.local/thread-scripts',
-//     node: __dirname
-//   }
-// });
-// console.log(__dirname);
 var child = require('child_process');
-registry.runtime = child.fork(__dirname + '/core.js');
+coreRuntime = child.fork(__dirname + '/core.js');
 
 var buildMsg = function buildMsg(hypertyComponent, msg) {
   console.log('hypertyComponent'.green, hypertyComponent);
@@ -74,23 +61,23 @@ var runtimeProxy = {
 
   requireHyperty: function requireHyperty(hypertyDescriptor) {
     return new Promise(function (resolve, reject) {
-      registry.runtime.on('message', function (msg) {
+      coreRuntime.on('message', function (msg) {
         console.log('------------------- Message from runtime core child  -------------------------'.green);
         console.log('message is :'.red, msg);
 
         if (msg.to === 'runtime:loadedHyperty') {
-          // console.log('runtime:loadedHyperty is OK');
-          console.log(' msg: '.red, msg);
+          console.log('runtime:loadedHyperty is OK'.green);
+
           resolve(buildMsg(_ContextApp2.default.getHyperty(msg.body.runtimeHypertyURL), msg));
         }
       });
-      console.log('registry.runtime.send'.green);
-      registry.runtime.send({ to: 'core:loadHyperty', body: { descriptor: hypertyDescriptor } });
+      // console.log('coreRuntime .send'.green);
+      coreRuntime.send({ to: 'core:loadHyperty', body: { descriptor: hypertyDescriptor } });
     });
   },
 
   requireProtostub: function requireProtostub(domain) {
-    registry.runtime.send({ to: 'core:loadStub', body: { domain: domain } });
+    coreRuntime.send({ to: 'core:loadStub', body: { domain: domain } });
   }
 };
 
@@ -111,8 +98,8 @@ var RethinkNode = {
       var runtime = _this.getRuntime(runtimeURL, domain, development);
       // console.log(runtime);
 
-      registry.runtime.send({ do: 'install runtime core', data: window4Node });
-      registry.runtime.on('message', function (msg) {
+      coreRuntime.send({ do: 'install runtime core' });
+      coreRuntime.on('message', function (msg) {
         console.log('------------------- In parent Process  -------------------------'.green);
         console.log('\n--> message recieved from child process core.js'.green);
         // console.log('message is :', msg);
@@ -121,26 +108,23 @@ var RethinkNode = {
           resolve(runtimeProxy);
         }
       });
-      registry.runtime.on('error', function (error) {
+      coreRuntime.on('error', function (error) {
         console.error('runtime core install failed:', error);
-        registry.runtime.kill();
+        coreRuntime.kill();
         reject(error);
       });
-      registry.runtime.on('exit', function () {
+      coreRuntime.on('exit', function () {
         console.log('runtime core exited.');
-        registry.runtime.kill();
+        coreRuntime.kill();
       });
-
-      // console.log(registry);
-      _ContextApp2.default.create(registry.runtime);
+      _ContextApp2.default.create(coreRuntime);
     });
   },
 
   getRuntime: function getRuntime(runtimeURL, domain, development) {
     if (!!development) {
-      runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime'; //`https://${domain}/resources/descriptors/Runtimes.json`
+      runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';
       domain = domain || new _urijs2.default(runtimeURL).host();
-      // console.log('runtimeURL is ', runtimeURL);
     } else {
       runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';
       domain = domain || new _urijs2.default(runtimeURL).host().replace('catalogue.', '');

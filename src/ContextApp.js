@@ -24,13 +24,6 @@ import { Sandbox, SandboxRegistry } from './runtime-core/dist/sandbox';
 import MiniBus from './runtime-core/dist/minibus';
 import _eval from 'eval';
 
-// require the EventEmitter from the events module
-// const EventEmitter = require('events').EventEmitter;
-// // create an instance of the EventEmitter object
-// const eventEmitter = new EventEmitter();
-
-// listen on event exporte from another core module
-
 function create(myApp) {
   console.log('\n****** In ContextApp ******'.green);
   process._miniBus = new MiniBus();
@@ -40,7 +33,7 @@ function create(myApp) {
     };
 
   myApp.on('message', function(event) {
-    console.log('\n received message: runtime:loadedHyperty', event);
+    // console.log('\n received message: runtime:loadedHyperty', event);
     if (event.to.startsWith('runtime:loadedHyperty'))
         return;
 
@@ -50,7 +43,7 @@ function create(myApp) {
   process._registry = new SandboxRegistry(process._miniBus);
   process._registry._create = function(url, sourceCode, config) {
           let activate = _eval(sourceCode, true);
-          console.log('activate');
+          console.log('activate-->');
           return activate(url, process._miniBus, config);
         };
 };

@@ -42,9 +42,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
-//global : Its a global namespace object
-// hince we use global instead of window
-
 // import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 // import MiniBus from 'runtime-core/dist/minibus';
 var child = require('child_process');
@@ -55,20 +52,20 @@ var SandboxApp = function (_Sandbox) {
   function SandboxApp() {
     _classCallCheck(this, SandboxApp);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
 
     console.log('---------------------- Sandbox App -----------------------'.green);
 
-    _this.type = _sandbox.SandboxType.NORMAL;
-    var _that = _this;
+    _this2.type = _sandbox.SandboxType.NORMAL;
+    var _this = _this2;
     process.on('message', function (e) {
       console.log('SandboxApp Received message  is :\n'.green, e);
 
       if (e.to.startsWith('core:')) return;
 
-      _that._onMessage(e);
+      _this._onMessage(e);
     });
-    return _this;
+    return _this2;
   }
 
   _createClass(SandboxApp, [{

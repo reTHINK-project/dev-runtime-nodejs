@@ -22,10 +22,6 @@
 *
 */
 
-
-//global : Its a global namespace object
-// hince we use global instead of window
-
 import { Sandbox, SandboxType } from './runtime-core/dist/sandbox';
 import MiniBus from './runtime-core/dist/minibus';
 // import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
@@ -38,14 +34,14 @@ export default class SandboxApp extends Sandbox{
     console.log('---------------------- Sandbox App -----------------------'.green);
 
     this.type = SandboxType.NORMAL;
-    let _that = this
+    let _this = this;
     process.on('message', function(e)  {
         console.log('SandboxApp Received message  is :\n'.green, e);
 
         if (e.to.startsWith('core:'))
           return;
 
-        _that._onMessage(e);
+        _this._onMessage(e);
       });
   }
 

@@ -37,8 +37,8 @@ var runtime = rethink.default.install({
   development: true
 }).then(function (runtime) {
   console.log('houra ! runtime loaded', runtime);
-  console.log('\n loading hyperty :', hypertyURI(domain, 'UserStatus'));
-  var helloObserver = undefined;
+  console.log('\n loading hyperty :', hypertyURI(domain, 'HelloWorldObserver'));
+  var helloObserver = {};
   runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver')).then(function (userStatusHyperty) {
     console.log('userStatusHyperty ->'.green, userStatusHyperty);
     helloObserver = userStatusHyperty;

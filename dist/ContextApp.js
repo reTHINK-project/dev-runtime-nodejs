@@ -16,13 +16,6 @@ var _eval3 = _interopRequireDefault(_eval2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// require the EventEmitter from the events module
-// const EventEmitter = require('events').EventEmitter;
-// // create an instance of the EventEmitter object
-// const eventEmitter = new EventEmitter();
-
-// listen on event exporte from another core module
-
 function create(myApp) {
   console.log('\n****** In ContextApp ******'.green);
   process._miniBus = new _minibus2.default();
@@ -32,7 +25,7 @@ function create(myApp) {
   };
 
   myApp.on('message', function (event) {
-    console.log('\n received message: runtime:loadedHyperty', event);
+    // console.log('\n received message: runtime:loadedHyperty', event);
     if (event.to.startsWith('runtime:loadedHyperty')) return;
 
     process._miniBus._onMessage(event);
@@ -41,7 +34,7 @@ function create(myApp) {
   process._registry = new _sandbox.SandboxRegistry(process._miniBus);
   process._registry._create = function (url, sourceCode, config) {
     var activate = (0, _eval3.default)(sourceCode, true);
-    console.log('activate');
+    console.log('activate-->');
     return activate(url, process._miniBus, config);
   };
 } /**
