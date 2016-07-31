@@ -9,7 +9,7 @@ The execution of the core runtime takes place in an subprocess(child process) wh
 ![runtime-nodejs](Runtime-NodeJS.png)
 
 ### Architecture Description 
-At bootstrap the server.js is launched. it has mainly to functionalities :
+At bootstrap the server.js is launched. In the following the functionalities of each components :
 
 ``server.js`` :
 - It servers /resources/descriptors folder tat server as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json)
