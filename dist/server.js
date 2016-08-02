@@ -40,8 +40,8 @@ var runtime = rethink.default.install({
   console.log('\n loading hyperty :', hypertyURI(domain, 'HelloWorldObserver'));
   var helloObserver = {};
   runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver')).then(function (userStatusHyperty) {
-    console.log('userStatusHyperty ->'.green, userStatusHyperty);
-    helloObserver = userStatusHyperty;
+    console.log('HelloWorldObserver ->'.green, HelloWorldObserver);
+    helloObserver = HelloWorldObserver;
     runtime.requireHyperty(hypertyURI(domain, 'HelloWorldReporter')).then(function (helloWorldReporter) {
       console.log('helloWorldReporter'.green, helloWorldReporter);
       console.log('helloObserver'.green, helloObserver);

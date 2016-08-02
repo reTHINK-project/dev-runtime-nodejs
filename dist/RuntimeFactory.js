@@ -42,11 +42,9 @@ var _atob2 = require('atob');
 
 var _atob3 = _interopRequireDefault(_atob2);
 
-var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue.js');
+var _RuntimeCatalogue = require('./service-framework/RuntimeCatalogue.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/RuntimeCatalogue.js';
 
 var RuntimeFactory = Object.create({
   createSandbox: function createSandbox() {
@@ -69,4 +67,5 @@ var RuntimeFactory = Object.create({
   }
 });
 
+// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 exports.default = RuntimeFactory;
