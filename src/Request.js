@@ -56,10 +56,10 @@ class Request {
       // TODO: Check why the url have localhost and undefined like a protocol
       // check the RuntimeUA
       let protocolmap = {
-        'localhost://': 'http://',
-        'undefined://': 'http://',
-        'hyperty-catalogue://': 'http://',
-        'https://': 'http://',
+        'localhost://': 'https://',
+        'undefined://': 'https://',
+        'hyperty-catalogue://': 'https://',
+        'https://': 'https://',
         'http://': 'http://'
       };
 

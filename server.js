@@ -10,7 +10,7 @@ let rethink = require('./RuntimeUAStub');
 let express = require('express');
 var path = require('path');
 let log4js = require('log4js');
-let domain = 'hybroker.rethink.ptinovacao.pt';
+let domain = 'rethink.quobis.com';
 let logger = log4js.getLogger('server');
 let app = express();
 const hypertyURI = (domain, hyperty) => `http://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
@@ -37,7 +37,7 @@ let runtime = rethink.default.install({
   console.log('\n loading hyperty :', hypertyURI(domain, 'HelloWorldObserver'));
   let helloObserver = {};
   runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver'))
-      .then((userStatusHyperty) => {
+      .then((HelloWorldObserver) => {
         console.log('HelloWorldObserver ->'.green, HelloWorldObserver);
         helloObserver = HelloWorldObserver;
         runtime.requireHyperty(hypertyURI(domain, 'HelloWorldReporter'))

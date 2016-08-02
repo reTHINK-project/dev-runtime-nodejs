@@ -45,7 +45,7 @@ process._miniBus._onPostMessage = function (msg) {
 
 process.on('message', function (msg) {
   console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:msg\n '.green);
-  console.log('miniBus.postMessage(msg): Post is Done :msg\n '.green);
+  console.log('miniBus.postMessage(msg): Post is Done :msg\n '.green, msg);
   process._miniBus._onMessage(msg);
 });
 
