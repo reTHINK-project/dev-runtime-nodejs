@@ -30,7 +30,7 @@ import RuntimeFactory from './RuntimeFactory';
 import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 import _eval from 'eval';
 
-let domain = 'rethink.quobis.com:8080';
+let domain = 'apizee.jam';
 let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';

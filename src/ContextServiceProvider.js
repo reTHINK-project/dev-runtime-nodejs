@@ -28,7 +28,7 @@ var colors = require('colors');
 process._miniBus = new MiniBus();
 
 process._miniBus._onPostMessage = function(msg) {
-  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:msg\n '.green);
+  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
   process.send(msg);
 };
 
@@ -46,6 +46,7 @@ process._registry._create = function(url, sourceCode, config) {
     console.log('------------------ registry._create -----------------------'.green);
 
     let activate = _eval(sourceCode, true);
-    console.log(activate.default);
+    console.log('sourceCode'.red, sourceCode);
+    console.log(activate);
     return activate.default(url, process._miniBus, config);
   };
