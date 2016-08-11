@@ -19,7 +19,7 @@ At bootstrap the server.js is launched. In the following the functionalities of 
 
 ``RuntimeUAStub`` :
 - Main Runtime-Node.js process
-- It deploy `core` in isolated sandbox( child-process)
+- It deploys `core` in an isolated sandbox( child-process)
 - Routes messages back and forth between the Context App and the core
 - It Exposes loadHyperty and loadProtoStub to Context Application
 
