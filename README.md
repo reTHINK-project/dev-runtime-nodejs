@@ -7,6 +7,8 @@ This repository  aims to execute the reTHINK runtime core in Node.js.
 The execution of the core runtime takes place in an subprocess(child process) which isolates it from the main process (the process node where the App javascript code is being executed first).
 ### Architecture Overview
 ![runtime-nodejs](Runtime-NodeJS.png)
+                                             Figure : Hyperty deployed in same Context as the Runtime Node
+
 
 ### Architecture Description 
 At bootstrap the server.js is launched. In the following the functionalities of each components :
