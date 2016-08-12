@@ -10,7 +10,8 @@ The execution of the core runtime takes place in an subprocess(child process) wh
 The design and implementation of this runtime was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser" rel="nofollow">runtime-browser</a>. This runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, this runtime follows by design security approach, where different types of componenets are executed in isolated SandBoxes.
 </p>
 <p align= "justify">
-Sandboxing technology was realised thanks to multi-processor environment in NodeJS. Particularly, the native  <a href = "https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options" rel="nofollow"> child_process.fork() </a> method was used for this purpose. Spawned (forked) NodeJS child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC (Inter-Process Communication) channel is established between the parent and child that allows messages to be passed back and forth between them.
+Sandboxing technology was realised thanks to multi-processor environment in NodeJS. Particularly, the native  
+<a href = "https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options" rel="nofollow"> child_process.fork() </a> method was used for this purpose. Spawned (forked) NodeJS child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC (Inter-Process Communication) channel is established between the parent and child that allows messages to be passed back and forth between them.
 </p>
 ![runtime-nodejs](Runtime-NodeJS.png)
 <p align="center">
