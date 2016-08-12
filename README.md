@@ -42,10 +42,12 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 ``Context Service Provider SandboxWorker `` :
 - Nodejs child process having ``core`Sandbox`` as parent process.
 - Loads and activates Protostub to the messaging node
-<p style="color: #0000FF"> Context App Sandbox: </p>
+
+``Context App Sandbox:``
 - Deployed in main app
-- It's used to load and activate Hyperties 
-#### Hyperty running in same contex as the Runtime Node
+- It's used to load and activate Hyperties
+
+##### Hyperty running in same contex as the Runtime Node
 
         
 ##### Quick Start
