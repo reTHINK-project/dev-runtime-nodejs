@@ -20,7 +20,7 @@ Sandboxing technology was realised thanks to multi-processor environment in Node
 
 
 ### Architecture Description 
-At bootstrap the server.js is launched. In the following the functionalities of each components :
+At bootstrap the `server.js` is launched. In the following the functionalities of each components :
 
 ``server.js`` :
 - It servers /resources/descriptors folder tat server as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json)
