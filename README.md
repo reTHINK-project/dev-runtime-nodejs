@@ -12,7 +12,7 @@ The execution of the core runtime takes place in an subprocess(child process) wh
 </p>
 ![runtime-nodejs](Runtime-NodeJS.png)
 <p align="center">
-  Figure :Runtime Node Architecture
+  Figure : Runtime Node Architecture
 </p> 
 
 
