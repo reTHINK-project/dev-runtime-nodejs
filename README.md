@@ -6,15 +6,10 @@ This repository  aims to execute the reTHINK runtime core in Node.js.
 
 The execution of the core runtime takes place in an subprocess(child process) which isolates it from the main process (the process node where the App javascript code is being executed first).
 ### Architecture Overview
-<p align="justify" >
-The design and implementation of this runtime was mostly influenced by</p> [runtime-browser](https://github.com/reTHINK-project/dev-runtime-browser). This runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, this runtime follows by design security approach, where different types of componenets are executed in isolated SandBoxes.</p>
 
-<p align="justify" >
-Sandboxing technology was realised thanks to multi-processor environment in NodeJS. Particularly, the native child_process.fork() method was used for this purpose. Spawned (forked) NodeJS child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC(Inter-Process Communication) channel is established between the parent and child that allows messages to </p> 
-<p align="justify" >
-be passed back and forth between them.
-</p> 
+The design and implementation of this runtime was mostly influenced by [runtime-browser](https://github.com/reTHINK-project/dev-runtime-browser). This runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, this runtime follows by design security approach, where different types of componenets are executed in isolated SandBoxes.
 
+Sandboxing technology was realised thanks to multi-processor environment in NodeJS. Particularly, the native child_process.fork() method was used for this purpose. Spawned (forked) NodeJS child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC(Inter-Process Communication) channel is established between the parent and child that allows messages to be passed back and forth between them.
 
 ![runtime-nodejs](Runtime-NodeJS.png)
 <p align="center">
