@@ -17,6 +17,9 @@ The execution of the core runtime takes place in an subprocess(child process) wh
 
 
 ### Architecture Description 
+<p align="justify">As illustrated in the diargam above, Runtime Node design has a flexible approach. Since it supports both deploying hyperty application in an isolated sandbox or in the same context as Runtime Node process. 
+In the following upcoming sections a descritpion of main architecture components is given. Afterwards, an emphasis on architecture possible slight variations depending on possible use cases and/or businesss models.</p>
+
 At bootstrap the `server.js` is launched. In the following the functionalities of each components :
 
 ``server.js`` :
