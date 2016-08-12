@@ -22,7 +22,7 @@ In the following upcoming sections a descritpion of main architecture components
 
 At bootstrap the `server.js` is launched. In the following the functionalities of each components :
 
-#``server.js`` :
+####``server.js`` :
 - Serves /resources/descriptors folder that act as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json)
 - Loads RuntimeUAStub
 
