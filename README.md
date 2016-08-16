@@ -1,6 +1,7 @@
 # dev-runtime-nodejs
 ### 1. Motivation
-This repository  aims to deploy and execute the reTHINK runtime in Node.js. The execution of reTHINK different components takes place in an subprocess(child process) which isolates it from the main process (the process node where the App javascript code is being executed first).
+This repository  aims to deploy and execute the reTHINK runtime in Node.js. The execution of reTHINK different components takes place in Nodejs sandboxes.
+
 ### 2. Architecture Overview
 <p align= "justify">The design and implementation of this runtime was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser" rel="nofollow">runtime-browser</a>. This Runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, it follows by design security approach, where different types of componenets are executed in isolated SandBoxes.
 </p>
@@ -13,13 +14,13 @@ This repository  aims to deploy and execute the reTHINK runtime in Node.js. The 
 
 
 ###2.1 Architecture Description 
-<p align="justify">As illustrated in the diargam above, Runtime Node design has a flexible approach. Since it supports both deploying hyperty application in an isolated sandbox or in the same context as Runtime Node process. 
+<p align="justify">As illustrated in the diargam above, Runtime Node design has a flexible approach. Since it supports both deploying hyperty application in an isolated sandbox or in the same context as Runtime Node process (main node process where the javascript code is being executed first, labeled as Runtime-NodeJS). 
 In the following upcoming sections a descritpion of main architecture components is given. Afterwards, an emphasis on architecture possible slight variations depending on possible use cases and/or businesss models.</p>
 
 At bootstrap the `server.js` is launched. In the following the functionalities of each components :
 
 ####``server.js`` :
-- Serves /resources/descriptors folder that act as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json)
+- Serves  ``/resources/descriptors`` folder that act as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json)
 - Loads RuntimeUAStub
 
 #####``RuntimeUAStub`` :
@@ -29,6 +30,7 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 - Exposes loadHyperty and loadProtoStub to Context Application
 
 #####``Core Sandbox``:
+
  - Node.js child process (simultaneously is a parent process of ContexServiceProvider sandbox) used as an isolated sandbox to load  the Hyperty runtime
  - instantites ``SandboxApp`` proxy to Context App Sandbox in main app
  - Instantiates ``SandboxWorker`` to load  Context Service Provider as sandbox for ProtoStub.
