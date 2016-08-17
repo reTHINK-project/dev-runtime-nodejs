@@ -14,8 +14,8 @@
 
 
 ###2.1 Architecture Description 
-<p align="justify">As illustrated in the diargam above, Runtime Node design has a flexible approach. Since it supports both deploying hyperty application in an isolated sandbox or in the same context as Runtime Node process (main node process where the javascript code is being executed first, labeled as Runtime-NodeJS). 
-In the following upcoming sections a descritpion of main architecture components is given. Afterwards, an emphasis on architecture possible slight variations depending on possible use cases and/or businesss models.</p>
+<p align="justify">As illustrated in the diagram above, Runtime Node design has a flexible approach. Since it supports  deploying hyperty application in an isolated sandbox and in the same context as Runtime Node process as well (main node process where the javascript code is being executed first, labeled as Runtime-NodeJS). 
+In the following upcoming sections a descritpion of main architecture components is given. Afterwards, an emphasis on architecture possible slight variations depending on possible use cases and/or business models.</p>
 
 At bootstrap the `server.js` is launched. In the following the functionalities of each components :
 
@@ -34,7 +34,7 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
  - Node.js child process (simultaneously is a parent process of ``ContextServiceProvider sandbox``) used as an isolated sandbox to load  the Hyperty runtime
  - Instantites ``SandboxApp`` proxy to Context App Sandbox in main app
  - Instantiates ``SandboxWorker`` to load  Context Service Provider as sandbox for ProtoStub.
- - Handels communication between internal/external components
+ - Handles communication between internal/external components
  - All Communications from/to the ``core`` is routed through The Message Bus
  
 #####``Context Service Provider (SandboxWorker) `` :
@@ -46,9 +46,9 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 - Used to load and activate Hyperties
 
 ###2.2  Hyperty running in same context as the Runtime Node:
-<p align="justify">In order to be able to develop and manipulate hyperty instace. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties' instances.</p>
+<p align="justify">In order to be able to develop and manipulate hyperty instance. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties' instances.</p>
 
-<p align="justify">Despite the functionality aspect of this approach. This implementation represnets considerable threat to the Runtime. In fact, an hyperty running in the context app has same hardware resources as the runtime. Therefore, executing a malicious code on this Context app,or if the code threw an error at some point of its execution, the whole runtime is compomised.</p> 
+<p align="justify">Despite the functionality aspect of this approach. This implementation represents considerable threat to the Runtime. In fact, an hyperty running in the context app has same hardware resources as the runtime. Therefore, executing a malicious code on this Context app, or if the code threw an error at some point of its execution, the whole runtime is compomised.</p> 
 In brief this implemenation provides functional Runtime without worrying about the security aspect.
 ###2.3  Hyperty running in an isolated Sandbox:
 <p align="justify">On the contrary of what was said before. In this implementation, the hyperty is totally isolated in Nodejs child process, as sub process, it has its own V8 NodeJs engine. As a result, it runs on its own isolated context.</p> 
