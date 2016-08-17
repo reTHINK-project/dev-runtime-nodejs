@@ -37,8 +37,8 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
  - Handels communication between internal/external components
  - All Communications from/to the ``core`` is routed through The Message Bus
  
-#####``Context Service Provider SandboxWorker `` :
-- Nodejs child process having ``core`Sandbox`` as parent process.
+#####``Context Service Provider (SandboxWorker) `` :
+- Nodejs child process having ``core Sandbox`` as parent process.
 - Loads and activates Protostub to the messaging node
 
 ####``Context App Sandbox:``
