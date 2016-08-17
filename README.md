@@ -1,6 +1,6 @@
 # dev-runtime-nodejs
 ### 1. Motivation
-This repository  aims to deploy and execute the reTHINK runtime in Node.js. The execution of reTHINK different components takes place in Nodejs sandboxes.
+<p align="justify">This repository  aims to deploy and execute the reTHINK runtime in Node.js. The execution of reTHINK different components takes place in Nodejs sandboxes.</p>
 
 ### 2. Architecture Overview
 <p align= "justify">The design and implementation of this runtime was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser" rel="nofollow">runtime-browser</a>. This Runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, it follows by design security approach, where different types of componenets are executed in isolated SandBoxes.
