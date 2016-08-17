@@ -48,7 +48,7 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 ###2.2  Hyperty running in same context as the Runtime Node:
 <p align="justify">In order to be able to develop and manipulate hyperty instance. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties' instances.</p>
 
-<p align="justify">Despite the functionality aspect of this approach. This implementation represents considerable threat to the Runtime. In fact, an hyperty running in the context app has same hardware resources as the runtime. Therefore, executing a malicious code on this Context app, or if the code threw an error at some point of its execution, the whole runtime is compomised.</p> 
+<p align="justify">Despite the functionality aspect of this approach. This implementation represents considerable threat to the Runtime. In fact, an hyperty running in the context app has same hardware resources as the runtime. Therefore, executing a malicious code on this Context app, or if the code threw an error at some point of its execution, the whole runtime is compromised.</p> 
 In brief this implemenation provides functional Runtime without worrying about the security aspect.
 ###2.3  Hyperty running in an isolated Sandbox:
 <p align="justify">On the contrary of what was said before. In this implementation, the hyperty is totally isolated in Nodejs child process, as sub process, it has its own V8 NodeJs engine. As a result, it runs on its own isolated context.</p> 
