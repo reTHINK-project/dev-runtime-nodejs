@@ -32,7 +32,7 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 #####``Core Sandbox``:
 
  - Node.js child process (simultaneously is a parent process of ``ContexServiceProvider sandbox``) used as an isolated sandbox to load  the Hyperty runtime
- - instantites ``SandboxApp`` proxy to Context App Sandbox in main app
+ - Instantites ``SandboxApp`` proxy to Context App Sandbox in main app
  - Instantiates ``SandboxWorker`` to load  Context Service Provider as sandbox for ProtoStub.
  - Handels communication between internal/external components
  - All Communications from/to the ``core`` is routed through The Message Bus
@@ -43,7 +43,7 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 
 ####``Context App Sandbox:``
 - Deployed directly in Runtime Node or in an isolated sandbox( labeled ``Service Application``)
-- It's used to load and activate Hyperties
+- Used to load and activate Hyperties
 
 ###2.2  Hyperty running in same context as the Runtime Node:
 <p align="justify">In order to be able to develop and manipulate hyperty instace. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties' instances.</p>
