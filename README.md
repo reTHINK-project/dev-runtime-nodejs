@@ -31,7 +31,7 @@ At bootstrap the `server.js` is launched. In the following the functionalities o
 
 #####``Core Sandbox``:
 
- - Node.js child process (simultaneously is a parent process of ``ContexServiceProvider sandbox``) used as an isolated sandbox to load  the Hyperty runtime
+ - Node.js child process (simultaneously is a parent process of ``ContextServiceProvider sandbox``) used as an isolated sandbox to load  the Hyperty runtime
  - Instantites ``SandboxApp`` proxy to Context App Sandbox in main app
  - Instantiates ``SandboxWorker`` to load  Context Service Provider as sandbox for ProtoStub.
  - Handels communication between internal/external components
