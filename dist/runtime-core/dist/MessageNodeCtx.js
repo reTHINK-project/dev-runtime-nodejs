@@ -27,7 +27,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 // Distribution file for MessageNodeCtx.js 
 // version: 0.5.1
-// Last build: Mon Jul 25 2016 09:11:49 GMT+0100 (WEST)
+// Last build: Mon Aug 15 2016 18:04:37 GMT+0100 (WEST)
 
 !function (e) {
   if ("object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "undefined" != typeof module) module.exports = e();else if ("function" == typeof define && define.amd) define([], e);else {
@@ -38,10 +38,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     function n(s, c) {
       if (!r[s]) {
         if (!t[s]) {
-          var u = "function" == typeof require && require;if (!c && u) return u(s, !0);if (i) return i(s, !0);var a = new Error("Cannot find module '" + s + "'");throw a.code = "MODULE_NOT_FOUND", a;
-        }var f = r[s] = { exports: {} };t[s][0].call(f.exports, function (e) {
+          var u = "function" == typeof require && require;if (!c && u) return u(s, !0);if (i) return i(s, !0);var f = new Error("Cannot find module '" + s + "'");throw f.code = "MODULE_NOT_FOUND", f;
+        }var a = r[s] = { exports: {} };t[s][0].call(a.exports, function (e) {
           var r = t[s][1][e];return n(r ? r : e);
-        }, f, f.exports, e, t, r, o);
+        }, a, a.exports, e, t, r, o);
       }return r[s].exports;
     }for (var i = "function" == typeof require && require, s = 0; s < o.length; s++) {
       n(o[s]);
@@ -90,8 +90,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           s = e("../core-js/object/create"),
           c = o(s),
           u = e("../helpers/typeof"),
-          a = o(u);r["default"] = function (e, t) {
-        if ("function" != typeof t && null !== t) throw new TypeError("Super expression must either be null or a function, not " + ("undefined" == typeof t ? "undefined" : (0, a["default"])(t)));e.prototype = (0, c["default"])(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (i["default"] ? (0, i["default"])(e, t) : e.__proto__ = t);
+          f = o(u);r["default"] = function (e, t) {
+        if ("function" != typeof t && null !== t) throw new TypeError("Super expression must either be null or a function, not " + ("undefined" == typeof t ? "undefined" : (0, f["default"])(t)));e.prototype = (0, c["default"])(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (i["default"] ? (0, i["default"])(e, t) : e.__proto__ = t);
       };
     }, { "../core-js/object/create": 2, "../core-js/object/set-prototype-of": 6, "../helpers/typeof": 13 }], 12: [function (e, t, r) {
       "use strict";
@@ -158,13 +158,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return function (t, r, s) {
           var c,
               u = o(t),
-              a = n(u.length),
-              f = i(s, a);if (e && r != r) {
-            for (; a > f;) {
-              if (c = u[f++], c != c) return !0;
+              f = n(u.length),
+              a = i(s, f);if (e && r != r) {
+            for (; f > a;) {
+              if (c = u[a++], c != c) return !0;
             }
-          } else for (; a > f; f++) {
-            if ((e || f in u) && u[f] === r) return e || f || 0;
+          } else for (; f > a; a++) {
+            if ((e || a in u) && u[a] === r) return e || a || 0;
           }return !e && -1;
         };
       };
@@ -212,8 +212,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           n = e("./_object-gops"),
           i = e("./_object-pie");t.exports = function (e) {
         var t = o(e),
-            r = n.f;if (r) for (var s, c = r(e), u = i.f, a = 0; c.length > a;) {
-          u.call(e, s = c[a++]) && t.push(s);
+            r = n.f;if (r) for (var s, c = r(e), u = i.f, f = 0; c.length > f;) {
+          u.call(e, s = c[f++]) && t.push(s);
         }return t;
       };
     }, { "./_object-gops": 57, "./_object-keys": 60, "./_object-pie": 61 }], 34: [function (e, t, r) {
@@ -223,19 +223,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           s = e("./_hide"),
           c = "prototype",
           u = function u(e, t, r) {
-        var a,
-            f,
+        var f,
+            a,
             l,
-            p = e & u.F,
-            _ = e & u.G,
+            _ = e & u.F,
+            p = e & u.G,
             d = e & u.S,
             b = e & u.P,
             y = e & u.B,
-            h = e & u.W,
-            m = _ ? n : n[t] || (n[t] = {}),
-            j = m[c],
-            g = _ ? o : d ? o[t] : (o[t] || {})[c];_ && (r = t);for (a in r) {
-          f = !p && g && void 0 !== g[a], f && a in m || (l = f ? g[a] : r[a], m[a] = _ && "function" != typeof g[a] ? r[a] : y && f ? i(l, o) : h && g[a] == l ? function (e) {
+            j = e & u.W,
+            h = p ? n : n[t] || (n[t] = {}),
+            v = h[c],
+            m = p ? o : d ? o[t] : (o[t] || {})[c];p && (r = t);for (f in r) {
+          a = !_ && m && void 0 !== m[f], a && f in h || (l = a ? m[f] : r[f], h[f] = p && "function" != typeof m[f] ? r[f] : y && a ? i(l, o) : j && m[f] == l ? function (e) {
             var t = function t(_t, r, o) {
               if (this instanceof e) {
                 switch (arguments.length) {case 0:
@@ -244,7 +244,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                     return new e(_t, r);}return new e(_t, r, o);
               }return e.apply(this, arguments);
             };return t[c] = e[c], t;
-          }(l) : b && "function" == typeof l ? i(Function.call, l) : l, b && ((m.virtual || (m.virtual = {}))[a] = l, e & u.R && j && !j[a] && s(j, a, l)));
+          }(l) : b && "function" == typeof l ? i(Function.call, l) : l, b && ((h.virtual || (h.virtual = {}))[f] = l, e & u.R && v && !v[f] && s(v, f, l)));
         }
       };u.F = 1, u.G = 2, u.S = 4, u.P = 8, u.B = 16, u.W = 32, u.U = 64, u.R = 128, t.exports = u;
     }, { "./_core": 27, "./_ctx": 28, "./_global": 36, "./_hide": 38 }], 35: [function (e, t, r) {
@@ -306,22 +306,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           s = e("./_hide"),
           c = e("./_has"),
           u = e("./_iterators"),
-          a = e("./_iter-create"),
-          f = e("./_set-to-string-tag"),
+          f = e("./_iter-create"),
+          a = e("./_set-to-string-tag"),
           l = e("./_object-gpo"),
-          p = e("./_wks")("iterator"),
-          _ = !([].keys && "next" in [].keys()),
+          _ = e("./_wks")("iterator"),
+          p = !([].keys && "next" in [].keys()),
           d = "@@iterator",
           b = "keys",
           y = "values",
-          h = function h() {
+          j = function j() {
         return this;
-      };t.exports = function (e, t, r, m, j, g, v) {
-        a(r, t, m);var w,
-            x,
+      };t.exports = function (e, t, r, h, v, m, g) {
+        f(r, t, h);var x,
             k,
+            w,
             O = function O(e) {
-          if (!_ && e in T) return T[e];switch (e) {case b:
+          if (!p && e in E) return E[e];switch (e) {case b:
               return function () {
                 return new r(this, e);
               };case y:
@@ -331,18 +331,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return new r(this, e);
           };
         },
-            P = t + " Iterator",
-            S = j == y,
-            E = !1,
-            T = e.prototype,
-            C = T[p] || T[d] || j && T[j],
-            M = C || O(j),
-            A = j ? S ? O("entries") : M : void 0,
-            D = "Array" == t ? T.entries || C : C;if (D && (k = l(D.call(new e())), k !== Object.prototype && (f(k, P, !0), o || c(k, p) || s(k, p, h))), S && C && C.name !== y && (E = !0, M = function M() {
+            S = t + " Iterator",
+            P = v == y,
+            M = !1,
+            E = e.prototype,
+            C = E[_] || E[d] || v && E[v],
+            F = C || O(v),
+            A = v ? P ? O("entries") : F : void 0,
+            N = "Array" == t ? E.entries || C : C;if (N && (w = l(N.call(new e())), w !== Object.prototype && (a(w, S, !0), o || c(w, _) || s(w, _, j))), P && C && C.name !== y && (M = !0, F = function F() {
           return C.call(this);
-        }), o && !v || !_ && !E && T[p] || s(T, p, M), u[t] = M, u[P] = h, j) if (w = { values: S ? M : O(y), keys: g ? M : O(b), entries: A }, v) for (x in w) {
-          x in T || i(T, x, w[x]);
-        } else n(n.P + n.F * (_ || E), t, w);return w;
+        }), o && !g || !p && !M && E[_] || s(E, _, F), u[t] = F, u[S] = j, v) if (x = { values: P ? F : O(y), keys: m ? F : O(b), entries: A }, g) for (k in x) {
+          k in E || i(E, k, x[k]);
+        } else n(n.P + n.F * (p || M), t, x);return x;
       };
     }, { "./_export": 34, "./_has": 37, "./_hide": 38, "./_iter-create": 44, "./_iterators": 47, "./_library": 49, "./_object-gpo": 58, "./_redefine": 64, "./_set-to-string-tag": 66, "./_wks": 79 }], 46: [function (e, t, r) {
       t.exports = function (e, t) {
@@ -368,26 +368,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           u = Object.isExtensible || function () {
         return !0;
       },
-          a = !e("./_fails")(function () {
+          f = !e("./_fails")(function () {
         return u(Object.preventExtensions({}));
       }),
-          f = function f(e) {
+          a = function a(e) {
         s(e, o, { value: { i: "O" + ++c, w: {} } });
       },
           l = function l(e, t) {
         if (!n(e)) return "symbol" == (typeof e === "undefined" ? "undefined" : _typeof(e)) ? e : ("string" == typeof e ? "S" : "P") + e;if (!i(e, o)) {
-          if (!u(e)) return "F";if (!t) return "E";f(e);
+          if (!u(e)) return "F";if (!t) return "E";a(e);
         }return e[o].i;
       },
-          p = function p(e, t) {
+          _ = function _(e, t) {
         if (!i(e, o)) {
-          if (!u(e)) return !0;if (!t) return !1;f(e);
+          if (!u(e)) return !0;if (!t) return !1;a(e);
         }return e[o].w;
       },
-          _ = function _(e) {
-        return a && d.NEED && u(e) && !i(e, o) && f(e), e;
+          p = function p(e) {
+        return f && d.NEED && u(e) && !i(e, o) && a(e), e;
       },
-          d = t.exports = { KEY: o, NEED: !1, fastKey: l, getWeak: p, onFreeze: _ };
+          d = t.exports = { KEY: o, NEED: !1, fastKey: l, getWeak: _, onFreeze: p };
     }, { "./_fails": 35, "./_has": 37, "./_is-object": 43, "./_object-dp": 52, "./_uid": 76 }], 51: [function (e, t, r) {
       var o = e("./_an-object"),
           n = e("./_object-dps"),
@@ -395,15 +395,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           s = e("./_shared-key")("IE_PROTO"),
           c = function c() {},
           u = "prototype",
-          _a = function a() {
+          _f = function f() {
         var t,
             r = e("./_dom-create")("iframe"),
             o = i.length,
-            n = ">";for (r.style.display = "none", e("./_html").appendChild(r), r.src = "javascript:", t = r.contentWindow.document, t.open(), t.write("<script>document.F=Object</script" + n), t.close(), _a = t.F; o--;) {
-          delete _a[u][i[o]];
-        }return _a();
+            n = ">";for (r.style.display = "none", e("./_html").appendChild(r), r.src = "javascript:", t = r.contentWindow.document, t.open(), t.write("<script>document.F=Object</script" + n), t.close(), _f = t.F; o--;) {
+          delete _f[u][i[o]];
+        }return _f();
       };t.exports = Object.create || function (e, t) {
-        var r;return null !== e ? (c[u] = o(e), r = new c(), c[u] = null, r[s] = e) : r = _a(), void 0 === t ? r : n(r, t);
+        var r;return null !== e ? (c[u] = o(e), r = new c(), c[u] = null, r[s] = e) : r = _f(), void 0 === t ? r : n(r, t);
       };
     }, { "./_an-object": 24, "./_dom-create": 31, "./_enum-bug-keys": 32, "./_html": 39, "./_object-dps": 53, "./_shared-key": 67 }], 52: [function (e, t, r) {
       var o = e("./_an-object"),
@@ -429,9 +429,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           s = e("./_to-primitive"),
           c = e("./_has"),
           u = e("./_ie8-dom-define"),
-          a = Object.getOwnPropertyDescriptor;r.f = e("./_descriptors") ? a : function (e, t) {
+          f = Object.getOwnPropertyDescriptor;r.f = e("./_descriptors") ? f : function (e, t) {
         if (e = i(e), t = s(t, !0), u) try {
-          return a(e, t);
+          return f(e, t);
         } catch (r) {}if (c(e, t)) return n(!o.f.call(e, t), e[t]);
       };
     }, { "./_descriptors": 30, "./_has": 37, "./_ie8-dom-define": 40, "./_object-pie": 61, "./_property-desc": 63, "./_to-iobject": 72, "./_to-primitive": 75 }], 55: [function (e, t, r) {
@@ -470,11 +470,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var r,
             c = n(e),
             u = 0,
-            a = [];for (r in c) {
-          r != s && o(c, r) && a.push(r);
+            f = [];for (r in c) {
+          r != s && o(c, r) && f.push(r);
         }for (; t.length > u;) {
-          o(c, r = t[u++]) && (~i(a, r) || a.push(r));
-        }return a;
+          o(c, r = t[u++]) && (~i(f, r) || f.push(r));
+        }return f;
       };
     }, { "./_array-includes": 25, "./_has": 37, "./_shared-key": 67, "./_to-iobject": 72 }], 60: [function (e, t, r) {
       var o = e("./_object-keys-internal"),
@@ -537,7 +537,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               s,
               c = String(n(t)),
               u = o(r),
-              a = c.length;return u < 0 || u >= a ? e ? "" : void 0 : (i = c.charCodeAt(u), i < 55296 || i > 56319 || u + 1 === a || (s = c.charCodeAt(u + 1)) < 56320 || s > 57343 ? e ? c.charAt(u) : i : e ? c.slice(u, u + 2) : (i - 55296 << 10) + (s - 56320) + 65536);
+              f = c.length;return u < 0 || u >= f ? e ? "" : void 0 : (i = c.charCodeAt(u), i < 55296 || i > 56319 || u + 1 === f || (s = c.charCodeAt(u + 1)) < 56320 || s > 57343 ? e ? c.charAt(u) : i : e ? c.slice(u, u + 2) : (i - 55296 << 10) + (s - 56320) + 65536);
         };
       };
     }, { "./_defined": 29, "./_to-integer": 71 }], 70: [function (e, t, r) {
@@ -641,126 +641,126 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           s = e("./_export"),
           c = e("./_redefine"),
           u = e("./_meta").KEY,
-          a = e("./_fails"),
-          f = e("./_shared"),
+          f = e("./_fails"),
+          a = e("./_shared"),
           l = e("./_set-to-string-tag"),
-          p = e("./_uid"),
-          _ = e("./_wks"),
+          _ = e("./_uid"),
+          p = e("./_wks"),
           d = e("./_wks-ext"),
           b = e("./_wks-define"),
           y = e("./_keyof"),
-          h = e("./_enum-keys"),
-          m = e("./_is-array"),
-          j = e("./_an-object"),
-          g = e("./_to-iobject"),
-          v = e("./_to-primitive"),
-          w = e("./_property-desc"),
-          x = e("./_object-create"),
-          k = e("./_object-gopn-ext"),
+          j = e("./_enum-keys"),
+          h = e("./_is-array"),
+          v = e("./_an-object"),
+          m = e("./_to-iobject"),
+          g = e("./_to-primitive"),
+          x = e("./_property-desc"),
+          k = e("./_object-create"),
+          w = e("./_object-gopn-ext"),
           O = e("./_object-gopd"),
-          P = e("./_object-dp"),
-          S = e("./_object-keys"),
-          E = O.f,
-          T = P.f,
-          C = k.f,
-          _M = o.Symbol,
+          S = e("./_object-dp"),
+          P = e("./_object-keys"),
+          M = O.f,
+          E = S.f,
+          C = w.f,
+          _F = o.Symbol,
           A = o.JSON,
-          D = A && A.stringify,
-          F = "prototype",
-          N = _("_hidden"),
-          R = _("toPrimitive"),
-          L = {}.propertyIsEnumerable,
-          I = f("symbol-registry"),
-          U = f("symbols"),
-          J = f("op-symbols"),
-          V = Object[F],
-          W = "function" == typeof _M,
+          N = A && A.stringify,
+          T = "prototype",
+          R = p("_hidden"),
+          L = p("toPrimitive"),
+          U = {}.propertyIsEnumerable,
+          D = a("symbol-registry"),
+          I = a("symbols"),
+          B = a("op-symbols"),
+          J = Object[T],
+          W = "function" == typeof _F,
           z = o.QObject,
-          q = !z || !z[F] || !z[F].findChild,
-          G = i && a(function () {
-        return 7 != x(T({}, "a", { get: function get() {
-            return T(this, "a", { value: 7 }).a;
+          q = !z || !z[T] || !z[T].findChild,
+          G = i && f(function () {
+        return 7 != k(E({}, "a", { get: function get() {
+            return E(this, "a", { value: 7 }).a;
           } })).a;
       }) ? function (e, t, r) {
-        var o = E(V, t);o && delete V[t], T(e, t, r), o && e !== V && T(V, t, o);
-      } : T,
+        var o = M(J, t);o && delete J[t], E(e, t, r), o && e !== J && E(J, t, o);
+      } : E,
           K = function K(e) {
-        var t = U[e] = x(_M[F]);return t._k = e, t;
+        var t = I[e] = k(_F[T]);return t._k = e, t;
       },
-          Y = W && "symbol" == _typeof(_M.iterator) ? function (e) {
+          Y = W && "symbol" == _typeof(_F.iterator) ? function (e) {
         return "symbol" == (typeof e === "undefined" ? "undefined" : _typeof(e));
       } : function (e) {
-        return e instanceof _M;
+        return e instanceof _F;
       },
           Z = function Z(e, t, r) {
-        return e === V && Z(J, t, r), j(e), t = v(t, !0), j(r), n(U, t) ? (r.enumerable ? (n(e, N) && e[N][t] && (e[N][t] = !1), r = x(r, { enumerable: w(0, !1) })) : (n(e, N) || T(e, N, w(1, {})), e[N][t] = !0), G(e, t, r)) : T(e, t, r);
+        return e === J && Z(B, t, r), v(e), t = g(t, !0), v(r), n(I, t) ? (r.enumerable ? (n(e, R) && e[R][t] && (e[R][t] = !1), r = k(r, { enumerable: x(0, !1) })) : (n(e, R) || E(e, R, x(1, {})), e[R][t] = !0), G(e, t, r)) : E(e, t, r);
       },
           $ = function $(e, t) {
-        j(e);for (var r, o = h(t = g(t)), n = 0, i = o.length; i > n;) {
+        v(e);for (var r, o = j(t = m(t)), n = 0, i = o.length; i > n;) {
           Z(e, r = o[n++], t[r]);
         }return e;
       },
-          B = function B(e, t) {
-        return void 0 === t ? x(e) : $(x(e), t);
+          V = function V(e, t) {
+        return void 0 === t ? k(e) : $(k(e), t);
       },
           H = function H(e) {
-        var t = L.call(this, e = v(e, !0));return !(this === V && n(U, e) && !n(J, e)) && (!(t || !n(this, e) || !n(U, e) || n(this, N) && this[N][e]) || t);
+        var t = U.call(this, e = g(e, !0));return !(this === J && n(I, e) && !n(B, e)) && (!(t || !n(this, e) || !n(I, e) || n(this, R) && this[R][e]) || t);
       },
           Q = function Q(e, t) {
-        if (e = g(e), t = v(t, !0), e !== V || !n(U, t) || n(J, t)) {
-          var r = E(e, t);return !r || !n(U, t) || n(e, N) && e[N][t] || (r.enumerable = !0), r;
+        if (e = m(e), t = g(t, !0), e !== J || !n(I, t) || n(B, t)) {
+          var r = M(e, t);return !r || !n(I, t) || n(e, R) && e[R][t] || (r.enumerable = !0), r;
         }
       },
           X = function X(e) {
-        for (var t, r = C(g(e)), o = [], i = 0; r.length > i;) {
-          n(U, t = r[i++]) || t == N || t == u || o.push(t);
+        for (var t, r = C(m(e)), o = [], i = 0; r.length > i;) {
+          n(I, t = r[i++]) || t == R || t == u || o.push(t);
         }return o;
       },
           ee = function ee(e) {
-        for (var t, r = e === V, o = C(r ? J : g(e)), i = [], s = 0; o.length > s;) {
-          !n(U, t = o[s++]) || r && !n(V, t) || i.push(U[t]);
+        for (var t, r = e === J, o = C(r ? B : m(e)), i = [], s = 0; o.length > s;) {
+          !n(I, t = o[s++]) || r && !n(J, t) || i.push(I[t]);
         }return i;
-      };W || (_M = function M() {
-        if (this instanceof _M) throw TypeError("Symbol is not a constructor!");var e = p(arguments.length > 0 ? arguments[0] : void 0),
+      };W || (_F = function F() {
+        if (this instanceof _F) throw TypeError("Symbol is not a constructor!");var e = _(arguments.length > 0 ? arguments[0] : void 0),
             t = function t(r) {
-          this === V && t.call(J, r), n(this, N) && n(this[N], e) && (this[N][e] = !1), G(this, e, w(1, r));
-        };return i && q && G(V, e, { configurable: !0, set: t }), K(e);
-      }, c(_M[F], "toString", function () {
+          this === J && t.call(B, r), n(this, R) && n(this[R], e) && (this[R][e] = !1), G(this, e, x(1, r));
+        };return i && q && G(J, e, { configurable: !0, set: t }), K(e);
+      }, c(_F[T], "toString", function () {
         return this._k;
-      }), O.f = Q, P.f = Z, e("./_object-gopn").f = k.f = X, e("./_object-pie").f = H, e("./_object-gops").f = ee, i && !e("./_library") && c(V, "propertyIsEnumerable", H, !0), d.f = function (e) {
-        return K(_(e));
-      }), s(s.G + s.W + s.F * !W, { Symbol: _M });for (var te = "hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","), re = 0; te.length > re;) {
-        _(te[re++]);
-      }for (var te = S(_.store), re = 0; te.length > re;) {
+      }), O.f = Q, S.f = Z, e("./_object-gopn").f = w.f = X, e("./_object-pie").f = H, e("./_object-gops").f = ee, i && !e("./_library") && c(J, "propertyIsEnumerable", H, !0), d.f = function (e) {
+        return K(p(e));
+      }), s(s.G + s.W + s.F * !W, { Symbol: _F });for (var te = "hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","), re = 0; te.length > re;) {
+        p(te[re++]);
+      }for (var te = P(p.store), re = 0; te.length > re;) {
         b(te[re++]);
       }s(s.S + s.F * !W, "Symbol", { "for": function _for(e) {
-          return n(I, e += "") ? I[e] : I[e] = _M(e);
+          return n(D, e += "") ? D[e] : D[e] = _F(e);
         }, keyFor: function keyFor(e) {
-          if (Y(e)) return y(I, e);throw TypeError(e + " is not a symbol!");
+          if (Y(e)) return y(D, e);throw TypeError(e + " is not a symbol!");
         }, useSetter: function useSetter() {
           q = !0;
         }, useSimple: function useSimple() {
           q = !1;
-        } }), s(s.S + s.F * !W, "Object", { create: B, defineProperty: Z, defineProperties: $, getOwnPropertyDescriptor: Q, getOwnPropertyNames: X, getOwnPropertySymbols: ee }), A && s(s.S + s.F * (!W || a(function () {
-        var e = _M();return "[null]" != D([e]) || "{}" != D({ a: e }) || "{}" != D(Object(e));
+        } }), s(s.S + s.F * !W, "Object", { create: V, defineProperty: Z, defineProperties: $, getOwnPropertyDescriptor: Q, getOwnPropertyNames: X, getOwnPropertySymbols: ee }), A && s(s.S + s.F * (!W || f(function () {
+        var e = _F();return "[null]" != N([e]) || "{}" != N({ a: e }) || "{}" != N(Object(e));
       })), "JSON", { stringify: function stringify(e) {
           if (void 0 !== e && !Y(e)) {
             for (var t, r, o = [e], n = 1; arguments.length > n;) {
               o.push(arguments[n++]);
-            }return t = o[1], "function" == typeof t && (r = t), !r && m(t) || (t = function t(e, _t2) {
+            }return t = o[1], "function" == typeof t && (r = t), !r && h(t) || (t = function t(e, _t2) {
               if (r && (_t2 = r.call(this, e, _t2)), !Y(_t2)) return _t2;
-            }), o[1] = t, D.apply(A, o);
+            }), o[1] = t, N.apply(A, o);
           }
-        } }), _M[F][R] || e("./_hide")(_M[F], R, _M[F].valueOf), l(_M, "Symbol"), l(Math, "Math", !0), l(o.JSON, "JSON", !0);
+        } }), _F[T][L] || e("./_hide")(_F[T], L, _F[T].valueOf), l(_F, "Symbol"), l(Math, "Math", !0), l(o.JSON, "JSON", !0);
     }, { "./_an-object": 24, "./_descriptors": 30, "./_enum-keys": 33, "./_export": 34, "./_fails": 35, "./_global": 36, "./_has": 37, "./_hide": 38, "./_is-array": 42, "./_keyof": 48, "./_library": 49, "./_meta": 50, "./_object-create": 51, "./_object-dp": 52, "./_object-gopd": 54, "./_object-gopn": 56, "./_object-gopn-ext": 55, "./_object-gops": 57, "./_object-keys": 60, "./_object-pie": 61, "./_property-desc": 63, "./_redefine": 64, "./_set-to-string-tag": 66, "./_shared": 68, "./_to-iobject": 72, "./_to-primitive": 75, "./_uid": 76, "./_wks": 79, "./_wks-define": 77, "./_wks-ext": 78 }], 89: [function (e, t, r) {
       e("./_wks-define")("asyncIterator");
     }, { "./_wks-define": 77 }], 90: [function (e, t, r) {
       e("./_wks-define")("observable");
     }, { "./_wks-define": 77 }], 91: [function (e, t, r) {
       e("./es6.array.iterator");for (var o = e("./_global"), n = e("./_hide"), i = e("./_iterators"), s = e("./_wks")("toStringTag"), c = ["NodeList", "DOMTokenList", "MediaList", "StyleSheetList", "CSSRuleList"], u = 0; u < 5; u++) {
-        var a = c[u],
-            f = o[a],
-            l = f && f.prototype;l && !l[s] && n(l, s, a), i[a] = i.Array;
+        var f = c[u],
+            a = o[f],
+            l = a && a.prototype;l && !l[s] && n(l, s, f), i[f] = i.Array;
       }
     }, { "./_global": 36, "./_hide": 38, "./_iterators": 47, "./_wks": 79, "./es6.array.iterator": 80 }], 92: [function (e, t, r) {
       "use strict";
@@ -770,123 +770,73 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           i = o(n),
           s = e("babel-runtime/helpers/createClass"),
           c = o(s),
-          u = function () {
+          u = e("../../utils/utils"),
+          f = function () {
         function e() {
-          if ((0, i["default"])(this, e), this.constructor === e) throw new TypeError("Can not construct abstract class.");if (this.constructor === e.prototype.constructor) throw new TypeError("Please implement abstract method constructor.");
-        }return (0, c["default"])(e, null, [{ key: "loadPolicies", value: function value() {
-            throw this === e ? new TypeError("Can not call static abstract method loadPolicies.") : this.loadPolicies === e.loadPolicies ? new TypeError("Please implement static abstract method loadPolicies.") : new TypeError("Do not call static abstract method loadPolicies from child.");
-          } }, { key: "addSubscriptionPolicy", value: function value() {
-            throw this === e ? new TypeError("Can not call static abstract method addSubscriptionPolicy.") : this.addSubscriptionPolicy === e.addSubscriptionPolicy ? new TypeError("Please implement static abstract method addSubscriptionPolicy.") : new TypeError("Do not call static abstract method addSubscriptionPolicy from child.");
-          } }, { key: "isToVerify", value: function value() {
-            throw this === e ? new TypeError("Can not call static abstract method isToVerify.") : this.isToVerify === e.isToVerify ? new TypeError("Please implement static abstract method isToVerify.") : new TypeError("Do not call static abstract method isToVerify from child.");
-          } }, { key: "getApplicablePolicies", value: function value() {
-            throw this === e ? new TypeError("Can not call static abstract method getApplicablePolicies.") : this.getApplicablePolicies === e.getApplicablePolicies ? new TypeError("Please implement static abstract method getApplicablePolicies.") : new TypeError("Do not call static abstract method getApplicablePolicies from child.");
-          } }, { key: "applyPolicies", value: function value() {
-            throw this === e ? new TypeError("Can not call static abstract method applyPolicies.") : this.applyPolicies === e.applyPolicies ? new TypeError("Please implement static abstract method applyPolicies.") : new TypeError("Do not call static abstract method applyPolicies from child.");
-          } }, { key: "authorise", value: function value() {
-            throw this === e ? new TypeError("Can not call static abstract method authorise.") : this.authorise === e.authorise ? new TypeError("Please implement static abstract method authorise.") : new TypeError("Do not call static abstract method authorise from child.");
+          (0, i["default"])(this, e), this.defaultBehavior = !0, this.groups = {};
+        }return (0, c["default"])(e, [{ key: "defaultBehavior", get: function get() {
+            return this._defaultBehavior;
+          }, set: function set(e) {
+            this._defaultBehavior = e;
+          } }, { key: "date", set: function set(e) {
+            var t = new Date(),
+                r = String(t.getDate());1 === r.length && (r = "0" + r);var o = String(t.getMonth() + 1);1 === o.length && (o = "0" + o), this._date = r + "/" + o + "/" + t.getFullYear();
+          }, get: function get() {
+            return this._date;
+          } }, { key: "domain", set: function set(e) {
+            void 0 !== e.message.body.identity && (this._domain = (0, u.divideEmail)(e.message.body.identity.userProfile.username).domain);
+          }, get: function get() {
+            return this._domain;
+          } }, { key: "source", set: function set(e) {
+            void 0 !== e.message.body.identity && (this._source = e.message.body.identity.userProfile.username);
+          }, get: function get() {
+            var e = this;return e._source;
+          } }, { key: "time", set: function set(e) {
+            e = new Date();var t = String(e.getMinutes());1 === t.length && (t = "0" + t), this._time = parseInt(String(e.getHours()) + t);
+          }, get: function get() {
+            var e = this;return e._time;
+          } }, { key: "weekday", set: function set(e) {
+            this._weekday = String(new Date().getDay());
+          }, get: function get() {
+            return this._weekday;
           } }]), e;
-      }();r["default"] = u, t.exports = r["default"];
-    }, { "babel-runtime/helpers/classCallCheck": 9, "babel-runtime/helpers/createClass": 10 }], 93: [function (e, t, r) {
+      }();r["default"] = f, t.exports = r["default"];
+    }, { "../../utils/utils": 94, "babel-runtime/helpers/classCallCheck": 9, "babel-runtime/helpers/createClass": 10 }], 93: [function (e, t, r) {
       "use strict";
       function o(e) {
         return e && e.__esModule ? e : { "default": e };
-      }Object.defineProperty(r, "__esModule", { value: !0 });var n = e("babel-runtime/core-js/object/get-prototype-of"),
+      }Object.defineProperty(r, "__esModule", { value: !0 });var n = e("babel-runtime/core-js/object/keys"),
           i = o(n),
-          s = e("babel-runtime/helpers/classCallCheck"),
+          s = e("babel-runtime/core-js/object/get-prototype-of"),
           c = o(s),
-          u = e("babel-runtime/helpers/createClass"),
-          a = o(u),
-          f = e("babel-runtime/helpers/possibleConstructorReturn"),
-          l = o(f),
-          p = e("babel-runtime/helpers/inherits"),
-          _ = o(p),
-          d = e("../Context"),
+          u = e("babel-runtime/helpers/classCallCheck"),
+          f = o(u),
+          a = e("babel-runtime/helpers/createClass"),
+          l = o(a),
+          _ = e("babel-runtime/helpers/possibleConstructorReturn"),
+          p = o(_),
+          d = e("babel-runtime/helpers/inherits"),
           b = o(d),
-          y = e("../../utils/utils"),
+          y = e("./CommonCtx"),
+          j = o(y),
           h = function (e) {
         function t() {
-          (0, c["default"])(this, t);var e = (0, l["default"])(this, (0, i["default"])(t).call(this)),
-              r = e;return r.policies = r.loadPolicies(), r.groups = {}, e;
-        }return (0, _["default"])(t, e), (0, a["default"])(t, [{ key: "applyPolicies", value: function value(e) {
-            var t = this,
-                r = [!0, []],
-                o = t.getApplicablePolicies(e);return r = t.pdp.evaluate(e, o), e.body.auth = 0 !== o.length, t.pep.enforce(r), { message: e, policiesResult: r };
-          } }, { key: "_getDate", value: function value() {
-            var e = new Date(),
-                t = String(e.getDate());1 === t.length && (t = "0" + t);var r = String(e.getMonth() + 1);return 1 === r.length && (r = "0" + r), t + "/" + r + "/" + e.getFullYear();
-          } }, { key: "_getList", value: function value(e, t) {
-            var r = this,
-                o = r.groups,
-                n = [];return void 0 !== o[e] && void 0 !== o[e][t] && (n = o[e][t]), n;
-          } }, { key: "_getTime", value: function value() {
-            var e = new Date(),
-                t = String(e.getMinutes());return 1 === t.length && (t = "0" + t), parseInt(String(e.getHours()) + t);
-          } }, { key: "_getWeekDay", value: function value() {
-            return String(new Date().getDay());
-          } }, { key: "date", set: function set(e) {
-            var t = this;e.message || (t._dateAttribute = "string" == typeof e ? e : t._getDate());
-          }, get: function get() {
-            var e = this;return e._dateAttribute;
-          } }, { key: "domain", set: function set(e) {
-            var t = this;t._domainAttribute = (0, y.divideEmail)(e.message.body.identity.userProfile.username).domain;
-          }, get: function get() {
-            var e = this;return e._domainAttribute;
-          } }, { key: "source", set: function set(e) {
-            var t = this;t._sourceAttribute = e.message.body.identity.userProfile.username;
-          }, get: function get() {
-            var e = this;return e._sourceAttribute;
-          } }, { key: "time", set: function set(e) {
-            var t = this;e.message || (t._timeAttribute = e ? e : t._getTime());
-          }, get: function get() {
-            var e = this;return e._timeAttribute;
-          } }, { key: "weekday", set: function set(e) {
-            var t = this;e.message || (t._weekdayAttribute = e ? e : t._getWeekDay());
-          }, get: function get() {
-            var e = this;return e._weekdayAttribute;
-          } }]), t;
-      }(b["default"]);r["default"] = h, t.exports = r["default"];
-    }, { "../../utils/utils": 95, "../Context": 92, "babel-runtime/core-js/object/get-prototype-of": 4, "babel-runtime/helpers/classCallCheck": 9, "babel-runtime/helpers/createClass": 10, "babel-runtime/helpers/inherits": 11, "babel-runtime/helpers/possibleConstructorReturn": 12 }], 94: [function (e, t, r) {
-      "use strict";
-      function o(e) {
-        return e && e.__esModule ? e : { "default": e };
-      }Object.defineProperty(r, "__esModule", { value: !0 });var n = e("babel-runtime/core-js/object/get-prototype-of"),
-          i = o(n),
-          s = e("babel-runtime/helpers/classCallCheck"),
-          c = o(s),
-          u = e("babel-runtime/helpers/createClass"),
-          a = o(u),
-          f = e("babel-runtime/helpers/possibleConstructorReturn"),
-          l = o(f),
-          p = e("babel-runtime/helpers/inherits"),
-          _ = o(p),
-          d = e("./CommonCtx"),
-          b = o(d),
-          y = function (e) {
-        function t() {
-          return (0, c["default"])(this, t), (0, l["default"])(this, (0, i["default"])(t).call(this));
-        }return (0, _["default"])(t, e), (0, a["default"])(t, [{ key: "loadPolicies", value: function value() {
-            return {};
-          } }, { key: "getApplicablePolicies", value: function value() {
-            var e = this,
-                t = e.policies,
-                r = [];for (var o in t) {
-              r.push.apply(r, t[o]);
-            }return r;
-          } }, { key: "authorise", value: function value(e) {
-            var t = this;e.body = e.body || {};var r = void 0,
-                o = t.isToVerify(e);if (o) {
-              r = t.applyPolicies(e);var n = r.policiesResult[0];return n;
-            }return !0;
-          } }, { key: "isToVerify", value: function value() {
+          (0, f["default"])(this, t);var e = (0, p["default"])(this, (0, c["default"])(t).call(this));return e.serviceProviderPolicies = {}, e;
+        }return (0, b["default"])(t, e), (0, l["default"])(t, [{ key: "authorise", value: function value(e) {
+            console.log("--- Policy Engine ---"), console.log(e);var t = this,
+                r = void 0,
+                o = t._isToVerify(e);if (o) {
+              var n = { serviceProviderPolicy: t.getServiceProviderPolicy(e) };return r = t.policyEngine.pdp.applyPolicies(e, n), "Not Applicable" === r && (r = t.defaultBehavior), !!r;
+            }return r = t.defaultBehavior, !!r;
+          } }, { key: "loadActivePolicy", value: function value() {} }, { key: "loadGroups", value: function value() {} }, { key: "loadSPPolicies", value: function value() {} }, { key: "loadUserPolicies", value: function value() {} }, { key: "getServiceProviderPolicy", value: function value() {
+            var e = void 0;if (0 !== (0, i["default"])(this.serviceProviderPolicies).length) for (var t in this.serviceProviderPolicies) {
+              e = this.serviceProviderPolicies[t];
+            }return e;
+          } }, { key: "_isToVerify", value: function value() {
             return !0;
-          } }, { key: "group", set: function set(e) {
-            var t = this;t.groupAttribute = t._getList(e.scope, e.group);
-          }, get: function get() {
-            var e = this;return e.groupAttribute;
-          } }]), t;
-      }(b["default"]);r["default"] = y, t.exports = r["default"];
-    }, { "./CommonCtx": 93, "babel-runtime/core-js/object/get-prototype-of": 4, "babel-runtime/helpers/classCallCheck": 9, "babel-runtime/helpers/createClass": 10, "babel-runtime/helpers/inherits": 11, "babel-runtime/helpers/possibleConstructorReturn": 12 }], 95: [function (e, t, r) {
+          } }, { key: "saveActivePolicy", value: function value() {} }, { key: "savePolicies", value: function value() {} }]), t;
+      }(j["default"]);r["default"] = h, t.exports = r["default"];
+    }, { "./CommonCtx": 92, "babel-runtime/core-js/object/get-prototype-of": 4, "babel-runtime/core-js/object/keys": 5, "babel-runtime/helpers/classCallCheck": 9, "babel-runtime/helpers/createClass": 10, "babel-runtime/helpers/inherits": 11, "babel-runtime/helpers/possibleConstructorReturn": 12 }], 94: [function (e, t, r) {
       "use strict";
       function o(e) {
         return e && e.__esModule ? e : { "default": e };
@@ -898,25 +848,27 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var t = e.indexOf("@"),
             r = { username: e.substring(0, t), domain: e.substring(t + 1, e.length) };return r;
       }function s(e) {
-        return !((0, b["default"])(e).length > 0);
+        return !((0, y["default"])(e).length > 0);
       }function c(e) {
-        if (e) return JSON.parse((0, _["default"])(e));
+        if (e) return JSON.parse((0, d["default"])(e));
       }function u(e) {
+        var t = e.split("/");return t[0] + "//" + t[2] + "/" + t[3];
+      }function f(e) {
         var t = e.indexOf("@");return "user://" + e.substring(t + 1, e.length) + "/" + e.substring(0, t);
       }function a(e) {
         var t = n(e);return t.identity.replace("/", "") + "@" + t.domain;
-      }function f(e) {
+      }function l(e) {
         if ("user://" === e.substring(0, 7)) {
           var t = n(e);if (t.domain && t.identity) return e;throw "userURL with wrong format";
-        }return u(e);
-      }function l(e) {
+        }return f(e);
+      }function _(e) {
         var t = ["domain-idp", "runtime", "domain", "hyperty"],
             r = e.split("://"),
             o = r[0];return t.indexOf(o) === -1;
       }Object.defineProperty(r, "__esModule", { value: !0 });var p = e("babel-runtime/core-js/json/stringify"),
-          _ = o(p),
-          d = e("babel-runtime/core-js/object/keys"),
-          b = o(d);r.divideURL = n, r.divideEmail = i, r.emptyObject = s, r.deepClone = c, r.getUserURLFromEmail = u, r.getUserEmailFromURL = a, r.convertToUserURL = f, r.isDataObjectURL = l;
-    }, { "babel-runtime/core-js/json/stringify": 1, "babel-runtime/core-js/object/keys": 5 }] }, {}, [94])(94);
+          d = o(p),
+          b = e("babel-runtime/core-js/object/keys"),
+          y = o(b);r.divideURL = n, r.divideEmail = i, r.emptyObject = s, r.deepClone = c, r.removePathFromURL = u, r.getUserURLFromEmail = f, r.getUserEmailFromURL = a, r.convertToUserURL = l, r.isDataObjectURL = _;
+    }, { "babel-runtime/core-js/json/stringify": 1, "babel-runtime/core-js/object/keys": 5 }] }, {}, [93])(93);
 });
 //# sourceMappingURL=MessageNodeCtx.js.map

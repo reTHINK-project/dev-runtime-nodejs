@@ -24,71 +24,79 @@ var MessageNodeCtx = function (_CommonCtx) {
   function MessageNodeCtx() {
     _classCallCheck(this, MessageNodeCtx);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(MessageNodeCtx).call(this));
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(MessageNodeCtx).call(this));
+
+    _this2.serviceProviderPolicies = {}; //TODO: how to load them?
+    return _this2;
   }
 
   _createClass(MessageNodeCtx, [{
-    key: 'loadPolicies',
-    value: function loadPolicies() {
-      return {};
-    }
-
-    /**
-    * Returns the policies associated with a scope.
-    * @param   {String} scope
-    * @return  {Array}  policies
-    */
-
-    //TODO: can policies depend on the hyperty name? Domain Registry interaction
-
-  }, {
-    key: 'getApplicablePolicies',
-    value: function getApplicablePolicies() {
-      var _this = this;
-      var myPolicies = _this.policies;
-      var policies = [];
-
-      for (var i in myPolicies) {
-        policies.push.apply(policies, myPolicies[i]);
-      }
-
-      return policies;
-    }
-  }, {
     key: 'authorise',
     value: function authorise(message) {
+      console.log('--- Policy Engine ---');
+      console.log(message);
       var _this = this;
-      message.body = message.body || {};
       var result = void 0;
 
-      var isToVerify = _this.isToVerify(message);
+      var isToVerify = _this._isToVerify(message);
       if (isToVerify) {
-
-        result = _this.applyPolicies(message);
-        var messageAccepted = result.policiesResult[0];
-        return messageAccepted;
+        var policies = {
+          serviceProviderPolicy: _this.getServiceProviderPolicy(message)
+        };
+        result = _this.policyEngine.pdp.applyPolicies(message, policies);
+        if (result === 'Not Applicable') {
+          result = _this.defaultBehavior;
+        }
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return true;
+        result = _this.defaultBehavior;
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
-
-    //TODO: verify if scheme is not 'runtime', 'hyperty-runtime' or 'domain'
-
   }, {
-    key: 'isToVerify',
-    value: function isToVerify() {
+    key: 'loadActivePolicy',
+    value: function loadActivePolicy() {}
+  }, {
+    key: 'loadGroups',
+    value: function loadGroups() {}
+  }, {
+    key: 'loadSPPolicies',
+    value: function loadSPPolicies() {}
+  }, {
+    key: 'loadUserPolicies',
+    value: function loadUserPolicies() {}
+  }, {
+    key: 'getServiceProviderPolicy',
+    value: function getServiceProviderPolicy() {
+      var policy = void 0;
+
+      if (Object.keys(this.serviceProviderPolicies).length !== 0) {
+        for (var i in this.serviceProviderPolicies) {
+          policy = this.serviceProviderPolicies[i];
+        }
+      }
+
+      return policy;
+    }
+  }, {
+    key: '_isToVerify',
+    value: function _isToVerify() {
       return true;
     }
   }, {
-    key: 'group',
-    set: function set(params) {
-      var _this = this;
-      _this.groupAttribute = _this._getList(params.scope, params.group);
-    },
-    get: function get() {
-      var _this = this;
-      return _this.groupAttribute;
-    }
+    key: 'saveActivePolicy',
+    value: function saveActivePolicy() {}
+  }, {
+    key: 'savePolicies',
+    value: function savePolicies() {}
   }]);
 
   return MessageNodeCtx;

@@ -10,6 +10,14 @@ var _MessageBus = require('../src/bus/MessageBus');
 
 var _MessageBus2 = _interopRequireDefault(_MessageBus);
 
+var _PolicyEngine = require('../src/policy/PolicyEngine');
+
+var _PolicyEngine2 = _interopRequireDefault(_PolicyEngine);
+
+var _RuntimeCoreCtx = require('../src/policy/context/RuntimeCoreCtx');
+
+var _RuntimeCoreCtx2 = _interopRequireDefault(_RuntimeCoreCtx);
+
 var _chai = require('chai');
 
 var _chai2 = _interopRequireDefault(_chai);
@@ -82,6 +90,40 @@ describe('SyncherManager', function () {
     }
   };
 
+  var runtimeRegistry = {
+    getPreAuthSubscribers: function getPreAuthSubscribers() {
+      return ['hyperty://domain/hyperty-instance'];
+    },
+    getHypertyName: function getHypertyName() {
+      return 'HypertyChat';
+    },
+    isDataObjectURL: function isDataObjectURL(dataObjectURL) {
+      var splitURL = dataObjectURL.split('://');
+      return splitURL[0] === 'comm';
+    },
+    registerSubscribedDataObject: function registerSubscribedDataObject() {},
+    registerSubscriber: function registerSubscriber() {},
+    runtimeURL: 'runtime://localhost/7601'
+  };
+
+  var identityModule = {
+    decryptMessage: function decryptMessage(message) {
+      return new Promise(function (resolve) {
+        resolve(message);
+      });
+    },
+    encryptMessage: function encryptMessage(message) {
+      return new Promise(function (resolve) {
+        resolve(message);
+      });
+    },
+    getIdentityOfHyperty: function getIdentityOfHyperty() {
+      return new Promise(function (resolve) {
+        resolve({ userProfile: { username: 'user@domain' } });
+      });
+    }
+  };
+
   var catalog = {
     getDataSchemaDescriptor: function getDataSchemaDescriptor(schema) {
       console.log('REQUEST-SCHEMA: ', schema);
@@ -99,6 +141,21 @@ describe('SyncherManager', function () {
       });
     }
   };
+
+  var policyEngine = new _PolicyEngine2.default(new _RuntimeCoreCtx2.default(identityModule, runtimeRegistry));
+
+  var handlers = [
+
+  // Policy message authorise
+  function (ctx) {
+    policyEngine.authorise(ctx.msg).then(function (changedMgs) {
+      ctx.msg = changedMgs;
+      ctx.next();
+    }).catch(function (reason) {
+      console.error(reason);
+      ctx.fail(reason);
+    });
+  }];
 
   it('reporter read', function (done) {
     var bus = new _MessageBus2.default();
@@ -620,6 +677,8 @@ describe('SyncherManager', function () {
 
   it('children deltas generate and process', function (done) {
     var bus = new _MessageBus2.default();
+    bus.pipeline.handlers = handlers;
+
     bus._onPostMessage = function (msg) {
       console.log('7-_onPostMessage: ', msg);
       msgNodeResponseFunc(bus, msg);
@@ -660,6 +719,8 @@ describe('SyncherManager', function () {
     var deleted = false;
 
     var bus = new _MessageBus2.default();
+    bus.pipeline.handlers = handlers;
+
     bus._onPostMessage = function (msg) {
       console.log('8-_onPostMessage: ', msg);
       if (msg.type === 'subscribe') {
@@ -672,10 +733,10 @@ describe('SyncherManager', function () {
         if (msg.from === runtimeURL + '/sm') {
           expect(msg.to).to.eql('domain://msg-node.h1.domain/object-address-allocation');
           expect(msg.body.resource).to.eql(objURL);
+        }
 
-          expect(deleted).to.eql(true);
-
-          done();
+        if (msg.from === objURL + '/subscription') {
+          deleted = true;
         }
       }
     };
@@ -686,12 +747,14 @@ describe('SyncherManager', function () {
     sync2.onNotification(function (notifyEvent) {
       console.log('onNotification: ', notifyEvent);
       if (notifyEvent.type === 'create') {
+        notifyEvent.ack(100);
         sync2.subscribe(schemaURL, notifyEvent.url).then(function (doo) {
           console.log('subscribe: ', doo.url);
         });
       } else if (notifyEvent.type === 'delete') {
-        notifyEvent.ack();
-        deleted = true;
+        notifyEvent.ack(100);
+        expect(deleted).to.eql(true);
+        done();
       }
     });
 
@@ -705,15 +768,18 @@ describe('SyncherManager', function () {
         setTimeout(function () {
           expect(sync1.reporters[dor.url]).to.eql(dor);
           dor.delete();
+          delete sync1.reporters[dor.url];
           expect(sync1.reporters[dor.url]).to.be.empty;
           console.log('reporter-deleted');
-        });
+        }, 100);
       });
     });
   });
 
   it('subscribe and unsubscribe', function (done) {
     var bus = new _MessageBus2.default();
+    bus.pipeline.handlers = handlers;
+
     bus._onPostMessage = function (msg) {
       console.log('8-_onPostMessage: ', msg);
       if (msg.type === 'subscribe') {
@@ -726,7 +792,6 @@ describe('SyncherManager', function () {
         expect(msg.from).to.eql(runtimeURL + '/sm');
         expect(msg.to).to.eql('domain://msg-node.h2.domain/sm');
         expect(msg.body.resource).to.eql(objURL);
-
         done();
       }
     };

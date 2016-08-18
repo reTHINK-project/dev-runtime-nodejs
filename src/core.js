@@ -30,11 +30,8 @@ import RuntimeFactory from './RuntimeFactory';
 import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
 import _eval from 'eval';
 
-<<<<<<< HEAD
-let domain = 'apizee.jam';
-=======
-let domain = 'localhost';
->>>>>>> 28f60fabbbaa9f64d386f5eeb4ede9cb143a09a1
+let domain = 'hybroker.rethink.ptinovacao.pt';
+
 let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';

@@ -45,7 +45,8 @@ var fs = require('fs');
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
 
-var domain = 'apizee.jam';
+var domain = 'hybroker.rethink.ptinovacao.pt';
+
 var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
 var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';

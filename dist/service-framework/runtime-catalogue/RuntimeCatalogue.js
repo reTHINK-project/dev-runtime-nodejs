@@ -29,7 +29,6 @@ var RuntimeCatalogue = function () {
         var _this = this;
         _this._factory = new _CatalogueDataObjectFactory2.default(false, undefined);
         _this.httpRequest = runtimeFactory.createHttpRequest();
-        console.log(runtimeFactory.atob);
         _this.atob = runtimeFactory.atob ? runtimeFactory.atob : atob;
     }
 
@@ -287,11 +286,10 @@ var RuntimeCatalogue = function () {
             try {
                 rawRuntime["hypertyCapabilities"] = JSON.parse(rawRuntime["hypertyCapabilities"]);
                 rawRuntime["protocolCapabilities"] = JSON.parse(rawRuntime["protocolCapabilities"]);
-            } catch (e) {}
-            // already json object
-
-            // console.log("creating runtime descriptor based on: ", rawRuntime);
-
+            } catch (e) {
+                // already json object
+            }
+            console.log("creating runtime descriptor based on: ", rawRuntime);
 
             // create the descriptor
             var runtime = _this._factory.createHypertyRuntimeDescriptorObject(rawRuntime["cguid"], rawRuntime["version"], rawRuntime["objectName"], rawRuntime["description"], rawRuntime["language"], rawRuntime["sourcePackageURL"], rawRuntime["type"] || rawRuntime["runtimeType"], rawRuntime["hypertyCapabilities"], rawRuntime["protocolCapabilities"]);
@@ -397,9 +395,9 @@ var RuntimeCatalogue = function () {
         value: function _createSourcePackage(_this, sp) {
             try {
                 sp = JSON.parse(sp);
-            } catch (e) {}
-            // console.log("parsing sourcePackage failed. already parsed? -> ", sp);
-
+            } catch (e) {
+                console.log("parsing sourcePackage failed. already parsed? -> ", sp);
+            }
 
             // check encoding
             if (sp["encoding"] === "base64") {

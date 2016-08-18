@@ -12,19 +12,23 @@ var PEP = function () {
   function PEP(context) {
     _classCallCheck(this, PEP);
 
-    var _this = this;
-    _this.context = context;
+    this.context = context;
   }
 
   _createClass(PEP, [{
-    key: "enforce",
-    value: function enforce(result) {
-      var _this = this;
-      var authDecision = result[0];
-      var actions = result[1];
+    key: "enforcePolicies",
+    value: function enforcePolicies(message, policies, authDecision) {
+      var policy = void 0;
 
-      for (var i in actions) {
-        _this.context[actions[i].method](actions[i].params, authDecision);
+      if (policies.userPolicy) {
+        policy = this.context.userPolicies[policies.userPolicy];
+        if (policy) {
+          policy.enforceActions(this.context, message, authDecision);
+        }
+      }
+      policy = this.context.serviceProviderPolicy;
+      if (policy) {
+        policy.enforceActions(this.context, message, authDecision);
       }
     }
 

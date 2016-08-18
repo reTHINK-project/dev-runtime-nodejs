@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DataObjectObserver = exports.DataObjectReporter = exports.Syncher = undefined;
 
-require('mutationobserver-shim');
-
 require('object.observe');
 
 require('array.observe');
@@ -25,7 +23,8 @@ var _DataObjectObserver2 = _interopRequireDefault(_DataObjectObserver);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// polyfills
 exports.Syncher = _Syncher2.default;
 exports.DataObjectReporter = _DataObjectReporter2.default;
-exports.DataObjectObserver = _DataObjectObserver2.default;
+exports.DataObjectObserver = _DataObjectObserver2.default; // polyfills
+// Removed because the compatibility of runtime-nodejs
+// import 'mutationobserver-shim';

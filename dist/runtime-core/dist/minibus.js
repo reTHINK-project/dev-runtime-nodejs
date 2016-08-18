@@ -27,7 +27,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 // Distribution file for minibus.js 
 // version: 0.5.1
-// Last build: Mon Jul 25 2016 09:11:17 GMT+0100 (WEST)
+// Last build: Mon Aug 15 2016 18:04:05 GMT+0100 (WEST)
 
 !function (e) {
   if ("object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "undefined" != typeof module) module.exports = e();else if ("function" == typeof define && define.amd) define([], e);else {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -25,92 +25,92 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 * limitations under the License.
 **/
 
-// Distribution file for sandbox.js
+// Distribution file for sandbox.js 
 // version: 0.5.1
-// Last build: Mon Jul 25 2016 09:11:14 GMT+0100 (WEST)
+// Last build: Mon Aug 15 2016 18:04:02 GMT+0100 (WEST)
 
 !function (e) {
-  if ('object' == (typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) && 'undefined' != typeof module) module.exports = e();else if ('function' == typeof define && define.amd) define([], e);else {
-    var t;t = 'undefined' != typeof window ? window : 'undefined' != typeof global ? global : 'undefined' != typeof self ? self : this, t.sandbox = e();
+  if ("object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "undefined" != typeof module) module.exports = e();else if ("function" == typeof define && define.amd) define([], e);else {
+    var t;t = "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this, t.sandbox = e();
   }
 }(function () {
   return function e(t, r, o) {
     function n(s, c) {
       if (!r[s]) {
         if (!t[s]) {
-          var u = 'function' == typeof require && require;if (!c && u) return u(s, !0);if (i) return i(s, !0);var a = new Error('Cannot find module \'' + s + '\'');throw a.code = 'MODULE_NOT_FOUND', a;
+          var u = "function" == typeof require && require;if (!c && u) return u(s, !0);if (i) return i(s, !0);var a = new Error("Cannot find module '" + s + "'");throw a.code = "MODULE_NOT_FOUND", a;
         }var f = r[s] = { exports: {} };t[s][0].call(f.exports, function (e) {
           var r = t[s][1][e];return n(r ? r : e);
         }, f, f.exports, e, t, r, o);
       }return r[s].exports;
-    }for (var i = 'function' == typeof require && require, s = 0; s < o.length; s++) {
+    }for (var i = "function" == typeof require && require, s = 0; s < o.length; s++) {
       n(o[s]);
     }return n;
   }({ 1: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/object/create'), __esModule: !0 };
-    }, { 'core-js/library/fn/object/create': 13 }], 2: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/object/define-property'), __esModule: !0 };
-    }, { 'core-js/library/fn/object/define-property': 14 }], 3: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/object/get-prototype-of'), __esModule: !0 };
-    }, { 'core-js/library/fn/object/get-prototype-of': 15 }], 4: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/object/set-prototype-of'), __esModule: !0 };
-    }, { 'core-js/library/fn/object/set-prototype-of': 16 }], 5: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/promise'), __esModule: !0 };
-    }, { 'core-js/library/fn/promise': 17 }], 6: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/symbol'), __esModule: !0 };
-    }, { 'core-js/library/fn/symbol': 18 }], 7: [function (e, t, r) {
-      t.exports = { default: e('core-js/library/fn/symbol/iterator'), __esModule: !0 };
-    }, { 'core-js/library/fn/symbol/iterator': 19 }], 8: [function (e, t, r) {
-      'use strict';
-      r.__esModule = !0, r['default'] = function (e, t) {
-        if (!(e instanceof t)) throw new TypeError('Cannot call a class as a function');
+      t.exports = { "default": e("core-js/library/fn/object/create"), __esModule: !0 };
+    }, { "core-js/library/fn/object/create": 13 }], 2: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/object/define-property"), __esModule: !0 };
+    }, { "core-js/library/fn/object/define-property": 14 }], 3: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/object/get-prototype-of"), __esModule: !0 };
+    }, { "core-js/library/fn/object/get-prototype-of": 15 }], 4: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/object/set-prototype-of"), __esModule: !0 };
+    }, { "core-js/library/fn/object/set-prototype-of": 16 }], 5: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/promise"), __esModule: !0 };
+    }, { "core-js/library/fn/promise": 17 }], 6: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/symbol"), __esModule: !0 };
+    }, { "core-js/library/fn/symbol": 18 }], 7: [function (e, t, r) {
+      t.exports = { "default": e("core-js/library/fn/symbol/iterator"), __esModule: !0 };
+    }, { "core-js/library/fn/symbol/iterator": 19 }], 8: [function (e, t, r) {
+      "use strict";
+      r.__esModule = !0, r["default"] = function (e, t) {
+        if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
       };
     }, {}], 9: [function (e, t, r) {
-      'use strict';
+      "use strict";
       function o(e) {
-        return e && e.__esModule ? e : { default: e };
-      }r.__esModule = !0;var n = e('../core-js/object/define-property'),
-          i = o(n);r['default'] = function () {
+        return e && e.__esModule ? e : { "default": e };
+      }r.__esModule = !0;var n = e("../core-js/object/define-property"),
+          i = o(n);r["default"] = function () {
         function e(e, t) {
           for (var r = 0; r < t.length; r++) {
-            var o = t[r];o.enumerable = o.enumerable || !1, o.configurable = !0, 'value' in o && (o.writable = !0), (0, i['default'])(e, o.key, o);
+            var o = t[r];o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), (0, i["default"])(e, o.key, o);
           }
         }return function (t, r, o) {
           return r && e(t.prototype, r), o && e(t, o), t;
         };
       }();
-    }, { '../core-js/object/define-property': 2 }], 10: [function (e, t, r) {
-      'use strict';
+    }, { "../core-js/object/define-property": 2 }], 10: [function (e, t, r) {
+      "use strict";
       function o(e) {
-        return e && e.__esModule ? e : { default: e };
-      }r.__esModule = !0;var n = e('../core-js/object/set-prototype-of'),
+        return e && e.__esModule ? e : { "default": e };
+      }r.__esModule = !0;var n = e("../core-js/object/set-prototype-of"),
           i = o(n),
-          s = e('../core-js/object/create'),
+          s = e("../core-js/object/create"),
           c = o(s),
-          u = e('../helpers/typeof'),
-          a = o(u);r['default'] = function (e, t) {
-        if ('function' != typeof t && null !== t) throw new TypeError('Super expression must either be null or a function, not ' + ('undefined' == typeof t ? 'undefined' : (0, a['default'])(t)));e.prototype = (0, c['default'])(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (i['default'] ? (0, i['default'])(e, t) : e.__proto__ = t);
+          u = e("../helpers/typeof"),
+          a = o(u);r["default"] = function (e, t) {
+        if ("function" != typeof t && null !== t) throw new TypeError("Super expression must either be null or a function, not " + ("undefined" == typeof t ? "undefined" : (0, a["default"])(t)));e.prototype = (0, c["default"])(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (i["default"] ? (0, i["default"])(e, t) : e.__proto__ = t);
       };
-    }, { '../core-js/object/create': 1, '../core-js/object/set-prototype-of': 4, '../helpers/typeof': 12 }], 11: [function (e, t, r) {
-      'use strict';
+    }, { "../core-js/object/create": 1, "../core-js/object/set-prototype-of": 4, "../helpers/typeof": 12 }], 11: [function (e, t, r) {
+      "use strict";
       function o(e) {
-        return e && e.__esModule ? e : { default: e };
-      }r.__esModule = !0;var n = e('../helpers/typeof'),
-          i = o(n);r['default'] = function (e, t) {
-        if (!e) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return !t || 'object' !== ('undefined' == typeof t ? 'undefined' : (0, i['default'])(t)) && 'function' != typeof t ? e : t;
+        return e && e.__esModule ? e : { "default": e };
+      }r.__esModule = !0;var n = e("../helpers/typeof"),
+          i = o(n);r["default"] = function (e, t) {
+        if (!e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return !t || "object" !== ("undefined" == typeof t ? "undefined" : (0, i["default"])(t)) && "function" != typeof t ? e : t;
       };
-    }, { '../helpers/typeof': 12 }], 12: [function (e, t, r) {
-      'use strict';
+    }, { "../helpers/typeof": 12 }], 12: [function (e, t, r) {
+      "use strict";
       function o(e) {
-        return e && e.__esModule ? e : { default: e };
-      }r.__esModule = !0;var n = e('../core-js/symbol/iterator'),
+        return e && e.__esModule ? e : { "default": e };
+      }r.__esModule = !0;var n = e("../core-js/symbol/iterator"),
           i = o(n),
-          s = e('../core-js/symbol'),
+          s = e("../core-js/symbol"),
           c = o(s),
-          u = 'function' == typeof c['default'] && 'symbol' == _typeof(i["default"]) ? function (e) {
-        return typeof e === 'undefined' ? 'undefined' : _typeof(e);
+          u = "function" == typeof c["default"] && "symbol" == _typeof(i["default"]) ? function (e) {
+        return typeof e === "undefined" ? "undefined" : _typeof(e);
       } : function (e) {
-        return e && "function" == typeof c["default"] && e.constructor === c["default"] ? "symbol" : typeof e === 'undefined' ? 'undefined' : _typeof(e);
+        return e && "function" == typeof c["default"] && e.constructor === c["default"] ? "symbol" : typeof e === "undefined" ? "undefined" : _typeof(e);
       };r["default"] = "function" == typeof c["default"] && "symbol" === u(i["default"]) ? function (e) {
         return "undefined" == typeof e ? "undefined" : u(e);
       } : function (e) {
@@ -337,7 +337,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       };
     }, { "./_cof": 26 }], 46: [function (e, t, r) {
       t.exports = function (e) {
-        return "object" == (typeof e === 'undefined' ? 'undefined' : _typeof(e)) ? null !== e : "function" == typeof e;
+        return "object" == (typeof e === "undefined" ? "undefined" : _typeof(e)) ? null !== e : "function" == typeof e;
       };
     }, {}], 47: [function (e, t, r) {
       var o = e("./_an-object");t.exports = function (e, t, r, n) {
@@ -452,7 +452,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         s(e, o, { value: { i: "O" + ++c, w: {} } });
       },
           l = function l(e, t) {
-        if (!n(e)) return "symbol" == (typeof e === 'undefined' ? 'undefined' : _typeof(e)) ? e : ("string" == typeof e ? "S" : "P") + e;if (!i(e, o)) {
+        if (!n(e)) return "symbol" == (typeof e === "undefined" ? "undefined" : _typeof(e)) ? e : ("string" == typeof e ? "S" : "P") + e;if (!i(e, o)) {
           if (!u(e)) return "F";if (!t) return "E";f(e);
         }return e[o].i;
       },
@@ -550,7 +550,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var o = e("./_to-iobject"),
           n = e("./_object-gopn").f,
           i = {}.toString,
-          s = "object" == (typeof window === 'undefined' ? 'undefined' : _typeof(window)) && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [],
+          s = "object" == (typeof window === "undefined" ? "undefined" : _typeof(window)) && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [],
           c = function c(e) {
         try {
           return n(e);
@@ -1023,7 +1023,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var t = W[e] = k(_T[I]);return t._k = e, t;
       },
           Y = K && "symbol" == _typeof(_T.iterator) ? function (e) {
-        return "symbol" == (typeof e === 'undefined' ? 'undefined' : _typeof(e));
+        return "symbol" == (typeof e === "undefined" ? "undefined" : _typeof(e));
       } : function (e) {
         return e instanceof _T;
       },
@@ -1144,14 +1144,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               }, r._responseTimeOut);
             }();
           } }, { key: "_onResponse", value: function value(e) {
-            var t = this;
-
-            if ("response" === e.type) {
+            var t = this;if ("response" === e.type) {
               var r = e.to + e.id,
-                  o = t._responseCallbacks[r];
-              if (e.body.code >= 200 && delete t._responseCallbacks[r], o) return o(e), !0;
-            }
-            return !1;
+                  o = t._responseCallbacks[r];if (e.body.code >= 200 && delete t._responseCallbacks[r], o) return o(e), !0;
+            }return !1;
           } }, { key: "_onMessage", value: function value(e) {
             var t = this;if (!t._onResponse(e)) {
               var r = t._subscriptions[e.to];r ? t._publishOn(r, e) : t._publishOnDefault(e);
@@ -1255,17 +1251,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           u = function () {
         function e(t) {
           (0, i["default"])(this, e);var r = this;r._bus = t, r._components = {}, t.addListener(e.InternalDeployAddress, function (e) {
-
-            switch (e.type) {
-              case "create":
+            switch (e.type) {case "create":
                 r._onDeploy(e);break;case "delete":
                 r._onRemove(e);}
           });
-        }
-        return (0, c["default"])(e, [{ key: "_responseMsg", value: function value(t, r, o) {
+        }return (0, c["default"])(e, [{ key: "_responseMsg", value: function value(t, r, o) {
             var n = { id: t.id, type: "response", from: e.InternalDeployAddress, to: e.ExternalDeployAddress },
-                i = {};
-            return r && (i.code = r), o && (i.desc = o), n.body = i, n;
+                i = {};return r && (i.code = r), o && (i.desc = o), n.body = i, n;
           } }, { key: "_onDeploy", value: function value(e) {
             var t = this,
                 r = e.body.config,

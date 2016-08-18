@@ -7,6 +7,7 @@ exports.divideURL = divideURL;
 exports.divideEmail = divideEmail;
 exports.emptyObject = emptyObject;
 exports.deepClone = deepClone;
+exports.removePathFromURL = removePathFromURL;
 exports.getUserURLFromEmail = getUserURLFromEmail;
 exports.getUserEmailFromURL = getUserEmailFromURL;
 exports.convertToUserURL = convertToUserURL;
@@ -103,6 +104,11 @@ function emptyObject(object) {
 function deepClone(obj) {
   //TODO: simple but inefficient JSON deep clone...
   if (obj) return JSON.parse(JSON.stringify(obj));
+}
+
+function removePathFromURL(url) {
+  var splitURL = url.split('/');
+  return splitURL[0] + '//' + splitURL[2] + '/' + splitURL[3];
 }
 
 /**

@@ -5,13 +5,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IdGenerator = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 PT Inovação e Sistemas SA
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 INESC-ID
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 QUOBIS NETWORKS SL
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 ORANGE SA
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 Deutsche Telekom AG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 Apizee
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      **/
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _RethinkObject2 = require('../reTHINKObject/RethinkObject.js');
-
-var _RethinkObject3 = _interopRequireDefault(_RethinkObject2);
 
 var _Message = require('./Message.js');
 
@@ -23,84 +39,40 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 PT Inovação e Sistemas SA
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 INESC-ID
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 QUOBIS NETWORKS SL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 ORANGE SA
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 Deutsche Telekom AG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 Apizee
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               **/
-
 /**
  * @author alice.cheambe[at]fokus.fraunhofer.de
  * The MessageFactory creates messages according to the reTHINK Message Data Model to be sent through the Runtime
  * Message Bus.
  */
-
-var MessageFactory = function (_RethinkObject) {
-    _inherits(MessageFactory, _RethinkObject);
+var MessageFactory = function () {
 
     /**
      * Constructor to be used to instantiate an object of the Message Factory
-     * @param {boolean} validation
-     * @param {URL.URL } schema - link to the reTHINK Message Data Schema
      */
-    function MessageFactory(validation, schema) {
+    function MessageFactory() {
         _classCallCheck(this, MessageFactory);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MessageFactory).call(this, validation, schema));
-
-        _this.myGenerator = new IdGenerator().idMaker();
-        return _this;
+        this.myGenerator = new IdGenerator().idMaker();
     }
 
     /**
-     * Validates the message against the reTHINK Message Data Schema
-     * @param data
-     * @return {*}
+     * Creates a Message of TYPE CREATE and Create Message Body
+     *
+     * @param {URL.URL} from - the sender of this message
+     * @param {URL.URLList} to-  One or more URLs of Message recipients. According to the URL scheme it may be handled
+     * in different ways
+     * @param {String} value - Contains the created object in JSON format
+     * @param {URL.URL} policy - the sender of this message
      */
 
 
     _createClass(MessageFactory, [{
-        key: 'validate',
-        value: function validate(data) {
-            return _get(Object.getPrototypeOf(MessageFactory.prototype), 'validate', this).call(this, data);
-        }
-
-        /**
-         * Creates a Message of TYPE CREATE and Create Message Body
-         *
-         * @param {URL.URL} from - the sender of this message
-         * @param {URL.URLList} to-  One or more URLs of Message recipients. According to the URL scheme it may be handled
-         * in different ways
-         * @param {String} value - Contains the created object in JSON format
-         * @param {URL.URL} policy - the sender of this message
-         */
-
-    }, {
         key: 'createCreateMessageRequest',
         value: function createCreateMessageRequest(from, to, value, policy) {
             if (!from || !to || !value) throw new Error("from, to, and value of object to be created MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.CreateMessageBody(value, policy, null, null, null, null, null);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.CreateMessageBody(value, policy, undefined, undefined, undefined, undefined, undefined);
             var message = new _Message2.default(id, from, to, _Message.MessageType.CREATE, messageBody);
             return message;
         }
@@ -120,8 +92,8 @@ var MessageFactory = function (_RethinkObject) {
         value: function createForwardMessageRequest(from, to, message) {
             if (!from || !to || !message) throw new Error("from, to, and message to forward MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.ForwardMessageBody(null, null, null, null, null, message);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.ForwardMessageBody(undefined, undefined, undefined, undefined, undefined, message);
             var forwardMessage = new _Message2.default(id, from, to, _Message.MessageType.FORWARD, messageBody);
             return forwardMessage;
         }
@@ -142,8 +114,8 @@ var MessageFactory = function (_RethinkObject) {
         value: function createDeleteMessageRequest(from, to, resource, attribute) {
             if (!from || !to) throw new Error("from and to parameters MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.DeleteMessageBody(null, null, resource, attribute, null, null);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.DeleteMessageBody(undefined, undefined, resource, attribute, undefined, undefined);
             var message = new _Message2.default(id, from, to, _Message.MessageType.DELETE, messageBody);
             return message;
         }
@@ -165,8 +137,8 @@ var MessageFactory = function (_RethinkObject) {
         value: function createUpdateMessageRequest(from, to, value, resource, attribute) {
             if (!from || !to || !value) throw new Error("from, and to and value MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.UpdateMessageBody(null, null, resource, null, null, attribute, value);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.UpdateMessageBody(undefined, undefined, resource, undefined, undefined, attribute, value);
             var message = new _Message2.default(id, from, to, _Message.MessageType.UPDATE, messageBody);
             return message;
         }
@@ -186,8 +158,8 @@ var MessageFactory = function (_RethinkObject) {
         value: function createReadMessageRequest(from, to, resource, attribute) {
             if (!from || !to || !resource) throw new Error("from, to and the resource to read from MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.ReadMessageBody(null, null, resource, null, null, attribute, null, null);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.ReadMessageBody(undefined, undefined, resource, undefined, undefined, attribute, undefined, undefined);
             var message = new _Message2.default(id, from, to, _Message.MessageType.READ, messageBody);
             return message;
         }
@@ -205,27 +177,27 @@ var MessageFactory = function (_RethinkObject) {
         value: function createSubscribeMessageRequest(from, to, resource) {
             if (!from || !to || !resource) throw new Error("from, to and the resource to subscribe to MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.MessageBody(null, null, resource, null, null);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.MessageBody(undefined, undefined, resource, undefined, undefined);
             var message = new _Message2.default(id, from, to, _Message.MessageType.SUBSCRIBE, messageBody);
             return message;
         }
 
         /**
-        * Creates a Message of type UNSUBSCRIBE
-        * @param {URL.URL} from - the sender of this message
-        * @param {URL.URLList} to- One or more URLs of Message recipients. According to the URL scheme it may be handled in
-        * different ways
-        * @param {URL.URL} resource - URL of the object
-        */
+         * Creates a Message of type UNSUBSCRIBE
+         * @param {URL.URL} from - the sender of this message
+         * @param {URL.URLList} to- One or more URLs of Message recipients. According to the URL scheme it may be handled in
+         * different ways
+         * @param {URL.URL} resource - URL of the object
+         */
 
     }, {
         key: 'createUnsubscribeMessageRequest',
         value: function createUnsubscribeMessageRequest(from, to, resource) {
             if (!from || !to || !resource) throw new Error("from, to and the resource to subscribe to MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.MessageBody(null, null, resource, null, null);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.MessageBody(undefined, undefined, resource, undefined, undefined);
             var message = new _Message2.default(id, from, to, _Message.MessageType.UNSUBSCRIBE, messageBody);
             return message;
         }
@@ -244,8 +216,8 @@ var MessageFactory = function (_RethinkObject) {
         value: function createExecuteMessageRequest(from, to, method, params) {
             if (!from || !to || !method) throw new Error("from, to and the method to execute MUST be specified");
 
-            var id = this.myGenerator.next().value;
-            var messageBody = new _MessageBody.ExecuteMessageBody(null, null, null, null, null, method, params);
+            var id = "" + this.myGenerator.next().value;
+            var messageBody = new _MessageBody.ExecuteMessageBody(undefined, undefined, undefined, undefined, undefined, method, params);
             var executeMessage = new _Message2.default(id, from, to, _Message.MessageType.EXECUTE, messageBody);
             return executeMessage;
         }
@@ -263,7 +235,7 @@ var MessageFactory = function (_RethinkObject) {
         key: 'createMessageResponse',
         value: function createMessageResponse(message, code, value, source) {
             if (!code) throw new Error("response Code MUST be specified");
-            var response = new _MessageBody.ResponseMessageBody(null, null, null, code, value, source);
+            var response = new _MessageBody.ResponseMessageBody(undefined, undefined, undefined, code, value, source);
             return new _Message2.default(message.id, message.to, message.from, _Message.MessageType.RESPONSE, response);
         }
 
@@ -299,7 +271,7 @@ var MessageFactory = function (_RethinkObject) {
     }]);
 
     return MessageFactory;
-}(_RethinkObject3.default);
+}();
 
 /**
  * Message Identifier Generator that generates the id used to identifier message transactions

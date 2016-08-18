@@ -3,47 +3,53 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.UPDATE_OPERATION = exports.ATTRIBUTE_TYPE = exports.REASON_PHRASE = exports.RESPONSE_CODE = exports.ExecuteMessageBody = exports.ResponseMessageBody = exports.ForwardMessageBody = exports.UpdateMessageBody = exports.DeleteMessageBody = exports.ReadMessageBody = exports.CreateMessageBody = exports.MessageBody = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 exports.Enum = Enum;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _RethinkObject2 = require("../reTHINKObject/RethinkObject.js");
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _RethinkObject3 = _interopRequireDefault(_RethinkObject2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * Copyright 2016 PT Inovação e Sistemas SA
- * Copyright 2016 INESC-ID
- * Copyright 2016 QUOBIS NETWORKS SL
- * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
- * Copyright 2016 ORANGE SA
- * Copyright 2016 Deutsche Telekom AG
- * Copyright 2016 Apizee
- * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- **/
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 PT Inovação e Sistemas SA
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 INESC-ID
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 QUOBIS NETWORKS SL
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 ORANGE SA
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 Deutsche Telekom AG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 Apizee
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                **/
+
 
 /**
  * @author alice.cheambe[at]fokus.fraunhofer.de
  * The MessageBody class is the base implementation of the Message Body Data Model from which the other body types extend.
  *
  */
-
-var MessageBody = exports.MessageBody = function () {
+var MessageBody = exports.MessageBody = function (_RethinkObject) {
+    _inherits(MessageBody, _RethinkObject);
 
     /**
      *
@@ -57,11 +63,14 @@ var MessageBody = exports.MessageBody = function () {
     function MessageBody(idToken, accessToken, resource, schema, assertedIdentity) {
         _classCallCheck(this, MessageBody);
 
-        this.idToken = idToken;
-        this.accessToken = accessToken;
-        this.resource = resource;
-        this.schema = schema;
-        this.assertedIdentity = assertedIdentity;
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MessageBody).call(this));
+
+        _this.idToken = idToken;
+        _this.accessToken = accessToken;
+        _this.resource = resource;
+        _this.schema = schema;
+        _this.assertedIdentity = assertedIdentity;
+        return _this;
     }
 
     /**
@@ -83,7 +92,7 @@ var MessageBody = exports.MessageBody = function () {
     }]);
 
     return MessageBody;
-}();
+}(_RethinkObject3.default);
 
 /**
  * Class representation of the CreateMessageBody object
@@ -108,11 +117,11 @@ var CreateMessageBody = exports.CreateMessageBody = function (_MessageBody) {
 
         if (!value) throw new Error("The value parameter is null");
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CreateMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity, schema, assertedIdentity));
+        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(CreateMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity, schema, assertedIdentity));
 
-        _this.value = value;
-        if (policy) _this.policy = policy;
-        return _this;
+        _this2.value = value;
+        if (policy) _this2.policy = policy;
+        return _this2;
     }
 
     return CreateMessageBody;
@@ -142,14 +151,14 @@ var ReadMessageBody = exports.ReadMessageBody = function (_MessageBody2) {
     function ReadMessageBody(idToken, accessToken, resource, schema, assertedIdentity, attribute, criteriaSyntax, criteria) {
         _classCallCheck(this, ReadMessageBody);
 
-        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(ReadMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
+        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ReadMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
 
-        if (attribute) _this2.attribute = attribute;
+        if (attribute) _this3.attribute = attribute;
 
-        if (criteriaSyntax) _this2.criteriaSyntax = criteriaSyntax;
+        if (criteriaSyntax) _this3.criteriaSyntax = criteriaSyntax;
 
-        if (criteria) _this2.criteria = criteria;
-        return _this2;
+        if (criteria) _this3.criteria = criteria;
+        return _this3;
     }
 
     return ReadMessageBody;
@@ -176,17 +185,17 @@ var DeleteMessageBody = exports.DeleteMessageBody = function (_MessageBody3) {
         _classCallCheck(this, DeleteMessageBody);
 
         if (resource instanceof Array) {
-            var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(DeleteMessageBody).call(this, idToken, accessToken, null, schema, assertedIdentity));
+            var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(DeleteMessageBody).call(this, idToken, accessToken, null, schema, assertedIdentity));
 
-            _this3.childrenResources = resource;
+            _this4.childrenResources = resource;
         } else {
-            var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(DeleteMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
+            var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(DeleteMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
         }
 
         if (attribute) {
-            _this3.attribute = attribute;
+            _this4.attribute = attribute;
         }
-        return _possibleConstructorReturn(_this3);
+        return _possibleConstructorReturn(_this4);
     }
 
     return DeleteMessageBody;
@@ -213,11 +222,11 @@ var UpdateMessageBody = exports.UpdateMessageBody = function (_MessageBody4) {
     function UpdateMessageBody(idToken, accessToken, resource, schema, assertedIdentity, attribute, value) {
         _classCallCheck(this, UpdateMessageBody);
 
-        var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(UpdateMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
+        var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(UpdateMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
 
-        _this4.attribute = attribute;
-        _this4.value = value;
-        return _this4;
+        _this5.attribute = attribute;
+        _this5.value = value;
+        return _this5;
     }
 
     _createClass(UpdateMessageBody, [{
@@ -256,10 +265,10 @@ var ForwardMessageBody = exports.ForwardMessageBody = function (_MessageBody5) {
     function ForwardMessageBody(idToken, accessToken, resource, schema, assertedIdentity, message) {
         _classCallCheck(this, ForwardMessageBody);
 
-        var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(ForwardMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
+        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(ForwardMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
 
-        _this5.message = message;
-        return _this5;
+        _this6.message = message;
+        return _this6;
     }
 
     return ForwardMessageBody;
@@ -285,15 +294,15 @@ var ResponseMessageBody = exports.ResponseMessageBody = function (_MessageBody6)
     function ResponseMessageBody(idToken, accessToken, resource, code, value) {
         _classCallCheck(this, ResponseMessageBody);
 
-        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(ResponseMessageBody).call(this, idToken, accessToken, resource));
+        var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(ResponseMessageBody).call(this, idToken, accessToken, resource));
 
         if (code) {
-            _this6.code = code;
-            _this6.description = REASON_PHRASE[code];
+            _this7.code = code;
+            _this7.description = REASON_PHRASE[code];
         }
-        if (value) _this6.value = value;
+        if (value) _this7.value = value;
 
-        return _this6;
+        return _this7;
     }
 
     return ResponseMessageBody;
@@ -321,13 +330,13 @@ var ExecuteMessageBody = exports.ExecuteMessageBody = function (_MessageBody7) {
     function ExecuteMessageBody(idToken, accessToken, resource, schema, assertedIdentity, method, params) {
         _classCallCheck(this, ExecuteMessageBody);
 
-        var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(ExecuteMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
+        var _this8 = _possibleConstructorReturn(this, Object.getPrototypeOf(ExecuteMessageBody).call(this, idToken, accessToken, resource, schema, assertedIdentity));
 
-        _this7.method = method;
+        _this8.method = method;
         if (params) {
-            if (params instanceof Array) _this7.params = params;else _this7.params = [params];
+            if (params instanceof Array) _this8.params = params;else _this8.params = [params];
         }
-        return _this7;
+        return _this8;
     }
 
     return ExecuteMessageBody;

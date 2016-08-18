@@ -380,7 +380,7 @@ var Registry = function (_EventEmitter) {
 
       var message = { type: 'delete', from: _this.registryURL,
         to: 'domain://registry.' + _this._domain + '/',
-        body: { value: { user: user, hypertyURL: hypertyInstance } } };
+        body: { value: { user: user, url: hypertyInstance } } };
 
       _this._messageBus.postMessage(message, function (reply) {
         console.log('unregister hyperty Reply', reply);
@@ -463,21 +463,27 @@ var Registry = function (_EventEmitter) {
 
     /**
     * To register a new Data Object in the runtime which returns the dataObjectURL allocated to the new Data Object.
-    * @param  {String}      identifier            identifier
+    * @param  {String}      identifier                  identifier
     * @param  {String}      dataObjectschema            dataObjectschema
-    * @param  {String}      dataObjectUrl        dataObjectUrl
-    * @return {String}      dataObjectReporter         dataObjectReporter
+    * @param  {String}      dataObjectUrl               dataObjectUrl
+    * @param {String}      dataObjectReporter           dataObjectReporter
+    * @param  {Array}     resources                     dataObject resources
+    * @param  {Array}     authorise                     list of pre authorised authorised IDs
     */
 
   }, {
     key: 'registerDataObject',
-    value: function registerDataObject(identifier, dataObjectschema, dataObjectUrl, dataObjectReporter, authorise) {
+    value: function registerDataObject(identifier, dataObjectschema, dataObjectUrl, dataObjectReporter, resources, authorise) {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
 
+        var dataScheme = [];
+        var filteredDataScheme = dataObjectUrl.split(':');
+        dataScheme.push(filteredDataScheme[0]);
+
         //message to register the new hyperty, within the domain registry
-        var messageValue = { name: identifier, schema: dataObjectschema, url: dataObjectUrl, expires: _this.expiresTime, reporter: dataObjectReporter, preAuth: authorise, subscribers: [] };
+        var messageValue = { name: identifier, resources: resources, dataSchemes: dataScheme, schema: dataObjectschema, url: dataObjectUrl, expires: _this.expiresTime, reporter: dataObjectReporter, preAuth: authorise, subscribers: [] };
 
         _this.dataObjectList[dataObjectUrl] = messageValue;
 
@@ -541,10 +547,6 @@ var Registry = function (_EventEmitter) {
                   });
                 });
 
-                var hyperty = new _HypertyInstance2.default(_this.identifier, _this.registryURL, descriptorURL, descriptor, adderessList[0], userProfile);
-
-                _this.hypertiesList.push(hyperty);
-
                 //check whether the received sanbox e ApplicationSandbox or a normal sandbox
                 if (sandbox.type === 'app') {
                   _this.sandboxesList.appSandbox[adderessList[0]] = sandbox;
@@ -582,8 +584,14 @@ var Registry = function (_EventEmitter) {
                     filteredDataSchemas.push(dataSchema.sourcePackage.sourceCode.properties.scheme.constant);
                   }
 
+                  var hyperty = new _HypertyInstance2.default(_this.identifier, _this.registryURL, descriptorURL, descriptor, adderessList[0], userProfile);
+
+                  hyperty._resources = resources;
+                  hyperty._dataSchemes = filteredDataSchemas;
+                  _this.hypertiesList.push(hyperty);
+
                   //message to register the new hyperty, within the domain registry
-                  var messageValue = { user: identityURL, hypertyDescriptorURL: descriptorURL, hypertyURL: adderessList[0], expires: _this.expiresTime, resources: resources, dataSchemes: filteredDataSchemas };
+                  var messageValue = { user: identityURL, descriptor: descriptorURL, url: adderessList[0], expires: _this.expiresTime, resources: resources, dataSchemes: filteredDataSchemas };
 
                   var message = _this.messageFactory.createCreateMessageRequest(_this.registryURL, 'domain://registry.' + _this.registryDomain + '/', messageValue, 'policy');
 
@@ -862,9 +870,10 @@ var Registry = function (_EventEmitter) {
 
   }, {
     key: 'onEvent',
-    value: function onEvent(event) {}
-    // TODO body...
-
+    value: function onEvent(event) {
+      // TODO body...
+      console.log('onEvent');
+    }
 
     /**
     * To discover sandboxes available in the runtime for a certain domain. Required by the runtime UA to avoid more than one sandbox for the same domain.

@@ -11,51 +11,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Operators = function () {
   function Operators() {
     _classCallCheck(this, Operators);
-
-    var _this = this;
-    _this.operators = _this.setOperators();
   }
 
   _createClass(Operators, [{
-    key: 'setOperators',
-    value: function setOperators() {
-      var _this = this;
-      var operators = {
-        between: function between(params) {
-          return _this.isBetween(params[0][0], params[0][1], params[1]);
-        },
-        in: function _in(params) {
-          return params[0].indexOf(params[1]) > -1;
-        },
-        equals: function equals(params) {
-          return params[0][0] === '*' || params[0][0] === params[1];
-        },
-
-        or: function or(params) {
-          return params[0] || params[1];
-        },
-        and: function and(params) {
-          return params[0] && params[1];
-        },
-        not: function not(params) {
-          return !params[0];
-        }
-      };
-      return operators;
+    key: 'and',
+    value: function and(params) {
+      return params[0] && params[1];
     }
-
-    /**
-    * Verifies if the current time is between the given start and end times.
-    * @param {Number}     start
-    * @param {Number}     end
-    * @return {Boolean}   boolean
-    */
-
   }, {
-    key: 'isBetween',
-    value: function isBetween(start, end, now) {
-      start = parseInt(start);
-      end = parseInt(end);
+    key: 'between',
+    value: function between(params) {
+      var start = parseInt(params[0][0]);
+      var end = parseInt(params[0][1]);
+      var now = params[1];
 
       if (end < start) {
         now = now < start ? now += 2400 : now;
@@ -63,6 +31,26 @@ var Operators = function () {
       }
 
       return now > start && now < end;
+    }
+  }, {
+    key: 'equals',
+    value: function equals(params) {
+      return params[0] == '*' || params[0] == params[1];
+    }
+  }, {
+    key: 'in',
+    value: function _in(params) {
+      return params[0].indexOf(params[1]) > -1;
+    }
+  }, {
+    key: 'not',
+    value: function not(params) {
+      return !params[0];
+    }
+  }, {
+    key: 'or',
+    value: function or(params) {
+      return params[0] || params[1];
     }
   }]);
 
