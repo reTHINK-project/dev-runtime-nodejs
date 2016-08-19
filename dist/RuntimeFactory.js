@@ -61,7 +61,9 @@ var RuntimeFactory = Object.create({
     return (0, _atob3.default)(b64);
   },
   createRuntimeCatalogue: function createRuntimeCatalogue(development) {
-    if (!this.catalogue) this.catalogue = development || new _RuntimeCatalogue.RuntimeCatalogueLocal(this);
+    if (!this.catalogue)
+      // this.catalogue = development || new RuntimeCatalogueLocal(this);
+      this.catalogue = development ? new _RuntimeCatalogue.RuntimeCatalogueLocal(this) : new _RuntimeCatalogue.RuntimeCatalogue(this);
 
     return this.catalogue;
   }
