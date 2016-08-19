@@ -46,7 +46,7 @@ export default class SandboxApp extends Sandbox{
   }
 
   _onPostMessage(msg) {
-    console.log('SandboxApp postMessage message: msg'.green);
+    console.log('SandboxApp postMessage message: '.green,msg);
     process.send(msg);
   }
 }

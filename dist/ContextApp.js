@@ -35,7 +35,7 @@ function create(myApp) {
   process._registry._create = function (url, sourceCode, config) {
     var activate = (0, _eval3.default)(sourceCode, true);
     console.log('activate-->'.red);
-    return activate(url, process._miniBus, config);
+    return activate.default(url, process._miniBus, config);
   };
 } /**
   * Copyright 2016 PT Inovação e Sistemas SA
