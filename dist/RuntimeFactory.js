@@ -42,7 +42,7 @@ var _atob2 = require('atob');
 
 var _atob3 = _interopRequireDefault(_atob2);
 
-var _RuntimeCatalogue = require('./service-framework/RuntimeCatalogue.js');
+var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

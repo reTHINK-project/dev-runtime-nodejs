@@ -22,6 +22,8 @@
 **/
 const methods = {GET: 'get', POST: 'post', DELETE: 'delete', UPDATE: 'update'};
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 import httpRequest from 'request';
 
 class Request {
@@ -56,10 +58,10 @@ class Request {
       // TODO: Check why the url have localhost and undefined like a protocol
       // check the RuntimeUA
       let protocolmap = {
-        'localhost://': 'https://',
-        'undefined://': 'https://',
-        'hyperty-catalogue://': 'https://',
-        'https://': 'https://',
+        'localhost://': 'http://',
+        'undefined://': 'http://',
+        'hyperty-catalogue://': 'http://',
+        'https://': 'http://',
         'http://': 'http://'
       };
 
@@ -75,9 +77,10 @@ class Request {
           break;
         }
       }
-      httpRequest.get({
+      var req = httpRequest.get({
         url: url
       }, function(err, response, body) {
+        console.log(err);
         // console.log('http respone.statusCode :', response.statusCode);
         // console.log('this is response.headers', response.headers['content-type']);
         // console.log('this is response.body :', body);
@@ -90,6 +93,9 @@ class Request {
           reject(err);
         }
       });
+
+      req.end();
+
     });
   }
 

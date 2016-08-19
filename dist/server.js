@@ -31,7 +31,7 @@ app.use(log4js.connectLogger(logger, {
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 app.set('trust proxy', 1);
 app.use(express.static(path.resolve(__dirname, '../static/')));
-app.listen(8080);
+app.listen(80);
 
 var runtime = rethink.default.install({
   domain: domain,

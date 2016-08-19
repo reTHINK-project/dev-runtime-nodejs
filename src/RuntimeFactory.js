@@ -27,7 +27,7 @@ import Request from './Request';
 import atob from 'atob';
 
 // import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from './service-framework/RuntimeCatalogue.js';
+import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue';
 
 var RuntimeFactory = Object.create({
     createSandbox() {

@@ -1,8 +1,8 @@
 'use strict';
 
-var _sandbox = require('./runtime-core/dist/sandbox');
+var _sandbox = require('runtime-core/dist/sandbox');
 
-var _minibus = require('./runtime-core/dist/minibus');
+var _minibus = require('runtime-core/dist/minibus');
 
 var _minibus2 = _interopRequireDefault(_minibus);
 

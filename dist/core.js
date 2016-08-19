@@ -31,10 +31,6 @@ var _RuntimeFactory = require('./RuntimeFactory');
 
 var _RuntimeFactory2 = _interopRequireDefault(_RuntimeFactory);
 
-var _RuntimeUA = require('./runtime-core/src/runtime/RuntimeUA.js');
-
-var _RuntimeUA2 = _interopRequireDefault(_RuntimeUA);
-
 var _eval2 = require('eval');
 
 var _eval3 = _interopRequireDefault(_eval2);
@@ -47,8 +43,8 @@ var fs = require('fs');
 
 var domain = 'hybroker.rethink.ptinovacao.pt';
 
-var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
+var parameters = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
+var runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';
 var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue(development);
 
@@ -77,8 +73,8 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
 }).then(function (sourcePackage) {
   try {
     (function () {
-      // let Runtime = _eval(sourcePackage.sourceCode, true);
-      var runtime = new _RuntimeUA2.default(_RuntimeFactory2.default, domain);
+      var RuntimeUA = (0, _eval3.default)(sourcePackage.sourceCode, true);
+      var runtime = new RuntimeUA(_RuntimeFactory2.default, domain);
 
       process.on('message', function (msg) {
         console.log('Message Received on runtime-core'.blue, msg);

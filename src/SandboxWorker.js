@@ -20,8 +20,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-import { Sandbox, SandboxType } from './runtime-core/dist/sandbox';
-import MiniBus from './runtime-core/dist/minibus';
+import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
+import MiniBus from 'runtime-core/dist/minibus';
 let child = require('child_process');
 let colors = require('colors');
 

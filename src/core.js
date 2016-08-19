@@ -27,13 +27,13 @@ let fs = require('fs');
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
+
 import _eval from 'eval';
 
 let domain = 'hybroker.rethink.ptinovacao.pt';
 
-let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+let parameters = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
+let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';
 let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
@@ -65,8 +65,8 @@ catalogue.getRuntimeDescriptor(runtimeURL)
 
  .then(function(sourcePackage) {
   try {
-    // let Runtime = _eval(sourcePackage.sourceCode, true);
-    let runtime =  new Runtime(RuntimeFactory, domain);
+    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    let runtime = new RuntimeUA(RuntimeFactory, domain);
 
     process.on('message', function(msg) {
       console.log('Message Received on runtime-core'.blue, msg);

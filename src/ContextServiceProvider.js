@@ -20,8 +20,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-import { Sandbox, SandboxRegistry } from './runtime-core/dist/sandbox';
-import MiniBus from './runtime-core/dist/minibus';
+import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
+import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 var colors = require('colors');
 

@@ -38,6 +38,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 **/
 var methods = { GET: 'get', POST: 'post', DELETE: 'delete', UPDATE: 'update' };
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 var Request = function () {
   function Request() {
     _classCallCheck(this, Request);
@@ -70,10 +72,10 @@ var Request = function () {
         // TODO: Check why the url have localhost and undefined like a protocol
         // check the RuntimeUA
         var protocolmap = {
-          'localhost://': 'https://',
-          'undefined://': 'https://',
-          'hyperty-catalogue://': 'https://',
-          'https://': 'https://',
+          'localhost://': 'http://',
+          'undefined://': 'http://',
+          'hyperty-catalogue://': 'http://',
+          'https://': 'http://',
           'http://': 'http://'
         };
 
@@ -89,9 +91,10 @@ var Request = function () {
             break;
           }
         }
-        _request2.default.get({
+        var req = _request2.default.get({
           url: url
         }, function (err, response, body) {
+          console.log(err);
           // console.log('http respone.statusCode :', response.statusCode);
           // console.log('this is response.headers', response.headers['content-type']);
           // console.log('this is response.body :', body);
@@ -104,6 +107,8 @@ var Request = function () {
             reject(err);
           }
         });
+
+        req.end();
       });
     }
   }]);
