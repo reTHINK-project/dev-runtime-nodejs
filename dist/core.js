@@ -43,8 +43,8 @@ var fs = require('fs');
 
 var domain = 'hybroker.rethink.ptinovacao.pt';
 
-var parameters = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
-var runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime'; //.well-known/runtime/MyRuntime
+var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
+var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';
 var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue(development);
 
@@ -73,6 +73,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
 }).then(function (sourcePackage) {
   try {
     (function () {
+
       var RuntimeUA = (0, _eval3.default)(sourcePackage.sourceCode, true);
       var runtime = new RuntimeUA(_RuntimeFactory2.default, domain);
 

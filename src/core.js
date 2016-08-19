@@ -32,8 +32,8 @@ import _eval from 'eval';
 
 let domain = 'hybroker.rethink.ptinovacao.pt';
 
-let parameters = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
-let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';//.well-known/runtime/MyRuntime
+let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
+let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';
 let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
@@ -65,6 +65,7 @@ catalogue.getRuntimeDescriptor(runtimeURL)
 
  .then(function(sourcePackage) {
   try {
+
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
 
