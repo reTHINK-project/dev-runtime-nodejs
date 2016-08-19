@@ -32,8 +32,8 @@ import _eval from 'eval';
 
 let domain = 'hybroker.rethink.ptinovacao.pt';
 
-let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
+let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';
 let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 

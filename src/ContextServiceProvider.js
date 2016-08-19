@@ -48,5 +48,5 @@ process._registry._create = function(url, sourceCode, config) {
     let activate = _eval(sourceCode, true);
     console.log('sourceCode'.red, sourceCode);
     console.log(activate);
-    return activate(url, process._miniBus, config);
+    return activate.default(url, process._miniBus, config);
   };
