@@ -68,3 +68,15 @@ Afterwards, run the following (as root) :
 # npm install
 # npm start
 ```
+after running the above command lines. The hyperty `helloWorldObserver` will be loaded and executed in this Runtime Node.
+
+## How to use Runtime Node 
+
+In case a user or hyperty developer wants to make use of the functionalities of Runtime Node.A small modification is needed on `server.js`. Essentially,using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))` in line [server.js#L40](https://github.com/reTHINK-project/dev-runtime-nodejs/blob/develop-improves/server.js#L40).
+
+Where :
+
+`domain` : context service provider's domain.
+
+`name of Hyperty` : simply an identifier of the Hyperty to be loaded and executed.
+
