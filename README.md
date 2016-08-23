@@ -68,7 +68,7 @@ Afterwards, run the following (as root) :
 # npm install
 # npm start
 ```
-after running the above command lines. The hyperty `helloWorldObserver` will be loaded and executed in this Runtime Node.
+After having run the above command lines. The Runtime Node is lunched. Then, the hyperty `helloWorldObserver` will be loaded and executed in this Runtime Node.
 
 ## How to use Runtime Node 
 
