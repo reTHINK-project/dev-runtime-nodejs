@@ -1,8 +1,8 @@
 # dev-runtime-nodejs
-### 1. Motivation
+## 1. Motivation
 <p align="justify">This repository  aims to deploy and execute the reTHINK runtime in Node.js. The execution of reTHINK different components takes place in Nodejs sandboxes.</p>
 
-### 2. Architecture Overview
+## 2. Architecture Overview
 <p align= "justify">The design and implementation of this runtime was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser" rel="nofollow">runtime-browser</a>. This Runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, it follows by design security approach, where different types of components are executed in isolated SandBoxes.
 </p>
 <p align= "justify"> Sandboxing technology was realised thanks to multi-processor environment in NodeJS. Particularly, the native  <a href = "https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options" rel="nofollow"> child_process.fork() </a> method was used for this purpose. Spawned (forked) NodeJS child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC (Inter-Process Communication) channel is established between the parent and child that allows messages to be passed back and forth between them.
@@ -55,7 +55,7 @@ In brief this implemenation provides functional Runtime without worrying about t
 Labeled as  ``Service Application``  in above architecture. A use case we could thing of, consists of having a server hyperty that regularly monitors other servers, and sends back collected data (statistics) to the Runtime Node.
 
         
-###3. Quick Start
+##3. Quick Start
 First you need to clone this repository:
 ```
 git clone https://github.com/reTHINK-project/dev-runtime-nodejs.git
@@ -70,7 +70,7 @@ Afterwards, run the following (as root) :
 ```
 After having run the above command lines. The Runtime Node is lunched. Then, the hyperty `helloWorldObserver` will be loaded and executed in this Runtime Node.
 
-## How to use Runtime Node 
+##4. How to use Runtime Node 
 
 In case a user or hyperty developer wants to make use of the functionalities of Runtime Node.A small modification is needed on `server.js`. Essentially,using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))` in line [server.js#L40](https://github.com/reTHINK-project/dev-runtime-nodejs/blob/develop-improves/server.js#L40).
 
