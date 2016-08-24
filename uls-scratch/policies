@@ -1,1 +1,0 @@
-{"version":0,"value":{"global":[{"scope":"global","condition":"subscription equals *","authorise":true,"actions":[{"method":"registerSubscriber"}]}]}}
