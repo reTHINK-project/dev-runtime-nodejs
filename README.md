@@ -74,6 +74,7 @@ Afterwards, run the following (as root) :
 # npm run demo
 ```
 This demo is set for `hybroker.rethink.ptinovacao.pt` domain. As a result, it uses all other components (catalogue, domain registry, msg-node) of reTHINK associated with this domain.
+
 This will start hello world observer from local catalogue in `static/resources/descriptors`. Moreover, this demo connects  to the remote msg-node-vertx of `hybroker.rethink.ptinovacao.pt`.
 
 
