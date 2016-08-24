@@ -43,8 +43,8 @@ var fs = require('fs');
 
 var domain = 'hybroker.rethink.ptinovacao.pt';
 
-var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime';
-var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/NodeRuntime'; //.well-known/runtime/MyRuntime
+var parameters = 'http://' + domain + '/.well-known/runtime/NodeRuntime';
+var runtimeURL = 'http://' + domain + '/.well-known/runtime/NodeRuntime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';
 var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue(development);
 
