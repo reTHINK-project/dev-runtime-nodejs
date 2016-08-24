@@ -112,4 +112,12 @@ runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver'))
     });
 ```
 
-### 5. How to use
+### 5. How to use this Runtime Node :
+
+ In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `HelloWorldObserver.js` in `Demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))` in line [HelloWorldObserver.js#L40](https://github.com/reTHINK-project/dev-runtime-nodejs/blob/develop-improves/Demo/HelloWorldObserver.js#L32)
+ 
+ where :
+ 
+`domain` : context service provider's domain.
+
+`name of Hyperty` : simply an identifier of the Hyperty to be loaded and executed.
