@@ -26,8 +26,11 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
+import { LocalStorage } from 'node-localstorage';
+
 // import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue';
+import { RuntimeCatalogueLocal, RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+import PersistenceManager from 'service-framework/dist/PersistenceManager';
 
 var RuntimeFactory = Object.create({
     createSandbox() {
@@ -45,6 +48,12 @@ var RuntimeFactory = Object.create({
 
     atob(b64) {
       return atob(b64);
+    },
+
+    persistenceManager() {
+
+      let localStorage = new LocalStorage('./scratch');
+      return new PersistenceManager(localStorage);
     },
 
     createRuntimeCatalogue(development) {

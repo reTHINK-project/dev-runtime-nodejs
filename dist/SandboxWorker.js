@@ -51,7 +51,7 @@ var SandboxWorker = function (_Sandbox) {
   function SandboxWorker(script) {
     _classCallCheck(this, SandboxWorker);
 
-    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxWorker).call(this, script));
+    var _this2 = _possibleConstructorReturn(this, (SandboxWorker.__proto__ || Object.getPrototypeOf(SandboxWorker)).call(this, script));
 
     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     _this2.type = _sandbox.SandboxType.NORMAL;

@@ -42,10 +42,17 @@ var _atob2 = require('atob');
 
 var _atob3 = _interopRequireDefault(_atob2);
 
+var _nodeLocalstorage = require('node-localstorage');
+
 var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
+
+var _PersistenceManager = require('service-framework/dist/PersistenceManager');
+
+var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 var RuntimeFactory = Object.create({
   createSandbox: function createSandbox() {
     return new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js');
@@ -60,6 +67,11 @@ var RuntimeFactory = Object.create({
   atob: function atob(b64) {
     return (0, _atob3.default)(b64);
   },
+  persistenceManager: function persistenceManager() {
+
+    var localStorage = new _nodeLocalstorage.LocalStorage('./scratch');
+    return new _PersistenceManager2.default(localStorage);
+  },
   createRuntimeCatalogue: function createRuntimeCatalogue(development) {
     if (!this.catalogue) this.catalogue = development || new _RuntimeCatalogue.RuntimeCatalogueLocal(this);
 
@@ -67,5 +79,4 @@ var RuntimeFactory = Object.create({
   }
 });
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 exports.default = RuntimeFactory;

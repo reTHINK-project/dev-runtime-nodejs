@@ -52,7 +52,7 @@ var SandboxApp = function (_Sandbox) {
   function SandboxApp() {
     _classCallCheck(this, SandboxApp);
 
-    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxApp).call(this));
+    var _this2 = _possibleConstructorReturn(this, (SandboxApp.__proto__ || Object.getPrototypeOf(SandboxApp)).call(this));
 
     console.log('---------------------- Sandbox App -----------------------'.green);
 

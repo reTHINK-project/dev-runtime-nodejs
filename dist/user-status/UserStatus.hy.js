@@ -78,7 +78,7 @@ var UserStatus = function (_EventEmitter) {
     if (!bus) throw new Error('The MiniBus is a needed parameter');
     if (!configuration) throw new Error('The configuration is a needed parameter');
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(UserStatus).call(this, hypertyURL, bus, configuration));
+    var _this = _possibleConstructorReturn(this, (UserStatus.__proto__ || Object.getPrototypeOf(UserStatus)).call(this, hypertyURL, bus, configuration));
 
     _this._syncher = new _Syncher.Syncher(hypertyURL, bus, configuration);
 
