@@ -59,6 +59,7 @@ var RuntimeFactory = Object.create({
     createRuntimeCatalogue(development) {
       if (!this.catalogue)
           this.catalogue = development || new RuntimeCatalogueLocal(this);
+            // this.catalogue = development?new RuntimeCatalogueLocal(this):new RuntimeCatalogue(this)
 
       return this.catalogue;
     }
