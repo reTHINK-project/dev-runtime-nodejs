@@ -23,19 +23,17 @@
 **/
 'use strict';
 
+let fs = require('fs');
 import URI from 'urijs';
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-import Runtime from './runtime-core/src/runtime/RuntimeUA.js';
-//require the EventEmitter from the events module
-// const EventEmitter = require('events').EventEmitter;
-// const eventEmitter = new EventEmitter();
-let domain = 'localhost:8080';
 
-let parameters = 'http://' + domain + '/.well-known/runtime/Runtime';
-// runtimeURL = 'https://catalogue.<domain>/.well-known/runtime/Runtime' || '<domain>'
+import _eval from 'eval';
 
-let runtimeURL = 'http://' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+let domain = 'hybroker.rethink.ptinovacao.pt';
+
+let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
+let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';
 let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
 
@@ -51,33 +49,28 @@ function searchHyperty(runtime, descriptor) {
         hyperty = runtime.registry.hypertiesList[index];
     index++;
   }
-
   return hyperty;
 }
 
-// process.on('message', function(msg) {
-console.log('\n------------------- In child thread core.js  --------------------');
+console.log('\n------------------- In child thread core.js  --------------------'.green);
 catalogue.getRuntimeDescriptor(runtimeURL)
   .then(function(descriptor) {
-
-      let descriptorRef = JSON.parse(descriptor);
-
-      // console.log('descriptorRef-------------------', descriptorRef);
-      let sourcePackageURL = descriptorRef.Runtime.sourcePackageURL;
+      let descriptorRef = descriptor;
+      let sourcePackageURL = descriptorRef.sourcePackageURL;
       if (sourcePackageURL === '/sourcePackage') {
-        return descriptorRef.Runtime.sourcePackage;
+        return descriptorRef.sourcePackage;
       }
       return catalogue.getSourcePackageFromURL(sourcePackageURL);
     })
-//TODO load hyperty
+
  .then(function(sourcePackage) {
   try {
-    // console.log(sourcePackage.sourceCode);
-    // eval.apply(process._miniBus, [sourcePackage.sourceCode]);
-    let runtime = new Runtime(RuntimeFactory, domain);
-    // console.log(runtime);
+
+    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    let runtime = new RuntimeUA(RuntimeFactory, domain);
+
     process.on('message', function(msg) {
-      // console.log('core.js ::: core:loadedHyperty', msg);
+      console.log('Message Received on runtime-core'.blue, msg);
       if (msg.to === 'core:loadHyperty') {
         let descriptor = msg.body.descriptor;
         let hyperty = searchHyperty(runtime, descriptor);
@@ -88,14 +81,15 @@ catalogue.getRuntimeDescriptor(runtimeURL)
               .then(returnHyperty);
         }
       } else if (msg.to === 'core:loadStub') {
+        console.log('domain is :'.green, msg.body.domain);
         runtime.loadStub(msg.body.domain);
       }
     }, false);
-    console.log('##sending to parent');
+    console.log('--> sending to Main process');
     process.send({to:'runtime:installed', body:{}});
   } catch (e) {
     console.log('error is ', e);
   }
+}).catch((error) => {
+  console.log('Error: ', error);
 });
-
-// });

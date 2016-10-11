@@ -20,61 +20,50 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
+'use strict';
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
+import atob from 'atob';
 
-import {RuntimeCatalogueLocal, RuntimeCatalogue} from './RuntimeCatalogue.js';//FIXME
+import { LocalStorage } from 'node-localstorage';
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 
-// let SandboxWorker = require('./SandboxWorker');
-// let SandboxApp = require('./SandboxApp');
-// let Request = require('./Request');
+import { RuntimeCatalogueLocal, RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+import PersistenceManager from 'service-framework/dist/PersistenceManager';
 
-const RuntimeFactory = Object.create({
-  //
-  // eventEmitter() {
-  //   if ((this.eventEmitter === 'undefined') || (this.eventEmitter === null))
-  //   {
-  //     this.eventEmitter = new require('events').EventEmitter();
-  //   }
-  //   return this.eventEmitter;
-  // },
+var RuntimeFactory = Object.create({
+    createSandbox() {
+      return new SandboxWorker(__dirname + '/ContextServiceProvider.js');
+    },
 
-  createSandbox() {
-    console.log('#### in RuntimeFactory SandboxWorker');
-    return new SandboxWorker('./ContextServiceProvider.js');
-  },
+    createAppSandbox() {
+      return new SandboxApp(__dirname + '/ContextApp.js');
+    },
 
-  createAppSandbox() {
-    console.log('###### in RuntimeFactory SandboxApp');
-    return new SandboxApp();
-  },
+    createHttpRequest() {
+      let request = new Request();
+      return request;
+    },
 
-  createHttpRequest() {
-    let request = new Request();
-    return request;
-  },
-  createRuntimeCatalogue(development) {
-    if (!this.catalogue)
-        this.catalogue = development || new RuntimeCatalogueLocal(this);
-    // this.catalogue = development ? new RuntimeCatalogueLocal(this) : new RuntimeCatalogue(this);
+    atob(b64) {
+      return atob(b64);
+    },
 
-    return this.catalogue;
-  },
-  createRuntimeCatalogueRemote() {
-    console.log('*HERE');
-    let _this = this;
-    let factory = {
-      createHttpRequest: function() {
-        return _this.createHttpRequest();
-      }
-    };
+    persistenceManager() {
 
-    return new RuntimeCatalogueLocal(factory);
-  }
+      let localStorage = new LocalStorage('./scratch');
+      return new PersistenceManager(localStorage);
+    },
 
-});
+    createRuntimeCatalogue(development) {
+      if (!this.catalogue)
+          this.catalogue = development || new RuntimeCatalogueLocal(this);
+            // this.catalogue = development?new RuntimeCatalogueLocal(this):new RuntimeCatalogue(this)
+
+      return this.catalogue;
+    }
+
+  });
 
 export default RuntimeFactory;

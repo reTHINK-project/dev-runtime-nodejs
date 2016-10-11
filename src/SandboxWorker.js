@@ -23,33 +23,32 @@
 import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 let child = require('child_process');
+let colors = require('colors');
 
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
     super(script);
-    console.log('#### in Sandbox Worker');
+    console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     this.type = SandboxType.NORMAL;
-    this._worker = child.fork(__dirname + '/testSandbox.js');
+    let _this = this;
 
-    if (!!this._worker) {
-      // this._worker = new Worker(script);
-      console.log('Sandbox worker created');
-      this._worker.on('message', (e) => {
-        // this.monEventEmiter.emit('customEvent', e);
-        //TODO
-        //EventEmitter.emit('monEventCustom', e);
-        // this.on(e);
-      });
-      this._worker.send('');
-      eventEmitter.emit('');
+    this.worker = child.fork(script);
+    console.log('----->  In Sandbox created :\n');
+    if (!!this.worker) {
+      // console.log();
+      this.worker.on('message', function(e) {
+              _this._onMessage(e);
+
+            });
+      this.worker.send('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
   }
 
   _onPostMessage(msg) {
-    this._worker.postMessage(msg);
-    // eventEmitter.emit('event', 'msg');
+    // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
+    this.worker.send(msg);
 
   }
 }
