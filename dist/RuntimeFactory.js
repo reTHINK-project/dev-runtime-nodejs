@@ -52,7 +52,6 @@ var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 var RuntimeFactory = Object.create({
   createSandbox: function createSandbox() {
     return new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js');
