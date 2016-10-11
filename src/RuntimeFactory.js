@@ -28,7 +28,7 @@ import atob from 'atob';
 
 import { LocalStorage } from 'node-localstorage';
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
+
 import { RuntimeCatalogueLocal, RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
 import PersistenceManager from 'service-framework/dist/PersistenceManager';
 

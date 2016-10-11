@@ -24,8 +24,6 @@
 
 import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
-// import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-// import MiniBus from 'runtime-core/dist/minibus';
 let child = require('child_process');
 
 export default class SandboxApp extends Sandbox{
