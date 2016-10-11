@@ -46,12 +46,11 @@ let runtimeProxy = {
   requireHyperty: (hypertyDescriptor)=> {
         return new Promise((resolve, reject)=> {
           coreRuntime.on('message', function(msg) {
-            console.log('------------------- Message from runtime core child  -------------------------'.green);
-            console.log('message is :'.red, msg);
+            // console.log('------------------- Message from runtime core child  -------------------------'.green);
+            // console.log('message is :'.red, msg);
 
             if (msg.to === 'runtime:loadedHyperty') {
-              console.log('runtime:loadedHyperty is OK'.green);
-
+              console.log('runtime: Hyperty loaded successfuly  OK'.green);
               resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
             }
 
@@ -78,9 +77,6 @@ let RethinkNode = {
               coreRuntime
               .send({do:'install runtime core'});
               coreRuntime .on('message', function(msg) {
-                console.log('------------------- In parent Process  -------------------------'.green);
-                console.log('\n--> message recieved from child process core.js'.green);
-                // console.log('message is :', msg);
                 if (msg.to === 'runtime:installed') {
                   console.log('\n Runtime installed with success\n'.blue);
                   resolve(runtimeProxy);

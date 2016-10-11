@@ -25,15 +25,13 @@ import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 
 function create(myApp) {
-  console.log('\n****** In ContextApp ******'.green);
+  console.log('\n****** In ContextApp ******'.red);
   process._miniBus = new MiniBus();
   process._miniBus._onPostMessage = function(msg) {
-      console.log('--> process miniBus message sent'.blue, msg);
       myApp.send(msg);
     };
 
   myApp.on('message', function(event) {
-    // console.log('\n received message: runtime:loadedHyperty', event);
     if (event.to.startsWith('runtime:loadedHyperty'))
         return;
 
@@ -43,13 +41,12 @@ function create(myApp) {
   process._registry = new SandboxRegistry(process._miniBus);
   process._registry._create = function(url, sourceCode, config) {
           let activate = _eval(sourceCode, true);
-          console.log('activate-->'.red);
+          console.log(' ProtoStub activated OK'.green);
           return activate.default(url, process._miniBus, config);
         };
 };
 
 function getHyperty(hypertyDescriptor) {
-  console.log('#### in getHyperty'.blue);
   return process._registry.components[hypertyDescriptor];
 };
 

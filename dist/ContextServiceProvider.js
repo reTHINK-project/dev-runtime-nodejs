@@ -39,24 +39,18 @@ var colors = require('colors'); /**
 process._miniBus = new _minibus2.default();
 
 process._miniBus._onPostMessage = function (msg) {
-  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+  // console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
   process.send(msg);
 };
 
 process.on('message', function (msg) {
-  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:msg\n '.green);
-  console.log('miniBus.postMessage(msg): Post is Done :msg\n '.green, msg);
+  // console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.red);
   process._miniBus._onMessage(msg);
 });
 
 process._registry = new _sandbox.SandboxRegistry(process._miniBus);
-console.log(' ************ SandboxRegistry created is :********* \n'.green, process._registry);
-
 process._registry._create = function (url, sourceCode, config) {
-  console.log('------------------ registry._create -----------------------'.green);
-
   var activate = (0, _eval3.default)(sourceCode, true);
-  console.log('sourceCode'.red, sourceCode);
   console.log(activate);
   return activate.default(url, process._miniBus, config);
 };

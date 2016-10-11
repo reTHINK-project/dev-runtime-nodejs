@@ -28,12 +28,10 @@ let colors = require('colors');
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
     super(script);
-    console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     this.type = SandboxType.NORMAL;
     let _this = this;
 
     this.worker = child.fork(script);
-    console.log('----->  In Sandbox created :\n');
     if (!!this.worker) {
       // console.log();
       this.worker.on('message', function(e) {

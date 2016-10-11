@@ -69,7 +69,7 @@ var SandboxApp = function (_Sandbox) {
   _createClass(SandboxApp, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      console.log('SandboxApp postMessage message: '.green, msg);
+      // console.log('SandboxApp postMessage message: '.green, msg);
       process.send(msg);
     }
   }]);
