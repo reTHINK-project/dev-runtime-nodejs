@@ -42,8 +42,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
-// import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
-// import MiniBus from 'runtime-core/dist/minibus';
 var child = require('child_process');
 
 var SandboxApp = function (_Sandbox) {

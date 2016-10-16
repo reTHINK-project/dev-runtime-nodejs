@@ -84,7 +84,7 @@ var RethinkNode = {
   install: function install() {
     var _this = this;
 
-    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     var domain = _ref.domain;
     var runtimeURL = _ref.runtimeURL;

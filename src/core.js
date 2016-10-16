@@ -30,12 +30,12 @@ import RuntimeFactory from './RuntimeFactory';
 
 import _eval from 'eval';
 
-let domain = 'hybroker.rethink.ptinovacao.pt';
+let domain = 'hysmart.rethink.ptinovacao.pt';
 
-let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
+let parameters = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
+let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
 let development = parameters.development === 'true';
-let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
+let catalogue = RuntimeFactory.createRuntimeCatalogue();
 
 function returnHyperty(hyperty) {
   process.send({to:'runtime:loadedHyperty', body: hyperty});
@@ -66,25 +66,27 @@ catalogue.getRuntimeDescriptor(runtimeURL)
  .then(function(sourcePackage) {
   try {
 
-    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
-    let runtime = new RuntimeUA(RuntimeFactory, domain);
+    console.log('Runtime:', RuntimeFactory);
 
-    process.on('message', function(msg) {
-      console.log('Message Received on runtime-core'.blue, msg);
-      if (msg.to === 'core:loadHyperty') {
-        let descriptor = msg.body.descriptor;
-        let hyperty = searchHyperty(runtime, descriptor);
-        if (hyperty) {
-          returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
-        } else {
-          runtime.loadHyperty(descriptor)
-              .then(returnHyperty);
-        }
-      } else if (msg.to === 'core:loadStub') {
-        console.log('domain is :'.green, msg.body.domain);
-        runtime.loadStub(msg.body.domain);
-      }
-    }, false);
+    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    // let runtime = new RuntimeUA(RuntimeFactory, domain);
+    //
+    // process.on('message', function(msg) {
+    //   console.log('Message Received on runtime-core'.blue, msg);
+    //   if (msg.to === 'core:loadHyperty') {
+    //     let descriptor = msg.body.descriptor;
+    //     let hyperty = searchHyperty(runtime, descriptor);
+    //     if (hyperty) {
+    //       returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+    //     } else {
+    //       runtime.loadHyperty(descriptor)
+    //           .then(returnHyperty);
+    //     }
+    //   } else if (msg.to === 'core:loadStub') {
+    //     console.log('domain is :'.green, msg.body.domain);
+    //     runtime.loadStub(msg.body.domain);
+    //   }
+    // }, false);
     console.log('--> sending to Main process');
     process.send({to:'runtime:installed', body:{}});
   } catch (e) {

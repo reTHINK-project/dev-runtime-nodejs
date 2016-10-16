@@ -28,7 +28,6 @@ import atob from 'atob';
 
 import { LocalStorage } from 'node-localstorage';
 
-
 import { RuntimeCatalogueLocal, RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
 import PersistenceManager from 'service-framework/dist/PersistenceManager';
 
@@ -51,16 +50,12 @@ var RuntimeFactory = Object.create({
     },
 
     persistenceManager() {
-
       let localStorage = new LocalStorage('./scratch');
       return new PersistenceManager(localStorage);
     },
 
     createRuntimeCatalogue(development) {
-      if (!this.catalogue)
-          this.catalogue = development || new RuntimeCatalogueLocal(this);
-            // this.catalogue = development?new RuntimeCatalogueLocal(this):new RuntimeCatalogue(this)
-
+      this.catalogue = new RuntimeCatalogue(this);
       return this.catalogue;
     }
 

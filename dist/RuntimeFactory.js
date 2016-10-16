@@ -52,7 +52,6 @@ var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import {RuntimeCatalogueLocal, RuntimeCatalogue} from 'service-framework/dist/RuntimeCatalogue.js';
 var RuntimeFactory = Object.create({
   createSandbox: function createSandbox() {
     return new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js');
@@ -68,14 +67,11 @@ var RuntimeFactory = Object.create({
     return (0, _atob3.default)(b64);
   },
   persistenceManager: function persistenceManager() {
-
     var localStorage = new _nodeLocalstorage.LocalStorage('./scratch');
     return new _PersistenceManager2.default(localStorage);
   },
   createRuntimeCatalogue: function createRuntimeCatalogue(development) {
-    if (!this.catalogue) this.catalogue = development || new _RuntimeCatalogue.RuntimeCatalogueLocal(this);
-    // this.catalogue = development?new RuntimeCatalogueLocal(this):new RuntimeCatalogue(this)
-
+    this.catalogue = new _RuntimeCatalogue.RuntimeCatalogue(this);
     return this.catalogue;
   }
 });

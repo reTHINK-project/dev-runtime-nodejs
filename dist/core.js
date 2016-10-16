@@ -41,12 +41,12 @@ var fs = require('fs');
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
 
-var domain = 'hybroker.rethink.ptinovacao.pt';
+var domain = 'hysmart.rethink.ptinovacao.pt';
 
-var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
+var parameters = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
+var runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
 var development = parameters.development === 'true';
-var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue(development);
+var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue();
 
 function returnHyperty(hyperty) {
   process.send({ to: 'runtime:loadedHyperty', body: hyperty });
@@ -72,29 +72,30 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
   return catalogue.getSourcePackageFromURL(sourcePackageURL);
 }).then(function (sourcePackage) {
   try {
-    (function () {
 
-      var RuntimeUA = (0, _eval3.default)(sourcePackage.sourceCode, true);
-      var runtime = new RuntimeUA(_RuntimeFactory2.default, domain);
+    console.log('Runtime:', _RuntimeFactory2.default);
 
-      process.on('message', function (msg) {
-        console.log('Message Received on runtime-core'.blue, msg);
-        if (msg.to === 'core:loadHyperty') {
-          var descriptor = msg.body.descriptor;
-          var hyperty = searchHyperty(runtime, descriptor);
-          if (hyperty) {
-            returnHyperty({ runtimeHypertyURL: hyperty.hypertyURL });
-          } else {
-            runtime.loadHyperty(descriptor).then(returnHyperty);
-          }
-        } else if (msg.to === 'core:loadStub') {
-          console.log('domain is :'.green, msg.body.domain);
-          runtime.loadStub(msg.body.domain);
-        }
-      }, false);
-      console.log('--> sending to Main process');
-      process.send({ to: 'runtime:installed', body: {} });
-    })();
+    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    // let runtime = new RuntimeUA(RuntimeFactory, domain);
+    //
+    // process.on('message', function(msg) {
+    //   console.log('Message Received on runtime-core'.blue, msg);
+    //   if (msg.to === 'core:loadHyperty') {
+    //     let descriptor = msg.body.descriptor;
+    //     let hyperty = searchHyperty(runtime, descriptor);
+    //     if (hyperty) {
+    //       returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+    //     } else {
+    //       runtime.loadHyperty(descriptor)
+    //           .then(returnHyperty);
+    //     }
+    //   } else if (msg.to === 'core:loadStub') {
+    //     console.log('domain is :'.green, msg.body.domain);
+    //     runtime.loadStub(msg.body.domain);
+    //   }
+    // }, false);
+    console.log('--> sending to Main process');
+    process.send({ to: 'runtime:installed', body: {} });
   } catch (e) {
     console.log('error is ', e);
   }
