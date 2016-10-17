@@ -12,6 +12,9 @@ build.js.map
 # Temporal files
 *.swp
 *.swo
+*.*~
 
 dist/
+scratch
+
 .vscode

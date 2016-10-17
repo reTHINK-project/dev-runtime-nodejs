@@ -6,7 +6,7 @@ let log4js = require('log4js');
 let domain = 'hysmart.rethink.ptinovacao.pt';
 let logger = log4js.getLogger('server');
 let app = express();
-const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
+const hypertyURI = (domain, hyperty) => `http://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 
 log4js.configure({
   appenders: [{ type: 'console' }],
@@ -156,13 +156,14 @@ let runtime = rethink.default.install({
   development: true
 }).then((runtime) => {
   console.log('runtime loaded !'.green);
-  console.log('\n loading hyperty :', hypertyURI(domain, 'HelloWorldObserver'));
-  runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver'))
-      .then((HelloWorldObserver) => {
-        console.log('HelloWorldObserver ->'.red, HelloWorldObserver);
-        let helloObserver = HelloWorldObserver;
+  console.log('\n loading hyperty :', hypertyURI(domain, 'NodeHyperty'));
+  runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
+      .then((NodeHyperty) => {
+        console.log('NodeHyperty ->'.red, NodeHyperty);
+        let world = NodeHyperty;
+
         // ..... here we can manipulate hyperty instance
-        console.log('helloObserver'.green, helloObserver);
+        console.log('world'.green, world);
 
       }).catch((reason) => {
     console.log('Error:', reason);
