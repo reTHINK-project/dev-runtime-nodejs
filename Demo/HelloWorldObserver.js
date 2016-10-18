@@ -1,14 +1,14 @@
 let fs = require('fs');
 let rethink = require('./RuntimeUAStub');
-let express = require('express');
+// let express = require('express');
 var path = require('path');
-let log4js = require('log4js');
+// let log4js = require('log4js');
 let domain = 'hysmart.rethink.ptinovacao.pt';
-let logger = log4js.getLogger('server');
-let app = express();
-const hypertyURI = (domain, hyperty) => `http://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
+// let logger = log4js.getLogger('server');
+// let app = express();
+const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 
-log4js.configure({
+/*log4js.configure({
   appenders: [{ type: 'console' }],
   levels: {
       server:  'DEBUG'
@@ -17,13 +17,13 @@ log4js.configure({
 
 app.use(log4js.connectLogger(logger, {
   level: 'auto'
-}));
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-app.set('trust proxy', 1);
+}));*/
+
+// app.set('trust proxy', 1);
 
 // app.use(express.static(path.resolve(__dirname, '../static/')));
 
-app.use('*', devMiddleware);
+/*app.use('/', devMiddleware);
 
 function getResources(type) {
   var raw;
@@ -62,8 +62,10 @@ function devMiddleware(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if (req.originalUrl.includes('.well-known')) {
-
-    paths = req.originalUrl.split('/');
+    var path = req.originalUrl;
+    var pathIndex = path.indexOf('.well-known');
+    if (pathIndex !== -1) { path = path.substr(pathIndex - 1); }
+    paths = path.split('/');
     var type = paths[2];
     var resource = paths[3];
 
@@ -77,7 +79,6 @@ function devMiddleware(req, res, next) {
       }
 
     } else if (req.originalUrl.includes('sourcepackage')) {
-      paths = req.originalUrl.split('/');
       var cguid = Number(paths[3]);
       var idType = cguid.toString().substring(0, 1);
       var sourcePackage;
@@ -147,9 +148,7 @@ function devMiddleware(req, res, next) {
 
   next();
 
-}
-
-app.listen(80);
+}*/
 
 let runtime = rethink.default.install({
   domain: domain,

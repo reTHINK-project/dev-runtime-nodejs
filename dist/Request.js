@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _request = require('request');
+var _https = require('https');
 
-var _request2 = _interopRequireDefault(_request);
+var _https2 = _interopRequireDefault(_https);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,8 +38,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 **/
 var methods = { GET: 'get', POST: 'post', DELETE: 'delete', UPDATE: 'update' };
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 var Request = function () {
   function Request() {
     _classCallCheck(this, Request);
@@ -67,16 +65,13 @@ var Request = function () {
   _createClass(Request, [{
     key: '_makeLocalRequest',
     value: function _makeLocalRequest(method, url) {
-      console.log(method, url);
+      console.log('HTTPS Request:', method, url);
       return new Promise(function (resolve, reject) {
         // TODO: Check why the url have localhost and undefined like a protocol
         // check the RuntimeUA
         var protocolmap = {
-          'localhost://': 'http://',
-          'undefined://': 'http://',
-          'hyperty-catalogue://': 'http://',
-          'https://': 'http://',
-          'http://': 'http://'
+          'hyperty-catalogue://': 'https://',
+          'https://': 'https://'
         };
 
         var usedProtocol = void 0;
@@ -91,24 +86,33 @@ var Request = function () {
             break;
           }
         }
-        var req = _request2.default.get({
-          url: url
-        }, function (err, response, body) {
-          console.log(err);
-          // console.log('http respone.statusCode :', response.statusCode);
-          // console.log('this is response.headers', response.headers['content-type']);
-          // console.log('this is response.body :', body);
 
-          if (response.statusCode === 200) {
-            console.log('got http response ::', response.statusCode);
-            resolve(body);
-          } else {
-            console.log('rejecting promise because of response code: 200 != ', response.statusCode);
-            reject(err);
-          }
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+        var req = _https2.default.get(url, function (response) {
+          console.log('statusCode:', response.statusCode);
+          response.on('data', function (data) {
+            var buffer = data.toString('utf8');
+
+            console.log(buffer);
+
+            var json = void 0;
+
+            try {
+              json = JSON.parse(buffer);
+            } catch (error) {
+              json = JSON.stringify(buffer);
+            }
+
+            resolve(json);
+          });
         });
 
         req.end();
+
+        req.on('error', function (e) {
+          console.error('Error:', e);
+          reject(e);
+        });
       });
     }
   }]);

@@ -32,9 +32,7 @@ import _eval from 'eval';
 
 let domain = 'hysmart.rethink.ptinovacao.pt';
 
-let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
-let development = parameters.development === 'true';
+let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 let catalogue = RuntimeFactory.createRuntimeCatalogue();
 
 function returnHyperty(hyperty) {
@@ -53,21 +51,26 @@ function searchHyperty(runtime, descriptor) {
 }
 
 console.log('\n------------------- In child thread core.js  --------------------'.green);
-catalogue.getRuntimeDescriptor(runtimeURL)
-  .then(function(descriptor) {
-      let descriptorRef = descriptor;
-      let sourcePackageURL = descriptorRef.sourcePackageURL;
-      if (sourcePackageURL === '/sourcePackage') {
-        return descriptorRef.sourcePackage;
-      }
-      return catalogue.getSourcePackageFromURL(sourcePackageURL);
-    })
 
- .then(function(sourcePackage) {
+
+catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
+
+  if (descriptor.sourcePackageURL === '/sourcePackage') {
+    return descriptor.sourcePackage;
+  } else {
+    return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);
+  }
+
+}).then(function(sourcePackage) {
+
+  console.log('aqui');
+
   try {
 
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
+
+    console.log('runtime: ', runtime);
 
     process.on('message', function(msg) {
       console.log('Message Received on runtime-core'.blue, msg);

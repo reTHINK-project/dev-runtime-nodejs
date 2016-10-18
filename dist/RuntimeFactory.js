@@ -70,7 +70,7 @@ var RuntimeFactory = Object.create({
     var localStorage = new _nodeLocalstorage.LocalStorage('./scratch');
     return new _PersistenceManager2.default(localStorage);
   },
-  createRuntimeCatalogue: function createRuntimeCatalogue(development) {
+  createRuntimeCatalogue: function createRuntimeCatalogue() {
     this.catalogue = new _RuntimeCatalogue.RuntimeCatalogue(this);
     return this.catalogue;
   }

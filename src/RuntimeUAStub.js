@@ -77,7 +77,7 @@ let RethinkNode = {
 
               coreRuntime
               .send({do:'install runtime core'});
-              coreRuntime .on('message', function(msg) {
+              coreRuntime.on('message', function(msg) {
                 console.log('------------------- In parent Process  -------------------------'.green);
                 console.log('\n--> message recieved from child process core.js'.green);
                 // console.log('message is :', msg);
@@ -86,12 +86,12 @@ let RethinkNode = {
                   resolve(runtimeProxy);
                 }
               });
-              coreRuntime .on('error', function(error) {
+              coreRuntime.on('error', function(error) {
                 console.error('runtime core install failed:', error);
                 coreRuntime .kill();
                 reject(error);
               });
-              coreRuntime .on('exit', function() {
+              coreRuntime.on('exit', function() {
                 console.log('runtime core exited.');
                 coreRuntime.kill();
               });

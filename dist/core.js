@@ -43,9 +43,7 @@ var fs = require('fs');
 
 var domain = 'hysmart.rethink.ptinovacao.pt';
 
-var parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-var runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime'; //.well-known/runtime/MyRuntime
-var development = parameters.development === 'true';
+var runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue();
 
 function returnHyperty(hyperty) {
@@ -63,19 +61,25 @@ function searchHyperty(runtime, descriptor) {
 }
 
 console.log('\n------------------- In child thread core.js  --------------------'.green);
+
 catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
-  var descriptorRef = descriptor;
-  var sourcePackageURL = descriptorRef.sourcePackageURL;
-  if (sourcePackageURL === '/sourcePackage') {
-    return descriptorRef.sourcePackage;
+
+  if (descriptor.sourcePackageURL === '/sourcePackage') {
+    return descriptor.sourcePackage;
+  } else {
+    return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);
   }
-  return catalogue.getSourcePackageFromURL(sourcePackageURL);
 }).then(function (sourcePackage) {
+
+  console.log('aqui');
+
   try {
     (function () {
 
       var RuntimeUA = (0, _eval3.default)(sourcePackage.sourceCode, true);
       var runtime = new RuntimeUA(_RuntimeFactory2.default, domain);
+
+      console.log('runtime: ', runtime);
 
       process.on('message', function (msg) {
         console.log('Message Received on runtime-core'.blue, msg);

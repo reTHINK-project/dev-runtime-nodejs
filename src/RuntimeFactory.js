@@ -54,7 +54,7 @@ var RuntimeFactory = Object.create({
       return new PersistenceManager(localStorage);
     },
 
-    createRuntimeCatalogue(development) {
+    createRuntimeCatalogue() {
       this.catalogue = new RuntimeCatalogue(this);
       return this.catalogue;
     }

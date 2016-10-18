@@ -22,9 +22,7 @@
 **/
 const methods = {GET: 'get', POST: 'post', DELETE: 'delete', UPDATE: 'update'};
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
-import httpRequest from 'request';
+import https from 'https';
 
 class Request {
 
@@ -53,16 +51,13 @@ class Request {
   }
 
   _makeLocalRequest(method, url) {
-    console.log(method, url);
+    console.log('HTTPS Request:', method, url);
     return new Promise(function(resolve, reject) {
       // TODO: Check why the url have localhost and undefined like a protocol
       // check the RuntimeUA
       let protocolmap = {
-        'localhost://': 'http://',
-        'undefined://': 'http://',
-        'hyperty-catalogue://': 'http://',
-        'https://': 'http://',
-        'http://': 'http://'
+        'hyperty-catalogue://': 'https://',
+        'https://': 'https://'
       };
 
       let usedProtocol;
@@ -77,24 +72,34 @@ class Request {
           break;
         }
       }
-      var req = httpRequest.get({
-        url: url
-      }, function(err, response, body) {
-        console.log(err);
-        // console.log('http respone.statusCode :', response.statusCode);
-        // console.log('this is response.headers', response.headers['content-type']);
-        // console.log('this is response.body :', body);
 
-        if (response.statusCode === 200) {
-          console.log('got http response ::', response.statusCode);
-          resolve(body);
-        } else {
-          console.log('rejecting promise because of response code: 200 != ', response.statusCode);
-          reject(err);
-        }
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      let req = https.get(url, (response) => {
+        console.log('statusCode:', response.statusCode);
+        response.on('data', (data) => {
+          let buffer = data.toString('utf8');
+
+          console.log(buffer);
+
+          let json;
+
+          try {
+            json = JSON.parse(buffer);  
+          } catch (error) {
+            json = JSON.stringify(buffer);
+          }
+
+          resolve(json);
+        });
+
       });
 
       req.end();
+
+      req.on('error', (e) => {
+        console.error('Error:', e);
+        reject(e);
+      });
 
     });
   }
