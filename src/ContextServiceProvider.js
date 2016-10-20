@@ -33,20 +33,16 @@ process._miniBus._onPostMessage = function(msg) {
 };
 
 process.on('message', function(msg) {
-    console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:msg\n '.green);
-    console.log('miniBus.postMessage(msg): Post is Done :msg\n '.green, msg);
-    process._miniBus._onMessage(msg);
-
-  });
+  console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:msg\n '.green);
+  console.log('miniBus.postMessage(msg): Post is Done :msg\n '.green);
+  process._miniBus._onMessage(msg);
+});
 
 process._registry = new SandboxRegistry(process._miniBus);
 console.log(' ************ SandboxRegistry created is :********* \n'.green, process._registry);
 
 process._registry._create = function(url, sourceCode, config) {
-    console.log('------------------ registry._create -----------------------'.green);
-
-    let activate = _eval(sourceCode, true);
-    console.log('sourceCode'.red, sourceCode);
-    console.log(activate);
-    return activate.default(url, process._miniBus, config);
-  };
+  console.log('------------------ registry._create -----------------------'.green);
+  let activate = _eval(sourceCode, true);
+  return activate.default(url, process._miniBus, config);
+};

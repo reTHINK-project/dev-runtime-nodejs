@@ -76,20 +76,13 @@ class Request {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
       let req = https.get(url, (response) => {
         console.log('statusCode:', response.statusCode);
+        let body = '';
         response.on('data', (data) => {
-          let buffer = data.toString('utf8');
+          body += data;
+        });
 
-          console.log(buffer);
-
-          let json;
-
-          try {
-            json = JSON.parse(buffer);  
-          } catch (error) {
-            json = JSON.stringify(buffer);
-          }
-
-          resolve(json);
+        response.on('end', () => {
+          resolve(body.toString('utf8'));
         });
 
       });

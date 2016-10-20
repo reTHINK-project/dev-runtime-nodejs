@@ -90,20 +90,13 @@ var Request = function () {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
         var req = _https2.default.get(url, function (response) {
           console.log('statusCode:', response.statusCode);
+          var body = '';
           response.on('data', function (data) {
-            var buffer = data.toString('utf8');
+            body += data;
+          });
 
-            console.log(buffer);
-
-            var json = void 0;
-
-            try {
-              json = JSON.parse(buffer);
-            } catch (error) {
-              json = JSON.stringify(buffer);
-            }
-
-            resolve(json);
+          response.on('end', function () {
+            resolve(body.toString('utf8'));
           });
         });
 

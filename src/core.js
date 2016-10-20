@@ -30,6 +30,8 @@ import RuntimeFactory from './RuntimeFactory';
 
 import _eval from 'eval';
 
+console.debug = console.log;
+
 let domain = 'hysmart.rethink.ptinovacao.pt';
 
 let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
@@ -50,6 +52,30 @@ function searchHyperty(runtime, descriptor) {
   return hyperty;
 }
 
+function runtimeReady(runtime) {
+
+  process.on('message', function(msg) {
+    console.log('Message Received on runtime-core'.blue, msg);
+    if (msg.to === 'core:loadHyperty') {
+      let descriptor = msg.body.descriptor;
+      let hyperty = searchHyperty(runtime, descriptor);
+      if (hyperty) {
+        returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+      } else {
+        runtime.loadHyperty(descriptor)
+            .then(returnHyperty);
+      }
+    } else if (msg.to === 'core:loadStub') {
+      console.log('domain is :'.green, msg.body.domain);
+      runtime.loadStub(msg.body.domain);
+    }
+  }, false);
+
+  console.log('--> sending to Main process');
+  process.send({to:'runtime:installed', body:{}});
+
+}
+
 console.log('\n------------------- In child thread core.js  --------------------'.green);
 
 
@@ -63,36 +89,26 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
 
 }).then(function(sourcePackage) {
 
-  console.log('aqui');
-
   try {
 
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
 
-    console.log('runtime: ', runtime);
+    // TODO: Remove this.. Hack while we don't have an alternative to load an default protocol to nodejs different from browser';
+    let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
+    runtime.loadStub(nodeProtoStub).then((result) => {
+      console.log('ready: ', result);
 
-    process.on('message', function(msg) {
-      console.log('Message Received on runtime-core'.blue, msg);
-      if (msg.to === 'core:loadHyperty') {
-        let descriptor = msg.body.descriptor;
-        let hyperty = searchHyperty(runtime, descriptor);
-        if (hyperty) {
-          returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
-        } else {
-          runtime.loadHyperty(descriptor)
-              .then(returnHyperty);
-        }
-      } else if (msg.to === 'core:loadStub') {
-        console.log('domain is :'.green, msg.body.domain);
-        runtime.loadStub(msg.body.domain);
-      }
-    }, false);
-    console.log('--> sending to Main process');
-    process.send({to:'runtime:installed', body:{}});
+      runtimeReady(runtime);
+
+    }).catch((err) => {
+      console.log('Error: ', err);
+    })
+
   } catch (e) {
     console.log('error is ', e);
   }
+
 }).catch((error) => {
   console.log('Error: ', error);
 });
