@@ -64,6 +64,10 @@ function searchHyperty(runtime, descriptor) {
 
 function runtimeReady(runtime) {
 
+  var capabilities = runtime.runtimeFactory.runtimeCapabilities();
+  capabilities.isAvailable('node');
+  capabilities.isAvailable('browser');
+
   process.on('message', function (msg) {
     console.log('Message Received on runtime-core'.blue, msg);
     if (msg.to === 'core:loadHyperty') {
@@ -95,14 +99,13 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
   }
 }).then(function (sourcePackage) {
 
-  console.log('aqui');
-
   try {
     (function () {
 
       var RuntimeUA = (0, _eval3.default)(sourcePackage.sourceCode, true);
       var runtime = new RuntimeUA(_RuntimeFactory2.default, domain);
 
+      // TODO: Remove this.. Hack while we don't have an alternative to load an default protocol to nodejs different from browser';
       var nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
       runtime.loadStub(nodeProtoStub).then(function (result) {
         console.log('ready: ', result);

@@ -54,6 +54,10 @@ function searchHyperty(runtime, descriptor) {
 
 function runtimeReady(runtime) {
 
+  let capabilities = runtime.runtimeFactory.runtimeCapabilities();
+  capabilities.isAvailable('node');
+  capabilities.isAvailable('browser');
+
   process.on('message', function(msg) {
     console.log('Message Received on runtime-core'.blue, msg);
     if (msg.to === 'core:loadHyperty') {

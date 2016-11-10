@@ -54,7 +54,6 @@ console.log(' ************ SandboxRegistry created is :********* \n'.green, proc
 
 process._registry._create = function (url, sourceCode, config) {
   console.log('------------------ registry._create -----------------------'.green);
-
   var activate = (0, _eval3.default)(sourceCode, true);
   return activate.default(url, process._miniBus, config);
 };

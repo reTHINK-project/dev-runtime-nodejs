@@ -28,8 +28,13 @@ import atob from 'atob';
 
 import { LocalStorage } from 'node-localstorage';
 
-import { RuntimeCatalogueLocal, RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+import Dexie from 'dexie';
+
+import StorageManager from 'service-framework/dist/StorageManager';
+import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
 import PersistenceManager from 'service-framework/dist/PersistenceManager';
+
+import RuntimeCapabilities from './RuntimeCapabilities';
 
 var RuntimeFactory = Object.create({
     createSandbox() {
@@ -54,9 +59,21 @@ var RuntimeFactory = Object.create({
       return new PersistenceManager(localStorage);
     },
 
+    storageManager() {
+
+      let storageName = 'scratch';
+      let db = new Dexie(storageName);
+
+      return new StorageManager(db, storageName);
+    },
+
     createRuntimeCatalogue() {
       this.catalogue = new RuntimeCatalogue(this);
       return this.catalogue;
+    },
+
+    runtimeCapabilities() {
+      return new RuntimeCapabilities(this.storageManager());
     }
 
   });

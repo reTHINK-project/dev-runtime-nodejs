@@ -44,11 +44,23 @@ var _atob3 = _interopRequireDefault(_atob2);
 
 var _nodeLocalstorage = require('node-localstorage');
 
+var _dexie = require('dexie');
+
+var _dexie2 = _interopRequireDefault(_dexie);
+
+var _StorageManager = require('service-framework/dist/StorageManager');
+
+var _StorageManager2 = _interopRequireDefault(_StorageManager);
+
 var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
 
 var _PersistenceManager = require('service-framework/dist/PersistenceManager');
 
 var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
+
+var _RuntimeCapabilities = require('./RuntimeCapabilities');
+
+var _RuntimeCapabilities2 = _interopRequireDefault(_RuntimeCapabilities);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70,9 +82,19 @@ var RuntimeFactory = Object.create({
     var localStorage = new _nodeLocalstorage.LocalStorage('./scratch');
     return new _PersistenceManager2.default(localStorage);
   },
+  storageManager: function storageManager() {
+
+    var storageName = 'scratch';
+    var db = new _dexie2.default(storageName);
+
+    return new _StorageManager2.default(db, storageName);
+  },
   createRuntimeCatalogue: function createRuntimeCatalogue() {
     this.catalogue = new _RuntimeCatalogue.RuntimeCatalogue(this);
     return this.catalogue;
+  },
+  runtimeCapabilities: function runtimeCapabilities() {
+    return new _RuntimeCapabilities2.default(this.storageManager());
   }
 });
 
