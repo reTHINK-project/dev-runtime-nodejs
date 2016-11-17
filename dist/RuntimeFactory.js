@@ -48,6 +48,10 @@ var _dexie = require('dexie');
 
 var _dexie2 = _interopRequireDefault(_dexie);
 
+var _indexeddbshim = require('indexeddbshim');
+
+var _indexeddbshim2 = _interopRequireDefault(_indexeddbshim);
+
 var _StorageManager = require('service-framework/dist/StorageManager');
 
 var _StorageManager2 = _interopRequireDefault(_StorageManager);
@@ -84,8 +88,16 @@ var RuntimeFactory = Object.create({
   },
   storageManager: function storageManager() {
 
+    global.window = global;
+    (0, _indexeddbshim2.default)(global.window);
+    // window.shimIndexedDB.__useShim();
+    // window.shimIndexedDB.__debug(true);
+
     var storageName = 'scratch';
-    var db = new _dexie2.default(storageName);
+    var db = new _dexie2.default(storageName, {
+      indexedDB: window.indexedDB, // or the shim's version
+      IDBKeyRange: window.IDBKeyRange // or the shim's version.
+    });
 
     return new _StorageManager2.default(db, storageName);
   },
@@ -93,8 +105,8 @@ var RuntimeFactory = Object.create({
     this.catalogue = new _RuntimeCatalogue.RuntimeCatalogue(this);
     return this.catalogue;
   },
-  runtimeCapabilities: function runtimeCapabilities() {
-    return new _RuntimeCapabilities2.default(this.storageManager());
+  runtimeCapabilities: function runtimeCapabilities(storageManager) {
+    return new _RuntimeCapabilities2.default(storageManager);
   }
 });
 

@@ -38,12 +38,14 @@ var _eval3 = _interopRequireDefault(_eval2);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var fs = require('fs');
+
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
 
 console.debug = console.log;
 
-var domain = 'hysmart.rethink.ptinovacao.pt';
+// let domain = 'hysmart.rethink.ptinovacao.pt';
+var domain = 'localhost';
 
 var runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 var catalogue = _RuntimeFactory2.default.createRuntimeCatalogue();
@@ -63,10 +65,6 @@ function searchHyperty(runtime, descriptor) {
 }
 
 function runtimeReady(runtime) {
-
-  var capabilities = runtime.runtimeFactory.runtimeCapabilities();
-  capabilities.isAvailable('node');
-  capabilities.isAvailable('browser');
 
   process.on('message', function (msg) {
     console.log('Message Received on runtime-core'.blue, msg);

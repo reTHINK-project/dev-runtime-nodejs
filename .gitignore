@@ -14,7 +14,9 @@ build.js.map
 *.swo
 *.*~
 
-dist/
+dist
 scratch
+D_scratch
+*.sqlite
 
 .vscode

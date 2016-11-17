@@ -25,6 +25,7 @@
 
 let fs = require('fs');
 import URI from 'urijs';
+
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
 
@@ -32,7 +33,8 @@ import _eval from 'eval';
 
 console.debug = console.log;
 
-let domain = 'hysmart.rethink.ptinovacao.pt';
+// let domain = 'hysmart.rethink.ptinovacao.pt';
+let domain = 'localhost';
 
 let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 let catalogue = RuntimeFactory.createRuntimeCatalogue();
@@ -53,10 +55,6 @@ function searchHyperty(runtime, descriptor) {
 }
 
 function runtimeReady(runtime) {
-
-  let capabilities = runtime.runtimeFactory.runtimeCapabilities();
-  capabilities.isAvailable('node');
-  capabilities.isAvailable('browser');
 
   process.on('message', function(msg) {
     console.log('Message Received on runtime-core'.blue, msg);

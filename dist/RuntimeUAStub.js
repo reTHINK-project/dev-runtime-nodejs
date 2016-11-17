@@ -37,6 +37,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * limitations under the License.
 **/
 
+var Promise = require('es6-promise');
+
 var domain = 'rethink.ptinovacao.pt';
 var coreRuntime = {};
 
