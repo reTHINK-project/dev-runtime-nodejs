@@ -16,16 +16,15 @@ var _eval3 = _interopRequireDefault(_eval2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function create(myApp) {
-  console.log('\n****** In ContextApp ******'.green);
+function createContextApp(myApp) {
+
   process._miniBus = new _minibus2.default();
   process._miniBus._onPostMessage = function (msg) {
-    console.log('--> process miniBus message sent'.blue, msg);
+    // console.log('--> context App message sent'.blue);
     myApp.send(msg);
   };
 
   myApp.on('message', function (event) {
-    // console.log('\n received message: runtime:loadedHyperty', event);
     if (event.to.startsWith('runtime:loadedHyperty')) return;
 
     process._miniBus._onMessage(event);
@@ -34,7 +33,6 @@ function create(myApp) {
   process._registry = new _sandbox.SandboxRegistry(process._miniBus);
   process._registry._create = function (url, sourceCode, config) {
     var activate = (0, _eval3.default)(sourceCode, true);
-    console.log('activate-->'.red);
     return activate.default(url, process._miniBus, config);
   };
 } /**
@@ -62,8 +60,7 @@ function create(myApp) {
 ;
 
 function getHyperty(hypertyDescriptor) {
-  console.log('#### in getHyperty'.blue);
   return process._registry.components[hypertyDescriptor];
 };
 
-exports.default = { create: create, getHyperty: getHyperty };
+exports.default = { createContextApp: createContextApp, getHyperty: getHyperty };

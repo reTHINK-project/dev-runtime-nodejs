@@ -57,7 +57,7 @@ function searchHyperty(runtime, descriptor) {
 function runtimeReady(runtime) {
 
   process.on('message', function(msg) {
-    console.log('Message Received on runtime-core'.blue, msg);
+    console.log('Message Received on runtime-core: \n'.blue, msg);
     if (msg.to === 'core:loadHyperty') {
       let descriptor = msg.body.descriptor;
       let hyperty = searchHyperty(runtime, descriptor);
@@ -68,17 +68,14 @@ function runtimeReady(runtime) {
             .then(returnHyperty);
       }
     } else if (msg.to === 'core:loadStub') {
-      console.log('domain is :'.green, msg.body.domain);
       runtime.loadStub(msg.body.domain);
     }
   }, false);
 
-  console.log('--> sending to Main process');
+  console.log('--> sending to Main process RuntimeNode');
   process.send({to:'runtime:installed', body:{}});
 
 }
-
-console.log('\n------------------- In child thread core.js  --------------------'.green);
 
 
 catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
@@ -96,16 +93,14 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
 
-    // TODO: Remove this.. Hack while we don't have an alternative to load an default protocol to nodejs different from browser';
+    // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
     let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
     runtime.loadStub(nodeProtoStub).then((result) => {
       console.log('ready: ', result);
-
       runtimeReady(runtime);
-
     }).catch((err) => {
       console.log('Error: ', err);
-    })
+    });
 
   } catch (e) {
     console.log('error is ', e);

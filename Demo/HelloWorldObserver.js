@@ -1,7 +1,7 @@
 let fs = require('fs');
 let path = require('path');
 
-let rethink = require('./RuntimeUAStub.js');
+let rethink = require('./RuntimeNode.js');
 
 // let domain = 'hysmart.rethink.ptinovacao.pt';
 let domain = 'localhost';
@@ -11,15 +11,15 @@ let runtime = rethink.default.install({
   domain: domain,
   development: true
 }).then((runtime) => {
-  console.log('runtime loaded !'.green);
-  console.log('\n loading hyperty :', hypertyURI(domain, 'NodeHyperty'));
+  console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
   runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
       .then((NodeHyperty) => {
-        console.log('NodeHyperty ->'.red, NodeHyperty);
+        console.log('Hyperty loaded :\n'.green);
+        console.log('NodeHyperty -->\n'.blue, NodeHyperty);
         let world = NodeHyperty;
 
         // ..... here we can manipulate hyperty instance
-        console.log('world'.green, world);
+        // console.log('world'.green, world);
 
       }).catch((reason) => {
     console.log('Error:', reason);

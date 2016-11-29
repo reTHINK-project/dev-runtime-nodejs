@@ -56,11 +56,8 @@ var SandboxWorker = function (_Sandbox) {
     console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     _this2.type = _sandbox.SandboxType.NORMAL;
     var _this = _this2;
-
     _this2.worker = child.fork(script);
-    console.log('----->  In Sandbox created :\n');
     if (!!_this2.worker) {
-      // console.log();
       _this2.worker.on('message', function (e) {
         _this._onMessage(e);
       });

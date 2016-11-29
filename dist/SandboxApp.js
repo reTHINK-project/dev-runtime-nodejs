@@ -56,12 +56,12 @@ var SandboxApp = function (_Sandbox) {
 
     _this2.type = _sandbox.SandboxType.NORMAL;
     var _this = _this2;
-    process.on('message', function (e) {
-      console.log('SandboxApp Received message  is :\n'.green, e);
+    process.on('message', function (msg) {
+      console.log('SandboxApp Received message  is :\n'.green, msg);
 
-      if (e.to.startsWith('core:')) return;
+      if (msg.to.startsWith('core:')) return;
 
-      _this._onMessage(e);
+      _this._onMessage(msg);
     });
     return _this2;
   }
@@ -69,7 +69,7 @@ var SandboxApp = function (_Sandbox) {
   _createClass(SandboxApp, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      console.log('SandboxApp postMessage message: '.green, msg);
+      console.log('SandboxApp postMessage message: '.green);
       process.send(msg);
     }
   }]);

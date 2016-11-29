@@ -25,7 +25,7 @@ let Promise = require('es6-promise');
 
 import app from './ContextApp';
 import URI from 'urijs';
-let domain = 'rethink.ptinovacao.pt';
+let domain = 'localhost';
 let coreRuntime = {};
 
 let colors = require('colors');
@@ -34,7 +34,6 @@ let child = require('child_process');
 coreRuntime  = child.fork(__dirname + '/core.js');
 
 let buildMsg = (hypertyComponent, msg) => {
-        console.log('hypertyComponent'.green, hypertyComponent);
         return {
           runtimeHypertyURL: msg.body.runtimeHypertyURL,
           status: msg.body.status,
@@ -48,12 +47,10 @@ let runtimeProxy = {
   requireHyperty: (hypertyDescriptor)=> {
         return new Promise((resolve, reject)=> {
           coreRuntime.on('message', function(msg) {
-            console.log('------------------- Message from runtime core child  -------------------------'.green);
-            console.log('message is :'.red, msg);
+            console.log('---- Message from runtime core ----'.green);
+            // console.log('Hyperty loaded :\n'.green);
 
             if (msg.to === 'runtime:loadedHyperty') {
-              console.log('runtime:loadedHyperty is OK'.green);
-
               resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
             }
 
@@ -80,8 +77,8 @@ let RethinkNode = {
               coreRuntime
               .send({do:'install runtime core'});
               coreRuntime.on('message', function(msg) {
-                console.log('------------------- In parent Process  -------------------------'.green);
-                console.log('\n--> message recieved from child process core.js'.green);
+                // console.log('------------------- In parent Process  -------------------------'.green);
+                // console.log('\n--> message recieved from child process core.js'.green);
                 // console.log('message is :', msg);
                 if (msg.to === 'runtime:installed') {
                   console.log('\n Runtime installed with success\n'.blue);
@@ -97,7 +94,7 @@ let RethinkNode = {
                 console.log('runtime core exited.');
                 coreRuntime.kill();
               });
-              app.create(coreRuntime);
+              app.createContextApp(coreRuntime);
             });
 
         },
