@@ -33,10 +33,8 @@ import Dexie from 'dexie';
 import setGlobalVars from 'indexeddbshim';
 
 import StorageManager from 'service-framework/dist/StorageManager';
-// import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
-// import PersistenceManager from 'service-framework/dist/PersistenceManager';
-import { RuntimeCatalogue } from './service-framework/RuntimeCatalogue';
-import PersistenceManager from './service-framework/Persistence';
+import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+import PersistenceManager from 'service-framework/dist/PersistenceManager';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
