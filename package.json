@@ -25,7 +25,7 @@
   },
   "scripts": {
     "demo": "mkdir -p dist/ && babel --presets es2015 src/ Demo/ --out-dir dist/  && babel --presets es2015 Demo/ -o dist/HelloWorldObserver.js && node dist/HelloWorldObserver.js",
-    "transpile-dep": "babel --presets es2015 ./node_modules/service-framework/src/ --out-dir dist/service-framework/ && babel --presets es2015 ./node_modules/runtime-core/ --out-dir dist/runtime-core/",
+    "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/ && babel --presets es2015 ../dev-runtime-core/ --out-dir dist/runtime-core/",
     "test": "karma start",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install"
   },

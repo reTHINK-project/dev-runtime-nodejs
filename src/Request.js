@@ -27,27 +27,21 @@ import https from 'https';
 class Request {
 
   constructor() {
-    console.log('Node http Request');
 
+    console.log('Node http Request');
     let _this = this;
 
     Object.keys(methods).forEach(function(method) {
-
       _this[methods[method]] = function(url) {
-
         return new Promise(function(resolve, reject) {
-
           _this._makeLocalRequest(methods[method], url).then(function(result) {
             resolve(result);
           }).catch(function(reason) {
             reject(reason);
           });
-
         });
-
       };
     });
-
   }
 
   _makeLocalRequest(method, url) {
@@ -65,12 +59,16 @@ class Request {
       let foundProtocol = false;
       for (let protocol in protocolmap) {
         if (url.slice(0, protocol.length) === protocol) {
-          // console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
+          console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
           url = protocolmap[protocol] + url.slice(protocol.length, url.length);
           usedProtocol = protocolmap[protocol];
           foundProtocol = true;
           break;
         }
+      }
+
+      if(!foundProtocol) {
+        throw new Error(' Invalid protocol of url:', url);
       }
 
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -88,7 +86,6 @@ class Request {
       });
 
       req.end();
-
       req.on('error', (e) => {
         console.error('Error:', e);
         reject(e);

@@ -40,7 +40,7 @@ let buildMsg = (hypertyComponent, msg) => {
           instance: hypertyComponent.instance,
           name: hypertyComponent.name
         };
-      };
+};
 
 let runtimeProxy = {
 
@@ -58,7 +58,7 @@ let runtimeProxy = {
           // console.log('coreRuntime .send'.green);
           coreRuntime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
         });
-      },
+  },
 
   requireProtostub: (domain)=> {
     coreRuntime.send({to:'core:loadStub', body:{domain: domain}});
@@ -67,7 +67,8 @@ let runtimeProxy = {
 
 //
 let RethinkNode = {
-    install: function({domain, runtimeURL, development}={}) {
+
+  install: function({domain, runtimeURL, development}={}) {
 
           return new Promise((resolve, reject)=> {
 
@@ -97,22 +98,21 @@ let RethinkNode = {
               app.createContextApp(coreRuntime);
             });
 
-        },
+  },
 
-    getRuntime(runtimeURL, domain, development) {
+  getRuntime(runtimeURL, domain, development) {
       if (!!development) {
         runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';
         domain = domain || new URI(runtimeURL).host();
 
-      }else {
+      } else {
         runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';
         domain = domain || new URI(runtimeURL).host().replace('catalogue.', '');
       }
-
       return {
           url: runtimeURL,
           domain: domain
-        };
-    }
-  };
+      };
+  }
+};
 export default RethinkNode;

@@ -56,9 +56,9 @@ var _StorageManager = require('service-framework/dist/StorageManager');
 
 var _StorageManager2 = _interopRequireDefault(_StorageManager);
 
-var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
+var _RuntimeCatalogue = require('./service-framework/RuntimeCatalogue');
 
-var _PersistenceManager = require('service-framework/dist/PersistenceManager');
+var _PersistenceManager = require('./service-framework/PersistenceManager');
 
 var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
@@ -109,5 +109,6 @@ var RuntimeFactory = Object.create({
     return new _RuntimeCapabilities2.default(storageManager);
   }
 });
-
+// import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+// import PersistenceManager from 'service-framework/dist/PersistenceManager';
 exports.default = RuntimeFactory;
