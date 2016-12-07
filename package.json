@@ -24,10 +24,11 @@
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
   },
   "scripts": {
-    "demo": "mkdir -p dist/ && babel --presets es2015 src/ Demo/ --out-dir dist/  && babel --presets es2015 Demo/ -o dist/HelloWorldObserver.js && node dist/HelloWorldObserver.js",
-    "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/ && babel --presets es2015 ../dev-runtime-core/ --out-dir dist/runtime-core/",
+    "demo": "rm -rf D_scratch __sysdb__.sqlite && mkdir -p dist/ && babel --presets es2015 src/ Demo/ --out-dir dist/  && babel --presets es2015 Demo/ -o dist/HelloWorldObserver.js && node dist/HelloWorldObserver.js",
+    "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/",
+    "indexedb-fix":"cd node_modules/indexeddbshim && npm install sqlite3 ",
     "test": "karma start",
-    "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install"
+    "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",

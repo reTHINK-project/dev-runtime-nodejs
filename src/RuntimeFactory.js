@@ -26,15 +26,13 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
-import { LocalStorage } from 'node-localstorage';
-
-import Dexie from 'dexie';
-
-import setGlobalVars from 'indexeddbshim';
-
 import StorageManager from 'service-framework/dist/StorageManager';
 import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
 import PersistenceManager from 'service-framework/dist/PersistenceManager';
+
+import { LocalStorage } from 'node-localstorage';
+import Dexie from 'dexie';
+import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
@@ -65,10 +63,12 @@ var RuntimeFactory = Object.create({
 
       global.window= global;
       setGlobalVars(global.window);
-      // window.shimIndexedDB.__useShim();
+      window.shimIndexedDB.__useShim();
       // window.shimIndexedDB.__debug(true);
 
       let storageName = 'scratch';
+      // var db = new levelup(storageName);
+
       const db = new Dexie(storageName, {
         indexedDB: window.indexedDB, // or the shim's version
         IDBKeyRange: window.IDBKeyRange // or the shim's version.

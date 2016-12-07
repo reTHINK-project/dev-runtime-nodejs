@@ -43,9 +43,11 @@ class RuntimeCapabilities {
 
       Promise.all([this._getEnvironment()]).then((result) => {
         let capabilities = {};
+          console.log('this._getEnvironment()s: ', this._getEnvironment());
         result.forEach((capability) => {
           Object.assign(capabilities, capability);
         });
+        console.log('capabilities: ', capabilities);
 
         this.storageManager.set('capabilities', '1', capabilities);
 
