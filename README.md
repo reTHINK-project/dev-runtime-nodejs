@@ -66,7 +66,7 @@ cd dev-runtime-nodejs
 Afterwards, run the following (as root) :
 
 ```
-# npm install
+# npm run setup 
 ```
 
 **Running hello world demo on Runtime Node**
