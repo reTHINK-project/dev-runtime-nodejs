@@ -24,10 +24,11 @@
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
   },
   "scripts": {
-    "demo": "rm -rf D_scratch __sysdb__.sqlite && mkdir -p dist/ && babel --presets es2015 src/ Demo/ --out-dir dist/  && babel --presets es2015 Demo/ -o dist/HelloWorldObserver.js && node dist/HelloWorldObserver.js",
+    "demo": "rm -rf D_scratch __sysdb__.sqlite && mkdir -p dist/ && babel --presets es2015 src/ demo/ --out-dir dist/  && babel --presets es2015 demo/ -o dist/HelloWorldObserver.js && node dist/demo.js",
     "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/",
-    "indexedb-fix":"cd node_modules/indexeddbshim && npm install sqlite3 ",
+    "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "test": "karma start",
+    "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install",
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
@@ -85,5 +86,13 @@
     "watchify": "^3.4.0",
     "websocket": "^1.0.23",
     "ws": "^1.1.1"
+  },
+  "jspm": {
+    "dependencies": {},
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
   }
 }

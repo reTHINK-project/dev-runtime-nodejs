@@ -32,9 +32,9 @@ class Request {
     let _this = this;
 
     Object.keys(methods).forEach(function(method) {
-      _this[methods[method]] = function(url) {
+      _this[methods[method]] = function(url, options) {
         return new Promise(function(resolve, reject) {
-          _this._makeLocalRequest(methods[method], url).then(function(result) {
+          _this._makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
             resolve(result);
           }).catch(function(reason) {
             reject(reason);
@@ -44,54 +44,82 @@ class Request {
     });
   }
 
-  _makeLocalRequest(method, url) {
+  _makeLocalRequest(method, url, options) {
+    let _this =this;
     console.log('HTTPS Request:', method, url);
     return new Promise(function(resolve, reject) {
       // TODO: Check why the url have localhost and undefined like a protocol
       // check the RuntimeUA
-      let protocolmap = {
-        'hyperty-catalogue://': 'https://',
-        'https://': 'https://'
-      };
-
-      let usedProtocol;
-
-      let foundProtocol = false;
-      for (let protocol in protocolmap) {
-        if (url.slice(0, protocol.length) === protocol) {
-          console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
-          url = protocolmap[protocol] + url.slice(protocol.length, url.length);
-          usedProtocol = protocolmap[protocol];
-          foundProtocol = true;
-          break;
-        }
-      }
-
-      if(!foundProtocol) {
-        throw new Error(' Invalid protocol of url:', url);
-      }
+      let urlMap = _this._mapProtocol(url)
+      console.log('Final url is '.red, urlMap,'method is:'.green, method);
 
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-      let req = https.get(url, (response) => {
-        console.log('statusCode:', response.statusCode);
-        let body = '';
-        response.on('data', (data) => {
-          body += data;
+      if(method === 'GET') {
+        let req = https.get(urlMap, (response) => {
+          console.log('statusCode:', response.statusCode);
+          let body = '';
+          response.on('data', (data) => {
+            body += data;
+          });
+
+          response.on('end', () => {
+            resolve(body.toString('utf8'));
+          });
+
         });
 
-        response.on('end', () => {
-          resolve(body.toString('utf8'));
+        req.end();
+        req.on('error', (e) => {
+          console.error('Error:', e);
+          reject(e);
+        });
+      } else if(method === 'POST') {
+        let req = https.request(options, (response) => {
+          console.log('statusCode:', response.statusCode);
+          let body = '';
+          response.on('data', (data) => {
+            body += data;
+          });
+
+          response.on('end', () => {
+            resolve(body.toString('utf8'));
+          });
+
         });
 
-      });
-
-      req.end();
-      req.on('error', (e) => {
-        console.error('Error:', e);
-        reject(e);
-      });
+        req.end();
+        req.on('error', (e) => {
+          console.log('Error:',  e);
+          reject(e);
+        });
+      }
 
     });
+  }
+
+  _mapProtocol(url) {
+    let protocolmap = {
+      'localhost://': 'https://',
+      'undefined://': 'https://',
+      'hyperty-catalogue://': 'https://',
+      'https://': 'https://',
+      'http://': 'http://'
+    }
+
+    let foundProtocol = false
+    for (let protocol in protocolmap) {
+      if (url.slice(0, protocol.length) === protocol) {
+        url = protocolmap[protocol] + url.slice(protocol.length, url.length)
+        foundProtocol = true
+        break
+      }
+    }
+
+    if (!foundProtocol) {
+      throw new Error('Invalid protocol of url: ' + url)
+    }
+
+    return url
   }
 
 }

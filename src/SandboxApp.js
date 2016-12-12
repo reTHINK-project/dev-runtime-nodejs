@@ -40,7 +40,7 @@ export default class SandboxApp extends Sandbox {
           return;
 
         _this._onMessage(msg);
-      });
+    });
   }
 
   _onPostMessage(msg) {

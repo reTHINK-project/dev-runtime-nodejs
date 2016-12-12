@@ -43,16 +43,12 @@ var Request = function () {
     _classCallCheck(this, Request);
 
     console.log('Node http Request');
-
     var _this = this;
 
     Object.keys(methods).forEach(function (method) {
-
-      _this[methods[method]] = function (url) {
-
+      _this[methods[method]] = function (url, options) {
         return new Promise(function (resolve, reject) {
-
-          _this._makeLocalRequest(methods[method], url).then(function (result) {
+          _this._makeLocalRequest(methods[method].toUpperCase(), url, options).then(function (result) {
             resolve(result);
           }).catch(function (reason) {
             reject(reason);
@@ -64,49 +60,80 @@ var Request = function () {
 
   _createClass(Request, [{
     key: '_makeLocalRequest',
-    value: function _makeLocalRequest(method, url) {
+    value: function _makeLocalRequest(method, url, options) {
+      var _this = this;
       console.log('HTTPS Request:', method, url);
       return new Promise(function (resolve, reject) {
         // TODO: Check why the url have localhost and undefined like a protocol
         // check the RuntimeUA
-        var protocolmap = {
-          'hyperty-catalogue://': 'https://',
-          'https://': 'https://'
-        };
-
-        var usedProtocol = void 0;
-
-        var foundProtocol = false;
-        for (var protocol in protocolmap) {
-          if (url.slice(0, protocol.length) === protocol) {
-            // console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
-            url = protocolmap[protocol] + url.slice(protocol.length, url.length);
-            usedProtocol = protocolmap[protocol];
-            foundProtocol = true;
-            break;
-          }
-        }
+        var urlMap = _this._mapProtocol(url);
+        console.log('Final url is '.red, urlMap, 'method is:'.green, method);
 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-        var req = _https2.default.get(url, function (response) {
-          console.log('statusCode:', response.statusCode);
-          var body = '';
-          response.on('data', function (data) {
-            body += data;
+        if (method === 'GET') {
+          var req = _https2.default.get(urlMap, function (response) {
+            console.log('statusCode:', response.statusCode);
+            var body = '';
+            response.on('data', function (data) {
+              body += data;
+            });
+
+            response.on('end', function () {
+              resolve(body.toString('utf8'));
+            });
           });
 
-          response.on('end', function () {
-            resolve(body.toString('utf8'));
+          req.end();
+          req.on('error', function (e) {
+            console.error('Error:', e);
+            reject(e);
           });
-        });
+        } else if (method === 'POST') {
+          var _req = _https2.default.request(options, function (response) {
+            console.log('statusCode:', response.statusCode);
+            var body = '';
+            response.on('data', function (data) {
+              body += data;
+            });
 
-        req.end();
+            response.on('end', function () {
+              resolve(body.toString('utf8'));
+            });
+          });
 
-        req.on('error', function (e) {
-          console.error('Error:', e);
-          reject(e);
-        });
+          _req.end();
+          _req.on('error', function (e) {
+            console.log('Error:', e);
+            reject(e);
+          });
+        }
       });
+    }
+  }, {
+    key: '_mapProtocol',
+    value: function _mapProtocol(url) {
+      var protocolmap = {
+        'localhost://': 'https://',
+        'undefined://': 'https://',
+        'hyperty-catalogue://': 'https://',
+        'https://': 'https://',
+        'http://': 'http://'
+      };
+
+      var foundProtocol = false;
+      for (var protocol in protocolmap) {
+        if (url.slice(0, protocol.length) === protocol) {
+          url = protocolmap[protocol] + url.slice(protocol.length, url.length);
+          foundProtocol = true;
+          break;
+        }
+      }
+
+      if (!foundProtocol) {
+        throw new Error('Invalid protocol of url: ' + url);
+      }
+
+      return url;
     }
   }]);
 

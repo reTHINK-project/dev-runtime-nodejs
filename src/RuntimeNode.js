@@ -34,30 +34,28 @@ let child = require('child_process');
 coreRuntime  = child.fork(__dirname + '/core.js');
 
 let buildMsg = (hypertyComponent, msg) => {
-        return {
-          runtimeHypertyURL: msg.body.runtimeHypertyURL,
-          status: msg.body.status,
-          instance: hypertyComponent.instance,
-          name: hypertyComponent.name
-        };
+  return {
+    runtimeHypertyURL: msg.body.runtimeHypertyURL,
+    status: msg.body.status,
+    instance: hypertyComponent.instance,
+    name: hypertyComponent.name
+  };
 };
 
 let runtimeProxy = {
-
   requireHyperty: (hypertyDescriptor)=> {
-        return new Promise((resolve, reject)=> {
-          coreRuntime.on('message', function(msg) {
-            console.log('---- Message from runtime core ----'.green);
-            // console.log('Hyperty loaded :\n'.green);
+    return new Promise((resolve, reject)=> {
+      coreRuntime.on('message', function(msg) {
+        console.log('---- Message from runtime core ----'.green);
+        console.log('Hyperty loaded :\n'.green);
 
-            if (msg.to === 'runtime:loadedHyperty') {
-              resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
-            }
-
-          });
-          // console.log('coreRuntime .send'.green);
-          coreRuntime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
-        });
+        if (msg.to === 'runtime:loadedHyperty') {
+          resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
+        }
+      });
+      // console.log('coreRuntime .send'.green);
+      coreRuntime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
+    });
   },
 
   requireProtostub: (domain)=> {
@@ -67,52 +65,49 @@ let runtimeProxy = {
 
 //
 let RethinkNode = {
-
   install: function({domain, runtimeURL, development}={}) {
+    return new Promise((resolve, reject)=> {
 
-          return new Promise((resolve, reject)=> {
+      let runtime = this.getRuntime(runtimeURL, domain, development);
+      // console.log(runtime);
+      coreRuntime.send({do:'install runtime core'});
+      coreRuntime.on('message', function(msg) {
+        // console.log('------------------- In parent Process  -------------------------'.green);
+        // console.log('\n--> message recieved from child process core.js'.green);
+        // console.log('message is :', msg);
+        if (msg.to === 'runtime:installed') {
+          console.log('\n Runtime installed with success\n'.blue);
+          resolve(runtimeProxy);
+        }
+      });
 
-              let runtime = this.getRuntime(runtimeURL, domain, development);
-              // console.log(runtime);
+      coreRuntime.on('error', function(error) {
+        console.error('runtime core install failed:', error);
+        coreRuntime .kill();
+        reject(error);
+      });
 
-              coreRuntime
-              .send({do:'install runtime core'});
-              coreRuntime.on('message', function(msg) {
-                // console.log('------------------- In parent Process  -------------------------'.green);
-                // console.log('\n--> message recieved from child process core.js'.green);
-                // console.log('message is :', msg);
-                if (msg.to === 'runtime:installed') {
-                  console.log('\n Runtime installed with success\n'.blue);
-                  resolve(runtimeProxy);
-                }
-              });
-              coreRuntime.on('error', function(error) {
-                console.error('runtime core install failed:', error);
-                coreRuntime .kill();
-                reject(error);
-              });
-              coreRuntime.on('exit', function() {
-                console.log('runtime core exited.');
-                coreRuntime.kill();
-              });
-              app.createContextApp(coreRuntime);
-            });
+      coreRuntime.on('exit', function() {
+        console.log('runtime core exited.');
+        coreRuntime.kill();
+      });
 
+      app.createContextApp(coreRuntime);
+    });
   },
 
   getRuntime(runtimeURL, domain, development) {
-      if (!!development) {
-        runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';
-        domain = domain || new URI(runtimeURL).host();
-
-      } else {
-        runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';
-        domain = domain || new URI(runtimeURL).host().replace('catalogue.', '');
-      }
-      return {
-          url: runtimeURL,
-          domain: domain
-      };
+    if (!!development) {
+      runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';
+      domain = domain || new URI(runtimeURL).host();
+    } else {
+      runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';
+      domain = domain || new URI(runtimeURL).host().replace('catalogue.', '');
+    }
+    return {
+      url: runtimeURL,
+      domain: domain
+    };
   }
 };
 export default RethinkNode;

@@ -51,6 +51,7 @@ function searchHyperty(runtime, descriptor) {
         hyperty = runtime.registry.hypertiesList[index];
     index++;
   }
+  console.log('Hyeprty founded!'.green);
   return hyperty;
 }
 
@@ -96,7 +97,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
     // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
     let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
     runtime.loadStub(nodeProtoStub).then((result) => {
-      console.log('ready: ', result);
+      console.log('ready: '.red, result);
       runtimeReady(runtime);
     }).catch((err) => {
       console.log('Error: ', err);

@@ -36,7 +36,7 @@ import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
-var RuntimeFactory = Object.create({
+let RuntimeFactory = Object.create({
     createSandbox() {
       return new SandboxWorker(__dirname + '/ContextServiceProvider.js');
     },
@@ -86,6 +86,6 @@ var RuntimeFactory = Object.create({
       return new RuntimeCapabilities(storageManager);
     }
 
-  });
+});
 
 export default RuntimeFactory;

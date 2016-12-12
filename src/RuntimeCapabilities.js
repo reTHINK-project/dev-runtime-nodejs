@@ -38,26 +38,24 @@ class RuntimeCapabilities {
    * @returns {Promise<object>}
    */
   getRuntimeCapabilities() {
-
     return new Promise((resolve, reject) => {
-
       Promise.all([this._getEnvironment()]).then((result) => {
+
         let capabilities = {};
-          console.log('this._getEnvironment()s: ', this._getEnvironment());
+        console.log('this._getEnvironment()s: ', this._getEnvironment());
+
         result.forEach((capability) => {
           Object.assign(capabilities, capability);
         });
-        console.log('capabilities: ', capabilities);
 
+        console.log('capabilities: ', capabilities);
         this.storageManager.set('capabilities', '1', capabilities);
 
         resolve(capabilities);
       }).catch((error) => {
         reject(error);
       });
-
     });
-
   }
 
   /**
@@ -66,9 +64,7 @@ class RuntimeCapabilities {
    */
   isAvailable(capability) {
     return new Promise((resolve) => {
-
       this.storageManager.get('capabilities').then((capabilities) => {
-
         console.log('Capability ' + capability + ' is available? ', capabilities.hasOwnProperty(capability) && capabilities[capability]);
         if (capabilities.hasOwnProperty(capability) && capabilities[capability]) {
           resolve(true);
@@ -76,7 +72,6 @@ class RuntimeCapabilities {
           resolve(false);
         }
       });
-
     });
   }
 
@@ -91,7 +86,6 @@ class RuntimeCapabilities {
 
   // TODO: organize the code in separated files
   _getEnvironment() {
-
     // TODO: this should be more effective and check the environment
     try {
       return {
@@ -105,7 +99,6 @@ class RuntimeCapabilities {
       };
     }
   }
-
 }
 
 export default RuntimeCapabilities;

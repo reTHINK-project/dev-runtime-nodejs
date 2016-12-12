@@ -42,6 +42,16 @@ var _atob2 = require('atob');
 
 var _atob3 = _interopRequireDefault(_atob2);
 
+var _StorageManager = require('service-framework/dist/StorageManager');
+
+var _StorageManager2 = _interopRequireDefault(_StorageManager);
+
+var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
+
+var _PersistenceManager = require('service-framework/dist/PersistenceManager');
+
+var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
+
 var _nodeLocalstorage = require('node-localstorage');
 
 var _dexie = require('dexie');
@@ -51,16 +61,6 @@ var _dexie2 = _interopRequireDefault(_dexie);
 var _indexeddbshim = require('indexeddbshim');
 
 var _indexeddbshim2 = _interopRequireDefault(_indexeddbshim);
-
-var _StorageManager = require('service-framework/dist/StorageManager');
-
-var _StorageManager2 = _interopRequireDefault(_StorageManager);
-
-var _RuntimeCatalogue = require('./service-framework/RuntimeCatalogue');
-
-var _PersistenceManager = require('./service-framework/PersistenceManager');
-
-var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
 var _RuntimeCapabilities = require('./RuntimeCapabilities');
 
@@ -90,10 +90,12 @@ var RuntimeFactory = Object.create({
 
     global.window = global;
     (0, _indexeddbshim2.default)(global.window);
-    // window.shimIndexedDB.__useShim();
+    window.shimIndexedDB.__useShim();
     // window.shimIndexedDB.__debug(true);
 
     var storageName = 'scratch';
+    // var db = new levelup(storageName);
+
     var db = new _dexie2.default(storageName, {
       indexedDB: window.indexedDB, // or the shim's version
       IDBKeyRange: window.IDBKeyRange // or the shim's version.
@@ -109,6 +111,5 @@ var RuntimeFactory = Object.create({
     return new _RuntimeCapabilities2.default(storageManager);
   }
 });
-// import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
-// import PersistenceManager from 'service-framework/dist/PersistenceManager';
+
 exports.default = RuntimeFactory;

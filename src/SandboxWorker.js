@@ -45,6 +45,5 @@ export default class SandboxWorker extends Sandbox{
   _onPostMessage(msg) {
     // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
     this.worker.send(msg);
-
   }
 }
