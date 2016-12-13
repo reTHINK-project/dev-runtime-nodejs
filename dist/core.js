@@ -42,7 +42,7 @@ var fs = require('fs');
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 
 
-console.debug = console.log;
+// console.debug = console.log;
 
 // let domain = 'hysmart.rethink.ptinovacao.pt';
 var domain = 'localhost';

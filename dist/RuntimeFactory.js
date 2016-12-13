@@ -94,12 +94,15 @@ var RuntimeFactory = Object.create({
     // window.shimIndexedDB.__debug(true);
 
     var storageName = 'scratch';
-    // var db = new levelup(storageName);
 
     var db = new _dexie2.default(storageName, {
       indexedDB: window.indexedDB, // or the shim's version
       IDBKeyRange: window.IDBKeyRange // or the shim's version.
     });
+
+    window.setTimeout(function () {
+      // configurable Timeout for Multi-process access to database(Database_BUSY)
+    }, 20);
 
     return new _StorageManager2.default(db, storageName);
   },

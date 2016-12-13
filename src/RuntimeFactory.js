@@ -34,6 +34,8 @@ import { LocalStorage } from 'node-localstorage';
 import Dexie from 'dexie';
 import setGlobalVars from 'indexeddbshim';
 
+
+
 import RuntimeCapabilities from './RuntimeCapabilities';
 
 let RuntimeFactory = Object.create({
@@ -67,12 +69,17 @@ let RuntimeFactory = Object.create({
       // window.shimIndexedDB.__debug(true);
 
       let storageName = 'scratch';
-      // var db = new levelup(storageName);
+
 
       const db = new Dexie(storageName, {
         indexedDB: window.indexedDB, // or the shim's version
         IDBKeyRange: window.IDBKeyRange // or the shim's version.
       });
+
+      window.setTimeout(function(){
+        // configurable Timeout for Multi-process access to database(Database_BUSY)
+      }, 20);
+
 
       return new StorageManager(db, storageName);
     },

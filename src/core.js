@@ -28,10 +28,11 @@ import URI from 'urijs';
 
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-
 import _eval from 'eval';
 
-console.debug = console.log;
+
+
+// console.debug = console.log;
 
 // let domain = 'hysmart.rethink.ptinovacao.pt';
 let domain = 'localhost';
