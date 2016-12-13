@@ -78,7 +78,7 @@ let RuntimeFactory = Object.create({
 
       window.setTimeout(function(){
         // configurable Timeout for Multi-process access to database(Database_BUSY)
-      }, 20);
+      }, 400);
 
 
       return new StorageManager(db, storageName);

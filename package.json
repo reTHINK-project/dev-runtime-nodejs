@@ -32,9 +32,10 @@
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
+    "node-fetch": "^1.6.3",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
-    "service-framework": "github:rethink-project/dev-service-framework#develop",
-    "sqlite3": "^3.1.8"
+    "service-framework": "github:rethink-project/dev-service-framework#develop"
+
   },
   "devDependencies": {
     "array.observe": "0.0.1",
