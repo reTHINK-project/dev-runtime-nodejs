@@ -16,10 +16,11 @@ var _eval3 = _interopRequireDefault(_eval2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function create(myApp) {
-  console.log('\n****** In ContextApp ******'.red);
+function createContextApp(myApp) {
+
   process._miniBus = new _minibus2.default();
   process._miniBus._onPostMessage = function (msg) {
+    console.log('--> ON context App message sent to core'.blue);
     myApp.send(msg);
   };
 
@@ -31,8 +32,8 @@ function create(myApp) {
 
   process._registry = new _sandbox.SandboxRegistry(process._miniBus);
   process._registry._create = function (url, sourceCode, config) {
+    console.log('before activation------------------------------contexAPP'.red, url);
     var activate = (0, _eval3.default)(sourceCode, true);
-    console.log(' ProtoStub activated OK'.green);
     return activate.default(url, process._miniBus, config);
   };
 } /**
@@ -63,4 +64,4 @@ function getHyperty(hypertyDescriptor) {
   return process._registry.components[hypertyDescriptor];
 };
 
-exports.default = { create: create, getHyperty: getHyperty };
+exports.default = { createContextApp: createContextApp, getHyperty: getHyperty };

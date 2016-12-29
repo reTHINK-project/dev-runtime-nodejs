@@ -19,7 +19,7 @@ In the following upcoming sections a descritpion of main architecture components
 
 At bootstrap the `HelloWorldObservers.js` demo is launched. In the following the functionalities of each components :
 
-#####``RuntimeUAStub`` :
+#####``RuntimeNode`` :
 - Main Runtime-Node.js process
 - Deploys `core` in an isolated sandbox( ```child_process```)
 - Routes messages back and forth between the Context App and the core
@@ -43,7 +43,7 @@ At bootstrap the `HelloWorldObservers.js` demo is launched. In the following the
  
 ####``HelloWorldObserver.js`` :(in folder Demo/)
 - Serves  ``/resources/descriptors`` folder that acts as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json) using express framework in nodejs.
-- Loads RuntimeUAStub
+- Loads RuntimeNode
 - Starts demo `HelloWorldObserver` like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
 
 ###2.2  Hyperty running in same context as the Runtime Node:
@@ -66,7 +66,7 @@ cd dev-runtime-nodejs
 Afterwards, run the following (as root) :
 
 ```
-# npm install
+# npm run setup 
 ```
 
 **Running hello world demo on Runtime Node**

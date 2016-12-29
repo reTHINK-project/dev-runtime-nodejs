@@ -24,10 +24,11 @@ import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 
-function create(myApp) {
-  console.log('\n****** In ContextApp ******'.red);
+function createContextApp(myApp) {
+
   process._miniBus = new MiniBus();
   process._miniBus._onPostMessage = function(msg) {
+      console.log('--> ON context App message sent to core'.blue);
       myApp.send(msg);
     };
 
@@ -40,14 +41,14 @@ function create(myApp) {
 
   process._registry = new SandboxRegistry(process._miniBus);
   process._registry._create = function(url, sourceCode, config) {
-          let activate = _eval(sourceCode, true);
-          console.log(' ProtoStub activated OK'.green);
-          return activate.default(url, process._miniBus, config);
-        };
+      console.log('before activation------------------------------contexAPP'.red, url);
+    let activate = _eval(sourceCode, true);
+    return activate.default(url, process._miniBus, config);
+  };
 };
 
 function getHyperty(hypertyDescriptor) {
   return process._registry.components[hypertyDescriptor];
 };
 
-export default { create, getHyperty };
+export default { createContextApp, getHyperty };

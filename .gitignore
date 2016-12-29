@@ -12,6 +12,11 @@ build.js.map
 # Temporal files
 *.swp
 *.swo
+*.*~
 
-dist/
+dist
+scratch
+D_scratch
+*.sqlite
+
 .vscode

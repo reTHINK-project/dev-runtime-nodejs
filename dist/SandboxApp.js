@@ -56,12 +56,18 @@ var SandboxApp = function (_Sandbox) {
 
     _this2.type = _sandbox.SandboxType.NORMAL;
     var _this = _this2;
-    process.on('message', function (e) {
-      console.log('SandboxApp Received message  is :\n'.green, e);
 
-      if (e.to.startsWith('core:')) return;
+    process.on('message', function (msg) {
+      console.log('SandboxApp Received message  is :\n'.green, msg);
 
-      _this._onMessage(e);
+      if (msg.hasOwnProperty('to') && msg.to.startsWith('core:')) return;
+
+      _this._onMessage(msg);
+    });
+
+    process.on('error', function (error) {
+      console.error('[SandboxApp]- Error:'.red, error);
+      throw error;
     });
     return _this2;
   }
@@ -69,7 +75,7 @@ var SandboxApp = function (_Sandbox) {
   _createClass(SandboxApp, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      // console.log('SandboxApp postMessage message: '.green, msg);
+      console.log('SandboxApp postMessage to runtimeNode ContextApp: '.green);
       process.send(msg);
     }
   }]);

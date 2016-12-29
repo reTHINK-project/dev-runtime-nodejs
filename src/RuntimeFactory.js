@@ -26,13 +26,22 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
-import { LocalStorage } from 'node-localstorage';
-
-
-import { RuntimeCatalogueLocal, RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+import StorageManager from 'service-framework/dist/StorageManager';
+import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
 import PersistenceManager from 'service-framework/dist/PersistenceManager';
+// import StorageManager from './service-framework/storage-manager/StorageManager';
+// import { RuntimeCatalogue } from './service-framework/RuntimeCatalogue';
+// import PersistenceManager from './service-framework/PersistenceManager';
 
-var RuntimeFactory = Object.create({
+import { LocalStorage } from 'node-localstorage';
+import Dexie from 'dexie';
+import setGlobalVars from 'indexeddbshim';
+
+
+
+import RuntimeCapabilities from './RuntimeCapabilities';
+
+let RuntimeFactory = Object.create({
     createSandbox() {
       return new SandboxWorker(__dirname + '/ContextServiceProvider.js');
     },
@@ -51,19 +60,42 @@ var RuntimeFactory = Object.create({
     },
 
     persistenceManager() {
-
       let localStorage = new LocalStorage('./scratch');
       return new PersistenceManager(localStorage);
     },
 
-    createRuntimeCatalogue(development) {
-      if (!this.catalogue)
-          this.catalogue = development || new RuntimeCatalogueLocal(this);
-            // this.catalogue = development?new RuntimeCatalogueLocal(this):new RuntimeCatalogue(this)
+    storageManager() {
 
+      global.window= global;
+      setGlobalVars(global.window);
+      window.shimIndexedDB.__useShim();
+      // window.shimIndexedDB.__debug(true);
+      window.setTimeout(function(){
+        // configurable Timeout for Multi-process access to database(Database_BUSY)
+      }, 500);
+
+
+      let storageName = 'scratch';
+
+
+      const db = new Dexie(storageName, {
+        indexedDB: window.indexedDB, // or the shim's version
+        IDBKeyRange: window.IDBKeyRange // or the shim's version.
+      });
+
+
+      return new StorageManager(db, storageName);
+    },
+
+    createRuntimeCatalogue() {
+      this.catalogue = new RuntimeCatalogue(this);
       return this.catalogue;
+    },
+
+    runtimeCapabilities(storageManager) {
+      return new RuntimeCapabilities(storageManager);
     }
 
-  });
+});
 
 export default RuntimeFactory;

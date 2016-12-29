@@ -28,16 +28,14 @@ let colors = require('colors');
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
     super(script);
+    console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);
     this.type = SandboxType.NORMAL;
     let _this = this;
-
     this.worker = child.fork(script);
     if (!!this.worker) {
-      // console.log();
       this.worker.on('message', function(e) {
               _this._onMessage(e);
-
-            });
+      });
       this.worker.send('');
     } else {
       throw new Error('Your environment does not support worker \n', e);
@@ -47,6 +45,5 @@ export default class SandboxWorker extends Sandbox{
   _onPostMessage(msg) {
     // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
     this.worker.send(msg);
-
   }
 }

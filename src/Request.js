@@ -20,85 +20,96 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-const methods = {GET: 'get', POST: 'post', DELETE: 'delete', UPDATE: 'update'};
+const methods = {GET: 'get', POST: 'post'}
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+var fetch = require('node-fetch')
 
-import httpRequest from 'request';
 
 class Request {
 
   constructor() {
-    console.log('Node http Request');
 
-    let _this = this;
+    console.log('Node http Request');
+    let _this = this
 
     Object.keys(methods).forEach(function(method) {
-
-      _this[methods[method]] = function(url) {
-
+      _this[methods[method]] = function(url, options) {
         return new Promise(function(resolve, reject) {
-
-          _this._makeLocalRequest(methods[method], url).then(function(result) {
-            resolve(result);
+          _this._makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
+            resolve(result)
           }).catch(function(reason) {
-            reject(reason);
+            reject(reason)
           });
-
         });
-
       };
     });
 
   }
 
-  _makeLocalRequest(method, url) {
-    console.log(method, url);
+  _makeLocalRequest(method, url, options) {
+    let _this =this
+    console.log('HTTPS Request:', method, url)
     return new Promise(function(resolve, reject) {
-      // TODO: Check why the url have localhost and undefined like a protocol
-      // check the RuntimeUA
-      let protocolmap = {
-        'localhost://': 'http://',
-        'undefined://': 'http://',
-        'hyperty-catalogue://': 'http://',
-        'https://': 'http://',
-        'http://': 'http://'
-      };
 
-      let usedProtocol;
+      let urlMap = _this._mapProtocol(url)
+      // console.log('Mapped url is '.red, urlMap,'method is:'.green, method);
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+      if(method === 'GET') {
+        // handle GET method
+        fetch(urlMap).then(function(res) {
+          console.log('statusCode is: ',  res.status)
+          return res.text()
+        }).then(function(body) {
+          resolve(body.toString('utf8'))
+        }).catch(function(err) {
+          console.log(err)
+        });
 
-      let foundProtocol = false;
-      for (let protocol in protocolmap) {
-        if (url.slice(0, protocol.length) === protocol) {
-          // console.log("exchanging " + protocol + " with " + protocolmap[protocol]);
-          url = protocolmap[protocol] + url.slice(protocol.length, url.length);
-          usedProtocol = protocolmap[protocol];
-          foundProtocol = true;
-          break;
-        }
+      } else if(method === 'POST') {
+          // handle POST method
+          /*
+            options = {
+              method :method, e.g POST
+              body:JSON.stringify(body),
+              headers: { 'Content-Type': 'application/json'}
+            }
+          */
+        fetch(urlMap, options).then(function(res) {
+          return res.text()
+        }).then(function(body) {
+          resolve(body.toString('utf8'))
+        }).catch(function(error) {
+          console.log('Error in POST method:', error)
+        });
       }
-      var req = httpRequest.get({
-        url: url
-      }, function(err, response, body) {
-        console.log(err);
-        // console.log('http respone.statusCode :', response.statusCode);
-        // console.log('this is response.headers', response.headers['content-type']);
-        // console.log('this is response.body :', body);
-
-        if (response.statusCode === 200) {
-          console.log('got http response ::', response.statusCode);
-          resolve(body);
-        } else {
-          console.log('rejecting promise because of response code: 200 != ', response.statusCode);
-          reject(err);
-        }
-      });
-
-      req.end();
-
     });
+  }
+
+  _mapProtocol(url) {
+    let protocolmap = {
+      'localhost://': 'https://',
+      'undefined://': 'https://',
+      'hyperty-catalogue://': 'https://',
+      'https://': 'https://',
+      'http://': 'http://'
+    }
+
+    let foundProtocol = false
+    for (let protocol in protocolmap) {
+      if (url.slice(0, protocol.length) === protocol) {
+        url = protocolmap[protocol] + url.slice(protocol.length, url.length)
+        foundProtocol = true
+        break
+      }
+    }
+
+    if (!foundProtocol) {
+      throw new Error('Invalid protocol of url: ' + url)
+    }
+
+    return url
   }
 
 }
 
-export default Request;
+export default Request

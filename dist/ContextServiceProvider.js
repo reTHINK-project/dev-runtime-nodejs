@@ -39,18 +39,19 @@ var colors = require('colors'); /**
 process._miniBus = new _minibus2.default();
 
 process._miniBus._onPostMessage = function (msg) {
-  // console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.green, msg);
+  console.log('Message recieved on RuntimeNode'.red);
+  console.log('-------------contextServiceProvider to core:'.green);
   process.send(msg);
 };
 
 process.on('message', function (msg) {
-  // console.log('--------------------------- Inside ContextServiceProvider : Received message is :----------------------------:\n '.red);
+  console.log('Message received on  child(core):'.red);
   process._miniBus._onMessage(msg);
 });
 
 process._registry = new _sandbox.SandboxRegistry(process._miniBus);
 process._registry._create = function (url, sourceCode, config) {
+  console.log('before activation------------------------------'.red);
   var activate = (0, _eval3.default)(sourceCode, true);
-  console.log(activate);
   return activate.default(url, process._miniBus, config);
 };

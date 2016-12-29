@@ -25,17 +25,18 @@
 
 let fs = require('fs');
 import URI from 'urijs';
+
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-
 import _eval from 'eval';
+// import RuntimeUA from './runtime-core/runtime/RuntimeUA.js'
 
-let domain = 'hybroker.rethink.ptinovacao.pt';
+// console.debug = console.log;
+// let domain = 'hysmart.rethink.ptinovacao.pt';
 
-let parameters = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';
-let runtimeURL = 'http://catalogue.' + domain + '/.well-known/runtime/Runtime';//.well-known/runtime/MyRuntime
-let development = parameters.development === 'true';
-let catalogue = RuntimeFactory.createRuntimeCatalogue(development);
+let domain = 'localhost';
+let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
+let catalogue = RuntimeFactory.createRuntimeCatalogue();
 
 function returnHyperty(hyperty) {
   process.send({to:'runtime:loadedHyperty', body: hyperty});
@@ -49,47 +50,66 @@ function searchHyperty(runtime, descriptor) {
         hyperty = runtime.registry.hypertiesList[index];
     index++;
   }
+  console.log('Hyeprty founded!'.green);
   return hyperty;
 }
 
-console.log('\n------------------- In child thread core.js  --------------------'.green);
-catalogue.getRuntimeDescriptor(runtimeURL)
-  .then(function(descriptor) {
-      let descriptorRef = descriptor;
-      let sourcePackageURL = descriptorRef.sourcePackageURL;
-      if (sourcePackageURL === '/sourcePackage') {
-        return descriptorRef.sourcePackage;
-      }
-      return catalogue.getSourcePackageFromURL(sourcePackageURL);
-    })
+function runtimeReady(runtime) {
 
- .then(function(sourcePackage) {
+  process.on('message', function(msg) {
+    console.log('Message Received on runtime-core: \n'.blue, msg);
+    if (msg.to === 'core:loadHyperty') {
+      let descriptor = msg.body.descriptor;
+      let hyperty = searchHyperty(runtime, descriptor);
+      if (hyperty) {
+        returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
+      } else {
+        runtime.loadHyperty(descriptor)
+            .then(returnHyperty);
+      }
+    } else if (msg.to === 'core:loadStub') {
+      runtime.loadStub(msg.body.domain);
+    }
+  }, false);
+
+  console.log('--> sending to Main process RuntimeNode');
+  process.send({to:'runtime:installed', body:{}});
+
+}
+
+
+
+catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
+
+  if (descriptor.sourcePackageURL === '/sourcePackage') {
+    return descriptor.sourcePackage;
+  } else {
+    return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);
+  }
+
+}).then(function(sourcePackage) {
+
   try {
+    window.setTimeout(function(){
+      // configurable Timeout for Multi-process access to database(Database_BUSY)
+    }, 300);
 
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
 
-    process.on('message', function(msg) {
-      console.log('Message Received on runtime-core'.blue, msg);
-      if (msg.to === 'core:loadHyperty') {
-        let descriptor = msg.body.descriptor;
-        let hyperty = searchHyperty(runtime, descriptor);
-        if (hyperty) {
-          returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
-        } else {
-          runtime.loadHyperty(descriptor)
-              .then(returnHyperty);
-        }
-      } else if (msg.to === 'core:loadStub') {
-        console.log('domain is :'.green, msg.body.domain);
-        runtime.loadStub(msg.body.domain);
-      }
-    }, false);
-    console.log('--> sending to Main process');
-    process.send({to:'runtime:installed', body:{}});
+    // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
+    let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
+    runtime.loadStub(nodeProtoStub).then((result) => {
+      console.log('ready: '.red, result);
+      runtimeReady(runtime);
+    }).catch((err) => {
+      console.log('Error: ', err);
+    });
+
   } catch (e) {
     console.log('error is ', e);
   }
+
 }).catch((error) => {
   console.log('Error: ', error);
 });

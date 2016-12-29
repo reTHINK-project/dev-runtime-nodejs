@@ -42,7 +42,9 @@ var _atob2 = require('atob');
 
 var _atob3 = _interopRequireDefault(_atob2);
 
-var _nodeLocalstorage = require('node-localstorage');
+var _StorageManager = require('service-framework/dist/StorageManager');
+
+var _StorageManager2 = _interopRequireDefault(_StorageManager);
 
 var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
 
@@ -50,7 +52,25 @@ var _PersistenceManager = require('service-framework/dist/PersistenceManager');
 
 var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
+var _nodeLocalstorage = require('node-localstorage');
+
+var _dexie = require('dexie');
+
+var _dexie2 = _interopRequireDefault(_dexie);
+
+var _indexeddbshim = require('indexeddbshim');
+
+var _indexeddbshim2 = _interopRequireDefault(_indexeddbshim);
+
+var _RuntimeCapabilities = require('./RuntimeCapabilities');
+
+var _RuntimeCapabilities2 = _interopRequireDefault(_RuntimeCapabilities);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import StorageManager from './service-framework/storage-manager/StorageManager';
+// import { RuntimeCatalogue } from './service-framework/RuntimeCatalogue';
+// import PersistenceManager from './service-framework/PersistenceManager';
 
 var RuntimeFactory = Object.create({
   createSandbox: function createSandbox() {
@@ -67,15 +87,34 @@ var RuntimeFactory = Object.create({
     return (0, _atob3.default)(b64);
   },
   persistenceManager: function persistenceManager() {
-
     var localStorage = new _nodeLocalstorage.LocalStorage('./scratch');
     return new _PersistenceManager2.default(localStorage);
   },
-  createRuntimeCatalogue: function createRuntimeCatalogue(development) {
-    if (!this.catalogue) this.catalogue = development || new _RuntimeCatalogue.RuntimeCatalogueLocal(this);
-    // this.catalogue = development?new RuntimeCatalogueLocal(this):new RuntimeCatalogue(this)
+  storageManager: function storageManager() {
 
+    global.window = global;
+    (0, _indexeddbshim2.default)(global.window);
+    window.shimIndexedDB.__useShim();
+    // window.shimIndexedDB.__debug(true);
+    window.setTimeout(function () {
+      // configurable Timeout for Multi-process access to database(Database_BUSY)
+    }, 500);
+
+    var storageName = 'scratch';
+
+    var db = new _dexie2.default(storageName, {
+      indexedDB: window.indexedDB, // or the shim's version
+      IDBKeyRange: window.IDBKeyRange // or the shim's version.
+    });
+
+    return new _StorageManager2.default(db, storageName);
+  },
+  createRuntimeCatalogue: function createRuntimeCatalogue() {
+    this.catalogue = new _RuntimeCatalogue.RuntimeCatalogue(this);
     return this.catalogue;
+  },
+  runtimeCapabilities: function runtimeCapabilities(storageManager) {
+    return new _RuntimeCapabilities2.default(storageManager);
   }
 });
 
