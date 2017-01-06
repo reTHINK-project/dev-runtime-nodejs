@@ -37,9 +37,26 @@ import { LocalStorage } from 'node-localstorage';
 import Dexie from 'dexie';
 import setGlobalVars from 'indexeddbshim';
 
-
-
 import RuntimeCapabilities from './RuntimeCapabilities';
+
+let createStorageManager = () => {
+  let storageName = 'scratch';
+
+  // configuration of dexie db for node
+  global.window= global;
+  setGlobalVars(global.window);
+  window.shimIndexedDB.__useShim();
+  // cwindow.shimIndexedDB.__debug(true);
+
+  const db = new Dexie(storageName, {
+    indexedDB: window.indexedDB, // or the shim's version
+    IDBKeyRange: window.IDBKeyRange // or the shim's version.
+  });
+
+   return new StorageManager(db, storageName);
+};
+
+let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
     createSandbox() {
@@ -65,26 +82,7 @@ let RuntimeFactory = Object.create({
     },
 
     storageManager() {
-
-      global.window= global;
-      setGlobalVars(global.window);
-      window.shimIndexedDB.__useShim();
-      // window.shimIndexedDB.__debug(true);
-      window.setTimeout(function(){
-        // configurable Timeout for Multi-process access to database(Database_BUSY)
-      }, 500);
-
-
-      let storageName = 'scratch';
-
-
-      const db = new Dexie(storageName, {
-        indexedDB: window.indexedDB, // or the shim's version
-        IDBKeyRange: window.IDBKeyRange // or the shim's version.
-      });
-
-
-      return new StorageManager(db, storageName);
+      return storageManager;
     },
 
     createRuntimeCatalogue() {
@@ -92,7 +90,7 @@ let RuntimeFactory = Object.create({
       return this.catalogue;
     },
 
-    runtimeCapabilities(storageManager) {
+    runtimeCapabilities() {
       return new RuntimeCapabilities(storageManager);
     }
 
