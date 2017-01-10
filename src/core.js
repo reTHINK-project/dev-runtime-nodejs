@@ -32,7 +32,7 @@ import _eval from 'eval';
 
 
 
-// console.debug = console.log;
+console.debug = console.log;
 
 // let domain = 'hysmart.rethink.ptinovacao.pt';
 let domain = 'localhost';
@@ -60,6 +60,7 @@ function runtimeReady(runtime) {
 
   process.on('message', function(msg) {
     console.log('Message Received on runtime-core: \n'.blue, msg);
+
     if (msg.to === 'core:loadHyperty') {
       let descriptor = msg.body.descriptor;
       let hyperty = searchHyperty(runtime, descriptor);
@@ -95,14 +96,20 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
 
-    // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
-    let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
-    runtime.loadStub(nodeProtoStub).then((result) => {
-      console.log('ready: '.red, result);
-      runtimeReady(runtime);
-    }).catch((err) => {
-      console.log('Error: ', err);
-    });
+    // runtime.init().then((success) => {
+      
+      // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
+      let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
+      runtime.loadStub(nodeProtoStub).then((result) => {
+        console.log('ready: '.red, result);
+        runtimeReady(runtime);
+      }).catch((err) => {
+        console.log('Error: ', err);
+      });
+
+    // }).catch((reason) => {
+     // console.log('Error:', reason);
+    // })
 
   } catch (e) {
     console.log('error is ', e);

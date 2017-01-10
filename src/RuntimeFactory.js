@@ -21,6 +21,7 @@
 * limitations under the License.
 **/
 'use strict';
+
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
@@ -34,9 +35,30 @@ import { LocalStorage } from 'node-localstorage';
 import Dexie from 'dexie';
 import setGlobalVars from 'indexeddbshim';
 
-
-
 import RuntimeCapabilities from './RuntimeCapabilities';
+
+let createStorageManager = () => {
+  global.window= global;
+  setGlobalVars(global.window);
+  window.shimIndexedDB.__useShim();
+  // cwindow.shimIndexedDB.__debug(true);
+
+  let storageName = 'cache';
+
+  const db = new Dexie(storageName, {
+    indexedDB: window.indexedDB, // or the shim's version
+    IDBKeyRange: window.IDBKeyRange // or the shim's version.
+  });
+
+  window.setTimeout(function(){
+    // configurable Timeout for Multi-process access to database(Database_BUSY)
+  }, 400);
+
+  storageManager = new StorageManager(db, storageName);
+  return storageManager;
+};
+
+let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
     createSandbox() {
@@ -62,26 +84,7 @@ let RuntimeFactory = Object.create({
     },
 
     storageManager() {
-
-      global.window= global;
-      setGlobalVars(global.window);
-      window.shimIndexedDB.__useShim();
-      // window.shimIndexedDB.__debug(true);
-
-      let storageName = 'scratch';
-
-
-      const db = new Dexie(storageName, {
-        indexedDB: window.indexedDB, // or the shim's version
-        IDBKeyRange: window.IDBKeyRange // or the shim's version.
-      });
-
-      window.setTimeout(function(){
-        // configurable Timeout for Multi-process access to database(Database_BUSY)
-      }, 400);
-
-
-      return new StorageManager(db, storageName);
+      return storageManager;
     },
 
     createRuntimeCatalogue() {
@@ -89,7 +92,7 @@ let RuntimeFactory = Object.create({
       return this.catalogue;
     },
 
-    runtimeCapabilities(storageManager) {
+    runtimeCapabilities() {
       return new RuntimeCapabilities(storageManager);
     }
 

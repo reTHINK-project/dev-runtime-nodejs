@@ -32,15 +32,14 @@ export default class SandboxApp extends Sandbox {
     console.log('---------------------- Sandbox App -----------------------'.green);
 
     this.type = SandboxType.NORMAL;
-    let _this = this;
-    process.on('message', function(msg)  {
-        console.log('SandboxApp Received message  is :\n'.green, msg);
+    process.on('message', (msg) => {
+      console.log('SandboxApp Received message  is :\n'.green, msg);
 
-        if (msg.to.startsWith('core:'))
-          return;
+      if (msg.hasOwnProperty('to') && msg.to.startsWith('core:'))
+        return;
 
-        _this._onMessage(msg);
-    });
+      this._onMessage(msg);
+    })
   }
 
   _onPostMessage(msg) {
