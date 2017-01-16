@@ -108,7 +108,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
       });
 
     // }).catch((reason) => {
-     // console.log('Error:', reason);
+    // console.log('Error:', reason);
     // })
 
   } catch (e) {

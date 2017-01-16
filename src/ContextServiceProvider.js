@@ -37,6 +37,12 @@ process.on('message', function(msg) {
 
 process._registry = new SandboxRegistry(process._miniBus);
 process._registry._create = function(url, sourceCode, config) {
-  let activate = _eval(sourceCode, true);
-  return activate.default(url, process._miniBus, config);
+
+  try {
+    let activate = _eval(sourceCode, true);
+    return activate.default(url, process._miniBus, config);
+  } catch (error) {
+    console.log('ERROR:', error);
+  }
+
 };
