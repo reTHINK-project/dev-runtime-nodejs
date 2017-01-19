@@ -35,6 +35,9 @@ let child = require('child_process');
 coreRuntime  = child.fork(__dirname + '/core.js');
 
 let buildMsg = (hypertyComponent, msg) => {
+
+  console.log('hyperty:', hypertyComponent, msg);
+
   return {
     runtimeHypertyURL: msg.body.runtimeHypertyURL,
     status: msg.body.status,

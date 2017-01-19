@@ -21,6 +21,7 @@
 * limitations under the License.
 **/
 'use strict';
+
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
@@ -36,21 +37,28 @@ import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
-let createStorageManager = () => {
-  let storageName = 'scratch';
 
-  // configuration of dexie db for node
+let createStorageManager = () => {
   global.window= global;
   setGlobalVars(global.window);
   window.shimIndexedDB.__useShim();
   // cwindow.shimIndexedDB.__debug(true);
+
+  let storageName = 'cache';
+
 
   const db = new Dexie(storageName, {
     indexedDB: window.indexedDB, // or the shim's version
     IDBKeyRange: window.IDBKeyRange // or the shim's version.
   });
 
-   return new StorageManager(db, storageName);
+
+  window.setTimeout(function(){
+    // configurable Timeout for Multi-process access to database(Database_BUSY)
+  }, 400);
+
+  storageManager = new StorageManager(db, storageName);
+  return storageManager;
 };
 
 let storageManager = createStorageManager();
