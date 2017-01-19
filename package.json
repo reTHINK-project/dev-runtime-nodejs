@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "node-fetch": "^1.6.3",
-    "runtime-core": "github:rethink-project/dev-runtime-core#dev-proxy-observe",
-    "service-framework": "github:rethink-project/dev-service-framework#dev-proxy-observe"
+    "runtime-core": "github:rethink-project/dev-runtime-core#develop",
+    "service-framework": "github:rethink-project/dev-service-framework#develop"
   },
   "devDependencies": {
     "atob": "^2.0.3",
