@@ -37,6 +37,7 @@ import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
+
 let createStorageManager = () => {
   global.window= global;
   setGlobalVars(global.window);
@@ -45,10 +46,12 @@ let createStorageManager = () => {
 
   let storageName = 'cache';
 
+
   const db = new Dexie(storageName, {
     indexedDB: window.indexedDB, // or the shim's version
     IDBKeyRange: window.IDBKeyRange // or the shim's version.
   });
+
 
   window.setTimeout(function(){
     // configurable Timeout for Multi-process access to database(Database_BUSY)
