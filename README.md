@@ -20,7 +20,7 @@ In the following upcoming sections a descritpion of main architecture components
 At bootstrap the `demo.js` demo is launched. In the following the functionalities of each components :
 
 #####``RuntimeNode`` :
-- Main Runtime-Node.js process
+- Main RuntimeNode process
 - Deploys `core` in an isolated sandbox( ```child_process```)
 - Routes messages back and forth between the Context App and the core
 - Exposes loadHyperty and loadProtoStub to Context Application
