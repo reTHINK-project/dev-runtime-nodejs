@@ -17,7 +17,7 @@
 <p align="justify">As illustrated in the diagram above, Runtime Node design has a flexible approach. Since it supports  deploying hyperty application in an isolated sandbox and in the same context as Runtime Node process as well (main node process where the javascript code is being executed first, labeled as Runtime-NodeJS).
 In the following upcoming sections a descritpion of main architecture components is given. Afterwards, an emphasis on architecture possible slight variations depending on possible use cases and/or business models.</p>
 
-At bootstrap the `HelloWorldObservers.js` demo is launched. In the following the functionalities of each components :
+At bootstrap the `demo.js` demo is launched. In the following the functionalities of each components :
 
 #####``RuntimeNode`` :
 - Main Runtime-Node.js process
@@ -41,10 +41,9 @@ At bootstrap the `HelloWorldObservers.js` demo is launched. In the following the
 - Deployed directly in Runtime Node or in an isolated sandbox( labeled ``Service Application``)
 - Used to load and activate Hyperties
  
-####``HelloWorldObserver.js`` :(in folder Demo/)
-- Serves  ``/resources/descriptors`` folder that acts as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json) using express framework in nodejs.
-- Loads RuntimeNode
-- Starts demo `HelloWorldObserver` like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
+####``demo.js`` :(in folder Demo/)
+- Loads Runtimecore, Hyeprty,and the ProtoStub from the toolkit
+- Starts demo `NodeHyperty` like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
 
 ###2.2  Hyperty running in same context as the Runtime Node:
 <p align="justify">In order to be able to develop and manipulate hyperty instance. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties' instances.</p>
@@ -69,13 +68,13 @@ Afterwards, run the following (as root) :
 # npm run setup 
 ```
 
-**Running hello world demo on Runtime Node**
+**Running NodeHyperty demo on Runtime Node**
 ```
 # npm run demo
 ```
 This demo is set for `hybroker.rethink.ptinovacao.pt` domain. As a result, it uses all other components (catalogue, domain registry, msg-node) of reTHINK associated with this domain.
 
-This will start hello world observer from local catalogue in `static/resources/descriptors`. Moreover, this demo connects  to the remote msg-node-vertx of `hybroker.rethink.ptinovacao.pt`.
+This will start NodeHyperty from catalogue in `https://catalogue.domain/.well-known/hyperty/NodeHyperty`. Moreover, this demo connects  to the remote msg-node-vertx of `hybroker.rethink.ptinovacao.pt`.
 
 
 ### 4. Understanding this demo
@@ -114,7 +113,7 @@ runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
 
 ### 5. How to use this Runtime Node :
 
- In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `HelloWorldObserver.js` in `Demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))` in line [HelloWorldObserver.js#L40](https://github.com/reTHINK-project/dev-runtime-nodejs/blob/develop-improves/Demo/HelloWorldObserver.js#L32)
+ In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `Demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
  
  where :
  
