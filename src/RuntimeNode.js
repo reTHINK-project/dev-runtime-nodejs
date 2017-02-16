@@ -26,18 +26,16 @@ let Promise = require('es6-promise');
 
 import app from './ContextApp';
 import URI from 'urijs';
+let colors = require('colors');
+
 let domain = 'localhost';
 let coreRuntime = {};
-
-let colors = require('colors');
 
 let child = require('child_process');
 coreRuntime  = child.fork(__dirname + '/core.js');
 
 let buildMsg = (hypertyComponent, msg) => {
-
-  console.log('hyperty:', hypertyComponent, msg);
-
+  console.log('hypertyComponent is :', hypertyComponent, msg);
   return {
     runtimeHypertyURL: msg.body.runtimeHypertyURL,
     status: msg.body.status,
@@ -46,15 +44,19 @@ let buildMsg = (hypertyComponent, msg) => {
   };
 };
 
+/**
+* Returns as a promise Hyperty object with all its informations.
+* @returns {Promise<object>}
+**/
 let runtimeProxy = {
   requireHyperty: (hypertyDescriptor)=> {
     return new Promise((resolve, reject)=> {
-      coreRuntime.on('message', function(msg) {
+      coreRuntime.on('message', (msg) => {
         console.log('---- Message from runtime core ----'.green);
         console.log('Hyperty loaded :\n'.green);
 
         if (msg.to === 'runtime:loadedHyperty') {
-          resolve(buildMsg(app.getHyperty(msg.body.runtimeHypertyURL), msg));
+          resolve(buildMsg(app.getHypertyBy(msg.body.runtimeHypertyURL), msg));
         }
       });
       // console.log('coreRuntime .send'.green);
@@ -62,36 +64,34 @@ let runtimeProxy = {
     });
   },
 
-  requireProtostub: (domain)=> {
+  requireProtostub: (domain) => {
     coreRuntime.send({to:'core:loadStub', body:{domain: domain}});
   }
 };
 
-//
+/**
+* Returns as a promise Hyperty runtime object.
+* @returns {Promise<object>}
+**/
 let RethinkNode = {
   install: function({domain, runtimeURL, development}={}) {
-    return new Promise((resolve, reject)=> {
-
+    return new Promise((resolve, reject) => {
       let runtime = this.getRuntime(runtimeURL, domain, development);
-      // console.log(runtime);
       coreRuntime.send({do:'install runtime core'});
-      coreRuntime.on('message', function(msg) {
-        // console.log('------------------- In parent Process  -------------------------'.green);
-        // console.log('\n--> message recieved from child process core.js'.green);
-        // console.log('message is :', msg);
+      coreRuntime.on('message', (msg) => {
         if (msg.to === 'runtime:installed') {
           console.log('\n Runtime installed with success\n'.blue);
           resolve(runtimeProxy);
         }
       });
 
-      coreRuntime.on('error', function(error) {
+      coreRuntime.on('error', (error) => {
         console.error('runtime core install failed:', error);
         coreRuntime .kill();
         reject(error);
       });
 
-      coreRuntime.on('exit', function() {
+      coreRuntime.on('exit', () => {
         console.log('runtime core exited.');
         coreRuntime.kill();
       });

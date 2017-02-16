@@ -26,12 +26,9 @@ var fetch = require('node-fetch')
 
 
 class Request {
-
   constructor() {
-
-    console.log('Node http Request');
     let _this = this
-
+    console.log('Node http Request');
     Object.keys(methods).forEach(function(method) {
       _this[methods[method]] = function(url, options) {
         return new Promise(function(resolve, reject) {
@@ -45,24 +42,27 @@ class Request {
     });
 
   }
-
+  
+  // handling request methods
   _makeLocalRequest(method, url, options) {
     let _this =this
-    console.log('HTTPS Request:', method, url)
-    return new Promise(function(resolve, reject) {
+    console.log('HTTPS Request:', method, url);
 
-      let urlMap = _this._mapProtocol(url)
+    return new Promise(function(resolve, reject) {
+      let urlMap = _this._mapProtocol(url);
+
       console.log('Mapped url is '.red, urlMap,'method is:'.green, method);
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
       if(method === 'GET') {
         // handle GET method
-        fetch(urlMap).then(function(res) {
+        fetch(urlMap).then((res) => {
           console.log('statusCode is: ',  res.status)
           return res.text()
-        }).then(function(body) {
+        }).then((body)=> {
           resolve(body.toString('utf8'))
-        }).catch(function(err) {
-          console.log(err)
+        }).catch((err) => {
+          console.error('Error occured on GET method of url:',urlMap, 'reason :', err);
         });
 
       } else if(method === 'POST') {
@@ -74,17 +74,18 @@ class Request {
               headers: { 'Content-Type': 'application/json'}
             }
           */
-        fetch(urlMap, options).then(function(res) {
+        fetch(urlMap, options).then((res) => {
           return res.text()
-        }).then(function(body) {
+        }).then((body) => {
           resolve(body.toString('utf8'))
-        }).catch(function(error) {
-          console.log('Error in POST method:', error)
+        }).catch((error) => {
+          console.error('Error occured on POST method of url:',urlMap, 'with options:', options, 'reason :', err);
         });
       }
     });
   }
 
+// mapping Url/protocol to http/https
   _mapProtocol(url) {
     let protocolmap = {
       'localhost://': 'https://',
@@ -106,10 +107,8 @@ class Request {
     if (!foundProtocol) {
       throw new Error('Invalid protocol of url: ' + url)
     }
-
     return url
   }
-
 }
 
-export default Request
+export default Request;
