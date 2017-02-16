@@ -42,7 +42,7 @@ At bootstrap the `demo.js` demo is launched. In the following the functionalitie
 - Used to load and activate Hyperties
  
 ####``demo.js`` :(in folder Demo/)
-- Loads Runtimecore, Hyeprty,and the ProtoStub from the toolkit
+- Loads Runtime-Core, Hyeprty,and the ProtoStub from the toolkit
 - Starts demo `NodeHyperty` like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
 
 ###2.2  Hyperty running in same context as the Runtime Node:
