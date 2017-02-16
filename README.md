@@ -100,14 +100,14 @@ let runtime = rethink.default.install({
 Now you load the hyperty :
 
 ```
-console.log('loading hyperty :', hypertyURI(domain, 'HelloWorldObserver'));
-runtime.requireHyperty(hypertyURI(domain, 'HelloWorldObserver'))
-    .then((HelloWorldObserver) => {
-      console.log('HelloWorldObserver ->'.red, HelloWorldObserver);
-        let helloObserver = HelloWorldObserver;
-        // ..... here we can manipulate hyperty instance
-        console.log('helloObserver'.green, helloObserver);
-    }).catch((reason) => {
+console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
+runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
+    .then((NodeHyperty) => {
+			console.log('Hyperty loaded :\n'.green);
+      console.log('NodeHyperty -->\n'.blue, NodeHyperty);
+      // ..... here we can manipulate hyperty instance
+      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-						toolkit) :npm run start:node
+			}).catch((reason) => {
       console.log('Error:', reason);
     });
 ```
