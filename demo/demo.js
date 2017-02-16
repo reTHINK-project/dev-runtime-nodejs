@@ -16,11 +16,8 @@ let runtime = rethink.default.install({
     .then((NodeHyperty) => {
       console.log('Hyperty loaded :\n'.green);
       console.log('NodeHyperty -->\n'.blue, NodeHyperty);
-      let world = NodeHyperty;
-
       // ..... here we can manipulate hyperty instance
-      // console.log('world'.green, world);
-      // before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-toolkit) :npm run start:node
+      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-toolkit) :npm run start:node
       //
 
     }).catch((reason) => {
