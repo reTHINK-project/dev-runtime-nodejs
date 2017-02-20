@@ -3,7 +3,7 @@
 <p align="justify">This repository  aims to deploy and execute reTHINK Runtime in Node.js. The execution of reTHINK different components takes place in Node.js sandboxes.</p>
 
 ### 2. Architecture Overview
-<p align= "justify">The design and implementation of this Runtime Node was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser" rel="nofollow">runtime-browser</a>. This Runtime was designed with compliance with reTHINK Runtime Node requirements reported in D3.1. Essentially, it follows by design security approach, where different types of components are executed in isolated SandBoxes.
+<p align= "justify">The design and implementation of this Runtime Node was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser" rel="nofollow">Runtime-Browser</a>. This Runtime was designed with compliance with reTHINK Runtime Node requirements reported in D3.1. Essentially, it follows by design security approach, where different types of components are executed in isolated SandBoxes.
 </p>
 <p align= "justify"> Sandboxing technology was realised thanks to multi-processor environment in Node.js. Particularly, the native  <a href = "https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options" rel="nofollow"> child_process.fork() </a> method was used for this purpose. Spawned (forked) Node.js child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC (Inter-Process Communication) channel is established between the parent and child that allows messages to be passed back and forth between them.
 </p>
@@ -41,20 +41,18 @@ At bootstrap the `HelloWorldObservers.js` demo is launched. In the following the
 - Deployed directly in Runtime Node or in an isolated sandbox( labeled in the above diagram as``Service Application``)
 - Used to load and activate Hyperties and server edge application.
  
-####``HelloWorldObserver.js`` :(in folder Demo/)
-- Serves  ``/resources/descriptors`` folder that acts as temporarily local catalogue (Hyperties.json, Runtimes.json, ProtoStubs.json) using express framework in nodejs.
+####``demo.js`` :(in folder demo/)
 - Loads RuntimeNode
-- Starts demo `HelloWorldObserver` like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
+- Starts demo like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
 
-###2.2  Hyperty running in same context as the Runtime Node:
-<p align="justify">In order to be able to develop and manipulate hyperty instance. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties' instances.</p>
+### 2.2  Hyperty running in same context as the Runtime Node:
 
-<p align="justify">Despite the functionality aspect of this approach. This implementation represents considerable threat to the Runtime. In fact, an hyperty running in the context app has same hardware resources as the runtime. Therefore, executing a malicious code on this Context app, or if the code threw an error at some point of its execution, the whole runtime is compromised.</p>
-In brief this implemenation provides functional Runtime without worrying about the security aspect.
+<p align="justify">In order to be able to develop and manipulate hyperty instance. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the server edge platform (Runtime Node). Likewise,the Runtime Browser, where hyperties are loaded and then executed in the same context as the Runtime Browser. Accordingly, developers/users can interact directly from the Runtime with hyperties' instances.</p>
+
 ### 2.3  Hyperty running in an isolated Sandbox:
-<p align="justify">On the contrary of what was said before. In this implementation, the hyperty is totally isolated in Nodejs child process, as sub process, it has its own V8 NodeJs engine. As a result, it runs on its own isolated context.</p>
-Labeled as  ``Service Application``  in above architecture. A use case we could thing of, consists of having a server hyperty that regularly monitors other servers, and sends back collected data (statistics) to the Runtime Node.
 
+<p align="justify">On the contrary of what was said before. In this implementation, the hyperty is totally isolated in Node.js child process, as sub process, it has its own V8 Node.js engine. As a result, it runs on its own isolated context.</p>
+Labeled as  ``Service Application``  in above architecture. A use case we could thing of, consists of having a server hyperty that regularly monitors other servers, and sends back collected data (statistics) to the Runtime Node.
 
 ### 3. Quick Start
 First you need to clone this repository:
@@ -87,14 +85,17 @@ let runtime = rethink.default.install({
   domain: domain,
   development: true
 }).then((runtime) => {
+
   console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
-	// Now we load the hyperty, given its name i.e NodeHyperty, HelloWorldObserver, HelloWorldReporter etc :	
-	runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
+  // Now we load the hyperty, given its name i.e NodeHyperty, HelloWorldObserver, HelloWorldReporter etc :
+  
+  runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
     .then((NodeHyperty) => {
-      console.log('Hyperty loaded :\n'.green);
-      console.log('NodeHyperty -->\n'.blue, NodeHyperty);
- 			// ..... here we can manipulate hyperty instance
-			// before trying this make sure that the reTHINK toolkit(in dev-hyperty-toolkit) is up running for node with the command:npm run start:node
+      console.log('Hyperty loaded, NodeHyperty -->\n'.blue, NodeHyperty);
+      
+      // ..... here we can manipulate hyperty instance
+      // before trying this make sure that the reTHINK toolkit(in dev-hyperty-toolkit) is up running for node with the command:npm run start:node
+      
     }).catch((reason) => {
       console.log('Error:', reason);
     });
