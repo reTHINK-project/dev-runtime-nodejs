@@ -1,0 +1,54 @@
+{
+  "coverage": "36.84%",
+  "expectCount": 19,
+  "actualCount": 7,
+  "files": {
+    "src/Request.js": {
+      "expectCount": 4,
+      "actualCount": 2,
+      "undocumentLines": [
+        28,
+        29
+      ]
+    },
+    "src/RuntimeNode.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/RuntimeCapabilities.js": {
+      "expectCount": 6,
+      "actualCount": 4,
+      "undocumentLines": [
+        29,
+        31
+      ]
+    },
+    "src/RuntimeFactory.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        62
+      ]
+    },
+    "src/SandboxApp.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        29,
+        30,
+        34
+      ]
+    },
+    "src/SandboxWorker.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        28,
+        29,
+        32,
+        34
+      ]
+    }
+  }
+}

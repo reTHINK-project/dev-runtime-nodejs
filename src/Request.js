@@ -20,36 +20,38 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-const methods = {GET: 'get', POST: 'post'}
+const methods = {GET: 'get', POST: 'post'};
 
-var fetch = require('node-fetch')
+let fetch = require('node-fetch');
 
 
 class Request {
   constructor() {
     let _this = this
     console.log('Node http Request');
-    Object.keys(methods).forEach(function(method) {
-      _this[methods[method]] = function(url, options) {
-        return new Promise(function(resolve, reject) {
-          _this._makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
+    Object.keys(methods).forEach((method) => {
+      _this[methods[method]] = (url, options) => {
+        return new Promise((resolve, reject) => {
+          _this.makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
             resolve(result)
-          }).catch(function(reason) {
+          }).catch((reason) => {
             reject(reason)
           });
         });
       };
     });
-
   }
   
-  // handling request methods
-  _makeLocalRequest(method, url, options) {
+  /**
+   * handling request methods
+   * @returns {text<string>}
+   **/
+  makeLocalRequest(method, url, options) {
     let _this =this
     console.log('HTTPS Request:', method, url);
 
     return new Promise(function(resolve, reject) {
-      let urlMap = _this._mapProtocol(url);
+      let urlMap = _this.mapProtocol(url);
 
       console.log('Mapped url is '.red, urlMap,'method is:'.green, method);
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -85,8 +87,10 @@ class Request {
     });
   }
 
-// mapping Url/protocol to http/https
-  _mapProtocol(url) {
+ /**
+  * @returns {variable<string>}
+  **/
+  mapProtocol(url) {
     let protocolmap = {
       'localhost://': 'https://',
       'undefined://': 'https://',
