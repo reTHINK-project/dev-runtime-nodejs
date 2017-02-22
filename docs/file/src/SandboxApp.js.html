@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/RuntimeNode.js | API Document</title>
+  <title data-ice="title">src/SandboxApp.js | Runtime Node API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -42,7 +42,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/RuntimeNode.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/SandboxApp.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
 * Copyright 2016 PT Inova&#xE7;&#xE3;o e Sistemas SA
 * Copyright 2016 INESC-ID
@@ -60,106 +60,37 @@
 *   http://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
-* distributed under the Liceruntimense is distributed on an &quot;AS IS&quot; BASIS,
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-**/
+*
+*/
 
-let Promise = require(&apos;es6-promise&apos;);
+import { Sandbox, SandboxType } from &apos;runtime-core/dist/sandbox&apos;;
+import MiniBus from &apos;runtime-core/dist/minibus&apos;;
 
 
-import app from &apos;./ContextApp&apos;;
-import URI from &apos;urijs&apos;;
-let colors = require(&apos;colors&apos;);
+export default class SandboxApp extends Sandbox {
+  constructor() {
+    console.log(&apos;---------------------- Sandbox App -----------------------&apos;.green);
+    super();
 
-let domain = &apos;localhost&apos;;
-let coreRuntime = {};
+    this.type = SandboxType.NORMAL;
+    process.on(&apos;message&apos;, (msg) =&gt; {
+      console.log(&apos;SandboxApp Received message  is :\n&apos;.green, msg);
+      if (msg.hasOwnProperty(&apos;to&apos;) &amp;&amp; msg.to.startsWith(&apos;core:&apos;))
+        return;
 
-let child = require(&apos;child_process&apos;);
-coreRuntime  = child.fork(__dirname + &apos;/core.js&apos;);
-
-let buildMsg = (hypertyComponent, msg) =&gt; {
-  console.log(&apos;hypertyComponent is :&apos;, hypertyComponent, msg);
-  return {
-    runtimeHypertyURL: msg.body.runtimeHypertyURL,
-    status: msg.body.status,
-    instance: hypertyComponent.instance,
-    name: hypertyComponent.name
-  };
-};
-
-/**
-* Returns as a promise Hyperty object with all its informations.
-* @returns {Promise&lt;object&gt;}
-**/
-let runtimeProxy = {
-  requireHyperty: (hypertyDescriptor)=&gt; {
-    return new Promise((resolve, reject)=&gt; {
-      coreRuntime.on(&apos;message&apos;, (msg) =&gt; {
-        console.log(&apos;---- Message from runtime core ----&apos;.green);
-        console.log(&apos;Hyperty loaded :\n&apos;.green);
-
-        if (msg.to === &apos;runtime:loadedHyperty&apos;) {
-          resolve(buildMsg(app.getHypertyBy(msg.body.runtimeHypertyURL), msg));
-        }
-      });
-      // console.log(&apos;coreRuntime .send&apos;.green);
-      coreRuntime.send({to:&apos;core:loadHyperty&apos;, body:{descriptor: hypertyDescriptor}});
+      this._onMessage(msg);
     });
-  },
-
-  requireProtostub: (domain) =&gt; {
-    coreRuntime.send({to:&apos;core:loadStub&apos;, body:{domain: domain}});
   }
-};
 
-/**
-* Returns as a promise Hyperty runtime object.
-* @returns {Promise&lt;object&gt;}
-**/
-let RethinkNode = {
-  install: function({domain, runtimeURL, development}={}) {
-    return new Promise((resolve, reject) =&gt; {
-      let runtime = this.getRuntime(runtimeURL, domain, development);
-      coreRuntime.send({do:&apos;install runtime core&apos;});
-      coreRuntime.on(&apos;message&apos;, (msg) =&gt; {
-        if (msg.to === &apos;runtime:installed&apos;) {
-          console.log(&apos;\n Runtime installed with success\n&apos;.blue);
-          resolve(runtimeProxy);
-        }
-      });
-
-      coreRuntime.on(&apos;error&apos;, (error) =&gt; {
-        console.error(&apos;runtime core install failed:&apos;, error);
-        coreRuntime .kill();
-        reject(error);
-      });
-
-      coreRuntime.on(&apos;exit&apos;, () =&gt; {
-        console.log(&apos;runtime core exited.&apos;);
-        coreRuntime.kill();
-      });
-
-      app.createContextApp(coreRuntime);
-    });
-  },
-
-  getRuntime(runtimeURL, domain, development) {
-    if (!!development) {
-      runtimeURL = runtimeURL || &apos;http://&apos; + domain + &apos;/.well-known/runtime/Runtime&apos;;
-      domain = domain || new URI(runtimeURL).host();
-    } else {
-      runtimeURL = runtimeURL || &apos;http://${domain}/.well-known/runtime/default&apos;;
-      domain = domain || new URI(runtimeURL).host().replace(&apos;catalogue.&apos;, &apos;&apos;);
-    }
-    return {
-      url: runtimeURL,
-      domain: domain
-    };
+  _onPostMessage(msg) {
+    console.log(&apos;SandboxApp postMessage message: &apos;.green);
+    process.send(msg);
   }
-};
-export default RethinkNode;
+}
 </code></pre>
 
 </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/JSRequest.js | API Document</title>
+  <title data-ice="title">src/RuntimeCapabilities.js | Runtime Node API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -42,7 +42,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/JSRequest.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/RuntimeCapabilities.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
 * Copyright 2016 PT Inova&#xE7;&#xE3;o e Sistemas SA
 * Copyright 2016 INESC-ID
@@ -66,112 +66,89 @@
 * limitations under the License.
 **/
 
-&apos;use strict&apos;;
-class JSRequest {
-  constructor() {
-    this.client = require(&apos;request&apos;);
-    console.log(&apos;Node http Request&apos;);
-    let _this = this;
-    Object.keys(methods).forEach(function(method) {
-      _this[methods[method]] = function(url, options) {
-        return new Promise(function(resolve, reject) {
-          this.client.makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
-            resolve(result);
-          }).catch(function(reason) {
-            reject(reason);
-          });
+// TODO: import and extend the class of the service-framework
+// service-framework/dist/RuntimeCapabilities;
+
+class RuntimeCapabilities {
+
+   constructor(storageManager) {
+    if (!storageManager) throw new Error(&apos;The Runtime Capabilities need the storageManager&apos;);
+    this.storageManager = storageManager;
+  }
+
+  /**
+   * Returns as a promise RuntimeCapabilities json object with all available capabilities of the runtime.
+   * If it was not yet persisted in the Storage Manager it collects all required info from the platform and saves in the storage manager.
+   * @returns {Promise&lt;object&gt;}
+   */
+  getRuntimeCapabilities() {
+    return new Promise((resolve, reject) =&gt; {
+      Promise.all([this._getEnvironment()]).then((result) =&gt; {
+
+        let capabilities = {};
+        console.log(&apos;this._getEnvironment()s: &apos;, this._getEnvironment());
+
+        result.forEach((capability) =&gt; {
+          Object.assign(capabilities, capability);
         });
+
+        console.log(&apos;capabilities: &apos;, capabilities);
+        this.storageManager.set(&apos;capabilities&apos;, &apos;1&apos;, capabilities);
+
+        resolve(capabilities);
+      }).catch((error) =&gt; {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   * returns as a promise a boolean according to available capabilities.
+   * @returns {Promise&lt;boolean&gt;}
+   */
+  isAvailable(capability) {
+    return new Promise((resolve) =&gt; {
+      this.storageManager.get(&apos;capabilities&apos;).then((capabilities) =&gt; {
+        console.log(&apos;Capability &apos; + capability + &apos; is available? &apos;, capabilities.hasOwnProperty(capability) &amp;&amp; capabilities[capability]);
+        if (capabilities.hasOwnProperty(capability) &amp;&amp; capabilities[capability]) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }).catch((error) =&gt; {
+        console.error(&apos;Error has occured while checking capability, reason:&apos;, error);
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   * it refreshes previously collected capabilities and updates the storage manager
+   */
+  update() {
+    return new Promise((resolve, reject) =&gt; {
+      this.getRuntimeCapabilities().then(resolve).catch(reject);
+    });
+  }
+
+  // TODO: organize the code in separated files
+  _getEnvironment() {
+    // TODO: this should be more effective and check the environment
+    try {
+      return {
+        browser: !!(window &amp;&amp; navigator),
+        node: !!!(window &amp;&amp; navigator)
       };
-    });
-  }
-
-  makeLocalRequest(method, url, options) {
-    let _this = this;
-    console.log(&apos;HTTPS Request:&apos;, method, url, options);
-    return new Promise(function(resolve, reject) {
-      // TODO: Check why the url have localhost and undefined like a protocol
-      // check the RuntimeUA
-      url = this.client.urlMapping(url);
-      console.log(&apos;mappin is done *******************&apos;, url);
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = &apos;0&apos;;
-      if( method === &apos;GET&apos;) {
-        this.client.get( url, (err, response, statusCode) =&gt; {
-          console.log(&apos;statusCode: &apos;, statusCode);
-          if(err) {
-            console.error(&apos;[makeLocalRequest GET method ] Error :&apos;, err);
-          }
-          callback(response, statusCode); // TODO: getBody()
-        });
-      }
-    });
-  }
-
-
-  urlMapping(url) {
-    let protocolmap = {
-      &apos;hyperty-catalogue://&apos;: &apos;https://&apos;,
-      &apos;https://&apos;: &apos;https://&apos;,
-      &apos;localhost://&apos;:&apos;https://&apos;,
-      &apos;hyperty-catalogue&apos;:&apos;https://&apos;,
-      &apos;undefined://&apos;:&apos;https://&apos;,
-      &apos;http://&apos;:&apos;http://&apos;
+    } catch(error) {
+      return {
+        browser: false,
+        node: true
+      };
     }
-    let foundProtocol = false;
-    for (let protocol in protocolmap) {
-      if (url.slice(0, protocol.length) === protocol) {
-        console.log(&quot;exchanging &quot; + protocol + &quot; with &quot; + protocolmap[protocol]);
-        url = protocolmap[protocol] + url.slice(protocol.length, url.length);
-        console.log(&apos;url is : &apos;, url);
-        foundProtocol = true;
-        break;
-      }
-    }
-    if(!foundProtocol) {
-      throw new Error(&apos; Invalid protocol of url:&apos;, url);
-    }
-    return url;
-  }
-
-  get(url, callback) {
-    console.log(&apos;HTTPS Request:&apos;, url);
-    let urlMap = this.client.urlMapping(url);
-    this.client.get({
-      url: urlMap
-    }, function(err, response, body) {
-      if (err) {
-        console.error(&apos;error is get response : &apos;, err)
-        callback(err, null, null);
-      }
-      console.log(&apos;response.statusCode is :&apos;, response.statusCode);
-      callback(null, body, response.statusCode);
-    });
-  }
-
-  put(url, message, callback) {
-    this.client.put({
-      headers: { &apos;content-type&apos;: &apos;application/json&apos; },
-      url: url,
-      body: message
-    }, function(err, response, body) {
-      if (err) {
-        callback(err, null, null);
-      }
-      callback(null, body, response.statusCode);
-    });
-  }
-
-  del(url, callback) {
-    this.client.del({
-      url: url
-    }, function(err, response, body) {
-      if (err) {
-        callback(err, null, null);
-      }
-      callback(null, body, response.statusCode);
-    });
   }
 }
-module.exports = JSRequest;
+
+export default RuntimeCapabilities;
 </code></pre>
 
 </div>
