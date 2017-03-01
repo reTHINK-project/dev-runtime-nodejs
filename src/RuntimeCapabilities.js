@@ -91,12 +91,10 @@ class RuntimeCapabilities {
     // TODO: this should be more effective and check the environment
     try {
       return {
-        browser: !!(window && navigator),
         node: !!!(window && navigator)
       };
     } catch(error) {
       return {
-        browser: false,
         node: true
       };
     }

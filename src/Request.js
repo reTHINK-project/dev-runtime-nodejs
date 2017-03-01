@@ -31,8 +31,9 @@ class Request {
     console.log('Node http Request');
     Object.keys(methods).forEach((method) => {
       _this[methods[method]] = (url, options) => {
+        console.log('AQUIO:', url, options);
         return new Promise((resolve, reject) => {
-          _this.makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
+          _this.makeLocalRequest(method, url, options).then(function(result) {
             resolve(result)
           }).catch((reason) => {
             reject(reason)
@@ -41,42 +42,44 @@ class Request {
       };
     });
   }
-  
+
   /**
    * handling request methods
    * @returns {text<string>}
    **/
   makeLocalRequest(method, url, options) {
     let _this =this
-    console.log('HTTPS Request:', method, url);
+    console.log('HTTPS Request:'.yellow, method, url, options);
 
     return new Promise(function(resolve, reject) {
       let urlMap = _this.mapProtocol(url);
 
-      console.log('Mapped url is '.red, urlMap,'method is:'.green, method);
+      console.log('Mapped url is '.yellow, urlMap,'method is:'.green, method);
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
       if(method === 'GET') {
         // handle GET method
         fetch(urlMap).then((res) => {
-          console.log('statusCode is: ',  res.status)
+          console.log('statusCode is: '.green,  res.status)
           return res.text()
         }).then((body)=> {
           resolve(body.toString('utf8'))
         }).catch((err) => {
-          console.error('Error occured on GET method of url:',urlMap, 'reason :', err);
+          console.error('Error occured on GET method of url:'.red , urlMap, ' reason :'.red, err);
         });
 
       } else if(method === 'POST') {
-          // handle POST method
-          /*
-            options = {
-              method :method, e.g POST
-              body:JSON.stringify(body),
-              headers: { 'Content-Type': 'application/json'}
-            }
-          */
-        fetch(urlMap, options).then((res) => {
+        let postOptions = {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'cache-control': 'no-cache',
+          },
+          body: options
+        };
+
+        fetch(urlMap, postOptions).then((res) => {
+          console.log('statusCode is: '.green,  res.status)
           return res.text()
         }).then((body) => {
           resolve(body.toString('utf8'))

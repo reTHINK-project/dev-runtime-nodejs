@@ -24,7 +24,7 @@
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
   },
   "scripts": {
-    "demo": "rm -rf scratch D_cache __sysdb__.sqlite && npm run build && node dist/demo.js",
+    "demo": "rm -rf dist scratch D_cache __sysdb__.sqlite && npm run build && node dist/demo.js",
     "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/",
     "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "build:doc": "esdoc -c esdoc.json",
@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "node-fetch": "^1.6.3",
-    "runtime-core": "github:rethink-project/dev-runtime-core#develop",
-    "service-framework": "github:rethink-project/dev-service-framework#develop"
+    "runtime-core": "github:rethink-project/dev-runtime-core#fix-forward-msg",
+    "service-framework": "github:rethink-project/dev-service-framework#fix-forward-msg"
   },
   "devDependencies": {
     "atob": "^2.0.3",

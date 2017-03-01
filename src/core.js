@@ -26,7 +26,6 @@
  **/
 'use strict';
 
-
 import URI from 'urijs';
 import RuntimeFactory from './RuntimeFactory';
 import _eval from 'eval';
@@ -35,7 +34,7 @@ let domain = 'localhost';
 let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 let catalogue = RuntimeFactory.createRuntimeCatalogue();
 
-// returnHyperty givent the runtimeHypertyURL, 
+// returnHyperty givent the runtimeHypertyURL,
 // Sends message ='loadedHyperty' to the the parent process RuntimeNode throught IPC channel
 
 function returnHyperty(hyperty) {
@@ -81,9 +80,13 @@ function runtimeReady(runtime) {
   process.send({to:'runtime:installed', body:{}});
 }
 
+let runtimeDescriptor;
 
 // Gets RuntimeDescriptor from the runtime catalogue
 catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
+
+  runtimeDescriptor = descriptor;
+
   if (descriptor.sourcePackageURL === '/sourcePackage') {
     return descriptor.sourcePackage;
   } else {
@@ -91,15 +94,31 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
   }
 }).then((sourcePackage) => {
     let RuntimeUA = _eval(sourcePackage.sourceCode, true);
-    let runtime = new RuntimeUA(RuntimeFactory, domain);
-    // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
-    let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
-      runtime.loadStub(nodeProtoStub).then((result) => {
-        console.log('ready: '.red, result);
+    let runtime = new RuntimeUA(runtimeDescriptor, RuntimeFactory, domain);
+
+    runtime.init().then(() => {
+
+
+      // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
+      let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
+      let idpProxyGoogle = 'https://' + domain + '/.well-known/idp-proxy/node.google.com';
+
+      let stub = runtime.loadStub(nodeProtoStub);
+      // let idp = runtime.loadIdpProxy(idpProxyGoogle);
+
+      Promise.all([stub]).then((result) => {
+        console.log('AQUI:', result[0]);
         runtimeReady(runtime);
-      }).catch((err) => {
+      }).catch((reason) => {
         console.error('Error while loading nodejs ProtoStub, reason: ', err);
-      });
+      })
+
+      runtimeReady(runtime);
+
+    }).catch((reason) => {
+      console.log('Error init', reason);
+    });
+
 }).catch((reason) => {
   console.error('Error getting the RuntimeDescriptor from the service framework catalogue, reason: ', reason);
 });
@@ -133,4 +152,4 @@ process.on('SIGTERM', () => {
   console.warn('Received SIGTERM. core Press Control-D to exit.');
   process.exit();
   process.kill();
-}); // to catch kill 
+}); // to catch kill
