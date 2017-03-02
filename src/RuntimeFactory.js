@@ -27,35 +27,46 @@ import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
-import StorageManager from 'service-framework/dist/StorageManager';
-import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
-import PersistenceManager from 'service-framework/dist/PersistenceManager';
+// import StorageManager from 'service-framework/dist/StorageManager';
+// import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+// import PersistenceManager from 'service-framework/dist/PersistenceManager';
+import StorageManager from './service-framework/storage-manager/StorageManager';
+import { RuntimeCatalogue } from './service-framework/RuntimeCatalogue';
+import PersistenceManager from './service-framework/PersistenceManager';
 
 import { LocalStorage } from 'node-localstorage';
 import Dexie from 'dexie';
 import setGlobalVars from 'indexeddbshim';
 
+
 import RuntimeCapabilities from './RuntimeCapabilities';
 
 
 let createStorageManager = () => {
-  global.window= global;
-  setGlobalVars(global.window);
-  window.shimIndexedDB.__useShim();
+  let indexeddB = {};
+  setGlobalVars(indexeddB);
+  let {indexedDB, IDBKeyRange } = indexeddB;
+
+
+  // global.window= global;
+  // setGlobalVars(global.window);
+  // window.shimIndexedDB.__useShim();
   // cwindow.shimIndexedDB.__debug(true);
 
   let storageName = 'cache';
 
 
   const db = new Dexie(storageName, {
-    indexedDB: window.indexedDB, // or the shim's version
-    IDBKeyRange: window.IDBKeyRange // or the shim's version.
+    indexedDB: indexedDB,
+    IDBKeyRange: IDBKeyRange
+    // indexedDB: window.indexedDB, // or the shim's version
+    // IDBKeyRange: window.IDBKeyRange // or the shim's version.
   });
 
 
-  window.setTimeout(function(){
-    // configurable Timeout for Multi-process access to database(Database_BUSY)
-  }, 400);
+  // window.setTimeout(function(){
+  //   // configurable Timeout for Multi-process access to database(Database_BUSY)
+  // }, 400);
 
   storageManager = new StorageManager(db, storageName);
   return storageManager;

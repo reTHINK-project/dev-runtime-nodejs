@@ -1,0 +1,103 @@
+untitled:Untitled-1
+ConnectionController 
+{
+  mode: 'offer',
+  peer:{ status: '',
+     owner: '',
+     scheme: '',
+     peer: '',
+     Peer: { connectionDescription: {}, iceCandidates: [] } 
+    },
+  syncher: 
+   Syncher {
+     _owner: 'hyperty://localhost/69a29cc7-dbef-4849-ba02-224659d9c256',
+     _bus: 
+      MiniBus {
+        _msgId: 1,
+        _subscriptions: [Object],
+        _responseTimeOut: 5000,
+        _responseCallbacks: {},
+        _onPostMessage: [Function] },
+     _subURL: 'runtime://localhost/9791/sm',
+     _reporters: {},
+     _observers: { 'connection://localhost/f47ebc0f-4de3-4326-8e04-16c98bc92e41': [Object] },
+     _provisionals: {},
+     _onNotificationHandler: [Function] 
+    },
+  configuration: undefined,
+  domain: 'localhost',
+  _objectDescURL: 'hyperty-catalogue://catalogue.localhost/.well-known/dataschema/Connection',
+  _connectionEvent:
+  { type: 'create',
+     from: 'hyperty://localhost/3a166daf-dbe5-48d0-955a-e550dfb9ea15',
+     url: 'connection://localhost/f47ebc0f-4de3-4326-8e04-16c98bc92e41',
+     schema: undefined,
+     value: 
+      { name: 'connection',
+        roomName: 'Test',
+        scheme: 'connection',
+        status: '',
+        owner: 'hyperty://localhost/3a166daf-dbe5-48d0-955a-e550dfb9ea15',
+        peer: 'hyperty://localhost/69a29cc7-dbef-4849-ba02-224659d9c256',
+        ownerPeer: [Object],
+        reporter: 'hyperty://localhost/3a166daf-dbe5-48d0-955a-e550dfb9ea15',
+        schema: 'hyperty-catalogue://catalogue.localhost/.well-known/dataschema/Connection',
+        'ownerPeer.connectionDescription': [Object],
+        'ownerPeer.iceCandidates.0': [Object],
+        'ownerPeer.iceCandidates.1': [Object],
+        'ownerPeer.iceCandidates.2': [Object],
+        'ownerPeer.iceCandidates.3': [Object],
+        'ownerPeer.iceCandidates.4': [Object],
+        'ownerPeer.iceCandidates.5': [Object],
+        'ownerPeer.iceCandidates.6': [Object],
+        'ownerPeer.iceCandidates.7': [Object] },
+     identity: 
+     { userProfile: [Object],
+        idp: 'google.com',
+        assertion: 'eyJ0b2tlbklEIjoiZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqSm1OMk0xTlRKaU0ySTVNV1JpTkRZMlpUY3paakE1TnpKak9HRXlZakU1WXpWbU1HUmtPR1VpZlEuZXlKcGMzTWlPaUpvZEhSd2N6b3ZMMkZqWTI5MWJuUnpMbWR2YjJkc1pTNWpiMjBpTENKcFlYUWlPakUwT0RZek9EY3dPVGdzSW1WNGNDSTZNVFE0TmpNNU1EWTVPQ3dpWVhSZmFHRnphQ0k2SWpCdE0zWjNZazE0VGpFMmQwbEJPV2x6UWpadGFXY2lMQ0poZFdRaU9pSTRNRGd6TWprMU5qWXdNVEl0ZEhGeU9IRnZhREV4TVRrME1tZGtNbXRuTURBM2REQnpPR1l5TnpkeWIya3VZWEJ3Y3k1bmIyOW5iR1YxYzJWeVkyOXVkR1Z1ZEM1amIyMGlMQ0p6ZFdJaU9pSXhNVEU1TXpReU16TTJNekkxTWpBd056YzNORE1pTENKbGJXRnBiRjkyWlhKcFptbGxaQ0k2ZEhKMVpTd2lZWHB3SWpvaU9EQTRNekk1TlRZMk1ERXlMWFJ4Y2poeGIyZ3hNVEU1TkRKblpESnJaekF3TjNRd2N6aG1NamMzY205cExtRndjSE11WjI5dloyeGxkWE5sY21OdmJuUmxiblF1WTI5dElpd2libTl1WTJVaU9pSk9SR2R6VFZSTmQweEVSWE5OZWxGelRrUm5jMDFVVFhOT2FYYzFURVJSZVV4RVJYcE9RM2N6VFdsM2VFMTZVWE5OYWxFelRFUkZla3hFUlhOTlUzZDRURVJWYzAxRGQzcE1SRVY2VFVOM2VFeEVSVEZNUkVGelRrUm5jMDFVVFhkTVJFVnpUVlJCYzAxcGQzaE5la0Z6VFZOM2VFeEVRWE5OYWtVeVRFUkZkMHhFVVRGTVJFbDZUV2wzZVUxcVozTlBWRVZ6VFdwTk0weEVXVE5NUkVVeFRtbDNlVTVEZDNsT1JHTnpUbnBqYzA1RVZYTk5hbU56VGxSTmMwMXFTVFJNUkdzMVRFUlJNMHhFUlRKTmVYZDRUbnByYzAxcVNYZE1SRVYzVG1sM2VVNUVVWE5OVkdkNFRFUkZlRTFUZDNsTlZHdHpUVlJCTTB4RVJUVk5VM2Q0VFhwbmMwMVVZM3BNUkVVd1RWTjNORTVUZDNoUFZFRnpUVlJqTTB4RVZUSk1SRWw1VG5sM2VFOVVaM05OVkdNMFRFUmpORXhFVlhOTlZGVjVURVJyYzAxcVRYZE1SRWw1VDFOM2VFOUVVWE5OYWsxNFRFUk5Na3hFV1ROTVJFVXpUVU4zTVUxRGQzaE9WRTF6VFZSQk5FeEVSVFJQUTNjd1RsTjNlRTlEZHpSTmVYY3hUV2wzZUU1VVdYTlBWRVZ6VFdwSmVFeEVXWGxNUkZrelRFUkZNazVEZDNoUFJFRnpUVlJGZVV4RVdUQk1SRVY0VFZOM2VVMVVUWE5OVkdNMFRFUkZlVTFUZDNsTmVrRnpUV3BKTlV4RVJYZE1SRWw0VG1sM2VFOVVaM05PVTNkNVRrUkpjMDFxU1hoTVJFVXhUbmwzZVU1VVZYTk9ha0Z6VFZSamVFeEVSVEpQVTNkM1RFUkpkMDFUZHpGTmVYZDVUVlJyYzAxcVFUSk1SRVY0VGtOM01rOURkM2xOVkdkelRWUmpNMHhFU1hkTlUzY3pUbmwzTkU1NWQzbE5lbXR6VFZSQk1VeEVSWGROYVhkNFRVUnJjMDFVWjNsTVJGa3dURVJKZWs5VGQzbE1SRVY0VDFOM2VFOUVSWE5PVkUxelRWUlpNVXhFUlROT1UzZDVUa1JaYzAxVVNUSk1SRWt4VGxOM2VVMTZVWE5OVkdjeFRFUkZlRTU1ZDNoTmVtdHpUV3BqYzAxNlZYTlBWRmx6VGxSbmMwOVVZM05OVkVFeFRFUlJNRXhFWXpGTVJGRjZURVJKZVV4RVNUUk1SRVY2VGtOM2VFMVVXWE5OVkZFeVRFUlpkMHhFWjNkTVJHY3dURVJGTVU5RGQzbE5RM2N6VDBOM2VFMXFXWE5PZWxWelRWUkpla3hFUlRKTVJHTnpUV3BOZVV4RVdUUk1SRWwzVG1sM2VFNVVZM05OYWxFeFRFUkZlazFUZDNsTmFsVnpUVlJyZVV4RVJUTk9hWGQ0VG1wQmMwMVVVWGhNUkZreFRFUkplazFEZDNoT2VYZDVUbmwzTlU1NWR6Qk9RM2Q1VGtSVmMwMTZSWE5OVkZrMVRFUkZlVTFwZHpGT1EzZDRUbnBGYzAxVVdYcE1SRVY1VDBOM2VFNVVWWE5OYWxGM1RFUkZNazVUZDNoT1JHdHpUVlJqZWt4RVNYbFBRM2N4VEVSamVFeEVSVFJPZVhkNFRucE5jMDFVUlRCTVJFMTNURVJSTTB4RVJYZE5hWGQ0VGxSamMwMVVZekZNUkUweFRFUkZlVTE1ZDNwTmVYZDRUbnBSYzAxVVdYZE1SRTB4VEVSRk1VMVRkM2hQUkZWelRWUnJNa3hFUlRWTlUzZDVUWHBKYzAxVVdYZE1SRWt3VG5sM2VFNTZaM05OZWsxelQwUnJjMDFVUlRGTVJFVjNUVU4zZVUxVGQzbE5lbWR6VFdwUk1VeEVSVEpQUTNkNFRWTjNlRTlFVlhOTlZHTTFURVJKTkV4RVJUSk9hWGN3VDFOM05FMVRkM2hPYW1kelRWUkZlRXhFYXpCTVJFbDNUV2wzZVUxcVkzTk9la2x6VFdwTmVreEVTWGxOUTNkNlRrTjNlRTVFUVhOT1ZFRnpUV3BGZWt4RVozcE1SRVV3VDBOM2VVMUVTWE5OYWsweVRFUlpORXhFUlRGT2FYYzBUbmwzZUUxNlVYTk9SRmx6VFZSRk1VeEVSVEJPYVhkNVRtbDNNRTlUZHpOTlEzZDRUVVJaYzAxVVNUTk1SRkV6VEVSRmQwMXBkM2hPYW10elRXcEpkMHhFUlRKTlEzY3hUMU4zZUUxVVRYTk5WRVYzVEVSRk5FNTVkM2xOZW10elRWUlJOVXhFUlROTlUzZDZUa04zZVUxVVdYTlBSR2R6VG5wamMwOVVaM05OVkZVelRFUkpjMDE1ZDNoTVJFRnpUVkU5UFNJc0ltVnRZV2xzSWpvaWIzQmxibWxrZEdWemRERXdRR2R0WVdsc0xtTnZiU0o5LlJ3UTVxOWVDZ1NHVl83QWROSTRPWVJaNkgwZFVMZkpxcmp3Y0pZdkkwN2U2SGM3OXdkOE0wUThwRjFjUWNvajJjWWNyTFBTbXE4aGFaNDlxTkNaRi1GSWhPYUdZUlozbFlJRjhTclI1U1NCQk93Nm0wdDVfUTFKcVEzSE9lcnRxdFVkUjBIZ2lQMzlFc3ZlZ2RPblA3aHR2Tzl3VWpZZWlkWTFnNUlremtfcXpKVS15dTBpc1NzWHYxVG8ya08xU1ZBQWpScXNqcjVKalgycV9DbUowNHRySU40dGtUYWtaVFV0MmVLZzVfWUhpOWRwYVJWcXFjOUxhdkhyUFBqaDIwa1JTMjBRdEs5NW15MHBoOHFhNnhERVJBejBLemFHMmlhaVNzTVRUTWNoSUlmMHo3ZnpOMHFlckxqMjhxbm5rQ3lZRk53azlBRkp5STY2NExhUl8zdyIsInRva2VuSURKU09OIjp7ImlzcyI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbSIsImlhdCI6IjE0ODYzODcwOTgiLCJleHAiOiIxNDg2MzkwNjk4IiwiYXRfaGFzaCI6IjBtM3Z3Yk14TjE2d0lBOWlzQjZtaWciLCJhdWQiOiI4MDgzMjk1NjYwMTItdHFyOHFvaDExMTk0MmdkMmtnMDA3dDBzOGYyNzdyb2kuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTE5MzQyMzM2MzI1MjAwNzc3NDMiLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhenAiOiI4MDgzMjk1NjYwMTItdHFyOHFvaDExMTk0MmdkMmtnMDA3dDBzOGYyNzdyb2kuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJub25jZSI6Ik5EZ3NNVE13TERFc016UXNORGdzTVRNc05pdzVMRFF5TERFek5DdzNNaXd4TXpRc01qUTNMREV6TERFc01Td3hMRFVzTUN3ekxERXpNQ3d4TERFMUxEQXNORGdzTVRNd0xERXNNVEFzTWl3eE16QXNNU3d4TERBc01qRTJMREV3TERRMUxESXpNaXd5TWpnc09URXNNak0zTERZM0xERTFOaXd5TkN3eU5EY3NOemNzTkRVc01qY3NOVE1zTWpJNExEazVMRFEzTERFMk15d3hOemtzTWpJd0xERXdOaXd5TkRRc01UZ3hMREV4TVN3eU1Ua3NNVEEzTERFNU1Td3hNemdzTVRjekxERTBNU3c0TlN3eE9UQXNNVGMzTERVMkxESXlOeXd4T1Rnc01UYzRMRGM0TERVc01UVXlMRGtzTWpNd0xESXlPU3d4T0RRc01qTXhMRE0yTERZM0xERTNNQ3cxTUN3eE5UTXNNVEE0TERFNE9DdzBOU3d4T0N3NE15dzFNaXd4TlRZc09URXNNakl4TERZeUxEWTNMREUyTkN3eE9EQXNNVEV5TERZMExERXhNU3d5TVRNc01UYzRMREV5TVN3eU16QXNNakk1TERFd0xESXhOaXd4T1Rnc05Td3lORElzTWpJeExERTFOeXd5TlRVc05qQXNNVGN4TERFMk9Td3dMREl3TVN3MU15d3lNVGtzTWpBMkxERXhOQ3cyT0N3eU1UZ3NNVGMzTERJd01TdzNOeXc0Tnl3eU16a3NNVEExTERFd01pd3hNRGtzTVRneUxEWTBMREl6T1N3eUxERXhPU3d4T0RFc05UTXNNVFkxTERFM05Td3lORFlzTVRJMkxESTFOU3d5TXpRc01UZzFMREV4Tnl3eE16a3NNamNzTXpVc09UWXNOVGdzT1Rjc01UQTFMRFEwTERjMUxEUXpMREl5TERJNExERXpOQ3d4TVRZc01UUTJMRFl3TERnd0xEZzBMREUxT0N3eU1DdzNPQ3d4TWpZc056VXNNVEl6TERFMkxEY3NNak15TERZNExESXdOaXd4TlRjc01qUTFMREV6TVN3eU1qVXNNVGt5TERFM05pd3hOakFzTVRReExEWTFMREl6TUN3eE55d3lOeXc1Tnl3ME5Dd3lORFVzTXpFc01UWTVMREV5TWl3MU5Dd3hOekVzTVRZekxERXlPQ3d4TlRVc01qUXdMREUyTlN3eE5Ea3NNVGN6TERJeU9DdzFMRGN4TERFNE55d3hOek1zTVRFMExETXdMRFEzTERFd01pd3hOVGNzTVRjMUxETTFMREV5TXl3ek15d3hOelFzTVRZd0xETTFMREUxTVN3eE9EVXNNVGsyTERFNU1Td3lNeklzTVRZd0xESTBOeXd4Tnpnc016TXNPRGtzTVRFMUxERXdNQ3d5TVN3eU16Z3NNalExTERFMk9Dd3hNU3d4T0RVc01UYzVMREk0TERFMk5pdzBPU3c0TVN3eE5qZ3NNVEV4TERrMExESXdNaXd5TWpjc056SXNNak16TERJeU1Dd3pOQ3d4TkRBc05UQXNNakV6TERnekxERTBPQ3d5TURJc01qTTJMRFk0TERFMU5pdzROeXd4TXpRc05EWXNNVEUxTERFME5pd3lOaXcwT1N3M01Dd3hNRFlzTVRJM0xEUTNMREV3TWl3eE5qa3NNakl3TERFMk1DdzFPU3d4TVRNc01URXdMREU0Tnl3eU16a3NNVFE1TERFM01Td3pOQ3d5TVRZc09EZ3NOemNzT1Rnc01UVTNMRElzTXl3eExEQXNNUT09IiwiZW1haWwiOiJvcGVuaWR0ZXN0MTBAZ21haWwuY29tIiwiYWxnIjoiUlMyNTYiLCJraWQiOiIyZjdjNTUyYjNiOTFkYjQ2NmU3M2YwOTcyYzhhMmIxOWM1ZjBkZDhlIn19' },
+     ack: [Function: ack] 
+    },
+  _roomName: 'Test',
+  _dataObjectObserver: 
+   DataObjectObserver {
+     _syncher: 
+      Syncher {
+        _owner: 'hyperty://localhost/69a29cc7-dbef-4849-ba02-224659d9c256',
+        _bus: [Object],
+        _subURL: 'runtime://localhost/9791/sm',
+        _reporters: {},
+        _observers: [Object],
+        _provisionals: {},
+        _onNotificationHandler: [Function] },
+     _url: 'connection://localhost/f47ebc0f-4de3-4326-8e04-16c98bc92e41',
+     _schema: 'hyperty-catalogue://catalogue.localhost/.well-known/dataschema/Connection',
+     _status: 'on',
+     _syncObj: SyncObject { _observers: [Object], _filters: {}, _data: [Object] },
+     _childrens: [],
+     _version: 25,
+     _childId: 0,
+     _childrenObjects: {},
+     _childrenListeners: [],
+     _owner: 'hyperty://localhost/69a29cc7-dbef-4849-ba02-224659d9c256',
+     _bus: 
+      MiniBus {
+        _msgId: 1,
+        _subscriptions: [Object],
+        _responseTimeOut: 5000,
+        _responseCallbacks: {},
+        _onPostMessage: [Function] },
+     _filters: {},
+     _changeListener: 
+      MsgListener {
+        _subscriptions: [Object],
+        _url: 'connection://localhost/f47ebc0f-4de3-4326-8e04-16c98bc92e41/changes',
+        _callback: [Function] 
+    } 
+    } 
+    } 
+        {username: 'openidtest10@gmail.com',
+  cn: 'openidtest10',
+  avatar: 'https://lh3.googleusercontent.com/-WaCrjVMMV-Q/AAAAAAAAAAI/AAAAAAAAAAs/8OlVqCpSB9c/photo.jpg',
+  locale: 'en-GB',
+  userURL: 'user://gmail.com/openidtest10'
+ }

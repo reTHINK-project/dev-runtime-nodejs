@@ -24,6 +24,7 @@ import { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 let child = require('child_process');
 let colors = require('colors');
+let cleanExit = function() { process.exit() };
 
 export default class SandboxWorker extends Sandbox{
   constructor(script) {
@@ -40,6 +41,18 @@ export default class SandboxWorker extends Sandbox{
     } else {
       throw new Error('Your environment does not support worker \n', e);
     }
+
+    this.worker.on('exit', function(msg) {
+      console.log('child process exit SandboxWorker stopped');
+      this.worker.exit();
+      this.worker.kill();
+    });
+
+    this.worker.on('error', function(msg) {
+      console.log('child process error  SandboxWorker stopped');
+      this.worker.exit();
+      this.worker.kill();
+    });
   }
 
   _onPostMessage(msg) {

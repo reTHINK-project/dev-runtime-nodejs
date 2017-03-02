@@ -24,18 +24,22 @@ import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 
-function createContextApp(myApp) {
+//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed 
+//  The contextApp handls communiocation between the Hyperty and the coreRuntime
+
+function createContextApp(coreRuntime) {
 
   process._miniBus = new MiniBus();
   process._miniBus._onPostMessage = function(msg) {
-      // console.log('--> context App message sent'.blue);
-      myApp.send(msg);
-    };
-
-  myApp.on('message', function(event) {
+      // onPostMessage on the miniBus will be sent to coreRuntime 
+      coreRuntime.send(msg);
+};
+// EventListener on the IPC communication channel between the coreRuntime and the RuntimeNode for messages sent from the coreRuntime
+coreRuntime.on('message', function(event) {
     if (event.to.startsWith('runtime:loadedHyperty'))
         return;
 
+    // _onMessage received on the coreRuntime miniBus
     process._miniBus._onMessage(event);
   });
 

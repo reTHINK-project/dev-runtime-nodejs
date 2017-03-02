@@ -28,6 +28,7 @@ import URI from 'urijs';
 
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
+import RuntimeUA from './runtime-core/runtime/RuntimeUA';
 import _eval from 'eval';
 
 
@@ -75,7 +76,7 @@ function runtimeReady(runtime) {
     }
   }, false);
 
-  console.log('--> sending to Main process RuntimeNode');
+  console.log('--> sending to Main process RuntimeNode'.red);
   process.send({to:'runtime:installed', body:{}});
 
 }
@@ -93,7 +94,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
 
   try {
 
-    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(RuntimeFactory, domain);
 
     // runtime.init().then((success) => {
@@ -118,3 +119,28 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
 }).catch((error) => {
   console.log('Error: ', error);
 });
+
+process.on('exit', function(msg) {
+   console.log('child process core exited');
+   process.exit();
+   process.kill();
+});
+
+process.on('error', function(msg) {
+  console.log('child process error core stopped');
+  process.exit();
+  process.kill();
+});
+
+
+process.on('SIGINT', () => {
+  console.log('Received SIGINT. all Node Sub-Process are exited');
+  process.exit();
+  process.kill();
+}); // to catch crtl-c
+
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. core Press Control-D to exit.');
+  process.exit();
+  process.kill();
+}); // to catch kill 

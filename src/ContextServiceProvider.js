@@ -23,10 +23,9 @@
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
-var colors = require('colors');
+
 
 process._miniBus = new MiniBus();
-
 process._miniBus._onPostMessage = function(msg) {
   process.send(msg);
 };
@@ -42,7 +41,7 @@ process._registry._create = function(url, sourceCode, config) {
     let activate = _eval(sourceCode, true);
     return activate.default(url, process._miniBus, config);
   } catch (error) {
-    console.log('ERROR:', error);
+    console.log('ERROR while activating the ProtoStub on the CSP:', error);
   }
 
 };
