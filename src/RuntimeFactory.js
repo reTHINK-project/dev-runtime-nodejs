@@ -61,7 +61,9 @@ let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
     createSandbox() {
-      return new SandboxWorker(__dirname + '/ContextServiceProvider.js');
+      return new Promise((resolve, reject)  => {
+        resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+      });    
     },
 
     createAppSandbox() {
