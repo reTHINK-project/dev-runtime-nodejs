@@ -60,7 +60,7 @@ function searchHyperty(runtime, descriptor) {
 function runtimeReady(runtime) {
 
   process.on('message', function(msg) {
-    console.log('Message Received on runtime-core: \n'.blue, msg);
+    console.log('Message Received on runtime-core: \n'.blue);
 
     if (msg.to === 'core:loadHyperty') {
       let descriptor = msg.body.descriptor;
