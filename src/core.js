@@ -98,21 +98,6 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
 
     runtime.init().then(() => {
 
-
-      // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
-      let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
-      let idpProxyGoogle = 'https://' + domain + '/.well-known/idp-proxy/node.google.com';
-
-      let stub = runtime.loadStub(nodeProtoStub);
-      // let idp = runtime.loadIdpProxy(idpProxyGoogle);
-
-      Promise.all([stub]).then((result) => {
-        console.log('AQUI:', result[0]);
-        runtimeReady(runtime);
-      }).catch((reason) => {
-        console.error('Error while loading nodejs ProtoStub, reason: ', err);
-      })
-
       runtimeReady(runtime);
 
     }).catch((reason) => {

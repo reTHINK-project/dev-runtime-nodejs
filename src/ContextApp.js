@@ -56,9 +56,9 @@ function createContextApp(coreRuntime) {
 
       console.log('TYPEOF:', typeof(activate));
 
-      if (typeof(activate) === 'Function') {
+      if (typeof(activate) === 'function') {
         return activate(url, process._miniBus, config);
-      } else if (typeof(activate.default) === 'Function') {
+      } else if (typeof(activate.default) === 'function') {
         return activate.default(url, process._miniBus, config);
       }
 

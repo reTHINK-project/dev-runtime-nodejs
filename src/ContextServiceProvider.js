@@ -45,11 +45,11 @@ process._registry._create = (url, sourceCode, config) => {
 
     let activate = _eval(sourceCode, true);
 
-    console.log('TYPEOF:', typeof(activate));
+    console.log('TYPEOF:', typeof(activate), typeof(activate.default));
 
-    if (typeof(activate) === 'Function') {
+    if (typeof(activate) === 'function') {
       return activate(url, process._miniBus, config);
-    } else if (typeof(activate.default) === 'Function') {
+    } else if (typeof(activate.default) === 'function') {
       return activate.default(url, process._miniBus, config);
     }
 

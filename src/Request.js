@@ -31,7 +31,6 @@ class Request {
     console.log('Node http Request');
     Object.keys(methods).forEach((method) => {
       _this[methods[method]] = (url, options) => {
-        console.log('AQUIO:', url, options);
         return new Promise((resolve, reject) => {
           _this.makeLocalRequest(method, url, options).then(function(result) {
             resolve(result)
@@ -71,10 +70,10 @@ class Request {
       } else if(method === 'POST') {
         let postOptions = {
           method: 'POST',
-          headers: { 
+/*          headers: { 
             'Content-Type': 'application/json',
             'cache-control': 'no-cache',
-          },
+          },*/
           body: options
         };
 
@@ -99,7 +98,7 @@ class Request {
       'undefined://': 'https://',
       'hyperty-catalogue://': 'https://',
       'https://': 'https://',
-      'http://': 'http://'
+      'http://': 'https://'
     }
 
     let foundProtocol = false
