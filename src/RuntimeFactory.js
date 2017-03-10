@@ -60,11 +60,6 @@ let createStorageManager = () => {
 let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
-// <<<<<<< HEAD
-//     createSandbox() {
-//       return new Promise((resolve, reject) => {
-//         resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
-// =======
     createSandbox(capabilities) {
       return new Promise((resolve, reject)  => {
 
@@ -83,9 +78,6 @@ let RuntimeFactory = Object.create({
            console.error('[createSandbox ], Error occured while creating Sandbox, reason : ', reason);
            reject(reason);
         });
-
-        // resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
-// >>>>>>> develop
       });
     },
 
