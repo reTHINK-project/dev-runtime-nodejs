@@ -60,9 +60,32 @@ let createStorageManager = () => {
 let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
-    createSandbox() {
-      return new Promise((resolve, reject) => {
-        resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+// <<<<<<< HEAD
+//     createSandbox() {
+//       return new Promise((resolve, reject) => {
+//         resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+// =======
+    createSandbox(capabilities) {
+      return new Promise((resolve, reject)  => {
+
+        let capability = 'node';
+        let SandboxCapabilities = {};
+
+        this.capabilitiesManager.isAvailable(capability).then((result) => {
+          if(result) {
+            SandboxCapabilities = { "node": true };
+            resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+          } else {
+
+
+          }
+         }).catch((reason) => {
+           console.error('[createSandbox ], Error occured while creating Sandbox, reason : ', reason);
+           reject(reason);
+        });
+
+        // resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+// >>>>>>> develop
       });
     },
 
@@ -94,7 +117,8 @@ let RuntimeFactory = Object.create({
     },
 
     runtimeCapabilities() {
-      return new RuntimeCapabilities(storageManager);
+      this.capabilitiesManager = new RuntimeCapabilities(storageManager);
+      return  this.capabilitiesManager;
     }
 
 });

@@ -49,7 +49,7 @@ let buildMsg = (hypertyComponent, msg) => {
 * @returns {Promise<object>}
 **/
 let runtimeProxy = {
-  requireHyperty: (hypertyDescriptor)=> {
+  requireHyperty: (hypertyDescriptor, reuseAddress = false)=> {
     return new Promise((resolve, reject)=> {
       coreRuntime.on('message', (msg) => {
         console.log('---- Message from runtime core ----'.green);
@@ -60,7 +60,7 @@ let runtimeProxy = {
         }
       });
       // console.log('coreRuntime .send'.green);
-      coreRuntime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});
+      coreRuntime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor, reuseAddress}});
     });
   },
 
