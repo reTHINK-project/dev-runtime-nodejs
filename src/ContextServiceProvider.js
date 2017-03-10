@@ -28,7 +28,6 @@ import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 
-
 process._miniBus = new MiniBus();
 
 process._miniBus._onPostMessage = (msg) => {
@@ -43,10 +42,19 @@ process.on('message', (msg) => {
 process._registry = new SandboxRegistry(process._miniBus);
 process._registry._create = (url, sourceCode, config) => {
   try {
-    let activate = _eval(sourceCode, true);
-    return activate.default(url, process._miniBus, config);
-  } catch (reason) {
-    console.log('ERROR while activating the ProtoStub on the CSP, reason:', reason);
-  }
 
+    let activate = _eval(sourceCode, true);
+
+    console.log('TYPEOF:', typeof(activate), typeof(activate.default));
+
+    if (typeof(activate) === 'function') {
+      return activate(url, process._miniBus, config);
+    } else if (typeof(activate.default) === 'function') {
+      return activate.default(url, process._miniBus, config);
+    }
+
+  } catch (reason) {
+    console.log('ERROR while activating the ProtoStub or IDP Proxy on the CSP, reason:'.red);
+    console.log(reason);
+  }
 };

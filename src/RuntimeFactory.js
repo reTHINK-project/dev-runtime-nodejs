@@ -60,6 +60,11 @@ let createStorageManager = () => {
 let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
+// <<<<<<< HEAD
+//     createSandbox() {
+//       return new Promise((resolve, reject) => {
+//         resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+// =======
     createSandbox(capabilities) {
       return new Promise((resolve, reject)  => {
 
@@ -80,6 +85,7 @@ let RuntimeFactory = Object.create({
         });
 
         // resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+// >>>>>>> develop
       });
     },
 

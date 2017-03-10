@@ -21,21 +21,21 @@
 * limitations under the License.
 **/
 
-//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed 
+//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed
 //  The contextApp handls communiocation between the Hyperty and the coreRuntime
 
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 
-/**   
+/**
 * @returns activate Hyperty onn the context App
 **/
 function createContextApp(coreRuntime) {
 
   process._miniBus = new MiniBus();
   process._miniBus._onPostMessage = (msg) => {
-      // onPostMessage on the miniBus will be sent to coreRuntime 
+      // onPostMessage on the miniBus will be sent to coreRuntime
       coreRuntime.send(msg);
     };
 
@@ -49,12 +49,19 @@ function createContextApp(coreRuntime) {
   });
 
   process._registry = new SandboxRegistry(process._miniBus);
- 
+
   process._registry._create = (url, sourceCode, config) => {
     try {
       let activate = _eval(sourceCode, true);
-      // Activate the Hyperty 
-      return activate.default(url, process._miniBus, config);
+
+      console.log('TYPEOF:', typeof(activate));
+
+      if (typeof(activate) === 'function') {
+        return activate(url, process._miniBus, config);
+      } else if (typeof(activate.default) === 'function') {
+        return activate.default(url, process._miniBus, config);
+      }
+
     } catch (reason) {
       console.log('ERROR while activating the Hyperty, reason:', reason);
     }
@@ -62,7 +69,7 @@ function createContextApp(coreRuntime) {
 };
 
 
-/**   
+/**
 * @returns Hyperty by descriptorURL
 **/
 function getHypertyBy(hypertyDescriptor) {
