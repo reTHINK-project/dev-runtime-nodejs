@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "node-fetch": "^1.6.3",
-    "runtime-core": "github:rethink-project/dev-runtime-core#fix-forward-msg",
-    "service-framework": "github:rethink-project/dev-service-framework#fix-forward-msg"
+    "runtime-core": "github:rethink-project/dev-runtime-core#develop",
+    "service-framework": "github:rethink-project/dev-service-framework#develop"
   },
   "devDependencies": {
     "atob": "^2.0.3",
