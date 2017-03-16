@@ -98,9 +98,10 @@ function init() {
   if (callHyperty.instance !== null) {
     callHyperty.instance.onInvitation(function(controller, identity) {
       console.log(' ------------------------ On Invitation: -------------------------------'.green);
+      changePeerInformation(controller.dataObjectObserver);
       onJoinRoom(controller, identity).then((user) => {
         console.log('------------------- onJoinRoom success! --------------- user :'.green, user.name);
-        receiveVideoFrom(user, user, user.roomName).then((sdpAnswer) => {
+        receiveVideoFrom(user, user, user.roomName, user.sdpOffer.sdp).then((sdpAnswer) => {
           
           let message = {
             id: 'receiveVideoAnswer',
@@ -109,9 +110,7 @@ function init() {
           };
 
           if(unicastDataObjects[user.name] !== null) {
-            unicastDataObjects[user.name].data.id = message.id;
-            unicastDataObjects[user.name].data.name = message.name;
-            unicastDataObjects[user.name].data.sdpAnswer = message.sdpAnswer;
+            unicastDataObjects[user.name].data.id = message;
             console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.name + '********* to : : '.yellow, message.name);
           } else {
             callHyperty.instance.sendMessage(user, data).then(function(unicastDataObject) {
@@ -123,60 +122,8 @@ function init() {
             });
           }
         });
-        console.log('existing Participants :'.red, existingUserIds)
-        console.log('New Participants :'.red, newParticipantArrived)
-        for(let i in existingUserIds) {
-          if(Object.keys(existingUserIds).length !== 0) {
-             receiveVideoFrom(user, existingUserIds[i], existingUserIds[i].roomName).then((sdpAnswer) => {
-               let message = {
-                 id: 'receiveVideoAnswer',
-                 name: user.name,
-                 sender:existingUserIds[i].name,
-                 sdpAnswer: sdpAnswer
-                };
-                if(unicastDataObjects[user.name] !== null) {
-                    // console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[user.name])
-                    unicastDataObjects[user.name].data.id = message.id;
-                    unicastDataObjects[user.name].data.name = message.name;
-                    unicastDataObjects[user.name].data.sender = message.sender;
-                    unicastDataObjects[user.name].data.sdpAnswer = message.sdpAnswer;
-                  } else {
-                    callHyperty.instance.sendMessage(user, data).then(function(unicastDataObject) {
-                      console.log('----------------- message sent -------------------------!'.red);
-                      unicastDataObjects[user.name] = unicastDataObject;
-                      console.log('----------------- unicastDataObjects-------------------------!'.red);
-                    }).catch(function(reason) {
-                      console.error('Error has occured while sending sdpAnswer, reasonn : ', reason);
-                    });
-                  }
-                  console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.sender + '********* to : : '.yellow, message.name);
-                  receiveVideoFrom(existingUserIds[i],  user, user.roomName).then ((sdpAnswer) => {
-                    let message = {
-                      id: 'receiveVideoAnswer',
-                      name: existingUserIds[i].name,
-                      sender: user.name,
-                      sdpAnswer: sdpAnswer
-                    };
-                    if(unicastDataObjects[user.name] !== null) {
-                        // console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[user.name])
-                        unicastDataObjects[existingUserIds[i].name].data.id = message.id;
-                        unicastDataObjects[existingUserIds[i].name].data.name = message.name;
-                        unicastDataObjects[existingUserIds[i].name].data.sender = message.sender;
-                        unicastDataObjects[existingUserIds[i].name].data.sdpAnswer = message.sdpAnswer;
-                      } else {
-                        callHyperty.instance.sendMessage(user, data).then(function(unicastDataObject) {
-                          console.log('----------------- message sent -------------------------!'.red);
-                          unicastDataObjects[user.name] = unicastDataObject;
-                          console.log('----------------- unicastDataObjects-------------------------!'.red);
-                        }).catch(function(reason) {
-                          console.error('Error has occured while sending sdpAnswer, reasonn : ', reason);
-                        });
-                      }
-                      console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.sender + '********* to : : '.yellow, message.name);
-                    });
-                  });
-                }
-            }
+        // console.log('existing Participants :'.red, existingUserIds)
+        // console.log('New Participants :'.red, newParticipantArrived)
           }) .catch(function(reason) {
               console.error('Error has occured while sending sdpAnswer, reasonn : ', reason);
             });
@@ -188,11 +135,79 @@ function init() {
       }
 }
 
+function changePeerInformation(dataObjectObserver) {
+  let _this = this;
+  let data = dataObjectObserver.data;
+  let isOwner = data.hasOwnProperty('ownerPeer');
+   console.log('isOwner:',isOwner);
+
+  let peerData = isOwner ? data.ownerPeer : data.Peer;
+  console.log('Peer Data:', JSON.stringify(peerData));
+
+   if(peerData !== 'undefined') {
+    if (peerData.hasOwnProperty('connectionDescription')) {
+       processPeerInformation(peerData.connectionDescription);
+     }
+
+    if (peerData.hasOwnProperty('iceCandidates')) {
+      console.log('Process Peer data iceCandidates: ', peerData);
+      peerData.iceCandidates.forEach(function(ice) {
+          processPeerInformation(ice);
+       });
+     }
+
+     dataObjectObserver.onChange('*', function(event) {
+       console.log('Observer on change message: '.green, event);
+      processPeerInformation(event.data);
+    });
+  }
+}
+
+function processPeerInformation(data) {
+  let _this = this;
+  console.log('data is :'.red, data);
+
+  if(data.id  === 'receiveVideoFrom') {
+    console.log('User:' .yellow + data.username + ' is Asking to recieve video from :'.yellow + data.sender);
+    console.log('receiveVideoFrom is :'.red, data)
+    let receiver = userRegistry.getByName(data.username);
+    let sender = userRegistry.getByName(data.sender);
+    console.log('receiver is :'.red, receiver, 'sender is :'.yellow, sender);
+
+    receiveVideoFrom(receiver, sender, receiver.roomName, data.sdpOffer.sdp).then((sdpAnswer) => {
+      let message = {
+        id: 'receiveVideoAnswer',
+        name: sender.name,
+        sdpAnswer: sdpAnswer
+      };
+
+      if(unicastDataObjects[receiver.name] !== null) {
+         unicastDataObjects[receiver.name].data.id = message;
+         console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.name + '********* to : : '.yellow, receiver.name);
+      } else {
+          callHyperty.instance.sendMessage(receiver, data).then(function(unicastDataObject) {
+            console.log('----------------- message sent -------------------------!'.red, unicastDataObject);
+            unicastDataObjects[receiver.name] = unicastDataObject;
+            console.log('----------------- unicastDataObjects-------------------------!'.red, unicastDataObjects);
+          }).catch(function(reason) {
+            console.error('Error has occured while sending sdpAnswer, reasonn : ', reason);
+          });
+      }
+    });
+  }
+  if(data.id === 'existingParticipants') {
+    console.debug('existingParticipants are :', data)
+    if(data.data.length !== 0) {
+      _this.onExistingParticipants(data);
+    }
+  }
+}
+
 function notification(msg, type) {
 // TODO
 }
 
-function receiveVideoFrom(receiver, sender, roomName) {
+function receiveVideoFrom(receiver, sender, roomName, sdp) {
   //  let sender = userRegistry.getById(existingUser);
   let senderName = sender.name;
    console.log('---------------------------- receiveVideoFrom----------------------- '.red,'sender:'.red, sender.name,'receiver:'.red,receiver.name )
@@ -222,7 +237,7 @@ function receiveVideoFrom(receiver, sender, roomName) {
             incomingMedia[receiver.name] = webRtcEndpoint;
             console.log(" Pipeline & Endpoint Created");
 
-            receiver.outgoingEndpoint[receiver.name].processOffer(receiver.sdpOffer.sdp, function (error, sdpAnswer) {        
+            receiver.outgoingEndpoint[receiver.name].processOffer(sdp, function (error, sdpAnswer) {        
               resolve(sdpAnswer);
             });
 
@@ -239,11 +254,11 @@ function receiveVideoFrom(receiver, sender, roomName) {
             incomingMedia[receiver.name].on('OnIceCandidate', function(event) {
               var candidate = kurento.register.complexTypes.IceCandidate(event.candidate);
               // console.log('candidate : is:'.yellow, candidate)
-              // let message = {
-              //   id : 'IceCandidate',
-              //   candidate : candidate,
-              //   name : senderName
-              // }
+              let message = {
+                id : 'IceCandidate',
+                candidate : candidate,
+                name : senderName
+              }
 
               // let icecandidate = {
               //   type: 'candidate',
@@ -252,11 +267,11 @@ function receiveVideoFrom(receiver, sender, roomName) {
               //   sdpMLineIndex: candidate.sdpMLineIndex
               // };
               
-              // if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
-              //   console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[receiver.name])
-              //   unicastDataObjects[receiver.name].data.id = icecandidate;
-              //   // unicastDataObjects[receiver.name].data.Peer.iceCandidates.push(icecandidate);
-              // }
+              if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
+                // console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[receiver.name])
+                // unicastDataObjects[receiver.name].data.id = message;
+                // unicastDataObjects[receiver.name].data.Peer.iceCandidates.push(icecandidate);
+              }
               // ws.send(JSON.stringify({
               //   id : 'iceCandidate',
               //    candidate : candidate,
@@ -289,9 +304,9 @@ function receiveVideoFrom(receiver, sender, roomName) {
         // sender.outgoingEndpoint[senderName] = webRtcEndpoint;
         //instead of connecting with
 
-        sender.outgoingEndpoint[senderName][receiver.name].processOffer(receiver.sdpOffer.sdp, function (error, sdpAnswer){//Connection of endpoints is done here
+        sender.outgoingEndpoint[senderName][receiver.name].processOffer(sdp, function (error, sdpAnswer){//Connection of endpoints is done here
           incomingMedia[senderName].connect(webRtcEndpoint, function () {
-            console.log('[Kurento_KMS] Endpoint sender '.yellow , sender.name,'is now connected with endpoint : '.yellow, receiver.name)
+            console.log('---------------------------------------------------------[Kurento_KMS] Endpoint sender '.yellow , sender.name,'is now connected with endpoint : '.yellow, receiver.name)
              resolve(sdpAnswer);
             });
           });
@@ -308,11 +323,11 @@ function receiveVideoFrom(receiver, sender, roomName) {
 
           sender.outgoingEndpoint[senderName][receiver.name].on('OnIceCandidate', function(event) {
             var candidate = kurento.register.complexTypes.IceCandidate(event.candidate);
-            //    let message = {
-            //   id : 'iceCandidate',
-            //   candidate : candidate,
-            //   name : senderName
-            // // }
+             let message = {
+              id : 'iceCandidate',
+              candidate : candidate,
+              name : senderName
+            }
             //    console.log('candidate : is:'.yellow, candidate)
 
             // let icecandidate = {
@@ -322,11 +337,11 @@ function receiveVideoFrom(receiver, sender, roomName) {
             //   sdpMLineIndex: candidate.sdpMLineIndex
             // };
             
-            // if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
-            //   console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[receiver.name])
-            //   unicastDataObjects[receiver.name].data.id = icecandidate;
-            //   // unicastDataObjects[receiver.name].data.Peer.iceCandidates.push(icecandidate);
-            // }
+            if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
+              // console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[receiver.name])
+              // unicastDataObjects[receiver.name].data.id = message;
+              // unicastDataObjects[receiver.name].data.Peer.iceCandidates.push(icecandidate);
+            }
             //  ws.send(JSON.stringify({
             //    id : 'iceCandidate',
             //   candidate : candidate,
@@ -357,7 +372,7 @@ function receiveVideoFrom(receiver, sender, roomName) {
         sender.outgoingEndpoint[senderName][receiver.name]= webRtcEndpoint;
         sender.outgoingEndpoint[senderName] = webRtcEndpoint;
 
-        incomingMedia[senderName].processOffer(receiver.sdpOffer.sdp, function (error, sdpAnswer) {
+        incomingMedia[senderName].processOffer(sdp, function (error, sdpAnswer) {
           if (error) {
             console.log("Error has occured :" , error);
             rooms[roomName].release();
@@ -380,23 +395,23 @@ function receiveVideoFrom(receiver, sender, roomName) {
         incomingMedia[senderName].on('OnIceCandidate', function(event) {
           var candidate = kurento.register.complexTypes.IceCandidate(event.candidate);
 
-          //  let message = {
-          //     id : 'iceCandidate',
-          //     candidate : candidate,
-          //     name : senderName
-          //   }
-        //   let icecandidate = {
-        //       type: 'candidate',
-        //       candidate: candidate.candidate,
-        //       sdpMid: candidate.sdpMid,
-        //       sdpMLineIndex: candidate.sdpMLineIndex
-        //   };
+           let message = {
+              id : 'iceCandidate',
+              candidate : candidate,
+              name : senderName
+          }
+          // let icecandidate = {
+          //     type: 'candidate',
+          //     candidate: candidate.candidate,
+          //     sdpMid: candidate.sdpMid,
+          //     sdpMLineIndex: candidate.sdpMLineIndex
+          // };
             
-        //   if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
-        //     console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[receiver.name])
-        //       unicastDataObjects[receiver.name].data.id = icecandidate;
-        //     // unicastDataObjects[receiver.name].data.Peer.iceCandidates.push(icecandidate);
-        //  }
+          if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
+            // console.log(' unicastDataObjects[usersInRoom[i].name].data : '.green,  unicastDataObjects[receiver.name])
+              // unicastDataObjects[receiver.name].data.id = message;
+            // unicastDataObjects[receiver.name].data.Peer.iceCandidates.push(icecandidate);
+         }
 
           // ws.send(JSON.stringify({
           //   id : 'iceCandidate',
