@@ -98,8 +98,9 @@ function init() {
   if (callHyperty.instance !== null) {
     callHyperty.instance.onInvitation(function(controller, identity) {
       console.log(' ------------------------ On Invitation: -------------------------------'.green);
-      changePeerInformation(controller.dataObjectObserver);
+      
       onJoinRoom(controller, identity).then((user) => {
+        changePeerInformation(controller.dataObjectObserver);
         console.log('------------------- onJoinRoom success! --------------- user :'.green, user.name);
         receiveVideoFrom(user, user, user.roomName, user.sdpOffer.sdp).then((sdpAnswer) => {
           
@@ -168,13 +169,13 @@ function processPeerInformation(data) {
   console.log('data is :'.red, data);
 
   if(data.id  === 'receiveVideoFrom') {
-    console.log('User:' .yellow + data.username + ' is Asking to recieve video from :'.yellow + data.sender);
+    console.log('User:' .yellow + data.userName + ' is Asking to recieve video from :'.yellow + data.senderName);
     console.log('receiveVideoFrom is :'.red, data)
-    let receiver = userRegistry.getByName(data.username);
-    let sender = userRegistry.getByName(data.sender);
+    let receiver = userRegistry.getByName(data.userName);
+    let sender = userRegistry.getByName(data.senderName);
     console.log('receiver is :'.red, receiver, 'sender is :'.yellow, sender);
 
-    receiveVideoFrom(receiver, sender, receiver.roomName, data.sdpOffer.sdp).then((sdpAnswer) => {
+    receiveVideoFrom(receiver, sender, receiver.roomName, data.sdpOffer).then((sdpAnswer) => {
       let message = {
         id: 'receiveVideoAnswer',
         name: sender.name,
@@ -201,6 +202,12 @@ function processPeerInformation(data) {
       _this.onExistingParticipants(data);
     }
   }
+  if (data.id === 'onIceCandidate') {
+      console.info('Process Ice Candidate: ', data);
+      onIceCandidate(data.userName, data.icecandidate, data.senderName) 
+
+      // _this.peerConnection.addIceCandidate(new RTCIceCandidate({candidate: data.candidate}), _this._remoteDescriptionSuccess, _this._remoteDescriptionError);
+    }
 }
 
 function notification(msg, type) {
@@ -254,7 +261,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
 
             incomingMedia[receiver.name].on('OnIceCandidate', function(event) {
               var candidate = kurento.register.complexTypes.IceCandidate(event.candidate);
-              // console.log('candidate : is:'.yellow, candidate)
+              console.log(' ------------------------- Outgoing candidate : is: -----------------------'.yellow, candidate)
               let message = {
                 id : 'IceCandidate',
                 candidate : candidate,
@@ -318,6 +325,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
 
           sender.outgoingEndpoint[senderName][receiver.name].on('OnIceCandidate', function(event) {
             var candidate = kurento.register.complexTypes.IceCandidate(event.candidate);
+            console.log(' ------------------------- Outgoing candidate : is: -----------------------'.yellow, candidate)
 
              let message = {
               id : 'iceCandidate',
@@ -383,6 +391,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
 
         incomingMedia[senderName].on('OnIceCandidate', function(event) {
           var candidate = kurento.register.complexTypes.IceCandidate(event.candidate);
+          console.log(' ------------------------- Outgoing candidate : is: -----------------------'.yellow, candidate)
 
            let message = {
               id : 'iceCandidate',
@@ -471,6 +480,7 @@ function join(controller, identity) {
           }
         }
         console.log('existing participants is :'.red, participants);
+        
         let message = {
           id: "existingParticipants",
           data: participants
@@ -490,11 +500,14 @@ function join(controller, identity) {
 
 
 
-function onIceCandidate(_candidate, senderName) {
+function onIceCandidate(username, _candidate, senderName)  {
 
     let candidate = kurento.register.complexTypes.IceCandidate(_candidate);
-    let user = userRegistry.getById(sessionId);
+  
+    let user = userRegistry.getByName(username);
     let sender = userRegistry.getByName(senderName);
+    
+    // console.log(' user is :'.yellow, user, 'sender is :'.yellow, sender);
     let userName = user.name;
 
     if((senderName === userName) && (incomingMedia[senderName])) {
@@ -506,7 +519,7 @@ function onIceCandidate(_candidate, senderName) {
         if(sender.outgoingEndpoint[senderName][userName]) {
           sender.outgoingEndpoint[senderName][userName].addIceCandidate(candidate);
         } else {
-          console.log('Queueing candidate');
+          console.log('---------------------- >>> Queueing candidate'.green);
           if(!incomingcandidatesQueue[senderName]) {
             incomingcandidatesQueue[senderName] = {};
           }
@@ -516,7 +529,7 @@ function onIceCandidate(_candidate, senderName) {
           incomingcandidatesQueue[senderName][userName].push(candidate);
         }
       } else {//sender.outgoingEndpoint[senderName] == null
-        console.info('Queueing candidate');
+        console.log('---------------------- >>> Queueing candidate'.green);
         if (!incomingcandidatesQueue[senderName]) {
           incomingcandidatesQueue[senderName] = [];
         }
@@ -526,7 +539,7 @@ function onIceCandidate(_candidate, senderName) {
         incomingcandidatesQueue[senderName][userName].push(candidate);
       }
     } else {
-      console.info('Queueing candidate');
+       console.log('---------------------- >>> Queueing candidate'.green);
       if (!incomingcandidatesQueue[senderName]) {
         incomingcandidatesQueue[senderName] = [];
       }

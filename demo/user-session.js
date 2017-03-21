@@ -3,7 +3,7 @@
  */
 class UserSession {
     constructor(userName, userHypertyURL, userURL, userSdp, identity,roomName, controller) {
-        this.id = identity;
+        this.id = identity.username;
         this.name = userName;
         this.userURL = userURL;
         this.pipeline = {}; 

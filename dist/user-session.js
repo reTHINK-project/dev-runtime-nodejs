@@ -15,7 +15,7 @@ var UserSession = function () {
     function UserSession(userName, userHypertyURL, userURL, userSdp, identity, roomName, controller) {
         _classCallCheck(this, UserSession);
 
-        this.id = identity;
+        this.id = identity.username;
         this.name = userName;
         this.userURL = userURL;
         this.pipeline = {};
