@@ -2,10 +2,10 @@
     "openedPathsList": {
         "files": [],
         "folders": [
-            "/home/jamal/Desktop/jamal-dev/testDevelop",
-            "/home/jamal/Desktop/jamal-dev/testDevelop/dev-runtime-nodejs",
             "/home/jamal/Desktop/jamal-apizee",
             "/home/jamal/Desktop/jamal-dev/dev-hyperty",
+            "/home/jamal/Desktop/jamal-dev/testDevelop",
+            "/home/jamal/Desktop/jamal-dev/testDevelop/dev-runtime-nodejs",
             "/home/jamal/Desktop/jamal-dev/testbeds",
             "/home/jamal/Desktop/jamal-dev/dev-smart-business-app",
             "/home/jamal/Desktop/jamal-dev/testDevelop/dev-hyperty-toolkit",
@@ -74,6 +74,6 @@
         "editor.action.goToDeclaration": "F12",
         "workbench.action.gotoLine": "Ctrl+G"
     },
-    "pickerWorkingDir": "/home/jamal/Desktop/jamal-dev",
+    "pickerWorkingDir": "/home/jamal/Desktop",
     "theme": "vs-dark vscode-theme-monokai-themes-Monokai-tmTheme"
 }
