@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "node-fetch": "^1.6.3",
+    "node-webcrypto-ossl": "^1.0.21",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
     "service-framework": "github:rethink-project/dev-service-framework#develop"
   },

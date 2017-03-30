@@ -37,6 +37,8 @@ import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
+import WebCrypto from 'node-webcrypto-ossl';
+
 
 let createStorageManager = () => {
   // global.window= global;
@@ -111,6 +113,10 @@ let RuntimeFactory = Object.create({
     runtimeCapabilities() {
       this.capabilitiesManager = new RuntimeCapabilities(storageManager);
       return  this.capabilitiesManager;
+    },
+
+    createWebcrypto() {
+      return new WebCrypto();
     }
 
 });
