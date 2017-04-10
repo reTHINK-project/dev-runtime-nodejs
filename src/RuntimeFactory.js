@@ -32,26 +32,22 @@ import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
 import PersistenceManager from 'service-framework/dist/PersistenceManager';
 
 import { LocalStorage } from 'node-localstorage';
+
 import Dexie from 'dexie';
+Dexie.dependencies.indexedDB = require('fake-indexeddb')
+Dexie.dependencies.IDBKeyRange = require('fake-indexeddb/lib/FDBKeyRange')
+
 import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
 
 let createStorageManager = () => {
-  // global.window= global;
-  // setGlobalVars(global.window);
-  // window.shimIndexedDB.__useShim();
-  // cwindow.shimIndexedDB.__debug(true);
   let indexeddB = {};
-  setGlobalVars(indexeddB);
   let {indexedDB, IDBKeyRange } = indexeddB;
   let storageName = 'cache';
 
-  const db = new Dexie(storageName, {
-    indexedDB: indexedDB,
-    IDBKeyRange: IDBKeyRange
-  });
+  const db = new Dexie(storageName);
 
   storageManager = new StorageManager(db, storageName);
   return storageManager;
