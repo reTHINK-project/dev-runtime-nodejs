@@ -6,12 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _nodeFetch = require('node-fetch');
-
-var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -38,21 +32,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 **/
 var methods = { GET: 'get', POST: 'post' };
 
-// or
-// const fetch = require('node-fetch');
-
+var fetch = require('node-fetch');
 
 var Request = function () {
   function Request() {
     _classCallCheck(this, Request);
 
-    console.log('Node http Request');
     var _this = this;
-
+    console.log('Node http Request');
     Object.keys(methods).forEach(function (method) {
       _this[methods[method]] = function (url, options) {
         return new Promise(function (resolve, reject) {
-          _this.makeLocalRequest(methods[method].toUpperCase(), url, options).then(function (result) {
+          _this.makeLocalRequest(method, url, options).then(function (result) {
             resolve(result);
           }).catch(function (reason) {
             reject(reason);
@@ -62,46 +53,60 @@ var Request = function () {
     });
   }
 
+  /**
+   * handling request methods
+   * @returns {text<string>}
+   **/
+
+
   _createClass(Request, [{
     key: 'makeLocalRequest',
     value: function makeLocalRequest(method, url, options) {
       var _this = this;
-      console.log('Request method;', method, 'url:', url);
+      console.log('HTTPS Request:'.yellow, method, url, options);
 
       return new Promise(function (resolve, reject) {
-
         var urlMap = _this.mapProtocol(url);
-        console.log('Mapped url is ', urlMap, 'method is:', method);
+
+        console.log('Mapped url is '.yellow, urlMap, 'method is:'.green, method);
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
         if (method === 'GET') {
           // handle GET method
-          (0, _nodeFetch2.default)(urlMap).then(function (res) {
+          fetch(urlMap).then(function (res) {
             console.log('statusCode is: '.green, res.status);
             return res.text();
           }).then(function (body) {
             resolve(body.toString('utf8'));
           }).catch(function (err) {
-            console.log(err);
+            console.error('Error occured on GET method of url:'.red, urlMap, ' reason :'.red, err);
           });
         } else if (method === 'POST') {
-          // handle POST method
-          /*
-            options = {
-              method :method, e.g POST
-              body:JSON.stringify(body),
-              headers: { 'Content-Type': 'application/json'}
-            }
-          */
-          (0, _nodeFetch2.default)(urlMap, options).then(function (res) {
+          var postOptions = {
+            method: 'POST',
+            /*          headers: { 
+                        'Content-Type': 'application/json',
+                        'cache-control': 'no-cache',
+                      },*/
+            body: options
+          };
+
+          fetch(urlMap, postOptions).then(function (res) {
+            console.log('statusCode is: '.green, res.status);
             return res.text();
           }).then(function (body) {
             resolve(body.toString('utf8'));
           }).catch(function (error) {
-            console.log('Error in POST method:', error);
+            console.error('Error occured on POST method of url:', urlMap, 'with options:', options, 'reason :', err);
           });
         }
       });
     }
+
+    /**
+     * @returns {variable<string>}
+     **/
+
   }, {
     key: 'mapProtocol',
     value: function mapProtocol(url) {
@@ -110,7 +115,7 @@ var Request = function () {
         'undefined://': 'https://',
         'hyperty-catalogue://': 'https://',
         'https://': 'https://',
-        'http://': 'http://'
+        'http://': 'https://'
       };
 
       var foundProtocol = false;
@@ -125,7 +130,6 @@ var Request = function () {
       if (!foundProtocol) {
         throw new Error('Invalid protocol of url: ' + url);
       }
-
       return url;
     }
   }]);

@@ -20,12 +20,13 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
+
+//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed
+//  The contextApp handls communiocation between the Hyperty and the coreRuntime
+
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
-
-//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed 
-//  The contextApp handls communiocation between the Hyperty and the coreRuntime
 
 function createContextApp(coreRuntime) {
 
@@ -40,24 +41,37 @@ coreRuntime.on('message', function(event) {
         return;
 
     // _onMessage received on the coreRuntime miniBus
+
     process._miniBus._onMessage(event);
   });
 
   process._registry = new SandboxRegistry(process._miniBus);
-  process._registry._create = function(url, sourceCode, config) {
+
+  process._registry._create = (url, sourceCode, config) => {
     try {
       let activate = _eval(sourceCode, true);
-      return activate.default(url, process._miniBus, config);
-    } catch (error) {
-      console.log('ERROR:', error);
-    }
 
+      console.log('TYPEOF:', typeof(activate));
+
+      if (typeof(activate) === 'function') {
+        return activate(url, process._miniBus, config);
+      } else if (typeof(activate.default) === 'function') {
+        return activate.default(url, process._miniBus, config);
+      }
+
+    } catch (reason) {
+      console.log('ERROR while activating the Hyperty, reason:', reason);
+    }
   };
 };
 
-function getHyperty(hypertyDescriptor) {
+
+/**
+* @returns Hyperty by descriptorURL
+**/
+function getHypertyBy(hypertyDescriptor) {
   console.log('Get Hyperty:', hypertyDescriptor, process._registry.components);
   return process._registry.components[hypertyDescriptor];
 };
 
-export default { createContextApp, getHyperty };
+export default { createContextApp, getHypertyBy };

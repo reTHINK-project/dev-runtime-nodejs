@@ -4,7 +4,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _AllowOverrides = require('../combiningAlgorithms/AllowOverrides');
 
@@ -26,49 +52,56 @@ var _ReThinkCtx3 = _interopRequireDefault(_ReThinkCtx2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var RuntimeCoreCtx = function (_ReThinkCtx) {
-  _inherits(RuntimeCoreCtx, _ReThinkCtx);
+  (0, _inherits3.default)(RuntimeCoreCtx, _ReThinkCtx);
 
-  function RuntimeCoreCtx(idModule, runtimeRegistry, persistenceManager, runtimeCapabilities) {
-    _classCallCheck(this, RuntimeCoreCtx);
+  function RuntimeCoreCtx(idModule, runtimeRegistry, storageManager, runtimeCapabilities) {
+    (0, _classCallCheck3.default)(this, RuntimeCoreCtx);
 
-    var _this2 = _possibleConstructorReturn(this, (RuntimeCoreCtx.__proto__ || Object.getPrototypeOf(RuntimeCoreCtx)).call(this));
+    var _this2 = (0, _possibleConstructorReturn3.default)(this, (RuntimeCoreCtx.__proto__ || (0, _getPrototypeOf2.default)(RuntimeCoreCtx)).call(this));
 
     _this2.idModule = idModule;
     _this2.runtimeRegistry = runtimeRegistry;
     _this2.activeUserPolicy = undefined;
     _this2.serviceProviderPolicy = {};
     _this2.userPolicies = {};
-    _this2.persistenceManager = persistenceManager;
+    _this2.storageManager = storageManager;
     _this2.runtimeCapabilities = runtimeCapabilities;
     return _this2;
   }
 
-  _createClass(RuntimeCoreCtx, [{
+  (0, _createClass3.default)(RuntimeCoreCtx, [{
     key: 'loadConfigurations',
     value: function loadConfigurations() {
-      this.activeUserPolicy = this.persistenceManager.get('rethink:activePolicy');
+      var _this = this;
 
-      var groups = this.persistenceManager.get('rethink:groups');
-      this.groups = groups === undefined ? {} : groups;
+      return new _promise2.default(function (resolve, reject) {
 
-      var spPolicies = this.persistenceManager.get('rethink:spPolicies');
-      this.serviceProviderPolicy = spPolicies === undefined ? {} : spPolicies;
+        _this.storageManager.get('rethink:activePolicy').then(function (value) {
+          _this.activeUserPolicy = value;
 
-      this._loadUserPolicies();
+          return _this.storageManager.get('rethink:groups');
+        }).then(function (groupInfo) {
+          var groups = groupInfo;
+          _this.groups = groups === undefined ? {} : groups;
+
+          return _this.storageManager.get('rethink:spPolicies');
+        }).then(function (policiesInfo) {
+          var spPolicies = policiesInfo;
+          _this.serviceProviderPolicy = spPolicies === undefined ? {} : spPolicies;
+
+          _this._loadUserPolicies().then(function () {
+            resolve();
+          });
+        });
+      });
     }
   }, {
     key: 'prepareForEvaluation',
     value: function prepareForEvaluation(message, isIncoming) {
       var _this3 = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         var _this = _this3;
         if (isIncoming) {
@@ -79,15 +112,17 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
               resolve(message);
             }, function (error) {
               reject(error);
+
               /*});
               } else {
-              resolve(message);
+                resolve(message);
               }*/
             });
           } else {
             resolve(message);
           }
         } else {
+          console.log('[Policy.RuntimeCoreCtx prepareForEvaluation]', message);
           if (_this._isToSetID(message)) {
             _this._getIdentity(message).then(function (identity) {
               message.body.identity = identity;
@@ -118,7 +153,7 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
     key: '_isValidUpdate',
     value: function _isValidUpdate(message) {
       var _this = this;
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         if (message.from.split('://').length > 1) {
           _this.idModule._getHypertyFromDataObject(message.from).then(function (hypertyURL) {
             if (hypertyURL === message.body.source) {
@@ -140,37 +175,50 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
       var _this4 = this;
 
       var _this = this;
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
+        console.log('[Policy.RuntimeCoreCtx.prepareToForward]', message);
 
         // TODO remove this validation. When the Nodejs auth was completed this should work like browser;
-        _this4.runtimeCapabilities.isAvailable('node').then(function (isNode) {
+        _this4.runtimeCapabilities.isAvailable('node').then(function (result) {
 
-          if (isNode) {
-            resolve(message);
+          console.log('[RuntimeCoreCtx - isAvailable - node] - ', result);
+          if (result) {
+            return resolve(message);
           } else {
-
             if (isIncoming & result) {
               var isSubscription = message.type === 'subscribe';
               var isFromRemoteSM = _this.isFromRemoteSM(message.from);
               if (isSubscription & isFromRemoteSM) {
-                _this.doMutualAuthentication(message).then(function () {
+
+                // TODO: should do mutualAuthentication and this should be removed
+                resolve(message);
+
+                // TODO: should verify why the mutualAuthentication is not working
+                // TODO: this should uncommented
+                /*_this.doMutualAuthentication(message).then(() => {
                   resolve(message);
-                }, function (error) {
+                }, (error) => {
                   reject(error);
-                });
+                });*/
               } else {
                 resolve(message);
               }
             } else {
-              if (_this._isToCypherModule(message)) {
-                _this.idModule.encryptMessage(message).then(function (message) {
+
+              // TODO should encrypt messages and this should be removed;
+              resolve(message);
+
+              // TODO: should verify why the mutualAuthentication is not working
+              // TODO: this should uncommented
+              /*if (_this._isToCypherModule(message)) {
+                _this.idModule.encryptMessage(message).then((message) => {
                   resolve(message);
-                }, function (error) {
+                }, (error) => {
                   reject(error);
                 });
               } else {
                 resolve(message);
-              }
+              }*/
             }
           }
         });
@@ -180,22 +228,20 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
     key: 'doMutualAuthentication',
     value: function doMutualAuthentication(message) {
       var _this = this;
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var to = message.to.split('/');
         var subsIndex = to.indexOf('subscription');
         var isDataObjectSubscription = subsIndex !== -1;
         var isFromRemoteSM = _this.isFromRemoteSM(message.from);
         if (isDataObjectSubscription & isFromRemoteSM) {
-          (function () {
-            to.pop();
-            var dataObjectURL = to[0] + '//' + to[2] + '/' + to[3];
-            _this.idModule.doMutualAuthentication(dataObjectURL, message.body.subscriber).then(function () {
-              _this.runtimeRegistry.registerSubscriber(dataObjectURL, message.body.subscriber);
-              resolve();
-            }, function (error) {
-              reject(error);
-            });
-          })();
+          to.pop();
+          var dataObjectURL = to[0] + '//' + to[2] + '/' + to[3];
+          _this.idModule.doMutualAuthentication(dataObjectURL, message.body.subscriber).then(function () {
+            _this.runtimeRegistry.registerSubscriber(dataObjectURL, message.body.subscriber);
+            resolve();
+          }, function (error) {
+            reject(error);
+          });
         }
       });
     }
@@ -247,11 +293,33 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
       return splitFrom[0] === 'runtime' && from !== this.runtimeRegistry.runtimeURL + '/sm';
     }
   }, {
+    key: 'isLocal',
+    value: function isLocal(url) {
+      return this.runtimeRegistry.isLocal(url);
+    }
+  }, {
+    key: 'isInterworkingProtoStub',
+    value: function isInterworkingProtoStub(url) {
+      return this.runtimeRegistry.isInterworkingProtoStub(url);
+    }
+  }, {
     key: '_isToSetID',
     value: function _isToSetID(message) {
       var schemasToIgnore = ['domain-idp', 'runtime', 'domain'];
       var splitFrom = message.from.split('://');
       var fromSchema = splitFrom[0];
+
+      var _from = message.from;
+
+      if (message.body && message.body.hasOwnProperty('source')) {
+        _from = message.body.source;
+      }
+
+      // Signalling Messages between P2P Stubs don't have Identities. FFS
+
+      if (_from.includes('/p2prequester/') || _from.includes('/p2phandler/')) {
+        return false;
+      }
 
       return schemasToIgnore.indexOf(fromSchema) === -1;
     }
@@ -264,19 +332,29 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
   }, {
     key: '_getIdentity',
     value: function _getIdentity(message) {
-      if (message.type === 'update') {
-        return this.idModule.getIdentityOfHyperty(message.body.source);
+
+      var from = message.from;
+      console.log('[Policy.RuntimeCoreCtx.getIdentity] ', message);
+
+      if (message.body.source !== undefined) {
+        from = message.body.source;
       }
 
-      if (message.type === 'response' && message.body.source !== undefined) {
-        return this.idModule.getIdentityOfHyperty(message.body.source);
+      if (message.type === 'forward') {
+        from = message.body.from;
       }
 
-      if ((0, _utils.divideURL)(message.from).type === 'hyperty') {
-        return this.idModule.getIdentityOfHyperty(message.from);
-      } else {
-        return this.idModule.getIdentityOfHyperty(this.getURL(message.from));
-      }
+      /*    if (message.type === 'update') {
+            return this.idModule.getToken(message.body.source);
+          }
+      
+          if (message.type === 'response' && message.body.source !== undefined) {
+            return this.idModule.getToken(message.body.source);
+          }*/
+
+      //    if (divideURL(message.from).type === 'hyperty') {
+
+      return this.idModule.getToken(from, message.to);
     }
 
     /**
@@ -290,12 +368,19 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
   }, {
     key: '_isToCypherModule',
     value: function _isToCypherModule(message) {
+      console.log('[Policy.RuntimeCoreCtx.istoChyperModule]', message);
       var isCreate = message.type === 'create';
       var isFromHyperty = (0, _utils.divideURL)(message.from).type === 'hyperty';
       var isToHyperty = (0, _utils.divideURL)(message.to).type === 'hyperty';
       var isToDataObject = (0, _utils.isDataObjectURL)(message.to);
 
-      return isCreate && isFromHyperty && isToHyperty || isCreate && isFromHyperty && isToDataObject || message.type === 'handshake' || message.type === 'update';
+      //TODO: For Further Study
+      var doMutualAuthentication = message.body.hasOwnProperty('mutualAuthentication') ? message.body.mutualAuthentication : true;
+
+      // todo: return false for messages coming from interworking stubs.
+      // Get descriptor from runtime catalogue and check interworking field.
+
+      return (isCreate && isFromHyperty && isToHyperty || isCreate && isFromHyperty && isToDataObject || message.type === 'handshake' || message.type === 'update') && doMutualAuthentication;
     }
 
     /**
@@ -306,12 +391,22 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
   }, {
     key: '_loadUserPolicies',
     value: function _loadUserPolicies() {
-      var policies = this.persistenceManager.get('rethink:userPolicies');
-      if (policies !== undefined) {
-        for (var i in policies) {
-          this.pep.addPolicy('USER', i, policies[i]);
-        }
-      }
+      var _this5 = this;
+
+      var _this = this;
+
+      return new _promise2.default(function (resolve, reject) {
+
+        _this.storageManager.get('rethink:userPolicies').then(function (value) {
+          var policies = value;
+          if (policies !== undefined) {
+            for (var i in policies) {
+              _this5.pep.addPolicy('USER', i, policies[i]);
+            }
+          }
+          resolve();
+        });
+      });
     }
   }, {
     key: '_getLastComponentOfURL',
@@ -344,12 +439,28 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
   }, {
     key: 'saveActivePolicy',
     value: function saveActivePolicy() {
-      this.persistenceManager.set('rethink:activePolicy', 0, this.activeUserPolicy);
+      var _this6 = this;
+
+      var _this = this;
+
+      return new _promise2.default(function (resolve, reject) {
+        _this.storageManager.set('rethink:activePolicy', 0, _this6.activeUserPolicy).then(function () {
+          resolve();
+        });
+      });
     }
   }, {
     key: 'saveGroups',
     value: function saveGroups() {
-      this.persistenceManager.set('rethink:groups', 0, this.groups);
+      var _this7 = this;
+
+      var _this = this;
+
+      return new _promise2.default(function (resolve, reject) {
+        _this.storageManager.set('rethink:groups', 0, _this7.groups).then(function () {
+          resolve();
+        });
+      });
     }
   }, {
     key: 'savePolicies',
@@ -358,17 +469,17 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
 
       switch (source) {
         case 'USER':
-          policiesJson = JSON.stringify(this.userPolicies);
+          policiesJson = (0, _stringify2.default)(this.userPolicies);
           policiesJson = this._getPoliciesJSON(JSON.parse(policiesJson));
-          this.persistenceManager.set('rethink:userPolicies', 0, policiesJson);
+          this.storageManager.set('rethink:userPolicies', 0, policiesJson);
           break;
         case 'SERVICE_PROVIDER':
           if (policy !== undefined & key !== undefined) {
             this.serviceProviderPolicy[key] = policy;
           }
-          policiesJson = JSON.stringify(this.serviceProviderPolicy);
+          policiesJson = (0, _stringify2.default)(this.serviceProviderPolicy);
           policiesJson = this._getPoliciesJSON(JSON.parse(policiesJson));
-          this.persistenceManager.set('rethink:spPolicies', 0, policiesJson);
+          this.storageManager.set('rethink:spPolicies', 0, policiesJson);
           break;
         default:
           throw Error('Unknown policy source: ' + source);
@@ -459,7 +570,6 @@ var RuntimeCoreCtx = function (_ReThinkCtx) {
       this._subscription = params.message.body.subscriber;
     }
   }]);
-
   return RuntimeCoreCtx;
 }(_ReThinkCtx3.default);
 

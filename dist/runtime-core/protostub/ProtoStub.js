@@ -4,11 +4,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 exports.default = activate;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -44,7 +50,7 @@ var ProtoStub = function () {
    * @param  {ProtoStubDescriptor.ConfigurationDataList} configuration      configuration
    */
   function ProtoStub(runtimeProtoStubURL, bus, config) {
-    _classCallCheck(this, ProtoStub);
+    (0, _classCallCheck3.default)(this, ProtoStub);
 
     this._runtimeProtoStubURL = runtimeProtoStubURL;
     this._bus = bus;
@@ -57,7 +63,7 @@ var ProtoStub = function () {
    */
 
 
-  _createClass(ProtoStub, [{
+  (0, _createClass3.default)(ProtoStub, [{
     key: 'connect',
     value: function connect(identity) {}
     // Body...
@@ -109,7 +115,6 @@ var ProtoStub = function () {
       this._bus.postMessage(msg);
     }
   }]);
-
   return ProtoStub;
 }();
 

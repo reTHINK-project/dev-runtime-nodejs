@@ -4,7 +4,31 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _defineProperty = require('babel-runtime/core-js/object/define-property');
+
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+var _isFrozen = require('babel-runtime/core-js/object/is-frozen');
+
+var _isFrozen2 = _interopRequireDefault(_isFrozen);
+
+var _create = require('babel-runtime/core-js/object/create');
+
+var _create2 = _interopRequireDefault(_create);
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
  Author: Geraint Luff and others
@@ -15,7 +39,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  If you find a bug or make an improvement, it would be courteous to let the author know, but it is not compulsory.
  */
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys?redirectlocale=en-US&redirectslug=JavaScript%2FReference%2FGlobal_Objects%2FObject%2Fkeys
-if (!Object.keys) {
+if (!_keys2.default) {
     Object.keys = function () {
         var hasOwnProperty = Object.prototype.hasOwnProperty,
             hasDontEnumBug = !{ toString: null }.propertyIsEnumerable('toString'),
@@ -23,7 +47,7 @@ if (!Object.keys) {
             dontEnumsLength = dontEnums.length;
 
         return function (obj) {
-            if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' && typeof obj !== 'function' || obj === null) {
+            if ((typeof obj === 'undefined' ? 'undefined' : (0, _typeof3.default)(obj)) !== 'object' && typeof obj !== 'function' || obj === null) {
                 throw new TypeError('Object.keys called on non-object');
             }
 
@@ -47,7 +71,7 @@ if (!Object.keys) {
     }();
 }
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
-if (!Object.create) {
+if (!_create2.default) {
     Object.create = function () {
         function F() {}
 
@@ -102,7 +126,7 @@ if (!Array.prototype.indexOf) {
 }
 
 // Grungey Object.isFrozen hack
-if (!Object.isFrozen) {
+if (!_isFrozen2.default) {
     Object.isFrozen = function (obj) {
         var key = "tv4_test_frozen_key";
         while (obj.hasOwnProperty(key)) {
@@ -207,7 +231,7 @@ function uriTemplateSubstitution(spec) {
         for (var i = 0; i < varSpecs.length; i++) {
             var varSpec = varSpecs[i];
             var value = valueFunction(varSpec.name);
-            if (value === null || value === undefined || Array.isArray(value) && value.length === 0 || (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && Object.keys(value).length === 0) {
+            if (value === null || value === undefined || Array.isArray(value) && value.length === 0 || (typeof value === 'undefined' ? 'undefined' : (0, _typeof3.default)(value)) === 'object' && (0, _keys2.default)(value).length === 0) {
                 startIndex++;
                 continue;
             }
@@ -229,7 +253,7 @@ function uriTemplateSubstitution(spec) {
                     }
                     result += shouldEscape ? encodeURIComponent(value[j]).replace(/!/g, "%21") : notReallyPercentEncode(value[j]);
                 }
-            } else if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === "object") {
+            } else if ((typeof value === 'undefined' ? 'undefined' : (0, _typeof3.default)(value)) === "object") {
                 if (showVariables && !varSpec.suffices['*']) {
                     result += varSpec.name + "=";
                 }
@@ -310,8 +334,8 @@ UriTemplate.prototype = {
 var ValidatorContext = function ValidatorContext(parent, collectMultiple, errorReporter, checkRecursive, trackUnknownProperties) {
     this.missing = [];
     this.missingMap = {};
-    this.formatValidators = parent ? Object.create(parent.formatValidators) : {};
-    this.schemas = parent ? Object.create(parent.schemas) : {};
+    this.formatValidators = parent ? (0, _create2.default)(parent.formatValidators) : {};
+    this.schemas = parent ? (0, _create2.default)(parent.schemas) : {};
     this.collectMultiple = collectMultiple;
     this.errors = [];
     this.handleError = collectMultiple ? this.collectError : this.returnError;
@@ -376,7 +400,7 @@ ValidatorContext.prototype.banUnknownProperties = function (data, schema) {
 };
 
 ValidatorContext.prototype.addFormat = function (format, validator) {
-    if ((typeof format === 'undefined' ? 'undefined' : _typeof(format)) === 'object') {
+    if ((typeof format === 'undefined' ? 'undefined' : (0, _typeof3.default)(format)) === 'object') {
         for (var key in format) {
             this.addFormat(key, format[key]);
         }
@@ -388,7 +412,7 @@ ValidatorContext.prototype.resolveRefs = function (schema, urlHistory) {
     if (schema['$ref'] !== undefined) {
         urlHistory = urlHistory || {};
         if (urlHistory[schema['$ref']]) {
-            return this.createError(ErrorCodes.CIRCULAR_REFERENCE, { urls: Object.keys(urlHistory).join(', ') }, '', '', null, undefined, schema);
+            return this.createError(ErrorCodes.CIRCULAR_REFERENCE, { urls: (0, _keys2.default)(urlHistory).join(', ') }, '', '', null, undefined, schema);
         }
         urlHistory[schema['$ref']] = true;
         schema = this.getSchema(schema['$ref'], urlHistory);
@@ -407,7 +431,7 @@ ValidatorContext.prototype.getSchema = function (url, urlHistory) {
         fragment = url.substring(url.indexOf("#") + 1);
         baseUrl = url.substring(0, url.indexOf("#"));
     }
-    if (_typeof(this.schemas[baseUrl]) === 'object') {
+    if ((0, _typeof3.default)(this.schemas[baseUrl]) === 'object') {
         schema = this.schemas[baseUrl];
         var pointerPath = decodeURIComponent(fragment);
         if (pointerPath === "") {
@@ -439,7 +463,7 @@ ValidatorContext.prototype.searchSchemas = function (schema, url) {
         for (var i = 0; i < schema.length; i++) {
             this.searchSchemas(schema[i], url);
         }
-    } else if (schema && (typeof schema === 'undefined' ? 'undefined' : _typeof(schema)) === "object") {
+    } else if (schema && (typeof schema === 'undefined' ? 'undefined' : (0, _typeof3.default)(schema)) === "object") {
         if (typeof schema.id === "string") {
             if (isTrustedUrl(url, schema.id)) {
                 if (this.schemas[schema.id] === undefined) {
@@ -449,7 +473,7 @@ ValidatorContext.prototype.searchSchemas = function (schema, url) {
         }
         for (var key in schema) {
             if (key !== "enum") {
-                if (_typeof(schema[key]) === "object") {
+                if ((0, _typeof3.default)(schema[key]) === "object") {
                     this.searchSchemas(schema[key], url);
                 } else if (key === "$ref") {
                     var uri = getDocumentUri(schema[key]);
@@ -464,7 +488,7 @@ ValidatorContext.prototype.searchSchemas = function (schema, url) {
 ValidatorContext.prototype.addSchema = function (url, schema) {
     //overload
     if (typeof url !== 'string' || typeof schema === 'undefined') {
-        if ((typeof url === 'undefined' ? 'undefined' : _typeof(url)) === 'object' && typeof url.id === 'string') {
+        if ((typeof url === 'undefined' ? 'undefined' : (0, _typeof3.default)(url)) === 'object' && typeof url.id === 'string') {
             schema = url;
             url = schema.id;
         } else {
@@ -533,7 +557,7 @@ ValidatorContext.prototype.validateAll = function (data, schema, dataPathParts, 
     var frozenIndex,
         scannedFrozenSchemaIndex = null,
         scannedSchemasIndex = null;
-    if (this.checkRecursive && data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+    if (this.checkRecursive && data && (typeof data === 'undefined' ? 'undefined' : (0, _typeof3.default)(data)) === 'object') {
         topLevel = !this.scanned.length;
         if (data[this.validatedSchemasKey]) {
             var schemaIndex = data[this.validatedSchemasKey].indexOf(schema);
@@ -542,7 +566,7 @@ ValidatorContext.prototype.validateAll = function (data, schema, dataPathParts, 
                 return null;
             }
         }
-        if (Object.isFrozen(data)) {
+        if ((0, _isFrozen2.default)(data)) {
             frozenIndex = this.scannedFrozen.indexOf(data);
             if (frozenIndex !== -1) {
                 var frozenSchemaIndex = this.scannedFrozenSchemas[frozenIndex].indexOf(schema);
@@ -553,7 +577,7 @@ ValidatorContext.prototype.validateAll = function (data, schema, dataPathParts, 
             }
         }
         this.scanned.push(data);
-        if (Object.isFrozen(data)) {
+        if ((0, _isFrozen2.default)(data)) {
             if (frozenIndex === -1) {
                 frozenIndex = this.scannedFrozen.length;
                 this.scannedFrozen.push(data);
@@ -565,11 +589,11 @@ ValidatorContext.prototype.validateAll = function (data, schema, dataPathParts, 
         } else {
             if (!data[this.validatedSchemasKey]) {
                 try {
-                    Object.defineProperty(data, this.validatedSchemasKey, {
+                    (0, _defineProperty2.default)(data, this.validatedSchemasKey, {
                         value: [],
                         configurable: true
                     });
-                    Object.defineProperty(data, this.validationErrorsKey, {
+                    (0, _defineProperty2.default)(data, this.validationErrorsKey, {
                         value: [],
                         configurable: true
                     });
@@ -623,7 +647,7 @@ ValidatorContext.prototype.validateFormat = function (data, schema) {
     var errorMessage = this.formatValidators[schema.format].call(null, data, schema);
     if (typeof errorMessage === 'string' || typeof errorMessage === 'number') {
         return this.createError(ErrorCodes.FORMAT_CUSTOM, { message: errorMessage }, '', '/format', null, data, schema);
-    } else if (errorMessage && (typeof errorMessage === 'undefined' ? 'undefined' : _typeof(errorMessage)) === 'object') {
+    } else if (errorMessage && (typeof errorMessage === 'undefined' ? 'undefined' : (0, _typeof3.default)(errorMessage)) === 'object') {
         return this.createError(ErrorCodes.FORMAT_CUSTOM, { message: errorMessage.message || "?" }, errorMessage.dataPath || '', errorMessage.schemaPath || "/format", null, data, schema);
     }
     return null;
@@ -642,7 +666,7 @@ ValidatorContext.prototype.validateDefinedKeywords = function (data, schema, dat
                     key: key,
                     message: result
                 }, '', '', null, data, schema).prefixWith(null, key);
-            } else if (result && (typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object') {
+            } else if (result && (typeof result === 'undefined' ? 'undefined' : (0, _typeof3.default)(result)) === 'object') {
                 var code = result.code;
                 if (typeof code === 'string') {
                     if (!ErrorCodes[code]) {
@@ -652,7 +676,7 @@ ValidatorContext.prototype.validateDefinedKeywords = function (data, schema, dat
                 } else if (typeof code !== 'number') {
                     code = ErrorCodes.KEYWORD_CUSTOM;
                 }
-                var messageParams = _typeof(result.message) === 'object' ? result.message : {
+                var messageParams = (0, _typeof3.default)(result.message) === 'object' ? result.message : {
                     key: key,
                     message: result.message || "?"
                 };
@@ -668,7 +692,7 @@ function recursiveCompare(A, B) {
     if (A === B) {
         return true;
     }
-    if (A && B && (typeof A === 'undefined' ? 'undefined' : _typeof(A)) === "object" && (typeof B === 'undefined' ? 'undefined' : _typeof(B)) === "object") {
+    if (A && B && (typeof A === 'undefined' ? 'undefined' : (0, _typeof3.default)(A)) === "object" && (typeof B === 'undefined' ? 'undefined' : (0, _typeof3.default)(B)) === "object") {
         if (Array.isArray(A) !== Array.isArray(B)) {
             return false;
         } else if (Array.isArray(A)) {
@@ -718,7 +742,7 @@ ValidatorContext.prototype.validateType = function validateType(data, schema) {
     if (schema.type === undefined) {
         return null;
     }
-    var dataType = typeof data === 'undefined' ? 'undefined' : _typeof(data);
+    var dataType = typeof data === 'undefined' ? 'undefined' : (0, _typeof3.default)(data);
     if (data === null) {
         dataType = "null";
     } else if (Array.isArray(data)) {
@@ -751,7 +775,7 @@ ValidatorContext.prototype.validateEnum = function validateEnum(data, schema) {
             return null;
         }
     }
-    return this.createError(ErrorCodes.ENUM_MISMATCH, { value: typeof JSON !== 'undefined' ? JSON.stringify(data) : data }, '', '', null, data, schema);
+    return this.createError(ErrorCodes.ENUM_MISMATCH, { value: typeof JSON !== 'undefined' ? (0, _stringify2.default)(data) : data }, '', '', null, data, schema);
 };
 
 ValidatorContext.prototype.validateNumeric = function validateNumeric(data, schema, dataPointerPath) {
@@ -964,14 +988,14 @@ ValidatorContext.prototype.validateArrayItems = function validateArrayItems(data
 };
 
 ValidatorContext.prototype.validateObject = function validateObject(data, schema, dataPointerPath) {
-    if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) !== "object" || data === null || Array.isArray(data)) {
+    if ((typeof data === 'undefined' ? 'undefined' : (0, _typeof3.default)(data)) !== "object" || data === null || Array.isArray(data)) {
         return null;
     }
     return this.validateObjectMinMaxProperties(data, schema, dataPointerPath) || this.validateObjectRequiredProperties(data, schema, dataPointerPath) || this.validateObjectProperties(data, schema, dataPointerPath) || this.validateObjectDependencies(data, schema, dataPointerPath) || null;
 };
 
 ValidatorContext.prototype.validateObjectMinMaxProperties = function validateObjectMinMaxProperties(data, schema) {
-    var keys = Object.keys(data);
+    var keys = (0, _keys2.default)(data);
     var error;
     if (schema.minProperties !== undefined) {
         if (keys.length < schema.minProperties) {
@@ -1337,7 +1361,7 @@ function getDocumentUri(uri) {
 }
 
 function normSchema(schema, baseUri) {
-    if (schema && (typeof schema === 'undefined' ? 'undefined' : _typeof(schema)) === "object") {
+    if (schema && (typeof schema === 'undefined' ? 'undefined' : (0, _typeof3.default)(schema)) === "object") {
         if (baseUri === undefined) {
             baseUri = schema.id;
         } else if (typeof schema.id === "string") {
@@ -1369,7 +1393,7 @@ function defaultErrorReporter(language) {
     return function (error) {
         var messageTemplate = errorMessages[error.code] || ErrorMessagesDefault[error.code];
         if (typeof messageTemplate !== 'string') {
-            return "Unknown error code " + error.code + ": " + JSON.stringify(error.messageParams);
+            return "Unknown error code " + error.code + ": " + (0, _stringify2.default)(error.messageParams);
         }
         var messageParams = error.params;
         // Adapted from Crockford's supplant()
@@ -1482,7 +1506,7 @@ function ValidationError(code, params, dataPath, schemaPath, subErrors) {
     }
 }
 
-ValidationError.prototype = Object.create(Error.prototype);
+ValidationError.prototype = (0, _create2.default)(Error.prototype);
 ValidationError.prototype.constructor = ValidationError;
 ValidationError.prototype.name = 'ValidationError';
 
@@ -1556,7 +1580,7 @@ function createApi(language) {
                 languages[code] = messageMap;
                 languages[rootCode] = messageMap;
             } else {
-                languages[code] = Object.create(languages[rootCode]);
+                languages[code] = (0, _create2.default)(languages[rootCode]);
                 for (key in messageMap) {
                     if (typeof languages[rootCode][key] === 'undefined') {
                         languages[rootCode][key] = messageMap[key];

@@ -39,7 +39,6 @@ var RuntimeCapabilities = function () {
     _classCallCheck(this, RuntimeCapabilities);
 
     if (!storageManager) throw new Error('The Runtime Capabilities need the storageManager');
-
     this.storageManager = storageManager;
   }
 
@@ -93,6 +92,9 @@ var RuntimeCapabilities = function () {
           } else {
             resolve(false);
           }
+        }).catch(function (error) {
+          console.error('Error has occured while checking capability, reason:', error);
+          reject(error);
         });
       });
     }
@@ -119,12 +121,10 @@ var RuntimeCapabilities = function () {
       // TODO: this should be more effective and check the environment
       try {
         return {
-          browser: !!(window && navigator),
           node: !!!(window && navigator)
         };
       } catch (error) {
         return {
-          browser: false,
           node: true
         };
       }

@@ -44,9 +44,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var child = require('child_process');
 var colors = require('colors');
-var cleanExit = function cleanExit() {
-  process.exit();
-};
 
 var SandboxWorker = function (_Sandbox) {
   _inherits(SandboxWorker, _Sandbox);
@@ -71,14 +68,14 @@ var SandboxWorker = function (_Sandbox) {
 
     _this2.worker.on('exit', function (msg) {
       console.log('child process exit SandboxWorker stopped');
-      this.worker.exit();
-      this.worker.kill();
+      _this2.worker.exit();
+      _this2.worker.kill();
     });
 
     _this2.worker.on('error', function (msg) {
       console.log('child process error  SandboxWorker stopped');
-      this.worker.exit();
-      this.worker.kill();
+      _this2.worker.exit();
+      _this2.worker.kill();
     });
     return _this2;
   }
@@ -86,7 +83,6 @@ var SandboxWorker = function (_Sandbox) {
   _createClass(SandboxWorker, [{
     key: '_onPostMessage',
     value: function _onPostMessage(msg) {
-      // console.log('\n Sent message by Sandbox Worker is:\n'.red, msg);
       this.worker.send(msg);
     }
   }]);

@@ -1,12 +1,8 @@
 module.exports = {
-    "plugins": [
-        "jasmine"
-    ],
-    "extends": ["eslint:recommended", "plugin:jasmine/recommended"],
+    "extends": ["eslint:recommended"],
     "env": {
         "browser": true,
         "es6": true,
-        "jasmine": true
     },
     "parserOptions": {
         "ecmaFeatures": {

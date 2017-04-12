@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * The Identity Data Model is used to model the reTHINK User entity. The Identity data model is handled by Identity Management functionality.
@@ -14,7 +20,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 */
 var Identity = function () {
   function Identity(guid, type) {
-    _classCallCheck(this, Identity);
+    (0, _classCallCheck3.default)(this, Identity);
 
     var _this = this;
 
@@ -23,7 +29,7 @@ var Identity = function () {
     _this.identifiersList = {};
   }
 
-  _createClass(Identity, [{
+  (0, _createClass3.default)(Identity, [{
     key: 'addIdentity',
     value: function addIdentity(identifier) {
       var _this = this;
@@ -46,12 +52,11 @@ var Identity = function () {
       _this.idAssertionList.push(newIdAssertion);
     }
   }]);
-
   return Identity;
 }();
 
 var IdAssertion = function IdAssertion(assertion, idp, scope) {
-  _classCallCheck(this, IdAssertion);
+  (0, _classCallCheck3.default)(this, IdAssertion);
 
   var _this = this;
 
@@ -62,21 +67,20 @@ var IdAssertion = function IdAssertion(assertion, idp, scope) {
 
 var IdValidation = function () {
   function IdValidation(identity, contents) {
-    _classCallCheck(this, IdValidation);
+    (0, _classCallCheck3.default)(this, IdValidation);
 
     var _this = this;
     _this.identity = identity;
     _this.contents = contents;
   }
 
-  _createClass(IdValidation, [{
+  (0, _createClass3.default)(IdValidation, [{
     key: 'validates',
     value: function validates(identity, contents) {
       //TODO implement the logic
 
     }
   }]);
-
   return IdValidation;
 }();
 

@@ -4,7 +4,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _utils = require('../utils/utils');
 
@@ -14,11 +28,9 @@ var _Subscription2 = _interopRequireDefault(_Subscription);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var ReporterObject = function () {
   function ReporterObject(parent, owner, url) {
-    _classCallCheck(this, ReporterObject);
+    (0, _classCallCheck3.default)(this, ReporterObject);
 
     var _this = this;
 
@@ -28,7 +40,7 @@ var ReporterObject = function () {
 
     _this._bus = parent._bus;
 
-    _this._domain = (0, _utils.divideURL)(owner).domain;
+    _this._domain = (0, _utils.divideURL)(url).domain;
     _this._objSubscriptorURL = _this._url + '/subscription';
 
     _this._subscriptions = {};
@@ -37,17 +49,21 @@ var ReporterObject = function () {
 
     _this._forwards = {};
 
+    _this._isToSaveData = false;
+
     _this._allocateListeners();
   }
 
-  _createClass(ReporterObject, [{
+  (0, _createClass3.default)(ReporterObject, [{
     key: '_allocateListeners',
     value: function _allocateListeners() {
+      var _this2 = this;
+
       var _this = this;
 
       //add subscription listener...
       _this._subscriptionListener = _this._bus.addListener(_this._objSubscriptorURL, function (msg) {
-        console.log(_this._objSubscriptorURL + '-RCV: ', msg);
+        console.log('[SyncherManager.ReporterObject received ]', msg);
         switch (msg.type) {
           case 'subscribe':
             _this._onRemoteSubscribe(msg);break;
@@ -60,8 +76,15 @@ var ReporterObject = function () {
 
       var changeURL = _this._url + '/changes';
       _this._changeListener = _this._bus.addListener(changeURL, function (msg) {
+
+        console.log('[SyncherManager.ReporterObject ] SyncherManager-' + changeURL + '-RCV: ', msg);
+
         //TODO: what todo here? Save changes?
-        console.log('SyncherManager-' + changeURL + '-RCV: ', msg);
+        if (_this2._isToSaveData && msg.body.attribute) {
+          console.log('[SyncherManager.ReporterObject ] SyncherManager - save data: ', msg);
+          _this._parent._dataObjectsStorage.update(true, _this._url, 'version', msg.body.version);
+          _this._parent._dataObjectsStorage.saveData(true, _this._url, msg.body.attribute, msg.body.value);
+        }
       });
     }
   }, {
@@ -77,13 +100,28 @@ var ReporterObject = function () {
         cl.remove();
       });
 
-      Object.keys(_this._forwards).forEach(function (key) {
+      (0, _keys2.default)(_this._forwards).forEach(function (key) {
         _this.forwardUnSubscribe(key);
       });
 
       //remove all subscriptions
-      Object.keys(_this._subscriptions).forEach(function (key) {
+      (0, _keys2.default)(_this._subscriptions).forEach(function (key) {
         _this._subscriptions[key]._releaseListeners();
+      });
+    }
+  }, {
+    key: 'resumeSubscriptions',
+    value: function resumeSubscriptions(subscriptions) {
+      var _this = this;
+
+      (0, _keys2.default)(subscriptions).forEach(function (key) {
+        var hypertyURL = subscriptions[key];
+
+        console.log('[SyncherManager.ReporterObject] - resume subscriptions', _this, hypertyURL, _this._childrens);
+
+        if (!_this._subscriptions[hypertyURL]) {
+          _this._subscriptions[hypertyURL] = new _Subscription2.default(_this._bus, _this._owner, _this._url, _this._childrens, true);
+        }
       });
     }
 
@@ -104,9 +142,9 @@ var ReporterObject = function () {
         body: { subscribe: addresses, source: _this._owner }
       };
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._bus.postMessage(nodeSubscribeMsg, function (reply) {
-          console.log('forward-subscribe-response(reporter): ', reply);
+          console.log('[SyncherManager.ReporterObject ]forward-subscribe-response(reporter): ', reply);
           if (reply.body.code === 200) {
             var newForward = _this._bus.addForward(_this._url, _this._owner);
             _this._forwards[addresses[0]] = newForward;
@@ -149,16 +187,22 @@ var ReporterObject = function () {
   }, {
     key: 'addChildrens',
     value: function addChildrens(childrens) {
+      var _this3 = this;
+
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         if (childrens.length === 0) {
           resolve();
           return;
         }
 
         var childBaseURL = _this._url + '/children/';
-        _this._childrens.push(childrens);
+        console.log('[SyncherManager.ReporterObject - addChildrens] - childrens: ', childrens, childBaseURL);
+
+        childrens.forEach(function (child) {
+          _this._childrens.push(child);
+        });
 
         /*
         _this._childrens.forEach((child) => {
@@ -172,6 +216,8 @@ var ReporterObject = function () {
           return subscriptions.push(childBaseURL + child);
         });
 
+        //_this._storageSubscriptions[_this._objSubscriptorURL] = {url: _this._url, owner: _this._owner, childrens: _this._childrens};
+
         //FLOW-OUT: message sent to the msg-node SubscriptionManager component
         var nodeSubscribeMsg = {
           type: 'subscribe', from: _this._parent._url, to: 'domain://msg-node.' + _this._domain + '/sm',
@@ -179,14 +225,33 @@ var ReporterObject = function () {
         };
 
         _this._bus.postMessage(nodeSubscribeMsg, function (reply) {
-          console.log('node-subscribe-response(reporter): ', reply);
+          console.log('[SyncherManager.ReporterObject ]node-subscribe-response(reporter):', reply);
           if (reply.body.code === 200) {
 
             //add children listeners on local ...
             subscriptions.forEach(function (childURL) {
               var childListener = _this._bus.addListener(childURL, function (msg) {
                 //TODO: what todo here? Save childrens?
-                console.log('SyncherManager-' + childURL + '-RCV: ', msg);
+                console.log('[SyncherManager.ReporterObject received]', msg);
+
+                if (msg.type === 'create' && msg.to.includes('children') && _this3._isToSaveData) {
+                  var splitedReporterURL = (0, _utils.splitObjectURL)(msg.to);
+                  var url = splitedReporterURL.url;
+
+                  var resource = splitedReporterURL.resource;
+                  var value = {
+                    identity: msg.body.identity,
+                    value: msg.body.value
+                  };
+                  var objectURLResource = msg.body.resource;
+                  var attribute = resource;
+
+                  if (objectURLResource) attribute += '.' + objectURLResource;
+
+                  console.log('[SyncherManager.ReporterObject - save childrens] - : ', _this3._isToSaveData, url, attribute, value);
+
+                  _this._parent._dataObjectsStorage.saveChildrens(true, url, attribute, value);
+                }
               });
               _this._childrenListeners.push(childListener);
 
@@ -242,13 +307,16 @@ var ReporterObject = function () {
 
       //validate if subscription already exists?
       if (_this._subscriptions[hypertyURL]) {
-        var errorMsg = {
-          id: msg.id, type: 'response', from: msg.to, to: hypertyURL,
-          body: { code: 500, desc: 'Subscription for (' + _this._url + ' : ' + hypertyURL + ') already exists!' }
-        };
+        // let errorMsg = {
+        //   id: msg.id, type: 'response', from: msg.to, to: hypertyURL,
+        //   body: { code: 500, desc: 'Subscription for (' + _this._url + ' : ' +  hypertyURL + ') already exists!' }
+        // };
+        //
+        // _this._bus.postMessage(errorMsg);
+        // return;
 
-        _this._bus.postMessage(errorMsg);
-        return;
+        // new version because of reusage
+        _this._subscriptions[hypertyURL]._releaseListeners();
       }
 
       //ask to subscribe to Syncher? (depends on the operation mode)
@@ -262,11 +330,28 @@ var ReporterObject = function () {
           body: { type: msg.type, from: hypertyURL, to: _this._url, identity: msg.body.identity }
         };
 
+        //TODO: For Further Study
+        if (msg.body.hasOwnProperty('mutualAuthentication')) forwardMsg.body.mutualAuthentication = msg.body.mutualAuthentication;
+
         _this._bus.postMessage(forwardMsg, function (reply) {
-          console.log('forward-reply: ', reply);
+          console.log('[SyncherManager.ReporterObject ]forward-reply: ', reply);
           if (reply.body.code === 200) {
-            _this._subscriptions[hypertyURL] = new _Subscription2.default(_this._bus, _this._owner, _this._url, _this._childrens, true);
+            if (!_this._subscriptions[hypertyURL]) {
+              console.log('[SyncherManager.ReporterObject] - _onRemoteSubscribe:', _this._childrens);
+              _this._subscriptions[hypertyURL] = new _Subscription2.default(_this._bus, _this._owner, _this._url, _this._childrens, true);
+            }
           }
+
+          // Store for each reporter hyperty the dataObject
+          var userURL = void 0;
+          if (msg.body.identity && msg.body.identity.userProfile.userURL) {
+            userURL = msg.body.identity.userProfile.userURL;
+            _this._parent._dataObjectsStorage.update(true, _this._url, 'subscriberUsers', userURL);
+          }
+
+          _this._parent._dataObjectsStorage.update(true, _this._url, 'subscriptions', hypertyURL);
+
+          reply.body.owner = _this._owner;
 
           //FLOW-OUT: subscription response sent (forward from internal Hyperty)
           _this._bus.postMessage({
@@ -293,8 +378,12 @@ var ReporterObject = function () {
         //TODO: send un-subscribe message to Syncher? (depends on the operation mode)
       }
     }
+  }, {
+    key: 'isToSaveData',
+    set: function set(value) {
+      this._isToSaveData = value;
+    }
   }]);
-
   return ReporterObject;
 }();
 

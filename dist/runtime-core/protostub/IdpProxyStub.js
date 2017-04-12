@@ -4,9 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Identity Provider Proxy Protocol Stub
@@ -22,7 +32,7 @@ var IdpProxyStub = function () {
   * @param  {idpProxy}    identity Provider Proxy javascript file
   */
   function IdpProxyStub(messageBus, domain, idpProxy) {
-    _classCallCheck(this, IdpProxyStub);
+    (0, _classCallCheck3.default)(this, IdpProxyStub);
 
     var _this = this;
     _this.messageBus = messageBus;
@@ -44,7 +54,7 @@ var IdpProxyStub = function () {
   */
 
 
-  _createClass(IdpProxyStub, [{
+  (0, _createClass3.default)(IdpProxyStub, [{
     key: 'requestToIdp',
     value: function requestToIdp(msg) {
       var _this = this;
@@ -103,7 +113,7 @@ var IdpProxyStub = function () {
     value: function generate(params) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         if (window.Worker) {
           //check if the browser supports the worker API
 
@@ -131,7 +141,7 @@ var IdpProxyStub = function () {
     value: function validate(params) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         if (window.Worker) {
           //check if the browser supports the worker API
 
@@ -159,7 +169,7 @@ var IdpProxyStub = function () {
     value: function login(params) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         if (window.Worker) {
           //check if the browser supports the worker API
 
@@ -193,7 +203,6 @@ var IdpProxyStub = function () {
       _this.messageBus.postMessage(message);
     }
   }]);
-
   return IdpProxyStub;
 }();
 
