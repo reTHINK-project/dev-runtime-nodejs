@@ -33,6 +33,8 @@ import PersistenceManager from 'service-framework/dist/PersistenceManager';
 
 import { LocalStorage } from 'node-localstorage';
 import Dexie from 'dexie';
+Dexie.dependencies.indexedDB = require('fake-indexeddb');
+Dexie.dependencies.IDBKeyRange = require('fake-indexeddb/lib/FDBKeyRange');
 import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';

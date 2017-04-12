@@ -20,28 +20,30 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-/**
- * Node.js child process (simultaneously is a parent process of ContextServiceProvider sandbox)
- * used as an isolated sandbox to load the Hyperty runtime aka coreRuntime
- **/
 'use strict';
 
+let fs = require('fs');
 import URI from 'urijs';
+
+// //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
+import RuntimeUA from './runtime-core/runtime/RuntimeUA';
 import _eval from 'eval';
 
+
+
+console.debug = console.log;
+
+// let domain = 'hysmart.rethink.ptinovacao.pt';
 let domain = 'localhost';
+
 let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 let catalogue = RuntimeFactory.createRuntimeCatalogue();
-
-// returnHyperty givent the runtimeHypertyURL,
-// Sends message ='loadedHyperty' to the the parent process RuntimeNode throught IPC channel
 
 function returnHyperty(hyperty) {
   process.send({to:'runtime:loadedHyperty', body: hyperty});
 }
 
-// while loading the protocolStub search hyperty in the runtime registry
 function searchHyperty(runtime, descriptor) {
   let hyperty = undefined;
   let index = 0;
@@ -54,11 +56,10 @@ function searchHyperty(runtime, descriptor) {
   return hyperty;
 }
 
-// Install runtime on the core Sandbox
 function runtimeReady(runtime) {
-  // coreRuntime global EventListener for anty incoming message
-  process.on('message', (msg) => {
-    console.log('Message Received on runtime-core: \n'.blue, msg);
+
+  process.on('message', function(msg) {
+    console.log('Message Received on runtime-core: \n'.blue);
 
     if (msg.to === 'core:loadHyperty') {
       let descriptor = msg.body.descriptor;
@@ -67,24 +68,21 @@ function runtimeReady(runtime) {
         returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
       } else {
         runtime.loadHyperty(descriptor)
-            .then(returnHyperty).catch((error)=> {
-              console.error('Error while loading Hyperty, reason: ', error);
-            });
+            .then(returnHyperty);
       }
     } else if (msg.to === 'core:loadStub') {
       runtime.loadStub(msg.body.domain);
     }
   }, false);
 
-  console.log('--> sending to Main process RuntimeNode'.orange);
+  console.log('--> sending to Main process RuntimeNode'.red);
   process.send({to:'runtime:installed', body:{}});
+
 }
 
-let runtimeDescriptor;
+let runtimeDescriptor; 
 
-// Gets RuntimeDescriptor from the runtime catalogue
 catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
-
   runtimeDescriptor = descriptor;
 
   if (descriptor.sourcePackageURL === '/sourcePackage') {
@@ -92,8 +90,14 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
   } else {
     return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);
   }
-}).then((sourcePackage) => {
-    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+
+}).then(function(sourcePackage) {
+
+  try {
+
+    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    // let runtime = new RuntimeUA(RuntimeFactory, domain); 
+    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(runtimeDescriptor, RuntimeFactory, domain);
 
     runtime.init().then(() => {
@@ -104,37 +108,52 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
       console.log('Error init', reason);
     });
 
-}).catch((reason) => {
-  console.error('Error getting the RuntimeDescriptor from the service framework catalogue, reason: ', reason);
+
+
+    // runtime.init().then((success) => {
+      
+      // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
+      // let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
+      // runtime.loadStub(nodeProtoStub).then((result) => {
+      //   console.log('ready: '.red, result);
+      //   runtimeReady(runtime);
+      // }).catch((err) => {
+      //   console.log('Error: ', err);
+      // });
+
+    // }).catch((reason) => {
+    // console.log('Error:', reason);
+    // })
+
+  } catch (e) {
+    console.log('error is ', e);
+  }
+
+}).catch((error) => {
+  console.log('Error: ', error);
 });
 
-// coreRuntime Process  error handling
-process.on('warning', (warning) => {
-  console.warn(warning.name);
-  console.warn(warning.message);
-  console.warn(warning.stack);
-});
-
-process.on('exit', (msg) => {
+process.on('exit', function(msg) {
    console.log('child process core exited');
    process.exit();
    process.kill();
 });
 
-process.on('error', (msg) => {
-  console.warn('child process error core stopped');
+process.on('error', function(msg) {
+  console.log('child process error core stopped');
   process.exit();
   process.kill();
 });
 
+
 process.on('SIGINT', () => {
-  console.warn('Received SIGINT. all Node Sub-Process are exited');
+  console.log('Received SIGINT. all Node Sub-Process are exited');
   process.exit();
   process.kill();
 }); // to catch crtl-c
 
 process.on('SIGTERM', () => {
-  console.warn('Received SIGTERM. core Press Control-D to exit.');
+  console.log('Received SIGTERM. core Press Control-D to exit.');
   process.exit();
   process.kill();
-}); // to catch kill
+}); // to catch kill 
