@@ -101,26 +101,24 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
 }).then(function (sourcePackage) {
 
   try {
-    (function () {
 
-      // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
-      var runtime = new _RuntimeUA2.default(_RuntimeFactory2.default, domain);
+    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    var runtime = new _RuntimeUA2.default(_RuntimeFactory2.default, domain);
 
-      // runtime.init().then((success) => {
+    // runtime.init().then((success) => {
 
-      // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
-      var nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
-      runtime.loadStub(nodeProtoStub).then(function (result) {
-        console.log('ready: '.red, result);
-        runtimeReady(runtime);
-      }).catch(function (err) {
-        console.log('Error: ', err);
-      });
+    // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
+    var nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
+    runtime.loadStub(nodeProtoStub).then(function (result) {
+      console.log('ready: '.red, result);
+      runtimeReady(runtime);
+    }).catch(function (err) {
+      console.log('Error: ', err);
+    });
 
-      // }).catch((reason) => {
-      // console.log('Error:', reason);
-      // })
-    })();
+    // }).catch((reason) => {
+    // console.log('Error:', reason);
+    // })
   } catch (e) {
     console.log('error is ', e);
   }

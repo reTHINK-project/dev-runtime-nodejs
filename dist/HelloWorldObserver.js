@@ -199,34 +199,32 @@ function processPeerInformation(data) {
   console.log('data is :'.red, data);
 
   if (data.id === 'receiveVideoFrom') {
-    (function () {
-      console.log('User:'.yellow + data.userName + ' is Asking to recieve video from :'.yellow + data.senderName);
-      console.log('receiveVideoFrom is :'.red, data);
-      var receiver = userRegistry.getByName(data.userName);
-      var sender = userRegistry.getByName(data.senderName);
-      console.log('receiver is :'.red, receiver, 'sender is :'.yellow, sender);
+    console.log('User:'.yellow + data.userName + ' is Asking to recieve video from :'.yellow + data.senderName);
+    console.log('receiveVideoFrom is :'.red, data);
+    var receiver = userRegistry.getByName(data.userName);
+    var sender = userRegistry.getByName(data.senderName);
+    console.log('receiver is :'.red, receiver, 'sender is :'.yellow, sender);
 
-      receiveVideoFrom(receiver, sender, receiver.roomName, data.sdpOffer).then(function (sdpAnswer) {
-        var message = {
-          id: 'receiveVideoAnswer',
-          name: sender.name,
-          sdpAnswer: sdpAnswer
-        };
+    receiveVideoFrom(receiver, sender, receiver.roomName, data.sdpOffer).then(function (sdpAnswer) {
+      var message = {
+        id: 'receiveVideoAnswer',
+        name: sender.name,
+        sdpAnswer: sdpAnswer
+      };
 
-        if (unicastDataObjects[receiver.name] !== null) {
-          unicastDataObjects[receiver.name].data.id = message;
-          console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.name + '********* to : : '.yellow, receiver.name);
-        } else {
-          callHyperty.instance.sendMessage(receiver, data).then(function (unicastDataObject) {
-            console.log('----------------- message sent -------------------------!'.red, unicastDataObject);
-            unicastDataObjects[receiver.name] = unicastDataObject;
-            console.log('----------------- unicastDataObjects-------------------------!'.red, unicastDataObjects);
-          }).catch(function (reason) {
-            console.error('Error has occured while sending sdpAnswer, reasonn : ', reason);
-          });
-        }
-      });
-    })();
+      if (unicastDataObjects[receiver.name] !== null) {
+        unicastDataObjects[receiver.name].data.id = message;
+        console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.name + '********* to : : '.yellow, receiver.name);
+      } else {
+        callHyperty.instance.sendMessage(receiver, data).then(function (unicastDataObject) {
+          console.log('----------------- message sent -------------------------!'.red, unicastDataObject);
+          unicastDataObjects[receiver.name] = unicastDataObject;
+          console.log('----------------- unicastDataObjects-------------------------!'.red, unicastDataObjects);
+        }).catch(function (reason) {
+          console.error('Error has occured while sending sdpAnswer, reasonn : ', reason);
+        });
+      }
+    });
   }
   if (data.id === 'existingParticipants') {
     console.debug('existingParticipants are :', data);
