@@ -143,8 +143,8 @@ function init() {
 function changePeerInformation(dataObjectObserver) {
   let _this = this;
   let data = dataObjectObserver.data;
-  let isOwner = data.hasOwnProperty('ownerPeer');
-   console.log('isOwner:',isOwner);
+  // let isOwner = data.hasOwnProperty('ownerPeer');
+  //  console.log('isOwner:',isOwner);
   // let peerData = isOwner ? data.ownerPeer : data.Peer;
      // New model
     let peerData = dataObjectObserver.data;
@@ -329,7 +329,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
 
 
              let message = {
-              id : 'iceCandidate',
+              id : 'IceCandidate',
               candidate : candidate,
               name : senderName
             }
@@ -389,7 +389,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
 
 
            let message = {
-              id : 'iceCandidate',
+              id : 'IceCandidate',
               candidate : candidate,
               name : senderName
           }
