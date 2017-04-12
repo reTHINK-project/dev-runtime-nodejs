@@ -83,7 +83,7 @@ class Request {
         }).then((body) => {
           resolve(body.toString('utf8'))
         }).catch((error) => {
-          console.error('Error occured on POST method of url:',urlMap, 'with options:', options, 'reason :', err);
+          console.error('Error occured on POST method of url:',urlMap, 'with options:', options, 'reason :', error);
         });
       }
     });

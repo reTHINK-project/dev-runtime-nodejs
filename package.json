@@ -34,6 +34,7 @@
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
+    "btoa": "^1.1.2",
     "node-fetch": "^1.6.3",
     "node-webcrypto-ossl": "^1.0.21",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
