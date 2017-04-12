@@ -30,10 +30,6 @@ var _RuntimeFactory = require('./RuntimeFactory');
 
 var _RuntimeFactory2 = _interopRequireDefault(_RuntimeFactory);
 
-var _RuntimeUA = require('./runtime-core/runtime/RuntimeUA');
-
-var _RuntimeUA2 = _interopRequireDefault(_RuntimeUA);
-
 var _eval2 = require('eval');
 
 var _eval3 = _interopRequireDefault(_eval2);
@@ -103,8 +99,8 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
 }).then(function (sourcePackage) {
 
   // let runtime = new RuntimeUA(RuntimeFactory, domain); 
-  // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
-  var runtime = new _RuntimeUA2.default(runtimeDescriptor, _RuntimeFactory2.default, domain);
+  var RuntimeUA = (0, _eval3.default)(sourcePackage.sourceCode, true);
+  var runtime = new RuntimeUA(runtimeDescriptor, _RuntimeFactory2.default, domain);
 
   runtime.init().then(function () {
 

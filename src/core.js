@@ -27,7 +27,7 @@ import URI from 'urijs';
 
 // //FIXME https://github.com/reTHINK-project/dev-service-framework/issues/46
 import RuntimeFactory from './RuntimeFactory';
-import RuntimeUA from './runtime-core/runtime/RuntimeUA';
+
 import _eval from 'eval';
 
 
@@ -94,7 +94,7 @@ catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
 }).then(function(sourcePackage) {
   
     // let runtime = new RuntimeUA(RuntimeFactory, domain); 
-    // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
     let runtime = new RuntimeUA(runtimeDescriptor, RuntimeFactory, domain);
 
     runtime.init().then(() => {
