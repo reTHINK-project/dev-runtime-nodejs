@@ -4,9 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Class with the cryptographic functions for the authentication protocol
@@ -14,7 +24,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 */
 var Crypto = function () {
   function Crypto() {
-    _classCallCheck(this, Crypto);
+    (0, _classCallCheck3.default)(this, Crypto);
 
     var _this = this;
   }
@@ -26,7 +36,7 @@ var Crypto = function () {
   */
 
 
-  _createClass(Crypto, [{
+  (0, _createClass3.default)(Crypto, [{
     key: 'encode',
     value: function encode(value) {
       return btoa(value);
@@ -48,7 +58,7 @@ var Crypto = function () {
     value: function encryptRSA(pubKey, data) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._importRSAencryptKey(new Uint8Array(pubKey)).then(function (publicKey) {
 
           crypto.subtle.encrypt({
@@ -71,7 +81,7 @@ var Crypto = function () {
     value: function decryptRSA(privKey, data) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._importRSAdecryptKey(privKey).then(function (privateKey) {
 
           crypto.subtle.decrypt({
@@ -96,7 +106,7 @@ var Crypto = function () {
     value: function signRSA(privKey, data) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._importRSAsignKey(privKey).then(function (privateKey) {
 
           crypto.subtle.sign({
@@ -119,7 +129,7 @@ var Crypto = function () {
     value: function verifyRSA(pubKey, data, signature) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._importRSAverifyKey(pubKey).then(function (publicKey) {
 
           crypto.subtle.verify({
@@ -143,7 +153,7 @@ var Crypto = function () {
     value: function encryptAES(key, data, iv) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._importAESkey(key).then(function (aesKey) {
 
           crypto.subtle.encrypt({
@@ -169,7 +179,7 @@ var Crypto = function () {
     value: function decryptAES(key, data, iv) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         _this._importAESkey(key).then(function (aesKey) {
 
           crypto.subtle.decrypt({
@@ -202,7 +212,7 @@ var Crypto = function () {
     value: function hashHMAC(key, data) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         _this._importHMACkey(key).then(function (hmacKey) {
 
@@ -236,7 +246,7 @@ var Crypto = function () {
     value: function verifyHMAC(key, data, signature) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         _this._importHMACkey(key).then(function (hmacKey) {
 
@@ -268,7 +278,7 @@ var Crypto = function () {
       var _this = this;
       var keyPair = {};
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.generateKey({
           name: 'RSA-PSS',
           modulusLength: 2048, //can be 1024, 2048, or 4096
@@ -374,7 +384,7 @@ var Crypto = function () {
     value: function generateMasterSecret(hmacKey, data) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var key = new Uint8Array(48);
         var seed = data;
 
@@ -416,7 +426,7 @@ var Crypto = function () {
     value: function generateKeys(hmacKey, data) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         var key = [];
         var seed = data;
@@ -449,7 +459,7 @@ var Crypto = function () {
     value: function _importRSAsignKey(privKey) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.importKey('pkcs8', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
         privKey, { //these are the algorithm options
           name: 'RSASSA-PKCS1-v1_5',
@@ -471,7 +481,7 @@ var Crypto = function () {
     value: function _importRSAverifyKey(pubKey) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.importKey('spki', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
         pubKey, { //these are the algorithm options
           name: 'RSASSA-PKCS1-v1_5',
@@ -493,7 +503,7 @@ var Crypto = function () {
     value: function _importRSAencryptKey(pubKey) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.importKey('spki', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
         pubKey, { //these are the algorithm options
           name: 'RSA-OAEP',
@@ -516,7 +526,7 @@ var Crypto = function () {
     value: function _importRSAdecryptKey(privKey) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.importKey('pkcs8', //can be 'jwk' (public or private), 'spki' (public only), or 'pkcs8' (private only)
         privKey, { //these are the algorithm options
           name: 'RSA-OAEP',
@@ -578,7 +588,7 @@ var Crypto = function () {
     value: function _importHMACkey(arrayBuffer) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         _this._digest(arrayBuffer).then(function (key) {
 
@@ -604,7 +614,7 @@ var Crypto = function () {
     value: function _digest(value) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.digest({
           name: 'SHA-256'
         }, value //The data you want to hash as an ArrayBuffer
@@ -621,7 +631,7 @@ var Crypto = function () {
   }, {
     key: '_importAESkey',
     value: function _importAESkey(arrayBuffer) {
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         crypto.subtle.importKey('raw', //can be 'jwk' or 'raw'
         arrayBuffer, { //this is the algorithm options
           name: 'AES-CBC'
@@ -648,7 +658,6 @@ var Crypto = function () {
       return new TextDecoder('utf-8').decode(s);
     }
   }]);
-
   return Crypto;
 }();
 

@@ -4,15 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _Operators = require('./Operators');
 
 var _Operators2 = _interopRequireDefault(_Operators);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
 * The Policy Decision Point (PDP) decides if a message is to be authorised by checking a set of
@@ -23,18 +27,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 */
 var PDP = function () {
   function PDP(context) {
-    _classCallCheck(this, PDP);
+    (0, _classCallCheck3.default)(this, PDP);
 
     this.context = context;
     this.operators = new _Operators2.default();
   }
 
-  _createClass(PDP, [{
+  (0, _createClass3.default)(PDP, [{
     key: 'evaluatePolicies',
     value: function evaluatePolicies(message, isIncomingMessage) {
       var policies = this.context.getPolicies(message, isIncomingMessage);
       var result = 'Not Applicable';
-
       if (policies !== undefined) {
         result = this.evaluatePolicy(message, policies.serviceProviderPolicy, isIncomingMessage);
         if (result || result === 'Not Applicable') {
@@ -58,7 +61,6 @@ var PDP = function () {
       return result;
     }
   }]);
-
   return PDP;
 }();
 

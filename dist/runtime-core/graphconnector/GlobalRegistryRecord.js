@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require("babel-runtime/helpers/createClass");
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -40,16 +46,19 @@ var GlobalRegistryRecord = function () {
    * Constructs a new empty object.
    */
   function GlobalRegistryRecord() {
-    _classCallCheck(this, GlobalRegistryRecord);
+    (0, _classCallCheck3.default)(this, GlobalRegistryRecord);
 
+    this.schemaVersion = 1;
     this.guid;
     this.salt;
     this.userIDs = [];
+    this.legacyIDs = [];
     this.lastUpdate;
     this.timeout;
     this.publicKey;
     this.active;
     this.revoked;
+    this.defaults = new Object();
   }
 
   /**
@@ -58,13 +67,14 @@ var GlobalRegistryRecord = function () {
    */
 
 
-  _createClass(GlobalRegistryRecord, [{
+  (0, _createClass3.default)(GlobalRegistryRecord, [{
     key: "getRecord",
     value: function getRecord() {
 
       // TODO: give error if fields are missing
 
       var record = new Object();
+      record.schemaVersion = this.schemaVersion;
       record.guid = this.guid;
       record.salt = this.salt;
       record.userIDs = this.userIDs;
@@ -73,11 +83,12 @@ var GlobalRegistryRecord = function () {
       record.publicKey = this.publicKey;
       record.active = this.active;
       record.revoked = this.revoked;
+      record.defaults = this.defaults;
+      record.legacyIDs = this.legacyIDs;
 
       return record;
     }
   }]);
-
   return GlobalRegistryRecord;
 }();
 

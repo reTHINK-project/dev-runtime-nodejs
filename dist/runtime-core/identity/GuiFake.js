@@ -4,7 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * fake class for the gui to select the identity,
@@ -12,7 +16,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 *
 */
 var GuiFake = function GuiFake(url, messageBus) {
-  _classCallCheck(this, GuiFake);
+  (0, _classCallCheck3.default)(this, GuiFake);
 
   var _this = this;
 
@@ -30,7 +34,7 @@ var GuiFake = function GuiFake(url, messageBus) {
     if (identities[0] !== undefined) {
       value = { type: 'identity', value: identities[0], code: 200 };
     } else {
-      value = { type: 'idp', value: idps[0], code: 200 };
+      value = { type: 'idp', value: idps[0].domain, code: 200 };
     }
 
     var replyMsg = { id: msg.id, type: 'response', to: msg.from, from: msg.to, body: value };

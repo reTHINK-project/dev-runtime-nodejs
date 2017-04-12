@@ -46,4 +46,4 @@ export default class SandboxApp extends Sandbox {
     process.send(msg);
   }
 }
-Contact GitHub API Training Shop Blog About
+

@@ -24,13 +24,8 @@
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
   },
   "scripts": {
-<<<<<<< HEAD
-    "demo": "rm -rf scratch D_cache __sysdb__.sqlite && npm run build && node dist/demo.js",
-    "transpile-dep": "babel --presets es2015 /home/jamal/Desktop/jamal-dev/testDevelop/dev-service-framework/src --out-dir dist/service-framework && babel --presets es2015 /home/jamal/Desktop/jamal-dev/testDevelop/dev-runtime-core/src --out-dir dist/runtime-core",
-=======
     "demo": "npm run build && node dist/demo.js",
     "transpile-dep": "babel --presets es2015 ../dev-runtime-core/src/ --out-dir dist/runtime-core/",
->>>>>>> develop
     "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "build:doc": "esdoc -c esdoc.json",
     "test": "karma start",
@@ -39,8 +34,6 @@
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
-    "fake-indexeddb": "^1.0.11",
-    "kurento-client": "^6.6.0",
     "node-fetch": "^1.6.3",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
     "service-framework": "github:rethink-project/dev-service-framework#develop"
@@ -57,11 +50,12 @@
     "cluster": "^0.7.7",
     "colors": "^1.1.2",
     "copyfiles": "^0.2.1",
-    "dexie": "^2.0.0-beta.7",
+    "dexie": "^2.0.0-beta.10",
     "es6-promise": "^4.0.5",
     "esdoc": "^0.5.2",
     "eval": "^0.1.1",
     "express": "^4.13.4",
+    "fake-indexeddb": "^1.0.11",
     "gulp": "^3.9.0",
     "gulp-ava": "^0.12.1",
     "gulp-babel": "^6.1.2",
@@ -71,7 +65,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.4.2",
-    "indexeddbshim": "https://github.com/axemclion/IndexedDBShim#master",
+    "indexeddbshim": "https://github.com/axemclion/IndexedDBShim",
     "install": "^0.8.1",
     "jscs": "^3.0.7",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
@@ -85,6 +79,7 @@
     "mocha": "^2.4.5",
     "node-localstorage": "^1.3.0",
     "node-webcrypto-ossl": "^1.0.16",
+    "npm-run-all": "^4.0.2",
     "request": "^2.72.0",
     "shx": "^0.2.2",
     "threads": "^0.5.4",
@@ -94,7 +89,6 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0",
     "websocket": "^1.0.23",
-    "npm-run-all": "^4.0.2",
     "ws": "^1.1.1"
   }
 }

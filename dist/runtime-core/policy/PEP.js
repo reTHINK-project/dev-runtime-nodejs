@@ -4,7 +4,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _ActionsService = require('./ActionsService');
 
@@ -18,9 +28,9 @@ var _Policy = require('./Policy');
 
 var _Policy2 = _interopRequireDefault(_Policy);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _utils = require('../utils/utils');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PEP = function () {
 
@@ -29,12 +39,16 @@ var PEP = function () {
   * @param    {Object}    context
   */
   function PEP(context) {
-    _classCallCheck(this, PEP);
+    (0, _classCallCheck3.default)(this, PEP);
 
-    this.pdp = new _PDP2.default(context);
-    this.actionsService = new _ActionsService2.default(context);
-    this.context = context;
-    context.pep = this;
+    var _this = this;
+
+    _this.pdp = new _PDP2.default(context);
+    _this.actionsService = new _ActionsService2.default(context);
+    _this.context = context;
+    context.pep = _this;
+
+    //TODO should be added a trigger to verify when the loadConfigurations is successfully completed
     context.loadConfigurations();
   }
 
@@ -47,7 +61,7 @@ var PEP = function () {
   */
 
 
-  _createClass(PEP, [{
+  (0, _createClass3.default)(PEP, [{
     key: 'addPolicy',
     value: function addPolicy(source, key, policy, combiningAlgorithm) {
       if (!source) throw new Error('source is not defined');
@@ -78,7 +92,7 @@ var PEP = function () {
     value: function authorise(message) {
       var _this2 = this;
 
-      console.log('--- Policy Engine ---');
+      console.log('[Policy.PEP Authorise] ', message);
       console.log(message);
       if (!message) throw new Error('message is not defined');
       if (!message.from) throw new Error('message.from is not defined');
@@ -86,42 +100,40 @@ var PEP = function () {
       if (!message.type) throw new Error('message.type is not defined');
       message.body = message.body || {};
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         message.body = message.body || {};
         var _this = _this2;
         var result = void 0;
         if (_this._isToVerify(message)) {
-          (function () {
-            var isIncoming = _this._isIncomingMessage(message);
-            _this.context.prepareForEvaluation(message, isIncoming).then(function (message) {
-              result = _this.pdp.evaluatePolicies(message, isIncoming);
-              if (result === 'Not Applicable') {
-                result = _this.context.defaultBehaviour;
-                message.body.auth = false;
+          var isIncoming = _this._isIncomingMessage(message);
+          _this.context.prepareForEvaluation(message, isIncoming).then(function (message) {
+            result = _this.pdp.evaluatePolicies(message, isIncoming);
+            if (result === 'Not Applicable') {
+              result = _this.context.defaultBehaviour;
+              message.body.auth = false;
+            }
+            _this.actionsService.enforcePolicies(message, isIncoming).then(function (messages) {
+              for (var i in messages) {
+                message = messages[i];
+                _this.context.prepareToForward(message, isIncoming, result).then(function (message) {
+                  if (result) {
+                    message.body.auth = message.body.auth === undefined ? true : message.body.auth;
+                    resolve(message);
+                  } else {
+                    var errorMessage = { body: { code: 403, description: 'Blocked by policy' }, from: message.to, to: message.from, type: 'response' };
+                    reject(errorMessage);
+                  }
+                }, function (error) {
+                  reject(error);
+                });
               }
-              _this.actionsService.enforcePolicies(message, isIncoming).then(function (messages) {
-                for (var i in messages) {
-                  message = messages[i];
-                  _this.context.prepareToForward(message, isIncoming, result).then(function (message) {
-                    if (result) {
-                      message.body.auth = message.body.auth === undefined ? true : message.body.auth;
-                      resolve(message);
-                    } else {
-                      var errorMessage = { body: { code: 403, description: 'Blocked by policy' }, from: message.to, to: message.from, type: 'response' };
-                      reject(errorMessage);
-                    }
-                  }, function (error) {
-                    reject(error);
-                  });
-                }
-              }, function (error) {
-                reject(error);
-              });
             }, function (error) {
               reject(error);
             });
-          })();
+          }, function (error) {
+            reject(error);
+          });
         } else {
           result = _this.context.defaultBehaviour;
           if (result) {
@@ -168,7 +180,31 @@ var PEP = function () {
   }, {
     key: '_isIncomingMessage',
     value: function _isIncomingMessage(message) {
-      return message.body !== undefined && message.body.identity !== undefined ? true : false;
+      var from = void 0;
+
+      if (message.type === 'forward') {
+        console.info('[PEP - isIncomingMessage] - message.type: ', message.type);
+        from = message.body.from;
+      } else if (message.body.hasOwnProperty('source') && message.body.source) {
+        console.info('[PEP - isIncomingMessage] - message.body.source: ', message.body.source);
+        from = message.body.source;
+      } else if (message.body.hasOwnProperty('subscriber') && message.body.subscriber) {
+        //TODO: this subscriber validation should not exist, because is outdated
+        //TODO: the syncher and syncher manager not following the correct spec;
+        console.info('[PEP - isIncomingMessage] - message.body.subscriber: ', message.body.subscriber);
+        from = message.body.subscriber;
+      } else if (message.body.hasOwnProperty('reporter') && message.body.reporter) {
+        //TODO: this subscriber validation should not exist, because is outdated
+        //TODO: the syncher and syncher manager not following the correct spec;
+        console.info('[PEP - isIncomingMessage] - message.body.reporter: ', message.body.reporter);
+        from = message.body.reporter;
+      } else {
+        console.info('[PEP - isIncomingMessage] - message.from ', message.from);
+        from = message.from;
+      }
+
+      console.info('[PEP - isIncomingMessage] - check if isLocal: ', from);
+      return !this.context.isLocal(from);
     }
 
     /**
@@ -186,8 +222,30 @@ var PEP = function () {
       var fromSchema = splitFrom[0];
       var splitTo = message.to.split('://');
       var toSchema = splitTo[0];
+      var from = message.from;
+      var to = message.to;
 
-      if (message.from === fromSchema || message.to === toSchema || message.type === 'read' || message.type === 'response') {
+      // Signalling messages between P2P Stubs don't have to be verified. FFS
+
+      if (message.body && message.body.source) {
+        from = message.body.source;
+      }
+
+      if (message.body && message.body.subscriber) {
+        from = message.body.subscriber;
+      }
+
+      if (from.indexOf('/p2phandler/') !== -1 || from.indexOf('/p2prequester/') !== -1 || to.indexOf('/p2phandler/') !== -1 || to.indexOf('/p2prequester/') !== -1) {
+        return false;
+      }
+
+      // hack to disable Identity verification for messages coming from legacy domains while solution is not implemented
+
+      if (this.context.isInterworkingProtoStub(from)) {
+        return false;
+      }
+
+      if (message.from === fromSchema || message.to === toSchema || message.type === 'read' || message.type === 'response' || (0, _utils.isHypertyURL)(message.from) && message.type === 'delete') {
         return false;
       } else {
         return schemasToIgnore.indexOf(fromSchema) === -1 || schemasToIgnore.indexOf(toSchema) === -1;
@@ -225,7 +283,6 @@ var PEP = function () {
       }
     }
   }]);
-
   return PEP;
 }();
 

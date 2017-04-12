@@ -42,13 +42,13 @@ var _atob2 = require('atob');
 
 var _atob3 = _interopRequireDefault(_atob2);
 
-var _StorageManager = require('./service-framework/storage-manager/StorageManager');
+var _StorageManager = require('service-framework/dist/StorageManager');
 
 var _StorageManager2 = _interopRequireDefault(_StorageManager);
 
-var _RuntimeCatalogue = require('./service-framework/RuntimeCatalogue');
+var _RuntimeCatalogue = require('service-framework/dist/RuntimeCatalogue');
 
-var _PersistenceManager = require('./service-framework/PersistenceManager');
+var _PersistenceManager = require('service-framework/dist/PersistenceManager');
 
 var _PersistenceManager2 = _interopRequireDefault(_PersistenceManager);
 
@@ -68,44 +68,43 @@ var _RuntimeCapabilities2 = _interopRequireDefault(_RuntimeCapabilities);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_dexie2.default.dependencies.indexedDB = require('fake-indexeddb');
+_dexie2.default.dependencies.IDBKeyRange = require('fake-indexeddb/lib/FDBKeyRange');
+
 var createStorageManager = function createStorageManager() {
   var indexeddB = {};
-  (0, _indexeddbshim2.default)(indexeddB);
   var indexedDB = indexeddB.indexedDB,
       IDBKeyRange = indexeddB.IDBKeyRange;
 
-  // global.window= global;
-  // setGlobalVars(global.window);
-  // window.shimIndexedDB.__useShim();
-  // cwindow.shimIndexedDB.__debug(true);
-
   var storageName = 'cache';
 
-  var db = new _dexie2.default(storageName, {
-    indexedDB: indexedDB,
-    IDBKeyRange: IDBKeyRange
-    // indexedDB: window.indexedDB, // or the shim's version
-    // IDBKeyRange: window.IDBKeyRange // or the shim's version.
-  });
-
-  // window.setTimeout(function(){
-  //   // configurable Timeout for Multi-process access to database(Database_BUSY)
-  // }, 400);
+  var db = new _dexie2.default(storageName);
 
   _storageManager = new _StorageManager2.default(db, storageName);
   return _storageManager;
 };
 
-// import StorageManager from 'service-framework/dist/StorageManager';
-// import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
-// import PersistenceManager from 'service-framework/dist/PersistenceManager';
-
-
 var _storageManager = createStorageManager();
 
 var RuntimeFactory = Object.create({
-  createSandbox: function createSandbox() {
-    return new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js');
+  createSandbox: function createSandbox(capabilities) {
+    var _this = this;
+
+    return new Promise(function (resolve, reject) {
+
+      var capability = 'node';
+      var SandboxCapabilities = {};
+
+      _this.capabilitiesManager.isAvailable(capability).then(function (result) {
+        if (result) {
+          SandboxCapabilities = { "node": true };
+          resolve(new _SandboxWorker2.default(__dirname + '/ContextServiceProvider.js'));
+        } else {}
+      }).catch(function (reason) {
+        console.error('[createSandbox ], Error occured while creating Sandbox, reason : ', reason);
+        reject(reason);
+      });
+    });
   },
   createAppSandbox: function createAppSandbox() {
     return new _SandboxApp2.default(__dirname + '/ContextApp.js');
@@ -129,7 +128,8 @@ var RuntimeFactory = Object.create({
     return this.catalogue;
   },
   runtimeCapabilities: function runtimeCapabilities() {
-    return new _RuntimeCapabilities2.default(_storageManager);
+    this.capabilitiesManager = new _RuntimeCapabilities2.default(_storageManager);
+    return this.capabilitiesManager;
   }
 });
 

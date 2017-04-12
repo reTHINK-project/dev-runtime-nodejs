@@ -4,9 +4,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _get2 = require('babel-runtime/helpers/get');
+
+var _get3 = _interopRequireDefault(_get2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _Condition2 = require('./Condition');
 
@@ -14,39 +34,12 @@ var _Condition3 = _interopRequireDefault(_Condition2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 PT Inovação e Sistemas SA
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 INESC-ID
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 QUOBIS NETWORKS SL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 ORANGE SA
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 Deutsche Telekom AG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 Apizee
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               **/
-
 /**
 * @author Ana Caldeira <ana.caldeira@tecnico.ulisboa.pt>
 * @classdesc Class to represent a subscription condition and evaluate its applicability.
 */
 var SubscriptionCondition = function (_Condition) {
-  _inherits(SubscriptionCondition, _Condition);
+  (0, _inherits3.default)(SubscriptionCondition, _Condition);
 
   /**
   * Creates a new SubscriptionCondition.
@@ -56,9 +49,8 @@ var SubscriptionCondition = function (_Condition) {
   * @param  {*}       params
   */
   function SubscriptionCondition(attribute, operator, params) {
-    _classCallCheck(this, SubscriptionCondition);
-
-    return _possibleConstructorReturn(this, (SubscriptionCondition.__proto__ || Object.getPrototypeOf(SubscriptionCondition)).call(this, attribute, operator, params));
+    (0, _classCallCheck3.default)(this, SubscriptionCondition);
+    return (0, _possibleConstructorReturn3.default)(this, (SubscriptionCondition.__proto__ || (0, _getPrototypeOf2.default)(SubscriptionCondition)).call(this, attribute, operator, params));
   }
 
   /**
@@ -68,20 +60,40 @@ var SubscriptionCondition = function (_Condition) {
   */
 
 
-  _createClass(SubscriptionCondition, [{
+  (0, _createClass3.default)(SubscriptionCondition, [{
     key: 'isApplicable',
     value: function isApplicable(context, message) {
       var isSubscription = message.type === 'subscribe';
       var isFromRemoteSM = context.isFromRemoteSM(message.from);
       if (isSubscription & isFromRemoteSM) {
-        return _get(SubscriptionCondition.prototype.__proto__ || Object.getPrototypeOf(SubscriptionCondition.prototype), 'isApplicable', this).call(this, context, message);
+        return (0, _get3.default)(SubscriptionCondition.prototype.__proto__ || (0, _getPrototypeOf2.default)(SubscriptionCondition.prototype), 'isApplicable', this).call(this, context, message);
       } else {
         return false;
       }
     }
   }]);
-
   return SubscriptionCondition;
-}(_Condition3.default);
+}(_Condition3.default); /**
+                        * Copyright 2016 PT Inovação e Sistemas SA
+                        * Copyright 2016 INESC-ID
+                        * Copyright 2016 QUOBIS NETWORKS SL
+                        * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
+                        * Copyright 2016 ORANGE SA
+                        * Copyright 2016 Deutsche Telekom AG
+                        * Copyright 2016 Apizee
+                        * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
+                        *
+                        * Licensed under the Apache License, Version 2.0 (the "License");
+                        * you may not use this file except in compliance with the License.
+                        * You may obtain a copy of the License at
+                        *
+                        *   http://www.apache.org/licenses/LICENSE-2.0
+                        *
+                        * Unless required by applicable law or agreed to in writing, software
+                        * distributed under the License is distributed on an "AS IS" BASIS,
+                        * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                        * See the License for the specific language governing permissions and
+                        * limitations under the License.
+                        **/
 
 exports.default = SubscriptionCondition;

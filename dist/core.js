@@ -19,7 +19,6 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-
 **/
 'use strict';
 
@@ -91,7 +90,10 @@ function runtimeReady(runtime) {
   process.send({ to: 'runtime:installed', body: {} });
 }
 
+var runtimeDescriptor = void 0;
+
 catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
+  runtimeDescriptor = descriptor;
 
   if (descriptor.sourcePackageURL === '/sourcePackage') {
     return descriptor.sourcePackage;
@@ -100,30 +102,16 @@ catalogue.getRuntimeDescriptor(runtimeURL).then(function (descriptor) {
   }
 }).then(function (sourcePackage) {
 
-  try {
-    (function () {
+  // let runtime = new RuntimeUA(RuntimeFactory, domain); 
+  // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+  var runtime = new _RuntimeUA2.default(runtimeDescriptor, _RuntimeFactory2.default, domain);
 
-      // let RuntimeUA = _eval(sourcePackage.sourceCode, true);
-      var runtime = new _RuntimeUA2.default(_RuntimeFactory2.default, domain);
+  runtime.init().then(function () {
 
-      // runtime.init().then((success) => {
-
-      // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';
-      var nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';
-      runtime.loadStub(nodeProtoStub).then(function (result) {
-        console.log('ready: '.red, result);
-        runtimeReady(runtime);
-      }).catch(function (err) {
-        console.log('Error: ', err);
-      });
-
-      // }).catch((reason) => {
-      // console.log('Error:', reason);
-      // })
-    })();
-  } catch (e) {
-    console.log('error is ', e);
-  }
+    runtimeReady(runtime);
+  }).catch(function (reason) {
+    console.log('Error init', reason);
+  });
 }).catch(function (error) {
   console.log('Error: ', error);
 });

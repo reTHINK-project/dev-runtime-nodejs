@@ -4,7 +4,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _AllowOverrides = require('./combiningAlgorithms/AllowOverrides');
 
@@ -24,11 +34,9 @@ var _Rule2 = _interopRequireDefault(_Rule);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var Policy = function () {
   function Policy(key, rules, actions, combiningAlgorithm) {
-    _classCallCheck(this, Policy);
+    (0, _classCallCheck3.default)(this, Policy);
 
     if (!key) throw new Error('key is not defined');
     if (!actions) throw new Error('actions are not defined');
@@ -39,7 +47,7 @@ var Policy = function () {
     this._setCombiningAlgorithm(combiningAlgorithm);
   }
 
-  _createClass(Policy, [{
+  (0, _createClass3.default)(Policy, [{
     key: 'addAction',
     value: function addAction(method, param) {
       this.actions.push({ method: method, param: param });
@@ -64,14 +72,14 @@ var Policy = function () {
     value: function enforceActions(context, message) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var results = [];
         if (_this.actions.length !== 0) {
           for (var i in _this.actions) {
             var result = context.pep.actionsService[_this.actions[i].method](message, _this.actions[i].param);
             results.push(result);
           }
-          Promise.all(results).then(function (messages) {
+          _promise2.default.all(results).then(function (messages) {
             resolve(messages);
           }, function (error) {
             reject(error);
@@ -160,7 +168,6 @@ var Policy = function () {
       });
     }
   }]);
-
   return Policy;
 }();
 

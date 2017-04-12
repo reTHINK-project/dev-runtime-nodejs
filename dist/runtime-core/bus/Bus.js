@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -46,7 +52,7 @@ var Bus = function () {
    */
 
   function Bus() {
-    _classCallCheck(this, Bus);
+    (0, _classCallCheck3.default)(this, Bus);
 
     var _this = this;
     _this._msgId = 0;
@@ -67,7 +73,7 @@ var Bus = function () {
   */
 
 
-  _createClass(Bus, [{
+  (0, _createClass3.default)(Bus, [{
     key: 'addListener',
     value: function addListener(url, listener) {
       var _this = this;
@@ -182,24 +188,22 @@ var Bus = function () {
 
       //automatic management of response handlers
       if (responseCallback) {
-        (function () {
-          var responseId = inMsg.from + inMsg.id;
-          _this._responseCallbacks[responseId] = responseCallback;
+        var responseId = inMsg.from + inMsg.id;
+        _this._responseCallbacks[responseId] = responseCallback;
 
-          setTimeout(function () {
-            var responseFun = _this._responseCallbacks[responseId];
-            delete _this._responseCallbacks[responseId];
+        setTimeout(function () {
+          var responseFun = _this._responseCallbacks[responseId];
+          delete _this._responseCallbacks[responseId];
 
-            if (responseFun) {
-              var errorMsg = {
-                id: inMsg.id, type: 'response',
-                body: { code: 408, desc: 'Response timeout!', value: inMsg }
-              };
+          if (responseFun) {
+            var errorMsg = {
+              id: inMsg.id, type: 'response',
+              body: { code: 408, desc: 'Response timeout!', value: inMsg }
+            };
 
-              responseFun(errorMsg);
-            }
-          }, _this._responseTimeOut);
-        })();
+            responseFun(errorMsg);
+          }
+        }, _this._responseTimeOut);
       }
     }
   }, {
@@ -288,7 +292,6 @@ var Bus = function () {
     key: '_registerExternalListener',
     value: function _registerExternalListener() {/*implementation will register external listener and call "this._onMessage(msg)" */}
   }]);
-
   return Bus;
 }();
 
@@ -300,7 +303,7 @@ var MsgListener = function () {
   */
 
   function MsgListener(subscriptions, url, callback) {
-    _classCallCheck(this, MsgListener);
+    (0, _classCallCheck3.default)(this, MsgListener);
 
     var _this = this;
 
@@ -309,7 +312,7 @@ var MsgListener = function () {
     _this._callback = callback;
   }
 
-  _createClass(MsgListener, [{
+  (0, _createClass3.default)(MsgListener, [{
     key: 'remove',
 
 
@@ -336,7 +339,6 @@ var MsgListener = function () {
       return this._url;
     }
   }]);
-
   return MsgListener;
 }();
 

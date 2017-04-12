@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require("babel-runtime/helpers/createClass");
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -35,8 +41,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 *   Registry Data Model includes all Objects to be handled by the Registry functionality including
 */
 var RegistryDataModel = function () {
-  function RegistryDataModel(id, url, descriptorURL, startingTime, lastModified, status, stubs, stubsConfiguration) {
-    _classCallCheck(this, RegistryDataModel);
+  function RegistryDataModel(id, url, descriptorURL, p2pRequester, startingTime, lastModified, status, stubs, stubsConfiguration) {
+    (0, _classCallCheck3.default)(this, RegistryDataModel);
 
     var _this = this;
 
@@ -48,9 +54,10 @@ var RegistryDataModel = function () {
     _this._status = status;
     _this._stubs = stubs;
     _this._stubsConfiguration = stubsConfiguration;
+    _this._p2pRequester = p2pRequester;
   }
 
-  _createClass(RegistryDataModel, [{
+  (0, _createClass3.default)(RegistryDataModel, [{
     key: "id",
     get: function get() {
       var _this = this;
@@ -68,8 +75,19 @@ var RegistryDataModel = function () {
       var _this = this;
       return _this._descriptorURL;
     }
+  }, {
+    key: "p2pRequester",
+    get: function get() {
+      var _this = this;
+      return _this._p2pRequester;
+    }
+  }, {
+    key: "lastModified",
+    get: function get() {
+      var _this = this;
+      return _this._lastModified;
+    }
   }]);
-
   return RegistryDataModel;
 }();
 

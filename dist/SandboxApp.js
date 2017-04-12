@@ -48,14 +48,13 @@ var SandboxApp = function (_Sandbox) {
   function SandboxApp() {
     _classCallCheck(this, SandboxApp);
 
-    var _this = _possibleConstructorReturn(this, (SandboxApp.__proto__ || Object.getPrototypeOf(SandboxApp)).call(this));
-
     console.log('---------------------- Sandbox App -----------------------'.green);
+
+    var _this = _possibleConstructorReturn(this, (SandboxApp.__proto__ || Object.getPrototypeOf(SandboxApp)).call(this));
 
     _this.type = _sandbox.SandboxType.NORMAL;
     process.on('message', function (msg) {
-      console.log('SandboxApp Received message  is :\n'.green);
-
+      console.log('SandboxApp Received message  is :\n'.green, msg);
       if (msg.hasOwnProperty('to') && msg.to.startsWith('core:')) return;
 
       _this._onMessage(msg);

@@ -4,9 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //import hello from 'hellojs';
 
@@ -16,7 +26,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 */
 var OpenIdLib = function () {
   function OpenIdLib(identityProvider, clientID) {
-    _classCallCheck(this, OpenIdLib);
+    (0, _classCallCheck3.default)(this, OpenIdLib);
 
     var _this = this;
     _this.clientID = clientID;
@@ -40,7 +50,7 @@ var OpenIdLib = function () {
     }
   }
 
-  _createClass(OpenIdLib, [{
+  (0, _createClass3.default)(OpenIdLib, [{
     key: 'openPopup',
     value: function openPopup() {
       var _this = this;
@@ -52,7 +62,7 @@ var OpenIdLib = function () {
       var tokenType = void 0;
       var expiresIn = void 0;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
 
         //function to parse the query string in the given URL to obatin certain values
         function gup(url, name) {
@@ -91,38 +101,36 @@ var OpenIdLib = function () {
 
               //not working yet. Some problems with the 'POST' method
               if (_this.identityProvider === 'windows') {
-                (function () {
-                  var code = gup(url, 'code');
-                  var sessionState = gup(url, 'session_state');
+                var code = gup(url, 'code');
+                var sessionState = gup(url, 'session_state');
 
-                  var reqAccessURL = _this.info.TOKENEND + 'redirect_uri=' + _this.info.REDIRECT + '&grant_type=authorization_code' + '&client_id=' + _this.info.CLIENTID + '&code=' + code;
+                var reqAccessURL = _this.info.TOKENEND + 'redirect_uri=' + _this.info.REDIRECT + '&grant_type=authorization_code' + '&client_id=' + _this.info.CLIENTID + '&code=' + code;
 
-                  win.close();
+                win.close();
 
-                  var req = new XMLHttpRequest();
-                  req.open('POST', _this.info.TOKENEND, true);
-                  req.setRequestHeader('Access-Control-Allow-Origin', '*');
+                var req = new XMLHttpRequest();
+                req.open('POST', _this.info.TOKENEND, true);
+                req.setRequestHeader('Access-Control-Allow-Origin', '*');
 
-                  var data = new FormData();
-                  data.append('redirect_uri', _this.info.REDIRECT);
-                  data.append('grant_type', 'authorization_code');
-                  data.append('client_id', _this.info.CLIENTID);
-                  data.append('code', code);
+                var data = new FormData();
+                data.append('redirect_uri', _this.info.REDIRECT);
+                data.append('grant_type', 'authorization_code');
+                data.append('client_id', _this.info.CLIENTID);
+                data.append('code', code);
 
-                  req.onreadystatechange = function (e) {
-                    if (req.readyState === 4) {
-                      if (req.status === 200) {
+                req.onreadystatechange = function (e) {
+                  if (req.readyState === 4) {
+                    if (req.status === 200) {
 
-                        resolve('null');
-                      } else if (req.status === 400) {
-                        reject('There was an error processing the token');
-                      } else {
-                        reject('something else other than 200 was returned');
-                      }
+                      resolve('null');
+                    } else if (req.status === 400) {
+                      reject('There was an error processing the token');
+                    } else {
+                      reject('something else other than 200 was returned');
                     }
-                  };
-                  req.send(data);
-                })();
+                  }
+                };
+                req.send(data);
               } else {
 
                 acToken = gup(url, 'access_token');
@@ -151,7 +159,7 @@ var OpenIdLib = function () {
       var _this = this;
       var tokenID = void 0;
       var VALIDURL = _this.info.VALIDURL;
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var req = new XMLHttpRequest();
         req.open('GET', VALIDURL + token, true);
 
@@ -179,7 +187,7 @@ var OpenIdLib = function () {
     value: function getInfoToken(token, tokenID) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var USERINFURL = _this.info.USERINFURL;
 
         var req = new XMLHttpRequest();
@@ -210,7 +218,6 @@ var OpenIdLib = function () {
       });
     }
   }]);
-
   return OpenIdLib;
 }();
 
@@ -218,7 +225,7 @@ var OpenIdLib = function () {
 
 
 var GoogleInfo = function GoogleInfo() {
-  _classCallCheck(this, GoogleInfo);
+  (0, _classCallCheck3.default)(this, GoogleInfo);
 
   var _this = this;
   _this.OAUTHURL = 'https://accounts.google.com/o/oauth2/auth?';
@@ -236,7 +243,7 @@ var GoogleInfo = function GoogleInfo() {
 
 
 var FacebookInfo = function FacebookInfo() {
-  _classCallCheck(this, FacebookInfo);
+  (0, _classCallCheck3.default)(this, FacebookInfo);
 
   var _this = this;
   _this.OAUTHURL = 'https://www.facebook.com/dialog/oauth?';
@@ -252,7 +259,7 @@ var FacebookInfo = function FacebookInfo() {
 
 
 var MicrosoftInfo = function MicrosoftInfo() {
-  _classCallCheck(this, MicrosoftInfo);
+  (0, _classCallCheck3.default)(this, MicrosoftInfo);
 
   var _this = this;
   _this.OAUTHURL = 'https://login.microsoftonline.com/common/oauth2/authorize?';

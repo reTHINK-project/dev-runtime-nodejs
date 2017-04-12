@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -77,7 +83,8 @@ var BloomFilter = function () {
   // number of bits.  Note that *m* is rounded up to the nearest multiple of
   // 32.  *k* specifies the number of hashing functions.
   function BloomFilter(m, k) {
-    _classCallCheck(this, BloomFilter);
+    (0, _classCallCheck3.default)(this, BloomFilter);
+
 
     var typedArrays = typeof ArrayBuffer !== 'undefined';
 
@@ -114,7 +121,7 @@ var BloomFilter = function () {
   // See http://willwhim.wpengine.com/2011/09/03/producing-n-hash-functions-by-hashing-only-once/
 
 
-  _createClass(BloomFilter, [{
+  (0, _createClass3.default)(BloomFilter, [{
     key: 'locations',
     value: function locations(v) {
       var k = this.k;
@@ -233,7 +240,6 @@ var BloomFilter = function () {
       return a & 0xffffffff;
     }
   }]);
-
   return BloomFilter;
 }();
 

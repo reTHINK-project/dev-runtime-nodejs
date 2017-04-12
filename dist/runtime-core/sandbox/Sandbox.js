@@ -5,7 +5,33 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SandboxType = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _SandboxRegistry = require('../sandbox/SandboxRegistry');
 
@@ -17,37 +43,31 @@ var _MiniBus3 = _interopRequireDefault(_MiniBus2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 PT Inovação e Sistemas SA
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 INESC-ID
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 QUOBIS NETWORKS SL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 ORANGE SA
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 Deutsche Telekom AG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 Apizee
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               **/
-
-
 // import MessageFactory from '../../resources/MessageFactory';
 
-var SandboxType = exports.SandboxType = { APP: 'app', NORMAL: 'normal' };
+/**
+* Copyright 2016 PT Inovação e Sistemas SA
+* Copyright 2016 INESC-ID
+* Copyright 2016 QUOBIS NETWORKS SL
+* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V
+* Copyright 2016 ORANGE SA
+* Copyright 2016 Deutsche Telekom AG
+* Copyright 2016 Apizee
+* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+**/
+var SandboxType = exports.SandboxType = { APP: 'app', NORMAL: 'normal', WINDOW: 'window' };
 
 /**
  * @author micaelpedrosa@gmail.com
@@ -55,14 +75,18 @@ var SandboxType = exports.SandboxType = { APP: 'app', NORMAL: 'normal' };
  */
 
 var Sandbox = function (_MiniBus) {
-  _inherits(Sandbox, _MiniBus);
+  (0, _inherits3.default)(Sandbox, _MiniBus);
 
-  function Sandbox() {
-    _classCallCheck(this, Sandbox);
+  function Sandbox(capabilities) {
+    (0, _classCallCheck3.default)(this, Sandbox);
 
-    var _this2 = _possibleConstructorReturn(this, (Sandbox.__proto__ || Object.getPrototypeOf(Sandbox)).call(this));
+    var _this2 = (0, _possibleConstructorReturn3.default)(this, (Sandbox.__proto__ || (0, _getPrototypeOf2.default)(Sandbox)).call(this));
 
     var _this = _this2;
+
+    if (capabilities) {
+      _this.capabilities = capabilities;
+    }
 
     // Add Message Factory
     // let messageFactory = new MessageFactory();
@@ -79,7 +103,7 @@ var Sandbox = function (_MiniBus) {
    */
 
 
-  _createClass(Sandbox, [{
+  (0, _createClass3.default)(Sandbox, [{
     key: 'deployComponent',
     value: function deployComponent(componentSourceCode, componentURL, configuration) {
 
@@ -87,7 +111,7 @@ var Sandbox = function (_MiniBus) {
 
       // let messageFactory = _this.messageFactory;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         //FLOW-OUT: deploy message for the internal SandboxRegistry -> _onDeploy
         var deployMessage = {
           type: 'create', from: _SandboxRegistry2.default.ExternalDeployAddress, to: _SandboxRegistry2.default.InternalDeployAddress,
@@ -117,7 +141,7 @@ var Sandbox = function (_MiniBus) {
     value: function removeComponent(componentURL) {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         //FLOW-OUT: un-deploy message for the internal SandboxRegistry -> _onRemove
         var removeMessage = {
           type: 'delete', from: _SandboxRegistry2.default.ExternalDeployAddress, to: _SandboxRegistry2.default.InternalDeployAddress,
@@ -135,8 +159,29 @@ var Sandbox = function (_MiniBus) {
         });
       });
     }
-  }]);
 
+    /**
+    * Matches Sandbox capabilities against provided capabilities. Used to check if sandbox provides all required capabilities
+    * @param  {RuntimeCapabilities} constraints set of RuntimeCapabilities to match with.
+    * @return {boolean} return true if constraints are matched false otherwise
+     */
+
+  }, {
+    key: 'matches',
+    value: function matches(constraints) {
+      var _this = this;
+
+      var filtered = (0, _keys2.default)(constraints).filter(function (key) {
+        return !(_this.capabilities[key] && _this.capabilities[key] === constraints[key]);
+      });
+
+      if (filtered.length === 0) {
+        return true;
+      } else {
+        return !constraints[filtered];
+      }
+    }
+  }]);
   return Sandbox;
 }(_MiniBus3.default);
 
