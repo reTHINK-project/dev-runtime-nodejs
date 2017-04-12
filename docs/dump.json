@@ -1,0 +1,2216 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "name": "src/ContextApp.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n\n//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed \n//  The contextApp handls communiocation between the Hyperty and the coreRuntime\n\nimport { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';\nimport MiniBus from 'runtime-core/dist/minibus';\nimport _eval from 'eval';\n\n/**   \n* @returns activate Hyperty onn the context App\n**/\nfunction createContextApp(coreRuntime) {\n\n  process._miniBus = new MiniBus();\n  process._miniBus._onPostMessage = (msg) => {\n      // onPostMessage on the miniBus will be sent to coreRuntime \n      coreRuntime.send(msg);\n    };\n\n  // EventListener on the IPC communication channel between the coreRuntime and the RuntimeNode for messages sent from the coreRuntime\n  coreRuntime.on('message', (event) => {\n    if (event.to.startsWith('runtime:loadedHyperty'))\n        return;\n\n    // onMessage received on the coreRuntime miniBus\n    process._miniBus._onMessage(event);\n  });\n\n  process._registry = new SandboxRegistry(process._miniBus);\n \n  process._registry._create = (url, sourceCode, config) => {\n    try {\n      let activate = _eval(sourceCode, true);\n      // Activate the Hyperty \n      return activate.default(url, process._miniBus, config);\n    } catch (reason) {\n      console.log('ERROR while activating the Hyperty, reason:', reason);\n    }\n  };\n};\n\n\n/**   \n* @returns Hyperty by descriptorURL\n**/\nfunction getHypertyBy(hypertyDescriptor) {\n  console.log('Get Hyperty:', hypertyDescriptor, process._registry.components);\n  return process._registry.components[hypertyDescriptor];\n};\n\nexport default { createContextApp, getHypertyBy };\n",
+    "static": true,
+    "longname": "src/ContextApp.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 1,
+    "kind": "function",
+    "name": "createContextApp",
+    "memberof": "src/ContextApp.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/ContextApp.js~createContextApp",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/ContextApp.js",
+    "importStyle": null,
+    "description": "  ",
+    "lineNumber": 34,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "activate Hyperty onn the context App"
+      }
+    ],
+    "params": [
+      {
+        "name": "coreRuntime",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": "activate Hyperty onn the context App"
+    }
+  },
+  {
+    "__docId__": 2,
+    "kind": "function",
+    "name": "getHypertyBy",
+    "memberof": "src/ContextApp.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/ContextApp.js~getHypertyBy",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/ContextApp.js",
+    "importStyle": null,
+    "description": "  ",
+    "lineNumber": 68,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "Hyperty by descriptorURL"
+      }
+    ],
+    "params": [
+      {
+        "name": "hypertyDescriptor",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": "Hyperty by descriptorURL"
+    }
+  },
+  {
+    "__docId__": 3,
+    "kind": "file",
+    "name": "src/ContextServiceProvider.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n/**\n * Context Service Provider CSP that Loads and activates CSP Protostub to the CSP messaging node services\n **/\n\nimport { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';\nimport MiniBus from 'runtime-core/dist/minibus';\nimport _eval from 'eval';\n\n\nprocess._miniBus = new MiniBus();\n\nprocess._miniBus._onPostMessage = (msg) => {\n  process.send(msg);\n};\n\n // global EventListener on the IPC communication channel between the Context Service Provider CSP and the RuntimeNode for messages sent from the coreRuntime\nprocess.on('message', (msg) => {\n  process._miniBus._onMessage(msg);\n});\n\nprocess._registry = new SandboxRegistry(process._miniBus);\nprocess._registry._create = (url, sourceCode, config) => {\n  try {\n    let activate = _eval(sourceCode, true);\n    return activate.default(url, process._miniBus, config);\n  } catch (reason) {\n    console.log('ERROR while activating the ProtoStub on the CSP, reason:', reason);\n  }\n\n};\n",
+    "static": true,
+    "longname": "src/ContextServiceProvider.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 4,
+    "kind": "file",
+    "name": "src/JSRequest.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n\n'use strict';\nclass JSRequest {\n  constructor() {\n    this.client = require('request');\n    console.log('Node http Request');\n    let _this = this;\n    Object.keys(methods).forEach(function(method) {\n      _this[methods[method]] = function(url, options) {\n        return new Promise(function(resolve, reject) {\n          this.client.makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {\n            resolve(result);\n          }).catch(function(reason) {\n            reject(reason);\n          });\n        });\n      };\n    });\n  }\n\n  makeLocalRequest(method, url, options) {\n    let _this = this;\n    console.log('HTTPS Request:', method, url, options);\n    return new Promise(function(resolve, reject) {\n      // TODO: Check why the url have localhost and undefined like a protocol\n      // check the RuntimeUA\n      url = this.client.urlMapping(url);\n      console.log('mappin is done *******************', url);\n      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';\n      if( method === 'GET') {\n        this.client.get( url, (err, response, statusCode) => {\n          console.log('statusCode: ', statusCode);\n          if(err) {\n            console.error('[makeLocalRequest GET method ] Error :', err);\n          }\n          callback(response, statusCode); // TODO: getBody()\n        });\n      }\n    });\n  }\n\n\n  urlMapping(url) {\n    let protocolmap = {\n      'hyperty-catalogue://': 'https://',\n      'https://': 'https://',\n      'localhost://':'https://',\n      'hyperty-catalogue':'https://',\n      'undefined://':'https://',\n      'http://':'http://'\n    }\n    let foundProtocol = false;\n    for (let protocol in protocolmap) {\n      if (url.slice(0, protocol.length) === protocol) {\n        console.log(\"exchanging \" + protocol + \" with \" + protocolmap[protocol]);\n        url = protocolmap[protocol] + url.slice(protocol.length, url.length);\n        console.log('url is : ', url);\n        foundProtocol = true;\n        break;\n      }\n    }\n    if(!foundProtocol) {\n      throw new Error(' Invalid protocol of url:', url);\n    }\n    return url;\n  }\n\n  get(url, callback) {\n    console.log('HTTPS Request:', url);\n    let urlMap = this.client.urlMapping(url);\n    this.client.get({\n      url: urlMap\n    }, function(err, response, body) {\n      if (err) {\n        console.error('error is get response : ', err)\n        callback(err, null, null);\n      }\n      console.log('response.statusCode is :', response.statusCode);\n      callback(null, body, response.statusCode);\n    });\n  }\n\n  put(url, message, callback) {\n    this.client.put({\n      headers: { 'content-type': 'application/json' },\n      url: url,\n      body: message\n    }, function(err, response, body) {\n      if (err) {\n        callback(err, null, null);\n      }\n      callback(null, body, response.statusCode);\n    });\n  }\n\n  del(url, callback) {\n    this.client.del({\n      url: url\n    }, function(err, response, body) {\n      if (err) {\n        callback(err, null, null);\n      }\n      callback(null, body, response.statusCode);\n    });\n  }\n}\nmodule.exports = JSRequest;\n",
+    "static": true,
+    "longname": "src/JSRequest.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 5,
+    "kind": "class",
+    "name": "JSRequest",
+    "memberof": "src/JSRequest.js",
+    "static": true,
+    "longname": "src/JSRequest.js~JSRequest",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/JSRequest.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 25,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 6,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 7,
+    "kind": "member",
+    "name": "client",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#client",
+    "access": null,
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 8,
+    "kind": "method",
+    "name": "makeLocalRequest",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#makeLocalRequest",
+    "access": null,
+    "description": null,
+    "lineNumber": 43,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "method",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 9,
+    "kind": "method",
+    "name": "urlMapping",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#urlMapping",
+    "access": null,
+    "description": null,
+    "lineNumber": 65,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 10,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#get",
+    "access": null,
+    "description": null,
+    "lineNumber": 90,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "callback",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 11,
+    "kind": "method",
+    "name": "put",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#put",
+    "access": null,
+    "description": null,
+    "lineNumber": 105,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "message",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "callback",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 12,
+    "kind": "method",
+    "name": "del",
+    "memberof": "src/JSRequest.js~JSRequest",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/JSRequest.js~JSRequest#del",
+    "access": null,
+    "description": null,
+    "lineNumber": 118,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "callback",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 13,
+    "kind": "file",
+    "name": "src/Request.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\nconst methods = {GET: 'get', POST: 'post'};\n\nlet fetch = require('node-fetch');\n\n\nclass Request {\n  constructor() {\n    let _this = this\n    console.log('Node http Request');\n    Object.keys(methods).forEach((method) => {\n      _this[methods[method]] = (url, options) => {\n        return new Promise((resolve, reject) => {\n          _this.makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {\n            resolve(result)\n          }).catch((reason) => {\n            reject(reason)\n          });\n        });\n      };\n    });\n  }\n  \n  /**\n   * handling request methods\n   * @returns {text<string>}\n   **/\n  makeLocalRequest(method, url, options) {\n    let _this =this\n    console.log('HTTPS Request:', method, url);\n\n    return new Promise(function(resolve, reject) {\n      let urlMap = _this.mapProtocol(url);\n\n      console.log('Mapped url is '.red, urlMap,'method is:'.green, method);\n      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'\n\n      if(method === 'GET') {\n        // handle GET method\n        fetch(urlMap).then((res) => {\n          console.log('statusCode is: ',  res.status)\n          return res.text()\n        }).then((body)=> {\n          resolve(body.toString('utf8'))\n        }).catch((err) => {\n          console.error('Error occured on GET method of url:',urlMap, 'reason :', err);\n        });\n\n      } else if(method === 'POST') {\n          // handle POST method\n          /*\n            options = {\n              method :method, e.g POST\n              body:JSON.stringify(body),\n              headers: { 'Content-Type': 'application/json'}\n            }\n          */\n        fetch(urlMap, options).then((res) => {\n          return res.text()\n        }).then((body) => {\n          resolve(body.toString('utf8'))\n        }).catch((error) => {\n          console.error('Error occured on POST method of url:',urlMap, 'with options:', options, 'reason :', err);\n        });\n      }\n    });\n  }\n\n /**\n  * @returns {variable<string>}\n  **/\n  mapProtocol(url) {\n    let protocolmap = {\n      'localhost://': 'https://',\n      'undefined://': 'https://',\n      'hyperty-catalogue://': 'https://',\n      'https://': 'https://',\n      'http://': 'http://'\n    }\n\n    let foundProtocol = false\n    for (let protocol in protocolmap) {\n      if (url.slice(0, protocol.length) === protocol) {\n        url = protocolmap[protocol] + url.slice(protocol.length, url.length)\n        foundProtocol = true\n        break\n      }\n    }\n\n    if (!foundProtocol) {\n      throw new Error('Invalid protocol of url: ' + url)\n    }\n    return url\n  }\n}\n\nexport default Request;\n",
+    "static": true,
+    "longname": "src/Request.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 14,
+    "kind": "variable",
+    "name": "methods",
+    "memberof": "src/Request.js",
+    "static": true,
+    "longname": "src/Request.js~methods",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/Request.js",
+    "importStyle": null,
+    "description": "Copyright 2016 PT Inovação e Sistemas SA\nCopyright 2016 INESC-ID\nCopyright 2016 QUOBIS NETWORKS SL\nCopyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\nCopyright 2016 ORANGE SA\nCopyright 2016 Deutsche Telekom AG\nCopyright 2016 Apizee\nCopyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n  http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+    "lineNumber": 23,
+    "type": {
+      "types": [
+        "{\"GET\": string, \"POST\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 15,
+    "kind": "variable",
+    "name": "fetch",
+    "memberof": "src/Request.js",
+    "static": true,
+    "longname": "src/Request.js~fetch",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/Request.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 25,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 16,
+    "kind": "class",
+    "name": "Request",
+    "memberof": "src/Request.js",
+    "static": true,
+    "longname": "src/Request.js~Request",
+    "access": null,
+    "export": true,
+    "importPath": "runtime-nodejs/src/Request.js",
+    "importStyle": "Request",
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 17,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/Request.js~Request",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Request.js~Request#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 18,
+    "kind": "method",
+    "name": "makeLocalRequest",
+    "memberof": "src/Request.js~Request",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Request.js~Request#makeLocalRequest",
+    "access": null,
+    "description": "handling request methods",
+    "lineNumber": 49,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{text<string>}"
+      }
+    ],
+    "params": [
+      {
+        "name": "method",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "text<string>"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 19,
+    "kind": "method",
+    "name": "mapProtocol",
+    "memberof": "src/Request.js~Request",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Request.js~Request#mapProtocol",
+    "access": null,
+    "description": "",
+    "lineNumber": 93,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{variable<string>}"
+      }
+    ],
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "variable<string>"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 20,
+    "kind": "file",
+    "name": "src/RuntimeCapabilities.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n\n// TODO: import and extend the class of the service-framework\n// service-framework/dist/RuntimeCapabilities;\n\nclass RuntimeCapabilities {\n\n   constructor(storageManager) {\n    if (!storageManager) throw new Error('The Runtime Capabilities need the storageManager');\n    this.storageManager = storageManager;\n  }\n\n  /**\n   * Returns as a promise RuntimeCapabilities json object with all available capabilities of the runtime.\n   * If it was not yet persisted in the Storage Manager it collects all required info from the platform and saves in the storage manager.\n   * @returns {Promise<object>}\n   */\n  getRuntimeCapabilities() {\n    return new Promise((resolve, reject) => {\n      Promise.all([this._getEnvironment()]).then((result) => {\n\n        let capabilities = {};\n        console.log('this._getEnvironment()s: ', this._getEnvironment());\n\n        result.forEach((capability) => {\n          Object.assign(capabilities, capability);\n        });\n\n        console.log('capabilities: ', capabilities);\n        this.storageManager.set('capabilities', '1', capabilities);\n\n        resolve(capabilities);\n      }).catch((error) => {\n        reject(error);\n      });\n    });\n  }\n\n  /**\n   * returns as a promise a boolean according to available capabilities.\n   * @returns {Promise<boolean>}\n   */\n  isAvailable(capability) {\n    return new Promise((resolve) => {\n      this.storageManager.get('capabilities').then((capabilities) => {\n        console.log('Capability ' + capability + ' is available? ', capabilities.hasOwnProperty(capability) && capabilities[capability]);\n        if (capabilities.hasOwnProperty(capability) && capabilities[capability]) {\n          resolve(true);\n        } else {\n          resolve(false);\n        }\n      }).catch((error) => {\n        console.error('Error has occured while checking capability, reason:', error);\n        reject(error);\n      });\n    });\n  }\n\n  /**\n   * it refreshes previously collected capabilities and updates the storage manager\n   */\n  update() {\n    return new Promise((resolve, reject) => {\n      this.getRuntimeCapabilities().then(resolve).catch(reject);\n    });\n  }\n\n  // TODO: organize the code in separated files\n  _getEnvironment() {\n    // TODO: this should be more effective and check the environment\n    try {\n      return {\n        browser: !!(window && navigator),\n        node: !!!(window && navigator)\n      };\n    } catch(error) {\n      return {\n        browser: false,\n        node: true\n      };\n    }\n  }\n}\n\nexport default RuntimeCapabilities;\n",
+    "static": true,
+    "longname": "src/RuntimeCapabilities.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 21,
+    "kind": "class",
+    "name": "RuntimeCapabilities",
+    "memberof": "src/RuntimeCapabilities.js",
+    "static": true,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "access": null,
+    "export": true,
+    "importPath": "runtime-nodejs/src/RuntimeCapabilities.js",
+    "importStyle": "RuntimeCapabilities",
+    "description": "Copyright 2016 PT Inovação e Sistemas SA\nCopyright 2016 INESC-ID\nCopyright 2016 QUOBIS NETWORKS SL\nCopyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\nCopyright 2016 ORANGE SA\nCopyright 2016 Deutsche Telekom AG\nCopyright 2016 Apizee\nCopyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n  http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+    "lineNumber": 27,
+    "interface": false
+  },
+  {
+    "__docId__": 22,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "storageManager",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 23,
+    "kind": "member",
+    "name": "storageManager",
+    "memberof": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "static": false,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities#storageManager",
+    "access": null,
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 24,
+    "kind": "method",
+    "name": "getRuntimeCapabilities",
+    "memberof": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities#getRuntimeCapabilities",
+    "access": null,
+    "description": "Returns as a promise RuntimeCapabilities json object with all available capabilities of the runtime.\nIf it was not yet persisted in the Storage Manager it collects all required info from the platform and saves in the storage manager.",
+    "lineNumber": 39,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<object>}"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<object>"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 25,
+    "kind": "method",
+    "name": "isAvailable",
+    "memberof": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities#isAvailable",
+    "access": null,
+    "description": "returns as a promise a boolean according to available capabilities.",
+    "lineNumber": 64,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<boolean>}"
+      }
+    ],
+    "params": [
+      {
+        "name": "capability",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<boolean>"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 26,
+    "kind": "method",
+    "name": "update",
+    "memberof": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities#update",
+    "access": null,
+    "description": "it refreshes previously collected capabilities and updates the storage manager",
+    "lineNumber": 83,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 27,
+    "kind": "method",
+    "name": "_getEnvironment",
+    "memberof": "src/RuntimeCapabilities.js~RuntimeCapabilities",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/RuntimeCapabilities.js~RuntimeCapabilities#_getEnvironment",
+    "access": null,
+    "description": null,
+    "lineNumber": 90,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [],
+    "return": {
+      "types": [
+        "{\"browser\": *, \"node\": boolean}"
+      ]
+    }
+  },
+  {
+    "__docId__": 28,
+    "kind": "file",
+    "name": "src/RuntimeFactory.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n'use strict';\n\nimport SandboxWorker from './SandboxWorker';\nimport SandboxApp from './SandboxApp';\nimport Request from './Request';\nimport atob from 'atob';\n\nimport StorageManager from 'service-framework/dist/StorageManager';\nimport { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';\nimport PersistenceManager from 'service-framework/dist/PersistenceManager';\n\nimport { LocalStorage } from 'node-localstorage';\nimport Dexie from 'dexie';\nimport setGlobalVars from 'indexeddbshim';\n\nimport RuntimeCapabilities from './RuntimeCapabilities';\n\n\nlet createStorageManager = () => {\n  // global.window= global;\n  // setGlobalVars(global.window);\n  // window.shimIndexedDB.__useShim();\n  // cwindow.shimIndexedDB.__debug(true);\n  let indexeddB = {};\n  setGlobalVars(indexeddB);\n  let {indexedDB, IDBKeyRange } = indexeddB;\n  let storageName = 'cache';\n\n  const db = new Dexie(storageName, {\n    indexedDB: indexedDB,\n    IDBKeyRange: IDBKeyRange\n  });\n\n  storageManager = new StorageManager(db, storageName);\n  return storageManager;\n};\n\nlet storageManager = createStorageManager();\n\nlet RuntimeFactory = Object.create({\n    createSandbox() {\n      return new SandboxWorker(__dirname + '/ContextServiceProvider.js');\n    },\n\n    createAppSandbox() {\n      return new SandboxApp(__dirname + '/ContextApp.js');\n    },\n\n    createHttpRequest() {\n      let request = new Request();\n      return request;\n    },\n\n    atob(b64) {\n      return atob(b64);\n    },\n\n    persistenceManager() {\n      let localStorage = new LocalStorage('./scratch');\n      return new PersistenceManager(localStorage);\n    },\n\n    storageManager() {\n      return storageManager;\n    },\n\n    createRuntimeCatalogue() {\n      this.catalogue = new RuntimeCatalogue(this);\n      return this.catalogue;\n    },\n\n    runtimeCapabilities() {\n      return new RuntimeCapabilities(storageManager);\n    }\n\n});\n\nexport default RuntimeFactory;\n",
+    "static": true,
+    "longname": "src/RuntimeFactory.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 29,
+    "kind": "function",
+    "name": "createStorageManager",
+    "memberof": "src/RuntimeFactory.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/RuntimeFactory.js~createStorageManager",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeFactory.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 30,
+    "kind": "variable",
+    "name": "storageManager",
+    "memberof": "src/RuntimeFactory.js",
+    "static": true,
+    "longname": "src/RuntimeFactory.js~storageManager",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeFactory.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 60,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 31,
+    "kind": "variable",
+    "name": "RuntimeFactory",
+    "memberof": "src/RuntimeFactory.js",
+    "static": true,
+    "longname": "src/RuntimeFactory.js~RuntimeFactory",
+    "access": null,
+    "export": true,
+    "importPath": "runtime-nodejs/src/RuntimeFactory.js",
+    "importStyle": "RuntimeFactory",
+    "description": null,
+    "lineNumber": 62,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 32,
+    "kind": "file",
+    "name": "src/RuntimeNode.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the Liceruntimense is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n\nlet Promise = require('es6-promise');\n\n\nimport app from './ContextApp';\nimport URI from 'urijs';\nlet colors = require('colors');\n\nlet domain = 'localhost';\nlet coreRuntime = {};\n\nlet child = require('child_process');\ncoreRuntime  = child.fork(__dirname + '/core.js');\n\nlet buildMsg = (hypertyComponent, msg) => {\n  console.log('hypertyComponent is :', hypertyComponent, msg);\n  return {\n    runtimeHypertyURL: msg.body.runtimeHypertyURL,\n    status: msg.body.status,\n    instance: hypertyComponent.instance,\n    name: hypertyComponent.name\n  };\n};\n\n/**\n* Returns as a promise Hyperty object with all its informations.\n* @returns {Promise<object>}\n**/\nlet runtimeProxy = {\n  requireHyperty: (hypertyDescriptor)=> {\n    return new Promise((resolve, reject)=> {\n      coreRuntime.on('message', (msg) => {\n        console.log('---- Message from runtime core ----'.green);\n        console.log('Hyperty loaded :\\n'.green);\n\n        if (msg.to === 'runtime:loadedHyperty') {\n          resolve(buildMsg(app.getHypertyBy(msg.body.runtimeHypertyURL), msg));\n        }\n      });\n      // console.log('coreRuntime .send'.green);\n      coreRuntime.send({to:'core:loadHyperty', body:{descriptor: hypertyDescriptor}});\n    });\n  },\n\n  requireProtostub: (domain) => {\n    coreRuntime.send({to:'core:loadStub', body:{domain: domain}});\n  }\n};\n\n/**\n* Returns as a promise Hyperty runtime object.\n* @returns {Promise<object>}\n**/\nlet RethinkNode = {\n  install: function({domain, runtimeURL, development}={}) {\n    return new Promise((resolve, reject) => {\n      let runtime = this.getRuntime(runtimeURL, domain, development);\n      coreRuntime.send({do:'install runtime core'});\n      coreRuntime.on('message', (msg) => {\n        if (msg.to === 'runtime:installed') {\n          console.log('\\n Runtime installed with success\\n'.blue);\n          resolve(runtimeProxy);\n        }\n      });\n\n      coreRuntime.on('error', (error) => {\n        console.error('runtime core install failed:', error);\n        coreRuntime .kill();\n        reject(error);\n      });\n\n      coreRuntime.on('exit', () => {\n        console.log('runtime core exited.');\n        coreRuntime.kill();\n      });\n\n      app.createContextApp(coreRuntime);\n    });\n  },\n\n  getRuntime(runtimeURL, domain, development) {\n    if (!!development) {\n      runtimeURL = runtimeURL || 'http://' + domain + '/.well-known/runtime/Runtime';\n      domain = domain || new URI(runtimeURL).host();\n    } else {\n      runtimeURL = runtimeURL || 'http://${domain}/.well-known/runtime/default';\n      domain = domain || new URI(runtimeURL).host().replace('catalogue.', '');\n    }\n    return {\n      url: runtimeURL,\n      domain: domain\n    };\n  }\n};\nexport default RethinkNode;\n",
+    "static": true,
+    "longname": "src/RuntimeNode.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 33,
+    "kind": "variable",
+    "name": "Promise",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~Promise",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": "Copyright 2016 PT Inovação e Sistemas SA\nCopyright 2016 INESC-ID\nCopyright 2016 QUOBIS NETWORKS SL\nCopyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\nCopyright 2016 ORANGE SA\nCopyright 2016 Deutsche Telekom AG\nCopyright 2016 Apizee\nCopyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n  http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the Liceruntimense is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+    "lineNumber": 24,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 34,
+    "kind": "variable",
+    "name": "colors",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~colors",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 35,
+    "kind": "variable",
+    "name": "domain",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~domain",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 36,
+    "kind": "variable",
+    "name": "coreRuntime",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~coreRuntime",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 32,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 37,
+    "kind": "variable",
+    "name": "child",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~child",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 34,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 38,
+    "kind": "function",
+    "name": "buildMsg",
+    "memberof": "src/RuntimeNode.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/RuntimeNode.js~buildMsg",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 37,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "hypertyComponent",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "msg",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"runtimeHypertyURL\": *, \"status\": *, \"instance\": *, \"name\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 39,
+    "kind": "variable",
+    "name": "runtimeProxy",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~runtimeProxy",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": null,
+    "description": "Returns as a promise Hyperty object with all its informations.",
+    "lineNumber": 51,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<object>}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<object>"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "{\"requireHyperty\": *, \"requireProtostub\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 40,
+    "kind": "variable",
+    "name": "RethinkNode",
+    "memberof": "src/RuntimeNode.js",
+    "static": true,
+    "longname": "src/RuntimeNode.js~RethinkNode",
+    "access": null,
+    "export": true,
+    "importPath": "runtime-nodejs/src/RuntimeNode.js",
+    "importStyle": "RethinkNode",
+    "description": "Returns as a promise Hyperty runtime object.",
+    "lineNumber": 76,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<object>}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<object>"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "{\"install\": *, \"getRuntime\": function}"
+      ]
+    }
+  },
+  {
+    "__docId__": 41,
+    "kind": "file",
+    "name": "src/SandboxApp.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n*\n*/\n\nimport { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';\nimport MiniBus from 'runtime-core/dist/minibus';\n\n\nexport default class SandboxApp extends Sandbox {\n  constructor() {\n    console.log('---------------------- Sandbox App -----------------------'.green);\n    super();\n\n    this.type = SandboxType.NORMAL;\n    process.on('message', (msg) => {\n      console.log('SandboxApp Received message  is :\\n'.green, msg);\n      if (msg.hasOwnProperty('to') && msg.to.startsWith('core:'))\n        return;\n\n      this._onMessage(msg);\n    });\n  }\n\n  _onPostMessage(msg) {\n    console.log('SandboxApp postMessage message: '.green);\n    process.send(msg);\n  }\n}\n",
+    "static": true,
+    "longname": "src/SandboxApp.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 42,
+    "kind": "class",
+    "name": "SandboxApp",
+    "memberof": "src/SandboxApp.js",
+    "static": true,
+    "longname": "src/SandboxApp.js~SandboxApp",
+    "access": null,
+    "export": true,
+    "importPath": "runtime-nodejs/src/SandboxApp.js",
+    "importStyle": "SandboxApp",
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "runtime-core/dist/sandbox~Sandbox"
+    ]
+  },
+  {
+    "__docId__": 43,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/SandboxApp.js~SandboxApp",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/SandboxApp.js~SandboxApp#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 44,
+    "kind": "member",
+    "name": "type",
+    "memberof": "src/SandboxApp.js~SandboxApp",
+    "static": false,
+    "longname": "src/SandboxApp.js~SandboxApp#type",
+    "access": null,
+    "description": null,
+    "lineNumber": 34,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 45,
+    "kind": "method",
+    "name": "_onPostMessage",
+    "memberof": "src/SandboxApp.js~SandboxApp",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/SandboxApp.js~SandboxApp#_onPostMessage",
+    "access": null,
+    "description": null,
+    "lineNumber": 44,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "msg",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 46,
+    "kind": "file",
+    "name": "src/SandboxWorker.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\nimport { Sandbox, SandboxType } from 'runtime-core/dist/sandbox';\nimport MiniBus from 'runtime-core/dist/minibus';\nlet child = require('child_process');\nlet colors = require('colors');\n\nexport default class SandboxWorker extends Sandbox{\n  constructor(script) {\n    super(script);\n    console.log('-------------------------------------------- in Sandbox Worker ----------------------------------'.red);\n    this.type = SandboxType.NORMAL;\n    let _this = this;\n    this.worker = child.fork(script);\n    if (!!this.worker) {\n      this.worker.on('message', (e) => {\n              _this._onMessage(e);\n      });\n      this.worker.send('');\n    } else {\n      throw new Error('Your environment does not support worker \\n', e);\n    }\n\n    this.worker.on('exit', (msg) => {\n      console.log('child process exit SandboxWorker stopped');\n      this.worker.exit();\n      this.worker.kill();\n    });\n\n    this.worker.on('error', (msg) => {\n      console.log('child process error  SandboxWorker stopped');\n      this.worker.exit();\n      this.worker.kill();\n    });\n  }\n\n  _onPostMessage(msg) {\n    this.worker.send(msg);\n  }\n}\n",
+    "static": true,
+    "longname": "src/SandboxWorker.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 47,
+    "kind": "variable",
+    "name": "child",
+    "memberof": "src/SandboxWorker.js",
+    "static": true,
+    "longname": "src/SandboxWorker.js~child",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/SandboxWorker.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 25,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 48,
+    "kind": "variable",
+    "name": "colors",
+    "memberof": "src/SandboxWorker.js",
+    "static": true,
+    "longname": "src/SandboxWorker.js~colors",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/SandboxWorker.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "SandboxWorker",
+    "memberof": "src/SandboxWorker.js",
+    "static": true,
+    "longname": "src/SandboxWorker.js~SandboxWorker",
+    "access": null,
+    "export": true,
+    "importPath": "runtime-nodejs/src/SandboxWorker.js",
+    "importStyle": "SandboxWorker",
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "runtime-core/dist/sandbox~Sandbox"
+    ]
+  },
+  {
+    "__docId__": 50,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/SandboxWorker.js~SandboxWorker",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/SandboxWorker.js~SandboxWorker#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "script",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "type",
+    "memberof": "src/SandboxWorker.js~SandboxWorker",
+    "static": false,
+    "longname": "src/SandboxWorker.js~SandboxWorker#type",
+    "access": null,
+    "description": null,
+    "lineNumber": 32,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "worker",
+    "memberof": "src/SandboxWorker.js~SandboxWorker",
+    "static": false,
+    "longname": "src/SandboxWorker.js~SandboxWorker#worker",
+    "access": null,
+    "description": null,
+    "lineNumber": 34,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "method",
+    "name": "_onPostMessage",
+    "memberof": "src/SandboxWorker.js~SandboxWorker",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/SandboxWorker.js~SandboxWorker#_onPostMessage",
+    "access": null,
+    "description": null,
+    "lineNumber": 57,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "msg",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 54,
+    "kind": "file",
+    "name": "src/core.js",
+    "content": "/**\n* Copyright 2016 PT Inovação e Sistemas SA\n* Copyright 2016 INESC-ID\n* Copyright 2016 QUOBIS NETWORKS SL\n* Copyright 2016 FRAUNHOFER-GESELLSCHAFT ZUR FOERDERUNG DER ANGEWANDTEN FORSCHUNG E.V\n* Copyright 2016 ORANGE SA\n* Copyright 2016 Deutsche Telekom AG\n* Copyright 2016 Apizee\n* Copyright 2016 TECHNISCHE UNIVERSITAT BERLIN\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*   http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n**/\n/**\n * Node.js child process (simultaneously is a parent process of ContextServiceProvider sandbox)\n * used as an isolated sandbox to load the Hyperty runtime aka coreRuntime\n **/\n'use strict';\n\n\nimport URI from 'urijs';\nimport RuntimeFactory from './RuntimeFactory';\nimport _eval from 'eval';\n\nlet domain = 'localhost';\nlet runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';\nlet catalogue = RuntimeFactory.createRuntimeCatalogue();\n\n// returnHyperty givent the runtimeHypertyURL, \n// Sends message ='loadedHyperty' to the the parent process RuntimeNode throught IPC channel\n\nfunction returnHyperty(hyperty) {\n  process.send({to:'runtime:loadedHyperty', body: hyperty});\n}\n\n// while loading the protocolStub search hyperty in the runtime registry\nfunction searchHyperty(runtime, descriptor) {\n  let hyperty = undefined;\n  let index = 0;\n  while (!hyperty && index < runtime.registry.hypertiesList.length) {\n    if (runtime.registry.hypertiesList[index].descriptor === descriptor)\n        hyperty = runtime.registry.hypertiesList[index];\n    index++;\n  }\n  console.log('Hyeprty founded!'.green);\n  return hyperty;\n}\n\n// Install runtime on the core Sandbox\nfunction runtimeReady(runtime) {\n  // coreRuntime global EventListener for anty incoming message\n  process.on('message', (msg) => {\n    console.log('Message Received on runtime-core: \\n'.blue, msg);\n\n    if (msg.to === 'core:loadHyperty') {\n      let descriptor = msg.body.descriptor;\n      let hyperty = searchHyperty(runtime, descriptor);\n      if (hyperty) {\n        returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});\n      } else {\n        runtime.loadHyperty(descriptor)\n            .then(returnHyperty).catch((error)=> {\n              console.error('Error while loading Hyperty, reason: ', error);\n            });\n      }\n    } else if (msg.to === 'core:loadStub') {\n      runtime.loadStub(msg.body.domain);\n    }\n  }, false);\n\n  console.log('--> sending to Main process RuntimeNode'.orange);\n  process.send({to:'runtime:installed', body:{}});\n}\n\n\n// Gets RuntimeDescriptor from the runtime catalogue\ncatalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {\n  if (descriptor.sourcePackageURL === '/sourcePackage') {\n    return descriptor.sourcePackage;\n  } else {\n    return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);\n  }\n}).then((sourcePackage) => {\n    let RuntimeUA = _eval(sourcePackage.sourceCode, true);\n    let runtime = new RuntimeUA(RuntimeFactory, domain);\n    // TODO: Remove this.. Hack while we don't have an alternative to load a default protocolSTUB to nodejs different from browser';\n    let nodeProtoStub = 'https://' + domain + '/.well-known/protocolstub/VertxProtoStubNode';\n      runtime.loadStub(nodeProtoStub).then((result) => {\n        console.log('ready: '.red, result);\n        runtimeReady(runtime);\n      }).catch((err) => {\n        console.error('Error while loading nodejs ProtoStub, reason: ', err);\n      });\n}).catch((reason) => {\n  console.error('Error getting the RuntimeDescriptor from the service framework catalogue, reason: ', reason);\n});\n\n// coreRuntime Process  error handling\nprocess.on('warning', (warning) => {\n  console.warn(warning.name);\n  console.warn(warning.message);\n  console.warn(warning.stack);\n});\n\nprocess.on('exit', (msg) => {\n   console.log('child process core exited');\n   process.exit();\n   process.kill();\n});\n\nprocess.on('error', (msg) => {\n  console.warn('child process error core stopped');\n  process.exit();\n  process.kill();\n});\n\nprocess.on('SIGINT', () => {\n  console.warn('Received SIGINT. all Node Sub-Process are exited');\n  process.exit();\n  process.kill();\n}); // to catch crtl-c\n\nprocess.on('SIGTERM', () => {\n  console.warn('Received SIGTERM. core Press Control-D to exit.');\n  process.exit();\n  process.kill();\n}); // to catch kill \n",
+    "static": true,
+    "longname": "src/core.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 55,
+    "kind": "variable",
+    "name": "domain",
+    "memberof": "src/core.js",
+    "static": true,
+    "longname": "src/core.js~domain",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/core.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 34,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "variable",
+    "name": "runtimeURL",
+    "memberof": "src/core.js",
+    "static": true,
+    "longname": "src/core.js~runtimeURL",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/core.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 35,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 57,
+    "kind": "variable",
+    "name": "catalogue",
+    "memberof": "src/core.js",
+    "static": true,
+    "longname": "src/core.js~catalogue",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/core.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "function",
+    "name": "returnHyperty",
+    "memberof": "src/core.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/core.js~returnHyperty",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/core.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "hyperty",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 59,
+    "kind": "function",
+    "name": "searchHyperty",
+    "memberof": "src/core.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/core.js~searchHyperty",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/core.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 46,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "runtime",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "descriptor",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "function",
+    "name": "runtimeReady",
+    "memberof": "src/core.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/core.js~runtimeReady",
+    "access": null,
+    "export": false,
+    "importPath": "runtime-nodejs/src/core.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 59,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [
+      {
+        "name": "runtime",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 62,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 63,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 64,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 65,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 66,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 67,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 68,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 69,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 70,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 71,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 72,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 73,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 74,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 75,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 76,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 77,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 78,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 79,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 80,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 81,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 82,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 83,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 84,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 85,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 86,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 87,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 88,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 89,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 90,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 91,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 92,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 93,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 94,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 95,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 96,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 97,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 98,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 99,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 100,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 101,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 102,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 103,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 104,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 105,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 106,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 107,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 108,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "lineNumber": 193,
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 110,
+    "kind": "external",
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 111,
+    "kind": "external",
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 112,
+    "kind": "external",
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 113,
+    "kind": "external",
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 114,
+    "kind": "external",
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 115,
+    "kind": "external",
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 116,
+    "kind": "external",
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 117,
+    "kind": "external",
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "lineNumber": 34,
+    "builtinExternal": true
+  }
+]

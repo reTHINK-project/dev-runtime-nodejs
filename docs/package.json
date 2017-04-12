@@ -24,23 +24,16 @@
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
   },
   "scripts": {
-<<<<<<< HEAD
     "demo": "rm -rf scratch D_cache __sysdb__.sqlite && npm run build && node dist/demo.js",
-    "transpile-dep": "babel --presets es2015 /home/jamal/Desktop/jamal-dev/testDevelop/dev-service-framework/src --out-dir dist/service-framework && babel --presets es2015 /home/jamal/Desktop/jamal-dev/testDevelop/dev-runtime-core/src --out-dir dist/runtime-core",
-=======
-    "demo": "npm run build && node dist/demo.js",
-    "transpile-dep": "babel --presets es2015 ../dev-runtime-core/src/ --out-dir dist/runtime-core/",
->>>>>>> develop
+    "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/",
     "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "build:doc": "esdoc -c esdoc.json",
     "test": "karma start",
-    "build": "shx mkdir -p dist/ && babel --presets es2015 src/ demo/ --out-dir dist/ && babel --presets es2015 demo/ -o dist/HelloWorldObserver.js",
+    "build": "mkdir -p dist/ && babel --presets es2015 src/ demo/ --out-dir dist/  && babel --presets es2015 demo/ -o dist/HelloWorldObserver.js",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install",
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
-    "fake-indexeddb": "^1.0.11",
-    "kurento-client": "^6.6.0",
     "node-fetch": "^1.6.3",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
     "service-framework": "github:rethink-project/dev-service-framework#develop"
@@ -86,7 +79,6 @@
     "node-localstorage": "^1.3.0",
     "node-webcrypto-ossl": "^1.0.16",
     "request": "^2.72.0",
-    "shx": "^0.2.2",
     "threads": "^0.5.4",
     "tv4": "^1.2.7",
     "urijs": "^1.17.1",
@@ -94,7 +86,6 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0",
     "websocket": "^1.0.23",
-    "npm-run-all": "^4.0.2",
     "ws": "^1.1.1"
   }
 }

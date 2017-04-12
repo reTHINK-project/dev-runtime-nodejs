@@ -28,18 +28,17 @@ import MiniBus from 'runtime-core/dist/minibus';
 
 export default class SandboxApp extends Sandbox {
   constructor() {
-    super();
     console.log('---------------------- Sandbox App -----------------------'.green);
+    super();
 
     this.type = SandboxType.NORMAL;
     process.on('message', (msg) => {
-      console.log('SandboxApp Received message  is :\n'.green);
-
+      console.log('SandboxApp Received message  is :\n'.green, msg);
       if (msg.hasOwnProperty('to') && msg.to.startsWith('core:'))
         return;
 
       this._onMessage(msg);
-    })
+    });
   }
 
   _onPostMessage(msg) {
@@ -47,3 +46,4 @@ export default class SandboxApp extends Sandbox {
     process.send(msg);
   }
 }
+Contact GitHub API Training Shop Blog About
