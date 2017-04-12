@@ -25,11 +25,7 @@
   },
   "scripts": {
     "demo": "npm run build && node dist/demo.js",
-<<<<<<< HEAD
-    "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/",
-=======
     "transpile-dep": "babel --presets es2015 ../dev-runtime-core/src/ --out-dir dist/runtime-core/",
->>>>>>> 57d9b0909ad17bbb265d169782a5059124329f38
     "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "build:doc": "esdoc -c esdoc.json",
     "test": "karma start",
@@ -83,11 +79,8 @@
     "log4js": "^0.6.36",
     "mocha": "^2.4.5",
     "node-localstorage": "^1.3.0",
-<<<<<<< HEAD
-=======
     "node-webcrypto-ossl": "^1.0.16",
     "npm-run-all": "^4.0.2",
->>>>>>> 57d9b0909ad17bbb265d169782a5059124329f38
     "request": "^2.72.0",
     "shx": "^0.2.2",
     "threads": "^0.5.4",
