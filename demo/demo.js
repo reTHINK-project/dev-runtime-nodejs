@@ -27,9 +27,8 @@ let argv = minimist(process.argv.slice(2),
 {
   default:
   {
-    as_uri: 'https://localhost:9443/',
     // ws_uri: "ws://apizeekurentoKurentoLoadBalance-1906815936.eu-west-1.elb.amazonaws.com/kurento"
-    ws_uri: "ws://localhost:8888/kurento"
+    ws_uri: "ws://hysmart.rethink.ptinovacao.pt:8888/kurento"
   }
 });
 let idCounter = 0;
@@ -188,7 +187,7 @@ function processPeerInformation(data) {
         sdpAnswer: sdpAnswer
       };
 
-      if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {  
+      if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
          unicastDataObjects[receiver.name].data.id = message;
          console.log('****************** sdpAnswer:'.yellow + sdpAnswer + '  from : '.yellow + message.name + '********* to : : '.yellow, receiver.name);
 
@@ -211,7 +210,7 @@ function processPeerInformation(data) {
   }
   if (data.id === 'onIceCandidate') {
       console.log('Process Ice Candidate: '.green, data);
-      onIceCandidate(data.userName, data.icecandidate, data.senderName) 
+      onIceCandidate(data.userName, data.icecandidate, data.senderName)
       // _this.peerConnection.addIceCandidate(new RTCIceCandidate({candidate: data.candidate}), _this._remoteDescriptionSuccess, _this._remoteDescriptionError);
     }
 }
@@ -238,7 +237,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
           pipeline[roomName] = _pipeline;
           receiver.pipeline = pipeline;
           rooms[roomName] = _pipeline;
-          
+
           rooms[roomName].create('WebRtcEndpoint', function (error, webRtcEndpoint) {
             if (error) {
               console.log("Error has occured :" , error);
@@ -251,7 +250,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
             incomingMedia[receiver.name] = webRtcEndpoint;
             console.log(" Pipeline & Endpoint Created");
 
-            receiver.outgoingEndpoint[receiver.name].processOffer(sdp, function (error, sdpAnswer) {        
+            receiver.outgoingEndpoint[receiver.name].processOffer(sdp, function (error, sdpAnswer) {
               resolve(sdpAnswer);
             });
 
@@ -274,7 +273,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
                 candidate : candidate,
                 name : senderName
               }
-   
+
               if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
                  unicastDataObjects[receiver.name].data.id = message;
                 }
@@ -334,7 +333,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
               name : senderName
             }
 
-            
+
             if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
               unicastDataObjects[receiver.name].data.id = message;
             }
@@ -393,7 +392,7 @@ function receiveVideoFrom(receiver, sender, roomName, sdp) {
               candidate : candidate,
               name : senderName
           }
-    
+
           if(unicastDataObjects[receiver.name] !== null && unicastDataObjects[receiver.name] !== undefined) {
             unicastDataObjects[receiver.name].data.id = message;
          }
@@ -429,7 +428,7 @@ function onJoinRoom(controller, identity, callback) {
         console.error('Error has occured while joinning the room, reason:', reason);
         reject(reason);
     });
-  });    
+  });
 }
 
 
@@ -471,7 +470,7 @@ function join(controller, identity) {
           }
         }
         console.log('existing participants is :'.red, participants);
-        
+
         let message = {
           id: "existingParticipants",
           data: participants
@@ -494,10 +493,10 @@ function join(controller, identity) {
 function onIceCandidate(username, _candidate, senderName)  {
 
     let candidate = kurento.register.complexTypes.IceCandidate(_candidate);
-  
+
     let user = userRegistry.getByName(username);
     let sender = userRegistry.getByName(senderName);
-    
+
     // console.log(' user is :'.yellow, user, 'sender is :'.yellow, sender);
     let userName = user.name;
 
@@ -580,10 +579,3 @@ function onIceCandidate(username, _candidate, senderName)  {
      console.log("Error processing register: " + error);
     //  this.sendMessage(objObserver.peer, error);
   }
-
-
-
-
-
-
-

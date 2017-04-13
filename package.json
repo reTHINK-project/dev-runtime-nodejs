@@ -34,6 +34,7 @@
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
+    "fake-indexeddb": "^1.0.11",
     "kurento-client": "^6.6.0",
     "node-fetch": "^1.6.3",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
