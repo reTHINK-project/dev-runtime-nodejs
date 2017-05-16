@@ -59,7 +59,6 @@ function getModeConfig() {
   return plugins;
 }
 
-// 'src/sandbox.js', 'src/minibus.js'
 module.exports = {
   entry: {
     RuntimeNode: './src/RuntimeNode.js',
@@ -91,6 +90,6 @@ module.exports = {
         ]
       }
     ]
-  }, //resolve: { extensions: ['.js'] },
+  }, 
   plugins: getModeConfig()
 };
