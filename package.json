@@ -8,7 +8,7 @@
   ],
   "homepage": "https://rethink-project.eu/",
   "bugs": {
-    "url": "https://github.com/reTHINK-project/dev-runtime-browser/issues"
+    "url": "https://github.com/reTHINK-project/dev-runtime-nodejs/issues"
   },
   "license": "ISC",
   "author": "reThink Project",
@@ -29,7 +29,6 @@
     "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "build:doc": "esdoc -c esdoc.json",
     "build:dist": "cross-env MODE=production webpack",
-    "build:prod": "cross-env MODE=prod webpack",
     "test": "karma start",
     "build": "shx mkdir -p dist/ && babel --presets es2015 src/ demo/ --out-dir dist/ && babel --presets es2015 demo/ -o dist/HelloWorldObserver.js",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install",
