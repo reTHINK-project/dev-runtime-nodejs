@@ -1,15 +1,14 @@
 let fs = require('fs');
 let path = require('path');
 
-let rethink = require('runtime-nodejs/dist/RuntimeNode.js');
+let rethink = require('../dist/RuntimeNode.js');
 
 // import rethink from './RuntimeNode';
 
-// let domain = 'hysmart.rethink.ptinovacao.pt';
 let domain = 'localhost';
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 
-let runtime = rethink.install({
+let runtime = rethink.default.install({
   domain: domain,
   development: true
 }).then((runtime) => {

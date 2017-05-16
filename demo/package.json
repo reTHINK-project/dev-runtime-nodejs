@@ -15,10 +15,10 @@
   "contributors": [
     "Jamal Boulmal <jamal.boulmal@apizee.com>",
     "Nicolas Daviaud <nicolas.daviaud@apizee.com>",
+    "Vitor Silva <vitor-t-silva@telecom.pt>",
     "Frédéric Luart <frederic.luart@apizee.com>",
     "Arnaud Vallee <arnaud.vallee@apizee.com>"
   ],
-  "main": "src/rethink.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"

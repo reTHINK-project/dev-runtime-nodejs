@@ -2,6 +2,9 @@
   "name": "runtime-nodejs",
   "version": "0.1.0",
   "description": "nodejs runtime development",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "reThink",
     "webRTC"
@@ -19,7 +22,6 @@
     "Frédéric Luart <frederic.luart@apizee.com>",
     "Arnaud Vallee <arnaud.vallee@apizee.com>"
   ],
-  "main": "src/rethink.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
