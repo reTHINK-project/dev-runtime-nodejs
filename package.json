@@ -13,10 +13,12 @@
   "license": "ISC",
   "author": "reThink Project",
   "contributors": [
-    "Frédéric Luart <frederic.luart@apizee.com>",
     "Nicolas Daviaud <nicolas.daviaud@apizee.com>",
     "Jamal Boulmal <jamal.boulmal@apizee.com>",
-    "Arnaud Vallee <arnaud.vallee@apizee.com>"
+    "Frédéric Luart <frederic.luart@apizee.com>",
+    "Arnaud Vallee <arnaud.vallee@apizee.com>",
+    "Tuo Zhang <tuo.zhang@telecom-bretagne.eu>",
+    "Hao Jiang <hao.jiang@telecom-bretagne.eu>"
   ],
   "main": "src/rethink.js",
   "repository": {
