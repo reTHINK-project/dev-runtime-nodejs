@@ -26,13 +26,16 @@ let Promise = require('es6-promise');
 
 import app from './ContextApp';
 import URI from 'urijs';
-let colors = require('colors');
+import colors from 'colors';
+import child from 'child_process'
+
 
 let domain = 'localhost';
 let coreRuntime = {};
 
-let child = require('child_process');
-coreRuntime  = child.fork(__dirname + '/core.js');
+
+coreRuntime  = child.fork( 'runtime-nodejs/dist/core.js');
+
 
 let buildMsg = (hypertyComponent, msg) => {
   console.log('hypertyComponent is :', hypertyComponent, msg);

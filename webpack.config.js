@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var packageFile = require('./package.json');
+var  nodeExternals = require('webpack-node-externals');
 
 var PrependText = require('./webpack/PrependText.js');
 
@@ -60,6 +61,9 @@ function getModeConfig() {
 }
 
 module.exports = {
+  target: 'node',
+  externals: [nodeExternals()],
+  devtool: process.env.MODE === 'dev' ? 'inline-source-map' : false,
   entry: {
     RuntimeNode: './src/RuntimeNode.js',
     ContextApp: './src/ContextApp.js',
@@ -71,25 +75,24 @@ module.exports = {
     SandboxApp: './src/SandboxApp.js',
     SandboxWorker: './src/SandboxWorker.js'
   },
-  target: 'node',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     library: '[name]',
     libraryTarget: 'umd',
     umdNamedDefine: true
-  },
-  devtool: process.env.MODE === 'production' ? 'inline-eval-cheap-source-map' : false,
+  },  
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          { loader: 'babel-loader' }
-        ]
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
       }
     ]
-  }, 
+  },
   plugins: getModeConfig()
 };

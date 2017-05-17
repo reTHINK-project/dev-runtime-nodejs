@@ -65,7 +65,7 @@ let RuntimeFactory = Object.create({
         this.capabilitiesManager.isAvailable(capability).then((result) => {
           if(result) {
             SandboxCapabilities = { "node": true };
-            resolve(new SandboxWorker(__dirname + '/ContextServiceProvider.js'));
+            resolve(new SandboxWorker( '../dist/ContextServiceProvider.js'));
           } else {
 
 
@@ -78,7 +78,7 @@ let RuntimeFactory = Object.create({
     },
 
     createAppSandbox() {
-      return new SandboxApp(__dirname + '/ContextApp.js');
+      return new SandboxApp( '../dist/ContextApp.js');
     },
 
     createHttpRequest() {

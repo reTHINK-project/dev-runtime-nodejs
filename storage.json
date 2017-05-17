@@ -1,7 +1,11 @@
 {
     "openedPathsList": {
-        "files": [],
+        "files": [
+            "/etc/hosts"
+        ],
         "folders": [
+            "/home/jamal/Desktop/jamal-dev/testDevelop",
+            "/etc",
             "/home/jamal/Desktop/WebRTC",
             "/home/jamal/Desktop/WebRTC/dev-runtime-nodejs"
         ]
@@ -67,6 +71,6 @@
         "editor.action.goToDeclaration": "F12",
         "workbench.action.gotoLine": "Ctrl+G"
     },
-    "pickerWorkingDir": "/home/jamal/Desktop",
+    "pickerWorkingDir": "/etc",
     "theme": "vs-dark vscode-theme-monokai-themes-Monokai-tmTheme"
 }
