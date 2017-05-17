@@ -1,7 +1,5 @@
 let fs = require('fs');
-
-
-let rethink = require('../dist/RuntimeNode.js');
+let rethink = require('runtime-nodejs/dist/RuntimeNode.js');
 
 // import rethink from './RuntimeNode';
 
