@@ -1,5 +1,5 @@
 // version: 0.1.0
-// date: Wed May 17 2017 11:29:45 GMT+0200 (CEST)
+// date: Wed May 17 2017 11:47:08 GMT+0200 (CEST)
 // licence: 
 /**
 * Copyright 2016 PT Inovação e Sistemas SA
@@ -315,7 +315,7 @@ var Promise = __webpack_require__(22);
 var domain = 'localhost';
 var coreRuntime = {};
 
-coreRuntime = _child_process2.default.fork('runtime-nodejs/dist/core.js');
+coreRuntime = _child_process2.default.fork('../dist/core.js');
 
 var buildMsg = function buildMsg(hypertyComponent, msg) {
   console.log('hypertyComponent is :', hypertyComponent, msg);
