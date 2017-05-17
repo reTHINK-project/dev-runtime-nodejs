@@ -1,6 +1,8 @@
+
 import fs from 'fs';
 import path from 'path';
-let rethink = require('./RuntimeNode');
+
+import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
 import express from 'express';
 import minimist from'minimist';
 import url from'url';
@@ -28,7 +30,7 @@ let argv = minimist(process.argv.slice(2),
   default:
   {
     // ws_uri: "ws://apizeekurentoKurentoLoadBalance-1906815936.eu-west-1.elb.amazonaws.com/kurento"
-    ws_uri: "ws://hysmart.rethink.ptinovacao.pt:8888/kurento"
+    ws_uri: "ws://localhost:8888/kurento"
   }
 });
 let idCounter = 0;
@@ -49,6 +51,7 @@ let newParticipantArrived = {};
 
 
 /*******************************************************************************************************/
+
 
 let domain = 'localhost';
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
@@ -72,9 +75,7 @@ function getKurentoClient(callback) {
 }
 
 
-
-
-let runtime = rethink.default.install({
+let runtime = rethink.install({
   domain: domain,
   development: true
 }).then((runtime) => {
