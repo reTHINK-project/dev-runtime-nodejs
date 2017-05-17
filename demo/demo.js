@@ -1,5 +1,5 @@
 let fs = require('fs');
-let path = require('path');
+
 
 let rethink = require('../dist/RuntimeNode.js');
 
