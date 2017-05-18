@@ -63,12 +63,14 @@ First you need to clone this repository:
 ```
 git clone https://github.com/reTHINK-project/dev-runtime-nodejs.git
 cd dev-runtime-nodejs
+cd demo
 ```
 
 Afterwards, run the following (as root) :
+(always in demo/ folder)
 
 ```
-# npm run setup 
+# npm install 
 ```
 
 **Running NodeHyperty demo on Runtime Node**
@@ -82,36 +84,36 @@ This will start NodeHyperty from catalogue in `https://catalogue.domain/.well-kn
 
 ### 4. Understanding this demo
 
+The demo in this repository concerns ServerConference hyperty running on RuntimeNode. In order to allow WebRTC Group communication in reTHINK framework.
+
 First you need to include the runtime loader:
+
 ```
-let rethink = require('./RuntimeUAStub');
+import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
 ```
 
 Then load the runtime :
 ```
-let runtime = rethink.default.install({
+let runtime = rethink.install({
   domain: domain,
   development: true
 }).then((runtime) => {
   console.log('runtime loaded !');
   // ... now you can load hyperty
+  console.log('\n loading hyperty :'.green, hypertyURI(domain, 'ServerConference'));
+  runtime.requireHyperty(hypertyURI(domain, 'ServerConference'))
+    .then((ServerConference) => {
+
+      console.log('NodeHyperty -->\n'.blue, ServerConference);
+      callHyperty = ServerConference;
+
+      init();
+    }).catch((reason) => {
+      console.log('Error:', reason);
+    });
 }).catch((e) => {
   console.error('aie !', e);
 });
-```
-Now you load the hyperty :
-
-```
-console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
-runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
-    .then((NodeHyperty) => {
-			console.log('Hyperty loaded :\n'.green);
-      console.log('NodeHyperty -->\n'.blue, NodeHyperty);
-      // ..... here we can manipulate hyperty instance
-      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-						toolkit) :npm run start:node
-			}).catch((reason) => {
-      console.log('Error:', reason);
-    });
 ```
 
 ### 5. How to use this Runtime Node :
