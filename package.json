@@ -27,13 +27,13 @@
     "url": "git+ssh://git@github.com/reTHINK-project/dev-runtime-nodejs.git"
   },
   "scripts": {
-    "demo": "npm run build && node dist/demo.js",
+    "demo": "npm run build && node dist-test/demo.js",
     "transpile-dep": "babel --presets es2015 ../dev-service-framework/src/ --out-dir dist/service-framework/",
     "indexedb-fix": "cd node_modules/indexeddbshim && npm install sqlite3 ",
     "build:doc": "esdoc -c esdoc.json",
     "build:dist": "cross-env MODE=production webpack",
     "test": "karma start",
-    "build": "shx mkdir -p dist/ && babel --presets es2015 src/ demo/ --out-dir dist/ && babel --presets es2015 demo/ -o dist/demo.js",
+    "build": "shx mkdir -p dist-test/ && babel --presets es2015 src/ demo/ --out-dir dist-test/ && babel --presets es2015 demo/ -o dist-test/demo.js",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install",
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
