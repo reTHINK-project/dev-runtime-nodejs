@@ -53,8 +53,10 @@ let newParticipantArrived = {};
 /*******************************************************************************************************/
 
 
+
 let domain = 'localhost';
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
+const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 
 // Recover kurentoClient for the first time.
 function getKurentoClient(callback) {
@@ -77,6 +79,7 @@ function getKurentoClient(callback) {
 
 let runtime = rethink.install({
   domain: domain,
+  runtimeURL,
   development: true
 }).then((runtime) => {
   console.log('\n loading hyperty :'.green, hypertyURI(domain, 'ServerConference'));
