@@ -83,14 +83,19 @@ This will start NodeHyperty from catalogue in `https://catalogue.domain/.well-kn
 ### 4. Understanding this demo
 
 First you need to include the runtime loader:
+
 ```
-let rethink = require('./RuntimeUAStub');
+Initila configuration :
+let domain = 'localhost'; // configurable domain name of the runtime-nodejs
+const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
+const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 ```
 
 Then load the runtime :
 ```
 let runtime = rethink.default.install({
   domain: domain,
+  runtimeURL,
   development: true
 }).then((runtime) => {
   console.log('runtime loaded !');

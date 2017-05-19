@@ -4,13 +4,15 @@ let fs = require('fs');
 
 let rethink = require('runtime-nodejs/dist/RuntimeNode.js');
 
-// import rethink from './RuntimeNode';
+// import rethink from './RuntimeNode'; //ES6
 
 let domain = 'localhost';
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
+const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 
 let runtime = rethink.default.install({
   domain: domain,
+  runtimeURL,
   development: true
 }).then((runtime) => {
   console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));

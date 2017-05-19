@@ -4,10 +4,10 @@
             "/etc/hosts"
         ],
         "folders": [
-            "/home/jamal/Desktop/jamal-dev/testDevelop",
-            "/etc",
             "/home/jamal/Desktop/WebRTC",
-            "/home/jamal/Desktop/WebRTC/dev-runtime-nodejs"
+            "/home/jamal/Desktop/WebRTC/dev-runtime-nodejs",
+            "/home/jamal/Desktop/jamal-dev/testDevelop",
+            "/etc"
         ]
     },
     "lastKnownKeybindings": {
@@ -71,6 +71,6 @@
         "editor.action.goToDeclaration": "F12",
         "workbench.action.gotoLine": "Ctrl+G"
     },
-    "pickerWorkingDir": "/etc",
+    "pickerWorkingDir": "/home/jamal/Desktop",
     "theme": "vs-dark vscode-theme-monokai-themes-Monokai-tmTheme"
 }

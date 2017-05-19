@@ -30,15 +30,11 @@ import colors from 'colors';
 import child from 'child_process'
 
 
-let domain = 'localhost';
+
 let coreRuntime = {};
-
-
-coreRuntime  = child.fork( '../dist/core.js');
-
+coreRuntime  = child.fork( '../dist/core.js'); 
 
 let buildMsg = (hypertyComponent, msg) => {
-  console.log('hypertyComponent is :', hypertyComponent, msg);
   return {
     runtimeHypertyURL: msg.body.runtimeHypertyURL,
     status: msg.body.status,
@@ -80,7 +76,7 @@ let RethinkNode = {
   install: function({domain, runtimeURL, development}={}) {
     return new Promise((resolve, reject) => {
       let runtime = this.getRuntime(runtimeURL, domain, development);
-      coreRuntime.send({do:'install runtime core'});
+      coreRuntime.send({do:'install runtime core', body: { domain: domain, runtimeURL: runtimeURL}});  
       coreRuntime.on('message', (msg) => {
         if (msg.to === 'runtime:installed') {
           console.log('\n Runtime installed with success\n'.blue);

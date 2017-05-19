@@ -30,14 +30,17 @@ import URI from 'urijs';
 import RuntimeFactory from './RuntimeFactory';
 import _eval from 'eval';
 
-let domain = 'localhost';
-let runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
+
+
+let domain;
+let runtimeDescriptor;
+
 let catalogue = RuntimeFactory.createRuntimeCatalogue();
 
 // returnHyperty givent the runtimeHypertyURL,
 // Sends message ='loadedHyperty' to the the parent process RuntimeNode throught IPC channel
 
-function returnHyperty(hyperty) {
+function returnHyperty(hyperty) { 
   process.send({to:'runtime:loadedHyperty', body: hyperty});
 }
 
@@ -58,54 +61,50 @@ function searchHyperty(runtime, descriptor) {
 function runtimeReady(runtime) {
   // coreRuntime global EventListener for anty incoming message
   process.on('message', (msg) => {
-    console.log('Message Received on runtime-core: \n'.blue, msg);
-
     if (msg.to === 'core:loadHyperty') {
       let descriptor = msg.body.descriptor;
       let hyperty = searchHyperty(runtime, descriptor);
       if (hyperty) {
         returnHyperty({runtimeHypertyURL: hyperty.hypertyURL});
       } else {
-        runtime.loadHyperty(descriptor)
-            .then(returnHyperty).catch((error)=> {
-              console.error('Error while loading Hyperty, reason: ', error);
-            });
+        runtime.loadHyperty(descriptor).then(returnHyperty).catch((error)=> {
+          console.error('Error while loading Hyperty, reason: ', error);
+        });
       }
     } else if (msg.to === 'core:loadStub') {
       runtime.loadStub(msg.body.domain);
     }
   }, false);
-
   console.log('--> sending to Main process RuntimeNode'.orange);
   process.send({to:'runtime:installed', body:{}});
 }
 
-let runtimeDescriptor;
 
-// Gets RuntimeDescriptor from the runtime catalogue
-catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
 
-  runtimeDescriptor = descriptor;
-
-  if (descriptor.sourcePackageURL === '/sourcePackage') {
-    return descriptor.sourcePackage;
-  } else {
-    return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);
-  }
-}).then((sourcePackage) => {
-    let RuntimeUA = _eval(sourcePackage.sourceCode, true);
-    let runtime = new RuntimeUA(runtimeDescriptor, RuntimeFactory, domain);
-
-    runtime.init().then(() => {
-
-      runtimeReady(runtime);
-
-    }).catch((reason) => {
-      console.log('Error init', reason);
-    });
-
-}).catch((reason) => {
-  console.error('Error getting the RuntimeDescriptor from the service framework catalogue, reason: ', reason);
+process.on('message', (msg) => {
+   if (msg.do === 'install runtime core') {    
+       let runtimeURL = msg.body.runtimeURL;
+       domain = msg.body.domain;
+       // Gets RuntimeDescriptor from the runtime catalogue
+      catalogue.getRuntimeDescriptor(runtimeURL).then((descriptor) => {
+        runtimeDescriptor = descriptor;
+        if (descriptor.sourcePackageURL === '/sourcePackage') {
+          return descriptor.sourcePackage;
+        } else {
+          return catalogue.getSourcePackageFromURL(descriptor.sourcePackageURL);
+        }
+      }).then((sourcePackage) => {
+          let RuntimeUA = _eval(sourcePackage.sourceCode, true);
+          let runtime = new RuntimeUA(runtimeDescriptor, RuntimeFactory, domain);
+          runtime.init().then(() => {
+            runtimeReady(runtime);
+          }).catch((reason) => {
+            console.log('Error init', reason);
+          });
+      }).catch((reason) => {
+        console.error('Error getting the RuntimeDescriptor from the service framework catalogue, reason: ', reason);
+      });
+    }
 });
 
 // coreRuntime Process  error handling
