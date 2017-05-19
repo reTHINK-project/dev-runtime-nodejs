@@ -121,7 +121,7 @@ runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
 
 ### 5. How to use this Runtime Node :
 
- In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `Demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
+ In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
  
  where :
  
