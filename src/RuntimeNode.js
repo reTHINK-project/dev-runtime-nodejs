@@ -48,12 +48,11 @@ let buildMsg = (hypertyComponent, msg) => {
 * @returns {Promise<object>}
 **/
 let runtimeProxy = {
-  requireHyperty: (hypertyDescriptor, reuseAddress = false)=> {
+  requireHyperty: (hypertyDescriptor, reuseAddress = false) => {
     return new Promise((resolve, reject)=> {
       coreRuntime.on('message', (msg) => {
         console.log('---- Message from runtime core ----'.green);
         console.log('Hyperty loaded :\n'.green);
-
         if (msg.to === 'runtime:loadedHyperty') {
           resolve(buildMsg(app.getHypertyBy(msg.body.runtimeHypertyURL), msg));
         }
@@ -68,10 +67,12 @@ let runtimeProxy = {
   }
 };
 
+
 /**
 * Returns as a promise Hyperty runtime object.
 * @returns {Promise<object>}
 **/
+
 let RethinkNode = {
   install: function({domain, runtimeURL, development}={}) {
     return new Promise((resolve, reject) => {
