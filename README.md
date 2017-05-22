@@ -89,16 +89,12 @@ The demo in this repository concerns ServerConference hyperty running on Runtime
 First you need to include the runtime loader:
 
 ```
-<<<<<<< HEAD
-
-=======
 import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
 
-Initila configuration :
+Initial configuration :
 let domain = 'localhost'; // configurable domain name of the runtime-nodejs
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
->>>>>>> develop
 ```
 
 Then load the runtime :
