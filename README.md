@@ -94,7 +94,7 @@ const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known
 const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 ```
 
-Then load the runtime :
+**Then load the runtime :**
 ```
 let runtime = rethink.install({
   domain: domain,
