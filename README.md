@@ -87,17 +87,19 @@ This will start NodeHyperty from catalogue in `https://catalogue.domain/.well-kn
 The demo in this repository concerns ServerConference hyperty running on RuntimeNode. In order to allow WebRTC Group communication in reTHINK framework.
 
 First you need to include the runtime loader:
-
 ```
 import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
+```
 
-Initial configuration :
+**Initial configuration :**
+
+```
 let domain = 'localhost'; // configurable domain name of the runtime-nodejs
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
 ```
 
-Then load the runtime :
+**Then load the runtime :**
 ```
 let runtime = rethink.install({
   domain: domain,
@@ -124,7 +126,7 @@ let runtime = rethink.install({
 
 ### 5. How to use this Runtime Node :
 
- In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `Demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
+ In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
  
  where :
  
