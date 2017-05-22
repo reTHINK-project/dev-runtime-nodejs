@@ -20,35 +20,59 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
+
+//  The contextApp is complmentary module to the  RuntimeNode that creates the Context where the Hyperty will be deployed
+//  The contextApp handls communiocation between the Hyperty and the coreRuntime
+
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
 
-function createContextApp(myApp) {
+/**
+* @returns activate Hyperty onn the context App
+**/
+function createContextApp(coreRuntime) {
 
   process._miniBus = new MiniBus();
-  process._miniBus._onPostMessage = function(msg) {
-      console.log('--> ON context App message sent to core'.blue);
-      myApp.send(msg);
-    };
+  process._miniBus._onPostMessage = (msg) => {
+      // onPostMessage on the miniBus will be sent to coreRuntime
+      coreRuntime.send(msg);
+  };
 
-  myApp.on('message', function(event) {
+  // EventListener on the IPC communication channel between the coreRuntime and the RuntimeNode for messages sent from the coreRuntime
+  coreRuntime.on('message', (event) => {
     if (event.to.startsWith('runtime:loadedHyperty'))
         return;
 
+    // onMessage received on the coreRuntime miniBus
     process._miniBus._onMessage(event);
   });
 
   process._registry = new SandboxRegistry(process._miniBus);
-  process._registry._create = function(url, sourceCode, config) {
-      console.log('before activation------------------------------contexAPP'.red, url);
-    let activate = _eval(sourceCode, true);
-    return activate.default(url, process._miniBus, config);
+  process._registry._create = (url, sourceCode, config) => {
+    try {
+      let activate = _eval(sourceCode, true);
+      console.log('TYPEOF:', typeof(activate));
+
+      if (typeof(activate) === 'function') {
+        return activate(url, process._miniBus, config);
+      } else if (typeof(activate.default) === 'function') {
+        return activate.default(url, process._miniBus, config);
+      }
+      
+    } catch (reason) {
+      console.log('ERROR while activating the Hyperty, reason:', reason);
+    }
   };
 };
 
-function getHyperty(hypertyDescriptor) {
+
+/**
+* @returns Hyperty by descriptorURL
+**/
+function getHypertyBy(hypertyDescriptor) {
+  console.log('Get Hyperty:', hypertyDescriptor, process._registry.components);
   return process._registry.components[hypertyDescriptor];
 };
 
-export default { createContextApp, getHyperty };
+export default { createContextApp, getHypertyBy };

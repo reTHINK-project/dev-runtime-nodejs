@@ -21,6 +21,7 @@
 * limitations under the License.
 **/
 'use strict';
+
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
@@ -34,37 +35,53 @@ import PersistenceManager from 'service-framework/dist/PersistenceManager';
 // import PersistenceManager from './service-framework/PersistenceManager';
 
 import { LocalStorage } from 'node-localstorage';
+
 import Dexie from 'dexie';
+Dexie.dependencies.indexedDB = require('fake-indexeddb')
+Dexie.dependencies.IDBKeyRange = require('fake-indexeddb/lib/FDBKeyRange')
+
 import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
+
 let createStorageManager = () => {
-  let storageName = 'scratch';
+  let indexeddB = {};
+  let {indexedDB, IDBKeyRange } = indexeddB;
+  let storageName = 'cache';
 
-  // configuration of dexie db for node
-  global.window= global;
-  setGlobalVars(global.window);
-  window.shimIndexedDB.__useShim();
-  // cwindow.shimIndexedDB.__debug(true);
+  const db = new Dexie(storageName);
 
-  const db = new Dexie(storageName, {
-    indexedDB: window.indexedDB, // or the shim's version
-    IDBKeyRange: window.IDBKeyRange // or the shim's version.
-  });
-
-   return new StorageManager(db, storageName);
+  storageManager = new StorageManager(db, storageName);
+  return storageManager;
 };
 
 let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
-    createSandbox() {
-      return new SandboxWorker(__dirname + '/ContextServiceProvider.js');
+    createSandbox(capabilities) {
+      return new Promise((resolve, reject)  => {
+
+        let capability = 'node';
+        let SandboxCapabilities = {};
+
+        this.capabilitiesManager.isAvailable(capability).then((result) => {
+          if(result) {
+            SandboxCapabilities = { "node": true };
+            resolve(new SandboxWorker( '../dist/ContextServiceProvider.js'));
+          } else {
+
+
+          }
+         }).catch((reason) => {
+           console.error('[createSandbox ], Error occured while creating Sandbox, reason : ', reason);
+           reject(reason);
+        });
+      });
     },
 
     createAppSandbox() {
-      return new SandboxApp(__dirname + '/ContextApp.js');
+      return new SandboxApp( '../dist/ContextApp.js');
     },
 
     createHttpRequest() {
@@ -91,7 +108,8 @@ let RuntimeFactory = Object.create({
     },
 
     runtimeCapabilities() {
-      return new RuntimeCapabilities(storageManager);
+      this.capabilitiesManager = new RuntimeCapabilities(storageManager);
+      return  this.capabilitiesManager;
     }
 
 });

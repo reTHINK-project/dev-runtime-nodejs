@@ -20,27 +20,40 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
+/**
+ * Context Service Provider CSP that Loads and activates CSP Protostub to the CSP messaging node services
+ **/
+
 import { Sandbox, SandboxRegistry } from 'runtime-core/dist/sandbox';
 import MiniBus from 'runtime-core/dist/minibus';
 import _eval from 'eval';
-var colors = require('colors');
 
 process._miniBus = new MiniBus();
 
-process._miniBus._onPostMessage = function(msg) {
-  console.log('Message recieved on RuntimeNode'.red);
-  console.log('-------------contextServiceProvider to core:'.green);
+
+process._miniBus._onPostMessage = (msg) => {
   process.send(msg);
 };
 
-process.on('message', function(msg) {
-  console.log('Message received on  child(core):'.red);
+ // global EventListener on the IPC communication channel between the Context Service Provider CSP and the RuntimeNode for messages sent from the coreRuntime
+process.on('message', (msg) => {
   process._miniBus._onMessage(msg);
 });
 
 process._registry = new SandboxRegistry(process._miniBus);
-process._registry._create = function(url, sourceCode, config) {
-  console.log('before activation------------------------------'.red);
-  let activate = _eval(sourceCode, true);
-  return activate.default(url, process._miniBus, config);
+process._registry._create = (url, sourceCode, config) => {  
+  try {
+    let activate = _eval(sourceCode, true);
+
+    console.log('TYPEOF:', typeof(activate), typeof(activate.default));
+
+    if (typeof(activate) === 'function') {
+      return activate(url, process._miniBus, config);
+    } else if (typeof(activate.default) === 'function') {
+      return activate.default(url, process._miniBus, config);
+    }
+  } catch (reason) {
+    console.log('ERROR while activating the ProtoStub or IDP Proxy on the CSP, reason:'.red);
+    console.log(reason);
+  }
 };

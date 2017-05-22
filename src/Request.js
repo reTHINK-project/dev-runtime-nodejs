@@ -20,78 +20,84 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-const methods = {GET: 'get', POST: 'post'}
+const methods = {GET: 'get', POST: 'post'};
 
-var fetch = require('node-fetch')
+let fetch = require('node-fetch');
 
 
 class Request {
-
   constructor() {
-
-    console.log('Node http Request');
     let _this = this
-
-    Object.keys(methods).forEach(function(method) {
-      _this[methods[method]] = function(url, options) {
-        return new Promise(function(resolve, reject) {
-          _this._makeLocalRequest(methods[method].toUpperCase(), url, options).then(function(result) {
+    console.log('Node http Request');
+    Object.keys(methods).forEach((method) => {
+      _this[methods[method]] = (url, options) => {
+        return new Promise((resolve, reject) => {
+          _this.makeLocalRequest(method, url, options).then(function(result) {
             resolve(result)
-          }).catch(function(reason) {
+          }).catch((reason) => {
             reject(reason)
           });
         });
       };
     });
-
   }
 
-  _makeLocalRequest(method, url, options) {
+  /**
+   * handling request methods
+   * @returns {text<string>}
+   **/
+  makeLocalRequest(method, url, options) {
     let _this =this
-    console.log('HTTPS Request:', method, url)
-    return new Promise(function(resolve, reject) {
+    console.log('HTTPS Request:'.yellow, method, url, options);
 
-      let urlMap = _this._mapProtocol(url)
-      // console.log('Mapped url is '.red, urlMap,'method is:'.green, method);
+    return new Promise((resolve, reject) => {
+      let urlMap = _this.mapProtocol(url);
+      console.log('Mapped url is '.yellow, urlMap,'method is:'.green, method);
+
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
       if(method === 'GET') {
         // handle GET method
-        fetch(urlMap).then(function(res) {
-          console.log('statusCode is: ',  res.status)
+        fetch(urlMap).then((res) => {
+          console.log('statusCode is: '.green,  res.status)
           return res.text()
-        }).then(function(body) {
+        }).then((body)=> {
           resolve(body.toString('utf8'))
-        }).catch(function(err) {
-          console.log(err)
+        }).catch((err) => {
+          console.error('Error occured on GET method of url:'.red , urlMap, ' reason :'.red, err);
         });
 
       } else if(method === 'POST') {
-          // handle POST method
-          /*
-            options = {
-              method :method, e.g POST
-              body:JSON.stringify(body),
-              headers: { 'Content-Type': 'application/json'}
-            }
-          */
-        fetch(urlMap, options).then(function(res) {
+        let postOptions = {
+          method: 'POST',
+/*          headers: { 
+            'Content-Type': 'application/json',
+            'cache-control': 'no-cache',
+          },*/
+          body: options
+        };
+
+        fetch(urlMap, postOptions).then((res) => {
+          console.log('statusCode is: '.green,  res.status)
           return res.text()
-        }).then(function(body) {
+        }).then((body) => {
           resolve(body.toString('utf8'))
-        }).catch(function(error) {
-          console.log('Error in POST method:', error)
+        }).catch((error) => {
+          console.error('Error occured on POST method of url:',urlMap, 'with options:', options, 'reason :', err);
         });
       }
     });
   }
 
-  _mapProtocol(url) {
+ /**
+  * @returns {variable<string>}
+  **/
+  mapProtocol(url) {
     let protocolmap = {
       'localhost://': 'https://',
       'undefined://': 'https://',
       'hyperty-catalogue://': 'https://',
       'https://': 'https://',
-      'http://': 'http://'
+      'http://': 'https://'
     }
 
     let foundProtocol = false
@@ -106,10 +112,8 @@ class Request {
     if (!foundProtocol) {
       throw new Error('Invalid protocol of url: ' + url)
     }
-
     return url
   }
-
 }
 
-export default Request
+export default Request;

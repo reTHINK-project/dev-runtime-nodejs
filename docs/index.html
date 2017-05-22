@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Runtime Node API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Request.js~Request.html">Request</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/RuntimeCapabilities.js~RuntimeCapabilities.html">RuntimeCapabilities</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/SandboxApp.js~SandboxApp.html">SandboxApp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/SandboxWorker.js~SandboxWorker.html">SandboxWorker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RuntimeFactory">RuntimeFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RethinkNode">RethinkNode</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="dev-runtime-nodejs">dev-runtime-nodejs</h1>
+<h3 id="1-motivation">1. Motivation</h3>
+<p>This repository  aims to deploy and execute the reTHINK runtime in Node.js. The execution of reTHINK different components takes place in Nodejs sandboxes.</p>
+<h3 id="2-architecture-overview">2. Architecture Overview</h3>
+<p>The design and implementation of this runtime was mostly influenced by <a href="https://github.com/reTHINK-project/dev-runtime-browser">runtime-browser</a> . This Runtime was designed with compliance with Runtime Node requirements reported in D3.1. Essentially, it follows by design security approach, where different types of components are executed in isolated SandBoxes.</p>
+<p>Sandboxing technology was realised thanks to multi-processor environment in NodeJS. Particularly, the native <a href="https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options">child_process.fork()</a> method was used for this purpose. Spawned (forked) NodeJS child processes are independent of the parent. Each process has its own memory, with its own V8 instance engine. However, an IPC (Inter-Process Communication) channel is established between the parent and child that allows messages to be passed back and forth between them.</p>
+<h4 id="2-1-architecture-description">2.1 Architecture Description</h4>
+<p><img src="../Runtime-NodeJS.png" alt="runtime-nodejs"></p>
+<p>As illustrated in the diagram above, Runtime Node design has a flexible approach. Since it supports  deploying hyperty application in an isolated sandbox and in the same context as Runtime Node process as well (main node process where the javascript code is being executed first, labeled as Runtime-NodeJS).
+In the following upcoming sections a descritpion of main architecture components is given. Afterwards, an emphasis on architecture possible slight variations depending on possible use cases and/or business models.</p>
+<p>At bootstrap the <code>demo.js</code> demo is launched. In the following the functionalities of each components :</p>
+<h5 id="runtimenode-">RuntimeNode:</h5>
+<ul>
+<li>Main RuntimeNode process</li>
+<li>Deploys <code>core</code> in an isolated sandbox( <code>child_process</code>)</li>
+<li>Routes messages back and forth between the Context App and the core</li>
+<li>Exposes loadHyperty and loadProtoStub to Context Application</li>
+</ul>
+<h5 id="core-sandbox-">Core Sandbox:</h5>
+<ul>
+<li>Node.js child process (simultaneously is a parent process of <code>ContextServiceProvider sandbox</code>) used as an isolated sandbox to load  the Hyperty runtime</li>
+<li>Instantites <code>SandboxApp</code> proxy to Context App Sandbox in main app</li>
+<li>Instantiates <code>SandboxWorker</code> to load  Context Service Provider as sandbox for ProtoStub.</li>
+<li>Handles communication between internal/external components</li>
+<li>All Communications from/to the <code>core</code> is routed through The Message Bus</li>
+</ul>
+<h5 id="context-service-provider-sandboxworker-">Context Service Provider (SandboxWorker):</h5>
+<ul>
+<li>Nodejs child process having <code>core Sandbox</code> as parent process.</li>
+<li>Loads and activates Protostub to the messaging node</li>
+</ul>
+<h5 id="context-app-sandbox-">Context App Sandbox:</h5>
+<ul>
+<li>Deployed directly in Runtime Node or in an isolated sandbox( labeled <code>Service Application</code>)</li>
+<li>Used to load and activate Hyperties</li>
+</ul>
+<h5 id="demo-js-">demo.js:</h5>
+<ul>
+<li>Loads Runtime-Core, Hyeprty,and the ProtoStub from the toolkit</li>
+<li>Starts demo <code>NodeHyperty</code> like in <a href="https://github.com/reTHINK-project/dev-hyperty-toolkit">#Dev-toolkit</a> demo.</li>
+</ul>
+<h3 id="2-2-hyperty-running-in-same-context-as-the-runtime-node-">2.2  Hyperty running in same context as the Runtime Node:</h3>
+<p>In order to be able to develop and manipulate hyperty instance. The Runtime Node allows implementing hyperty Context Sandbox (is faux sandbox, just JavaScript module) in the same context as the Runtime.Likewise,the runtime browser, where hyperties app are loaded and then executed in the same context as the Runtime. Accordingly, the developers/users can interact directly from the Runtime with hyperties&apos; instances.</p>
+<p>Despite the functionality aspect of this approach. This implementation represents considerable threat to the Runtime. In fact, an hyperty running in the context app has same hardware resources as the runtime. Therefore, executing a malicious code on this Context app, or if the code threw an error at some point of its execution, the whole runtime is compromised.
+In brief this implemenation provides functional Runtime without worrying about the security aspect.</p>
+<h3 id="2-3-hyperty-running-in-an-isolated-sandbox-">2.3  Hyperty running in an isolated Sandbox:</h3>
+<p>On the contrary of what was said before. In this implementation, the hyperty is totally isolated in Nodejs child process, as sub process, it has its own V8 NodeJs engine. As a result, it runs on its own isolated context.
+Labeled as  <code>Service Application</code>  in above architecture. A use case we could thing of, consists of having a server hyperty that regularly monitors other servers, and sends back collected data (statistics) to the Runtime Node.</p>
+<h3 id="3-quick-start">3. Quick Start</h3>
+<p>First you need to clone this repository:</p>
+<pre><code><code class="source-code prettyprint">git clone https://github.com/reTHINK-project/dev-runtime-nodejs.git
+cd dev-runtime-nodejs</code>
+</code></pre><p>Afterwards, run the following (as root) :</p>
+<pre><code><code class="source-code prettyprint"># npm run setup</code>
+</code></pre><p><strong>Running NodeHyperty demo on Runtime Node</strong></p>
+<pre><code><code class="source-code prettyprint"># npm run demo</code>
+</code></pre><p>This demo is set for <code>hybroker.rethink.ptinovacao.pt</code> domain. As a result, it uses all other components (catalogue, domain registry, msg-node) of reTHINK associated with this domain.</p>
+<p>This will start NodeHyperty from catalogue in <code>https://catalogue.domain/.well-known/hyperty/NodeHyperty</code>. Moreover, this demo connects  to the remote msg-node-vertx of <code>hybroker.rethink.ptinovacao.pt</code>.</p>
+<h3 id="4-understanding-this-demo">4. Understanding this demo</h3>
+<p>First you need to include the runtime loader:</p>
+<pre><code><code class="source-code prettyprint">let rethink = require(&apos;./RuntimeUAStub&apos;);</code>
+</code></pre><p>Then load the runtime :</p>
+<pre><code><code class="source-code prettyprint">let runtime = rethink.default.install({
+  domain: domain,
+  development: true
+}).then((runtime) =&gt; {
+  console.log(&apos;runtime loaded !&apos;);
+  // ... now you can load hyperty
+}).catch((e) =&gt; {
+  console.error(&apos;aie !&apos;, e);
+});</code>
+</code></pre><p>Now you load the hyperty :</p>
+<pre><code><code class="source-code prettyprint">console.log(&apos;\n loading hyperty :&apos;.green, hypertyURI(domain, &apos;NodeHyperty&apos;));
+runtime.requireHyperty(hypertyURI(domain, &apos;NodeHyperty&apos;))
+    .then((NodeHyperty) =&gt; {
+            console.log(&apos;Hyperty loaded :\n&apos;.green);
+      console.log(&apos;NodeHyperty --&gt;\n&apos;.blue, NodeHyperty);
+      // ..... here we can manipulate hyperty instance
+      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-                        toolkit) :npm run start:node
+            }).catch((reason) =&gt; {
+      console.log(&apos;Error:&apos;, reason);
+    });</code>
+</code></pre><h3 id="5-how-to-use-this-runtime-node-">5. How to use this Runtime Node :</h3>
+<p> In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on <code>demo.js</code> in <code>Demo/ folder</code>. Essentially, using the method <code>runtime.requireHyperty(hypertyURI(domain,&apos;name Of  Hyperty&apos;))</code>.</p>
+<p> where :</p>
+<p><code>domain</code> : context service provider&apos;s domain.</p>
+<p><code>name of Hyperty</code> : simply an identifier of the Hyperty to be loaded and executed.</p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

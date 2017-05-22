@@ -26,9 +26,8 @@
 
 class RuntimeCapabilities {
 
-  constructor(storageManager) {
+   constructor(storageManager) {
     if (!storageManager) throw new Error('The Runtime Capabilities need the storageManager');
-
     this.storageManager = storageManager;
   }
 
@@ -71,6 +70,9 @@ class RuntimeCapabilities {
         } else {
           resolve(false);
         }
+      }).catch((error) => {
+        console.error('Error has occured while checking capability, reason:', error);
+        reject(error);
       });
     });
   }
@@ -89,12 +91,10 @@ class RuntimeCapabilities {
     // TODO: this should be more effective and check the environment
     try {
       return {
-        browser: !!(window && navigator),
         node: !!!(window && navigator)
       };
     } catch(error) {
       return {
-        browser: false,
         node: true
       };
     }

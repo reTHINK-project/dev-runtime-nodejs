@@ -17,6 +17,7 @@ build.js.map
 dist
 scratch
 D_scratch
+D_*
 *.sqlite
 
 .vscode
