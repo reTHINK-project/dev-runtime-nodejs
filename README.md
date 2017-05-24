@@ -82,9 +82,12 @@ This will start NodeHyperty from catalogue in `https://catalogue.domain/.well-kn
 ### 4. Understanding this demo
 
 First you need to include the runtime loader:
+```
+import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
+```
+**Initial configuration :**
 
 ```
-Initila configuration :
 let domain = 'localhost'; // configurable domain name of the runtime-nodejs
 const hypertyURI = (domain, hyperty) => `https://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
 const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime';
@@ -93,35 +96,32 @@ const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime
 **Then load the runtime :**
 
 ```
-let runtime = rethink.install({
+let runtime = rethink.default.install({
   domain: domain,
   runtimeURL,
   development: true
 }).then((runtime) => {
-  console.log('runtime loaded !');
-  // ... now you can load hyperty
-  console.log('\n loading hyperty :'.green, hypertyURI(domain, 'ServerConference'));
-  runtime.requireHyperty(hypertyURI(domain, 'ServerConference'))
-    .then((ServerConference) => {
-
-      console.log('NodeHyperty -->\n'.blue, ServerConference);
-      callHyperty = ServerConference;
-
-      init();
-    }).catch((reason) => {
-      console.log('Error:', reason);
-    });
+  console.log('--> Demo loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
+  runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty')).then((NodeHyperty) => {
+    console.log('Hyperty loaded :\n'.green);
+    console.log('NodeHyperty -->\n'.blue, NodeHyperty);
+      // ..... here we can manipulate hyperty instance
+      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-toolkit) :npm run start:node
+      //
+  }).catch((reason) => {
+    console.log('Error:', reason);
+  });
 }).catch((e) => {
   console.error('aie !', e);
 });
-
 ```
 
 ### 5. How to use this Runtime Node :
 
-In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `Demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
+ In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
+ 
+ where :
 
-where :
  
 `domain` : context service provider's domain.
 
