@@ -90,7 +90,10 @@ First you need to include the runtime loader:
 ```
 import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
 ```
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 **Initial configuration :**
 
 ```

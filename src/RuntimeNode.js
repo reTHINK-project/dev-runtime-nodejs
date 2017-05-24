@@ -27,12 +27,12 @@ let Promise = require('es6-promise');
 import app from './ContextApp';
 import URI from 'urijs';
 import colors from 'colors';
-import child from 'child_process'
+import child from 'child_process';
 
 
 
 let coreRuntime = {};
-coreRuntime  = child.fork( '../dist/core.js'); 
+coreRuntime  = child.fork( 'runtime-nodejs/dist/core.js'); 
 
 let buildMsg = (hypertyComponent, msg) => {
   return {
