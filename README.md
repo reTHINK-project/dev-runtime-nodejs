@@ -96,21 +96,20 @@ const runtimeURL = 'https://catalogue.' + domain + '/.well-known/runtime/Runtime
 
 **Then load the runtime :**
 ```
-let runtime = rethink.install({
+let runtime = rethink.default.install({
   domain: domain,
   runtimeURL,
   development: true
 }).then((runtime) => {
-  console.log('runtime loaded !');
-  // ... now you can load hyperty
-  console.log('\n loading hyperty :'.green, hypertyURI(domain, 'ServerConference'));
-  runtime.requireHyperty(hypertyURI(domain, 'ServerConference'))
-    .then((ServerConference) => {
+  console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
+  runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
+    .then((NodeHyperty) => {
+      console.log('Hyperty loaded :\n'.green);
+      console.log('NodeHyperty -->\n'.blue, NodeHyperty);
+      // ..... here we can manipulate hyperty instance
+      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-toolkit) :npm run start:node
+      //
 
-      console.log('NodeHyperty -->\n'.blue, ServerConference);
-      callHyperty = ServerConference;
-
-      init();
     }).catch((reason) => {
       console.log('Error:', reason);
     });
