@@ -97,7 +97,7 @@ let runtime = rethink.install({
 });
 
 function init() {
-  console.log('############################### start smart business app ###########################'.blue);
+  console.log('############################### start Group Communication app ###########################'.blue);
   if (callHyperty.instance !== null) {
     callHyperty.instance.onInvitation(function(controller, identity) {
       console.log(' ------------------------ On Invitation: -------------------------------'.green);
