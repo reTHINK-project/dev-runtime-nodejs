@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import rethink from 'runtime-nodejs/dist/RuntimeNode.js';
+import rethink from 'runtime-nodejs/dist/RuntimeNode';
 import express from 'express';
 import minimist from'minimist';
 import url from'url';
@@ -29,7 +29,6 @@ let argv = minimist(process.argv.slice(2),
 {
   default:
   {
-    // ws_uri: "ws://apizeekurentoKurentoLoadBalance-1906815936.eu-west-1.elb.amazonaws.com/kurento"
     ws_uri: "ws://localhost:8888/kurento"
   }
 });
