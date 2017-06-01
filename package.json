@@ -98,6 +98,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0",
     "webpack": "^2.4.1",
+    "webpack-node-externals": "^1.6.0",
     "websocket": "^1.0.23",
     "ws": "^1.1.1"
   }
