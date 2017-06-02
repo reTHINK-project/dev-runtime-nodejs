@@ -27,6 +27,7 @@
     "demo": "node demo.js"
   },
   "dependencies": {
+    "node-gyp": "^3.6.2",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
     "runtime-nodejs": "github:rethink-project/dev-runtime-nodejs#develop",
     "service-framework": "github:rethink-project/dev-service-framework#develop"
