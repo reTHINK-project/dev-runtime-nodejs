@@ -21,3 +21,5 @@ D_*
 *.sqlite
 
 .vscode
+
+yarn.lock

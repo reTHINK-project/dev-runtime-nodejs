@@ -41,7 +41,7 @@ At bootstrap the `demo.js` demo is launched. In the following the functionalitie
 ##### Context App Sandbox:
 - Deployed directly in Runtime Node or in an isolated sandbox( labeled ``Service Application``)
 - Used to load and activate Hyperties
- 
+
 ##### demo.js:
 - Loads Runtime-Core, Hyeprty,and the ProtoStub from the toolkit
 - Starts demo `NodeHyperty` like in [#Dev-toolkit](https://github.com/reTHINK-project/dev-hyperty-toolkit) demo.
@@ -57,6 +57,8 @@ On the contrary of what was said before. In this implementation, the hyperty is 
 Labeled as  ``Service Application``  in above architecture. A use case we could thing of, consists of having a server hyperty that regularly monitors other servers, and sends back collected data (statistics) to the Runtime Node.
 
 ### 3. Quick Start
+*todo: update for the last versions*
+
 First you need to clone this repository:
 ```
 git clone https://github.com/reTHINK-project/dev-runtime-nodejs.git
@@ -66,8 +68,17 @@ cd dev-runtime-nodejs
 Afterwards, run the following (as root) :
 
 ```
-# npm run setup 
+# npm run setup
 ```
+
+**Note for Windows Users:**
+Before you execute this execute the setup, you may need to execute `npm install`- and in case you have errors like
+```
+... error MSB4019: The imported project "C:\Microsoft.Cpp.Default.props" was not found. Confirm that the path in the <Import> declaration is correct, and that the file exists on disk.
+```
+make sure you have Visual Studio installed and for the module raising this error execute `npm install` specifying your visual Studio version. Example:
+
+`npm install node-gyp -msvs_version=2008`
 
 **Running NodeHyperty demo on Runtime Node**
 ```
@@ -101,6 +112,7 @@ let runtime = rethink.default.install({
   runtimeURL,
   development: true
 }).then((runtime) => {
+<<<<<<< HEAD
   console.log('--> Demo loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
   runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty')).then((NodeHyperty) => {
     console.log('Hyperty loaded :\n'.green);
@@ -111,6 +123,20 @@ let runtime = rethink.default.install({
   }).catch((reason) => {
     console.log('Error:', reason);
   });
+=======
+  console.log('\n loading hyperty :'.green, hypertyURI(domain, 'NodeHyperty'));
+  runtime.requireHyperty(hypertyURI(domain, 'NodeHyperty'))
+    .then((NodeHyperty) => {
+      console.log('Hyperty loaded :\n'.green);
+      console.log('NodeHyperty -->\n'.blue, NodeHyperty);
+      // ..... here we can manipulate hyperty instance
+      // note : before trying this make sure that the reTHINK toolkit is up running for node with the command(in dev-hyperty-toolkit) :npm run start:node
+      //
+
+    }).catch((reason) => {
+      console.log('Error:', reason);
+    });
+>>>>>>> develop
 }).catch((e) => {
   console.error('aie !', e);
 });
@@ -119,10 +145,13 @@ let runtime = rethink.default.install({
 ### 5. How to use this Runtime Node :
 
  In case a hyperty developer(how to develop Hyperty) wants to deploy it on this Runtime Node. A small modification is needed on `demo.js` in `demo/ folder`. Essentially, using the method `runtime.requireHyperty(hypertyURI(domain,'name Of  Hyperty'))`.
- 
+
  where :
 
+<<<<<<< HEAD
  
+=======
+>>>>>>> develop
 `domain` : context service provider's domain.
 
 `name of Hyperty` : simply an identifier of the Hyperty to be loaded and executed.

@@ -32,7 +32,7 @@ import child from 'child_process';
 
 
 let coreRuntime = {};
-coreRuntime  = child.fork( 'runtime-nodejs/dist/core.js'); 
+coreRuntime  = child.fork( '../dist/core.js'); 
 
 let buildMsg = (hypertyComponent, msg) => {
   return {

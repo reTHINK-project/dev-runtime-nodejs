@@ -69,11 +69,11 @@ class Request {
       } else if(method === 'POST') {
         let postOptions = {
           method: 'POST',
-/*          headers: { 
+/*          headers: {
             'Content-Type': 'application/json',
             'cache-control': 'no-cache',
           },*/
-          body: options
+          body: options && options.body ? options.body : null
         };
 
         fetch(urlMap, postOptions).then((res) => {

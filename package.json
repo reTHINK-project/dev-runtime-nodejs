@@ -39,6 +39,7 @@
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
+    "node-gyp": "^3.6.2",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
     "service-framework": "github:rethink-project/dev-service-framework#develop"
   },
@@ -98,6 +99,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0",
     "webpack": "^2.4.1",
+    "webpack-node-externals": "^1.6.0",
     "websocket": "^1.0.23",
     "ws": "^1.1.1"
   }
