@@ -28,6 +28,7 @@
     "build": "babel --presets es2015 ./peer.js ./demo.js ./user-registry.js ./user-session.js --out-dir dist/"
   },
   "dependencies": {
+    "kurento-client": "^6.6.0",
     "runtime-core": "github:rethink-project/dev-runtime-core#develop",
     "runtime-nodejs": "github:rethink-project/dev-runtime-nodejs#develop",
     "service-framework": "github:rethink-project/dev-service-framework#develop"
