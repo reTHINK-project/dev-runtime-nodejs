@@ -440,13 +440,14 @@ function join(controller, identity) {
    // rooms[roomName].participants[userSession.name] = userSession;
    let userHypertyURL = controller._connectionEvent.from;
 
-   let userSdp = controller._connectionEvent.value.connectionDescription;
+   let userSdp = controller.dataObjectObserver.data.connectionDescription;
 
    let userName = identity.username;
-   let roomName = controller._roomName;
-   let userURL = identity.userURL;
+   let roomName = controller.roomName;
+   let userURL = controller._connectionEvent.identity.userProfile.userURL;
 
     let calleeInfo = identity;
+    console.log('controlller is :'.red, controller)
     console.log("[Participants]: ".green + userName + " trying to join room: ".green + roomName);
     return new Promise(function(resolve, reject) {
       if(!userName) {
