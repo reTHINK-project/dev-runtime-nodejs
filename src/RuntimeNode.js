@@ -23,7 +23,7 @@
 
 let Promise = require('es6-promise');
 
-
+import path from 'path';
 import app from './ContextApp';
 import URI from 'urijs';
 import colors from 'colors';
@@ -32,7 +32,7 @@ import child from 'child_process';
 
 
 let coreRuntime = {};
-coreRuntime  = child.fork( '../dist/core.js'); 
+coreRuntime  = child.fork( path.join('dist', 'core.js'));
 
 let buildMsg = (hypertyComponent, msg) => {
   return {
@@ -76,7 +76,7 @@ let RethinkNode = {
   install: function({domain, runtimeURL, development}={}) {
     return new Promise((resolve, reject) => {
       let runtime = this.getRuntime(runtimeURL, domain, development);
-      coreRuntime.send({do:'install runtime core', body: { domain: domain, runtimeURL: runtimeURL}});  
+      coreRuntime.send({do:'install runtime core', body: { domain: domain, runtimeURL: runtimeURL}});
       coreRuntime.on('message', (msg) => {
         if (msg.to === 'runtime:installed') {
           console.log('\n Runtime installed with success\n'.blue);

@@ -1,61 +1,80 @@
-// Karma configuration
-// Generated on Wed Sep 16 2015 12:17:06 GMT+0100 (WEST)
-
 module.exports = function(config) {
-	config.set({
+  config.set({
+    basePath: '',
+    frameworks: ['mocha', 'chai', 'sinon'],
+    files: [
+      './test/*.spec.js'
+    ],
+    exclude: [
+    ],
+    preprocessors: {
+      './test/**/*.spec.js': ['webpack', 'sourcemap']
+    },
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-		basePath: '',
+    // webpack configuration
+    webpack: {
 
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: [ 'mocha', 'browserify'],
+      devtool: 'inline-source-map',
+			target: 'node'
 
-		files: [
-			'test/**/*.spec.js',
-		],
-
-		exclude: [
-			'test/**/Sandbox*.spec.js',
-		],
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-		preprocessors: {
-			'test/**/*.js': ['browserify'],
-			'src/**/*.js': ['browserify']
 		},
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['mocha'],
+    reporters: ['spec', 'html'],
 
-    // web server port
-		port: 9876,
+    specReporter: {
+      maxLogLines: 5,             // limit number of lines logged per test
+      suppressErrorSummary: false, // do not print error summary
+      suppressFailed: false,      // do not print information about failed tests
+      suppressPassed: false,      // do not print information about passed tests
+      suppressSkipped: false,      // do not print information about skipped tests
+      showSpecTiming: true,      // print the time elapsed for each spec
+      failFast: false              // test would finish with error when a first fail occurs.
+    },
 
-    // enable / disable colors in the output (reporters and logs)
-		colors: true,
+    // the default configuration
+    htmlReporter: {
+      outputFile: 'test/units.html',
 
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-		logLevel: config.LOG_INFO,
+      // Optional
+      pageTitle: 'Unit Tests',
+      subPageTitle: 'reThink Project performance tests',
+      groupSuites: true,
+      useCompactStyle: true,
+      useLegacyStyle: true
+    },
 
-    // enable / disable watching file and executing tests whenever any file changes
-		autoWatch: true,
+    plugins: ['karma-spec-reporter',
+      'karma-webpack',
+      'karma-sourcemap-loader',
+      'karma-mocha', 'karma-chai',
+      'karma-sinon',
+      'karma-htmlfile-reporter',
+      'karma-mocha-reporter',
+			'karma-phantomjs-launcher'],
+
+    customDebugFile: './test/units.html',
+
+    // customContextFile: './test/units.html',
+
+    client: {
+      mocha: {
+        reporter: 'html'
+      },
+      runInParent: true,
+      captureConsole: true
+    },
+
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-		browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-		singleRun: false,
-
-		browserify: {
-			debug: true,
-			extensions: ['js'],
-			transform: [['babelify', {presets:['es2015']}]]
-		}
-	})
-}
+    singleRun: false
+  });
+};

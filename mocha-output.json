@@ -1,0 +1,9 @@
+{
+    "RuntimeNodeJS installation": {
+        "should install runtime-nodejs": "PASSED"
+    },
+    "RuntimeNodeJS installation Data Objects created / sec": {
+        "should load and install a Reporter hyperty": "PASSED",
+        "should generate 20 Objects for reporterHyperty": "PASSED"
+    }
+}

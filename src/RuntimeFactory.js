@@ -21,7 +21,7 @@
 * limitations under the License.
 **/
 'use strict';
-
+import path from 'path';
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
@@ -65,7 +65,7 @@ let RuntimeFactory = Object.create({
         this.capabilitiesManager.isAvailable(capability).then((result) => {
           if(result) {
             SandboxCapabilities = { "node": true };
-            resolve(new SandboxWorker( '../dist/ContextServiceProvider.js'));
+            resolve(new SandboxWorker( path.join('dist', 'ContextServiceProvider.js')));
           } else {
 
 
