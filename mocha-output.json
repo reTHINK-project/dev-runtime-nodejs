@@ -4,6 +4,6 @@
     },
     "RuntimeNodeJS installation Data Objects created / sec": {
         "should load and install a Reporter hyperty": "PASSED",
-        "should generate 20 Objects for reporterHyperty": "PASSED"
+        "should generate 30 Objects for reporterHyperty": "PASSED"
     }
 }

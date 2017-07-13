@@ -33,7 +33,7 @@
     "build:doc": "esdoc -c esdoc.json",
     "build:dev": "cross-env MODE=dev webpack",
     "build:prod": "cross-env MODE=prod webpack",
-    "test": "mocha --reporter mocha-spec-json-reporter -w test/*.spec.js ",
+    "test": "mocha --reporter mochawesome test/*.spec.js ",
     "build": "shx mkdir -p dist-test/ && babel --presets es2015 src/ demo/ --out-dir dist-test/ && babel --presets es2015 demo/ -o dist-test/demo.js",
     "init-setup": "npm install -g jspm karma-cli gulp-cli && npm install && jspm install",
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
