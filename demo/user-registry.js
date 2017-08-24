@@ -60,11 +60,6 @@ class UserRegistry {
         }
         return usersInRoomList;
     }   
-
-
-  
 }
-
-
 
 export default UserRegistry;
