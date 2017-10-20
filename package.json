@@ -72,7 +72,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.4.2",
-    "indexeddbshim": "https://github.com/axemclion/IndexedDBShim",
+    "indexeddbshim": "git+https://github.com/axemclion/IndexedDBShim.git",
     "install": "^0.8.1",
     "jscs": "^3.0.7",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",

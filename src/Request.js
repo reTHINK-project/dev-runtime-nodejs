@@ -70,12 +70,14 @@ class Request {
       } else if(method === 'POST') {
         let postOptions = {
           method: 'POST',
-/*          headers: {
+          headers: {
             'Content-Type': 'application/json',
             'cache-control': 'no-cache',
-          },*/
-          body: options && options.body ? options.body : null
+          },
+          body: options && options.body ? options.body : {}
         };
+
+	console.log('PostOptions:', postOptions);
 
         fetch(urlMap, postOptions).then((res) => {
           console.log('statusCode is: '.green,  res.status)
