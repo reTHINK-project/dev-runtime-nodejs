@@ -57,7 +57,6 @@
     "colors": "^1.1.2",
     "copyfiles": "^0.2.1",
     "cross-env": "^5.0.0",
-    "dexie": "^2.0.0-beta.10",
     "es6-promise": "^4.0.5",
     "esdoc": "^0.5.2",
     "eval": "^0.1.1",
@@ -72,7 +71,6 @@
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.4.2",
-    "indexeddbshim": "git+https://github.com/axemclion/IndexedDBShim.git",
     "install": "^0.8.1",
     "jscs": "^3.0.7",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
@@ -102,6 +100,9 @@
     "webpack": "^2.4.1",
     "webpack-node-externals": "^1.6.0",
     "websocket": "^1.0.23",
-    "ws": "^1.1.1"
+    "ws": "^1.1.1",
+    "dexie": "^2.0.1",
+    "indexeddbshim": "^3.3.1",
+    "sqlite3": "^3.1.13"
   }
 }
