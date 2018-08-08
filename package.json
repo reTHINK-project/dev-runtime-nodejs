@@ -39,8 +39,7 @@
     "setup": "npm install && cd node_modules/indexeddbshim && npm install sqlite3"
   },
   "dependencies": {
-    "runtime-core": "github:rethink-project/dev-runtime-core#develop",
-    "service-framework": "github:rethink-project/dev-service-framework#develop"
+    "runtime-core": "github:rethink-project/dev-runtime-core#framework2core"
   },
   "devDependencies": {
     "atob": "^2.0.3",

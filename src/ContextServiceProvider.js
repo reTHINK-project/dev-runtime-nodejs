@@ -40,7 +40,7 @@ process.on('message', (msg) => {
 });
 
 process._registry = new SandboxRegistry(process._miniBus);
-process._registry._create = (url, sourceCode, config) => {
+process._registry._create = (url, sourceCode, config, factory) => {
   try {
 
     let activate = _eval(sourceCode, true);
@@ -48,9 +48,9 @@ process._registry._create = (url, sourceCode, config) => {
     console.log('TYPEOF:', typeof(activate), typeof(activate.default));
 
     if (typeof(activate) === 'function') {
-      return activate(url, process._miniBus, config);
+      return activate(url, process._miniBus, config, factory);
     } else if (typeof(activate.default) === 'function') {
-      return activate.default(url, process._miniBus, config);
+      return activate.default(url, process._miniBus, config, factory);
     }
 
   } catch (reason) {

@@ -28,6 +28,7 @@
 
 import URI from 'urijs';
 import RuntimeFactory from './RuntimeFactory';
+import RuntimeCatalogue from 'runtime-core/dist/RuntimeCatalogue';
 import _eval from 'eval';
 
 
@@ -35,7 +36,7 @@ import _eval from 'eval';
 let domain;
 let runtimeDescriptor;
 
-let catalogue = RuntimeFactory.createRuntimeCatalogue();
+let catalogue = new RuntimeCatalogue(RuntimeFactory);
 
 // returnHyperty givent the runtimeHypertyURL,
 // Sends message ='loadedHyperty' to the the parent process RuntimeNode throught IPC channel

@@ -22,26 +22,41 @@
 **/
 'use strict';
 
-require('indexeddbshim')(global);
-
 import SandboxWorker from './SandboxWorker';
 import SandboxApp from './SandboxApp';
 import Request from './Request';
 import atob from 'atob';
 
-import StorageManager from 'service-framework/dist/StorageManager';
-import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
-import PersistenceManager from 'service-framework/dist/PersistenceManager';
+import StorageManager from 'runtime-core/dist/StorageManager';
+//import { RuntimeCatalogue } from 'service-framework/dist/RuntimeCatalogue';
+//import PersistenceManager from 'service-framework/dist/PersistenceManager';
+// import StorageManager from './service-framework/storage-manager/StorageManager';
+// import { RuntimeCatalogue } from './service-framework/RuntimeCatalogue';
+// import PersistenceManager from './service-framework/PersistenceManager';
 
 import { LocalStorage } from 'node-localstorage';
 
 import Dexie from 'dexie';
+Dexie.dependencies.indexedDB = require('fake-indexeddb')
+Dexie.dependencies.IDBKeyRange = require('fake-indexeddb/lib/FDBKeyRange')
 
 import setGlobalVars from 'indexeddbshim';
 
 import RuntimeCapabilities from './RuntimeCapabilities';
 
-import WebCrypto from 'node-webcrypto-ossl';
+
+let createStorageManager = () => {
+  let indexeddB = {};
+  let {indexedDB, IDBKeyRange } = indexeddB;
+  let storageName = 'cache';
+
+  const db = new Dexie(storageName);
+
+  storageManager = new StorageManager(db, storageName);
+  return storageManager;
+};
+
+let storageManager = createStorageManager();
 
 let RuntimeFactory = Object.create({
     createSandbox(capabilities) {
@@ -78,54 +93,23 @@ let RuntimeFactory = Object.create({
       return atob(b64);
     },
 
-    persistenceManager() {
+/*    persistenceManager() {
       let localStorage = new LocalStorage('./scratch');
       return new PersistenceManager(localStorage);
+    },*/
+
+    storageManager() {
+      return storageManager;
     },
 
-		storageManager(name, schemas) {
-
-			if (!this.databases) { this.databases = {}; }
-			if (!this.storeManager) { this.storeManager = {}; }
-
-			// Using the implementation of Service Framework
-			// Dexie is the IndexDB Wrapper
-			if (!this.databases.hasOwnProperty(name)) {
-
-				global.shimIndexedDB.__useShim();
-				global.shimIndexedDB.__setConfig({checkOrigin: false});
-
-				this.databases[name] = new Dexie(name, {
-					indexedDB: global.indexedDB,
-					IDBKeyRange: global.IDBKeyRange
-				})
-
-			}
-
-			if (!this.storeManager.hasOwnProperty(name)) {
-				this.storeManager[name] = new StorageManager(this.databases[name], name, schemas);
-			}
-
-			return this.storeManager[name];
-		},
-
-    createRuntimeCatalogue() {
+/*    createRuntimeCatalogue() {
       this.catalogue = new RuntimeCatalogue(this);
       return this.catalogue;
-    },
+    },*/
 
-		runtimeCapabilities() {
-
-			if (!this.capabilitiesManager) {
-				let storageManager = this.storageManager('capabilities');
-				this.capabilitiesManager = new RuntimeCapabilities(storageManager);
-			}
-
-			return this.capabilitiesManager;
-		},
-
-    createWebcrypto() {
-      return new WebCrypto();
+    runtimeCapabilities() {
+      this.capabilitiesManager = new RuntimeCapabilities(storageManager);
+      return  this.capabilitiesManager;
     }
 
 });
